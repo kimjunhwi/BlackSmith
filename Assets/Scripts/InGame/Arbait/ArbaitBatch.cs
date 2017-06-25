@@ -5,6 +5,8 @@ using ReadOnlys;
 
 public class ArbaitBatch : MonoBehaviour {
 
+	public ArbaitData arbaitData;
+
     public bool bIsRepair = false;
 
     public bool bIsComplate = false;
@@ -25,9 +27,6 @@ public class ArbaitBatch : MonoBehaviour {
     //무기 완성 맥스치
     protected float m_fMaxComplate;
 
-    //무기 남은 시간
-    protected float m_fCurComplateX;
-
     //아르바이트 현재 상태
 	protected E_ArbaitState E_STATE;
 
@@ -37,20 +36,11 @@ public class ArbaitBatch : MonoBehaviour {
     //아르바이트 패널을 저장
     public GameObject ArbaitPanelObject;
 
-	protected Transform ComplateGauge;
-
-    //무기가 보일 말풍선(?) // 미정
-	protected GameObject WeaponBackground;
-
-    public ArbaitData arbaitData;
-
     public CGameWeaponInfo weaponData;
 
     //무기가 보일 말풍선(?) // 미정
 	protected RepairObject RepairShowObject;
 
-    //무기 이미지
-	protected SpriteRenderer weaponsSprite;
 
 	protected SpriteRenderer myCharacterSprite;
 
@@ -66,41 +56,26 @@ public class ArbaitBatch : MonoBehaviour {
     {
 		animator = gameObject.GetComponent<Animator>();
 
-		WeaponBackground = transform.FindChild("Case").gameObject;
-
-		boxCollider = WeaponBackground.GetComponent<BoxCollider2D>();
-
 		myCharacterSprite = gameObject.GetComponent<SpriteRenderer>();
 
-        RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
-
-        weaponsSprite = WeaponBackground.transform.FindChild("WeaponSprite").GetComponent<SpriteRenderer>();
-
-		ComplateGauge = transform.FindChild("GaugeParent").transform;
-
-		ComplateGauge.transform.localScale = new Vector3(0, ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);        
+        RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();       
 	}
-
-    
 
     void OnDisable()
     {
         Init();
     }
 
-    
-
-
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
-    public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data, Animator _animator) 
+    public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
     {
         nIndex = _nIndex;
 
         arbaitData = _data;
 
-        animator = _animator;
-
         ArbaitPanelObject = _obj;
+
+		animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController> ("Animation/" + _data.strAnimation);
     }
 
     //무기 받음
@@ -108,9 +83,6 @@ public class ArbaitBatch : MonoBehaviour {
     {
         //무기를 받았기에 수리로 변경
         bIsRepair = true;
-
-        //초기화
-        m_fCurComplateX = 0.0f;
 
         //현재진행중인 오브젝트에 받은 캐릭터 오브젝트를 넣음 나중에 비교를 위함
         AfootOjbect = _obj;
@@ -126,13 +98,6 @@ public class ArbaitBatch : MonoBehaviour {
         m_fMaxComplate = _data.fComplate;
 
         E_STATE = E_ArbaitState.E_REPAIR;
-
-        weaponsSprite.sprite = _data.WeaponSprite;
-
-        m_fCurComplateX = m_fComplate / m_fMaxComplate;
-
-        ComplateGauge.localScale = new Vector3(m_fCurComplateX, ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);
-
     }
 
 	protected virtual IEnumerator CheckCharacterState(){ yield return null; }
@@ -143,22 +108,22 @@ public class ArbaitBatch : MonoBehaviour {
     {
         SpawnManager.Instance.ComplateCharacter(AfootOjbect,weaponData.fComplate);
 
-        Init();
+		Init(true);
 
         SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
     }
 
     public void ResetWeaponData()
     {
-        Init();
+        Init(true);
         //AfootOjbect = _obj;
         SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
     }
 
-    public void Init()
+	public void Init(bool bIsReturn = false)
     {
-        if (bIsComplate == false && AfootOjbect != null)
-			AfootOjbect.GetComponent<NormalCharacter>().GetRepairData(false, m_fComplate, m_fTemperator);
+		if (bIsReturn == false)
+			SpawnManager.Instance.ReturnInsertData (AfootOjbect, m_fComplate, m_fTemperator);
 
         bIsRepair = false;
 
@@ -174,12 +139,6 @@ public class ArbaitBatch : MonoBehaviour {
 
         m_fComplate = 0.0f;
 
-        m_fMaxComplate = 0.0f;
-
-        m_fCurComplateX = 0.0f;
-
-        weaponsSprite.sprite = null;
-
-        ComplateGauge.localScale = new Vector3(0, ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);   
+        m_fMaxComplate = 0.0f;  
     }
 }

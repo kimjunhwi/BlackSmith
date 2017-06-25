@@ -35,7 +35,7 @@ public class BlueHair : ArbaitBatch {
 
 		myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
-		nGrade = arbaitData.nowGrade;
+		nGrade = arbaitData.grade;
 
 		E_STATE = E_ArbaitState.E_WAIT;
 
@@ -69,14 +69,12 @@ public class BlueHair : ArbaitBatch {
 			//수리 시간이 되면 0으로 초기화 하고 수리해줌
 			if(fTime >= m_fRepairTime)
 			{
-				m_fComplate += arbaitData.repairPower;
+				animator.SetTrigger ("bIsRepair");
 
-				m_fCurComplateX = m_fComplate / m_fMaxComplate;
-
-				ComplateGauge.localScale = new Vector3(m_fCurComplateX,  ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);
+				m_fComplate += arbaitData.fRepairPower;
 
 				//완성 됐을 경우
-				if (m_fCurComplateX >= 1.0f)
+				if (m_fComplate >= weaponData.fComplate)
 				{
 					ScoreManager.ScoreInstance.GoldPlus(100);
 
@@ -91,20 +89,5 @@ public class BlueHair : ArbaitBatch {
 		}
 
 		yield return null;
-	}
-
-	//만약 클릭 했을 경우
-	void OnMouseDown()
-	{
-		if (Input.GetMouseButtonDown(0) && E_STATE == E_ArbaitState.E_REPAIR)
-		{
-			bIsComplate = true;
-
-			AfootOjbect.GetComponent<Character>().m_bIsRepair = true;
-
-			RepairShowObject.GetWeapon(AfootOjbect, weaponData, m_fComplate, m_fTemperator);
-
-			ResetWeaponData();
-		}
 	}
 }

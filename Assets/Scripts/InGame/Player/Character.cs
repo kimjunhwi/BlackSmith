@@ -44,9 +44,7 @@ public class Character : MonoBehaviour
     //Max온도치
 	protected const int n_nMinTemperature = 0;
 
-    
-
-    //캐릭터(무기) 등급
+	//캐릭터(무기) 등급
     protected CHARACTER_GRADE E_GRADE;
 
     public bool m_bIsRepair = false;
@@ -77,7 +75,17 @@ public class Character : MonoBehaviour
 
     protected BoxCollider2D boxCollider;
 
-    protected void Awake()
+	public Sprite NoneSpeech;
+
+	public Sprite ArbaitOneSpeech;
+
+	public Sprite ArbaitThreeSpeech;
+
+	public Sprite ArbaitTwoSpeech;
+
+	public Sprite PlayerRepairSpeech;
+
+	public virtual void Awake()
 	{
 		E_GRADE = CHARACTER_GRADE.NORMAL;
 

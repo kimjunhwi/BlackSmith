@@ -1,66 +1,69 @@
-{"list":[
-{
-"id":0,
-"level": 0,
-"name":"Suro",
-"nowGrade":1,
-"maxGrade":5,
-"batch" : -1,
-"repairPower":3.0,
-"repairLevelPlus":3.0,
-"costGold" : 10,
-"isBuyCheck" : 0
+{"list":[{
+		"index": 0,
+		"level": 0,
+		"name": "BlueHair",
+		"strAnimation" : "BlueHair",
+		"grade": 1,
+		"batch": -1,
+		"fRepairPower": 12,
+		"fAttackSpeed": 1,
+		"fCritical": 10,
+		"fAccuracyRate": 10,
+		"strBuffIndexs": "0",
+		"strExplains": "대장장이 수리력 20 % 증가",
+		"fCurrentFloat": 0,
+		"nScoutCount": 0,
+		"nScoutGold": 12000,
+		"nScoutHonor": 0,
+		"nScoutDia": 50,
+		"nIsDia": 1,
+		"bIsBuyCheck": 0
+	}
+	,
+	{
+		"index": 1,
+		"level": 0,
+		"name": "OrangeHair",
+		"strAnimation" : "OrangeHair",
+		"grade": 1,
+		"batch": -1,
+		"fRepairPower": 12,
+		"fAttackSpeed": 1,
+		"fCritical": 10,
+		"fAccuracyRate": 10,
+		"strBuffIndexs": "0",
+		"strExplains": "대장장이 수리력 20 % 증가",
+		"fCurrentFloat": 0,
+		"nScoutCount": 0,
+		"nScoutGold": 12000,
+		"nScoutHonor": 0,
+		"nScoutDia": 50,
+		"nIsDia": 1,
+		"bIsBuyCheck": 0
+	}
+	,
+	{
+		"index": 1,
+		"level": 0,
+		"name": "Nurse",
+		"strAnimation" : "Nurse",
+		"grade": 1,
+		"batch": -1,
+		"fRepairPower": 12,
+		"fAttackSpeed": 1,
+		"fCritical": 10,
+		"fAccuracyRate": 10,
+		"strBuffIndexs": "0",
+		"strExplains": "대장장이 수리력 20 % 증가",
+		"fCurrentFloat": 0,
+		"nScoutCount": 0,
+		"nScoutGold": 12000,
+		"nScoutHonor": 0,
+		"nScoutDia": 50,
+		"nIsDia": 1,
+		"bIsBuyCheck": 0
+	}
+
+
+		]
 }
-,
-{
-"id":1,
-"level": 1,
-"name":"Sumin",
-"nowGrade":1,
-"maxGrade":5,
-"batch" : -1,
-"repairPower":3.0,
-"repairLevelPlus":3.0,
-"costGold" : 10,
-"isBuyCheck" : 0
-}
-,
-{
-"id":2,
-"level": 0,
-"name":"Suro",
-"nowGrade":1,
-"maxGrade":5,
-"batch" : -1,
-"repairPower":3.0,
-"repairLevelPlus":3.0,
-"costGold" : 10,
-"isBuyCheck" : 0
-}
-,
-{
-"id":3,
-"level": 0,
-"name":"Suro",
-"nowGrade":1,
-"maxGrade":5,
-"batch" : -1,
-"repairPower":3.0,
-"repairLevelPlus":3.0,
-"costGold" : 10,
-"isBuyCheck" : 0
-}
-,
-{
-"id":4,
-"level": 0,
-"name":"Suro",
-"nowGrade":1,
-"maxGrade":5,
-"batch" : -1,
-"repairPower":3.0,
-"repairLevelPlus":3.0,
-"costGold" : 10,
-"isBuyCheck" : 0
-}
-]}
