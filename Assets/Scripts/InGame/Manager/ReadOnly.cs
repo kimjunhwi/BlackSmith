@@ -4,6 +4,20 @@ using UnityEngine;
 
 namespace ReadOnlys
 {
+	public struct Buff
+	{
+		public int nIndex;
+		public float fValue;
+		public bool bIsInfinity;
+
+		public Buff(int _nIndex,float _fValue, bool _bIsInfinity)
+		{
+			nIndex = _nIndex;
+			fValue = _fValue;
+			bIsInfinity = _bIsInfinity;
+		}
+	}
+
     enum E_SortingSprite
     {
         E_BACK = 2,
@@ -11,13 +25,18 @@ namespace ReadOnlys
     }
 
 
-    enum E_ArbaitState
+	public enum E_ArbaitState
     {
         //대기
         E_WAIT ,
         //수리중
         E_REPAIR,
     }
+
+	public enum E_ARBAIT : int
+	{
+		E_BLUEHAIR = 0,
+	}
 
     enum E_CHECK
     {

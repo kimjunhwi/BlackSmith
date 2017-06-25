@@ -48,10 +48,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	
     public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
 
-	public Boss[] bossInfo = null;
-
-	public BossWeapon[] boosWeaponInfo = null;
-
     public ArbaitData[] tenkInstance;
 
     //private List<WeaponsData> weaponDataBase = new List<WeaponsData>();
@@ -91,10 +87,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		Load_TableInfo_Quest();
 
 		Load_TableInfo_Equiment();
-
-		Load_TableInfo_Boss ();
-
-		Load_TableInfo_BossWeapon ();
 
 
 #if UNITY_EDITOR
@@ -453,77 +445,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         cEquimentInfo = kInfo;
     }
 
-
-	void Load_TableInfo_Boss()
-	{
-		if (bossInfo.Length != 0) return;
-
-		string txtFilePath = "Boss";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		Boss[] kInfo = new Boss[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1] = new Boss();
-			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
-			kInfo [i - 1].name = Cells [1];
-			kInfo[i - 1].skillExplainOne =Cells[2];
-			kInfo[i - 1].skillExplainTwo = Cells[3];
-			kInfo[i - 1].GetWeaponsIndex = Cells[4];
-			kInfo[i - 1].fComplate = float.Parse(Cells[5]);
-			kInfo[i - 1].fWaitSecond = float.Parse(Cells[6]);
-			kInfo[i - 1].nGold = int.Parse(Cells[7]);
-			kInfo[i - 1].nHonor = int.Parse(Cells[8]);
-			kInfo[i - 1].nDia = int.Parse(Cells[9]);
-			kInfo[i - 1].fWaitSecond = float.Parse(Cells[10]);
-		}
-
-		bossInfo = kInfo;
-	}
-
-	void Load_TableInfo_BossWeapon()
-	{
-		if (boosWeaponInfo.Length != 0) return;
-
-		string txtFilePath = "BossWeapon";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		BossWeapon[] kInfo = new BossWeapon[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1] = new BossWeapon();
-			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
-			kInfo[i - 1].strResouce = Cells[1];
-			kInfo[i - 1].strName = Cells[2];
-			kInfo[i - 1].nSlot = int.Parse(Cells[3]);
-			kInfo[i - 1].strGrade = Cells[4];
-			kInfo[i - 1].explain = Cells[5];
-		}
-
-		boosWeaponInfo = kInfo;
-	}
     public int GetEquimentLength()
     {
 		if (cEquimentInfo == null)
@@ -659,24 +580,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     }
 }
 
-enum E_Equiment
-{
-	E_REPAIR = 6,
-	E_TEMPPLUS =7,
-	E_TEMPDOWN =8,
-	E_ARBAIT,
-	E_HONOR,
-	E_GOLD,
-	E_WATERMAX,
-	E_WATERCHARGE,
-	E_WATERUSE,
-	E_CRITICAL,
-	E_CRITICALD,
-	E_BIGCRITICAL,
-	E_ACCURACY,
-	E_MAX,
-}
-
 [System.Serializable]
 public class AllArbaitData
 {
@@ -790,42 +693,4 @@ public class CGameCharacterInfo
     public float fGuestTime = 0.0f;                 //손님 등장시간
     public float fSpecialGuest = 0.0f;              //특수 손님 등장확률
     public float fRaidGuest = 0.0f;                 //레이드 손님 등장확률
-}
-
-[System.Serializable]
-public class Boss
-{
-	//id값
-	public int nIndex;
-	//이름
-	public string name;
-
-	public string skillExplainOne;
-
-	public string skillExplainTwo;
-
-	public string GetWeaponsIndex;
-
-	public float fComplate;
-
-	public float fWaitSecond;
-
-	public int nGold;
-
-	public int nHonor;
-
-	public int nDia;
-
-	public float fDropPercent;
-}
-
-[System.Serializable]
-public class BossWeapon
-{
-	public int nIndex = 0;
-	public string strResouce = string.Empty;
-	public string strName = string.Empty;
-	public int nSlot = 0;
-	public string strGrade;
-	public string explain;
 }

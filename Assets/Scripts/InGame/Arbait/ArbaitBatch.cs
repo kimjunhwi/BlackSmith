@@ -9,7 +9,7 @@ public class ArbaitBatch : MonoBehaviour {
 
     public bool bIsComplate = false;
 
-    private int nIndex = 0;
+	protected int nIndex = 0;
 
     protected float fTime = 0.0f;
     
@@ -29,7 +29,7 @@ public class ArbaitBatch : MonoBehaviour {
     protected float m_fCurComplateX;
 
     //아르바이트 현재 상태
-    private E_ArbaitState E_STATE;
+	protected E_ArbaitState E_STATE;
 
     //진행중인 오브젝트
     public GameObject AfootOjbect;
@@ -37,87 +37,58 @@ public class ArbaitBatch : MonoBehaviour {
     //아르바이트 패널을 저장
     public GameObject ArbaitPanelObject;
 
-    private Transform ComplateGauge;
+	protected Transform ComplateGauge;
 
     //무기가 보일 말풍선(?) // 미정
-    private GameObject WeaponBackground;
+	protected GameObject WeaponBackground;
 
     public ArbaitData arbaitData;
 
     public CGameWeaponInfo weaponData;
 
     //무기가 보일 말풍선(?) // 미정
-    private RepairObject RepairShowObject;
+	protected RepairObject RepairShowObject;
 
     //무기 이미지
-    private SpriteRenderer weaponsSprite;
+	protected SpriteRenderer weaponsSprite;
 
-    private SpriteRenderer myCharacterSprite;
+	protected SpriteRenderer myCharacterSprite;
 
-    private BoxCollider2D boxCollider;
+	protected BoxCollider2D boxCollider;
 
-    public Animator animator;
+	protected Animator animator;
 
     //무기 등급을 어디까지 받아올지를 정하기 위해 사용
     public int nGrade { get; set; }
 
 	// Use this for initialization
-    private void Awake()
+	protected virtual void Awake()
     {
+		animator = gameObject.GetComponent<Animator>();
+
+		WeaponBackground = transform.FindChild("Case").gameObject;
+
+		boxCollider = WeaponBackground.GetComponent<BoxCollider2D>();
+
+		myCharacterSprite = gameObject.GetComponent<SpriteRenderer>();
+
         RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
-
-        animator = gameObject.GetComponent<Animator>();
-
-        myCharacterSprite = gameObject.GetComponent<SpriteRenderer>();
-
-        WeaponBackground = transform.FindChild("Case").gameObject;
 
         weaponsSprite = WeaponBackground.transform.FindChild("WeaponSprite").GetComponent<SpriteRenderer>();
 
-        boxCollider = WeaponBackground.GetComponent<BoxCollider2D>();
+		ComplateGauge = transform.FindChild("GaugeParent").transform;
 
-        ComplateGauge = transform.FindChild("GaugeParent").transform;
-
-        ComplateGauge.transform.localScale = new Vector3(0, ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);
+		ComplateGauge.transform.localScale = new Vector3(0, ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);        
 	}
 
-    void OnEnable()
-    {
-        if (arbaitData == null)
-            return;
-
-        bIsComplate = false;
-
-        string strPath = string.Format("ArbaitUI/{0}", arbaitData.name);
-
-        myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
-
-        nGrade = arbaitData.nowGrade;
-
-        E_STATE = E_ArbaitState.E_WAIT;
-
-        SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
-    }
+    
 
     void OnDisable()
     {
         Init();
     }
 
-    //만약 클릭 했을 경우
-    void OnMouseDown()
-    {
-        if (Input.GetMouseButtonDown(0) && E_STATE == E_ArbaitState.E_REPAIR)
-        {
-            bIsComplate = true;
-
-            AfootOjbect.GetComponent<Character>().m_bIsRepair = true;
-
-            RepairShowObject.GetWeapon(AfootOjbect, weaponData, m_fComplate, m_fTemperator);
-
-            ResetWeaponData();
-        }
-    }
+    
 
 
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
@@ -163,66 +134,12 @@ public class ArbaitBatch : MonoBehaviour {
         ComplateGauge.localScale = new Vector3(m_fCurComplateX, ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);
 
     }
-	
-	// Update is called once per frame
-	void Update () 
-    {
-        StartCoroutine(this.CheckCharacterState());
-        StartCoroutine(this.CharacterAction());
-	}
 
-    IEnumerator CheckCharacterState()
-    {
-        yield return new WaitForSeconds(0.3f);
+	protected virtual IEnumerator CheckCharacterState(){ yield return null; }
 
-        if (weaponData == null)
-            E_STATE = E_ArbaitState.E_WAIT;
-        else
-            E_STATE = E_ArbaitState.E_REPAIR;
-    }
+	protected virtual IEnumerator CharacterAction() { yield return null; }
 
-    IEnumerator CharacterAction()
-    {
-
-        switch(E_STATE)
-        {
-            case E_ArbaitState.E_WAIT:
-                //대기중일경우 어떠한 애니메이션을 취하게 함
-                break;
-
-            case E_ArbaitState.E_REPAIR:
-                //수리
-
-                fTime += Time.deltaTime;
-
-                //수리 시간이 되면 0으로 초기화 하고 수리해줌
-                if(fTime >= m_fRepairTime)
-                {
-                    m_fComplate += arbaitData.repairPower;
-
-                    m_fCurComplateX = m_fComplate / m_fMaxComplate;
-
-                    ComplateGauge.localScale = new Vector3(m_fCurComplateX,  ComplateGauge.transform.localScale.y, ComplateGauge.transform.localScale.z);
-
-                    //완성 됐을 경우
-                    if (m_fCurComplateX >= 1.0f)
-                    {
-                        ScoreManager.ScoreInstance.GoldPlus(100);
-
-                        ComplateWeapon();
-                    }
-
-                    fTime = 0.0f;
-                }
-                
-
-                break;
-        }
-
-        yield return null;
-    }
-
-    private void ComplateWeapon()
+	protected void ComplateWeapon()
     {
         SpawnManager.Instance.ComplateCharacter(AfootOjbect,weaponData.fComplate);
 
