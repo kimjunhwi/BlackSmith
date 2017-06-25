@@ -11,7 +11,7 @@ public class BlueHair : ArbaitBatch {
 	{
 		base.Awake ();
 
-		nIndex = E_ARBAIT.E_BLUEHAIR;
+		nIndex = (int)E_ARBAIT.E_BLUEHAIR;
 
 
 	}

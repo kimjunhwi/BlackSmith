@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossFire : Boss 
+public class BossFire : BossCharacter 
 {
 
 	// Use this for initialization
