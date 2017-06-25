@@ -1,0 +1,22 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Manager\GameManager.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Manager\GameManager.cs" Line="123" Column="17" NotebookId="1" />
+      <File FileName="Assets\Scripts\Manager\JsonHelper.cs" Line="9" Column="9" NotebookId="1" />
+    </Files>
+    <FloatingWindows>
+      <FloatingWindow WindowId="1" X="562" Y="6" Width="640" Height="480">
+        <Files>
+          <File FileName="Assets\StreamingAssets\ArbaitData.json" Line="14" Column="17" />
+        </Files>
+      </FloatingWindow>
+    </FloatingWindows>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\HyunSik\Documents\BlackSmith ver1.1.0 test\Assets\Scripts\Manager\GameManager.cs" line="125" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

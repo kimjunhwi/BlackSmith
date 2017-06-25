@@ -1,0 +1,111 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+public class QuestPanel : MonoBehaviour
+{
+
+    public int nCost;
+
+   	public bool bIsQuest { get; set;}
+    public bool bIsBuy { get; set; }
+
+	[HideInInspector]
+	public CGameQuestInfo questData;
+
+    public GameObject runningObject;
+	public Button giveUpButton;
+	public GameObject completeButton;
+
+	//Complete
+	public GameObject startButton;
+	public Text completeText;
+
+
+	//
+	public int nItemIndex =0;
+	public int getGold =0;
+	public int nCompareCondition;
+
+    public Text textGrade;
+	public Text textReward;
+	public Text textProgressValue;
+	public Text textQuestName;
+	public Text textQuestContents;
+
+	private GameObject getInfoGameObject;
+
+    private float fTime;
+
+	public QusetManager questManager;
+
+
+
+
+    private void Start()
+    {
+		
+        //runningObject = transform.FindChild("CheckImage").gameObject;
+        //runningButton = transform.FindChild("RunningImage").gameObject;
+		//startButton = transform.FindChild("StartButton").gameObject;
+		giveUpButton.onClick.AddListener(GiveUpActive);
+
+    }
+
+	void Update()
+	{
+		if (getGold == nCompareCondition) 
+		{
+			QuestComplete ();
+		}
+	}
+
+	public void GiveUpActive()
+	{
+		bIsQuest = false;
+		questManager.GiveUpQuest ();
+	}
+
+	public void GetQuest(CGameQuestInfo _quest, QusetManager _questManager)
+    {
+        bIsQuest = true;
+		nItemIndex = _quest.nIndex;
+        questData = _quest;
+		questManager = _questManager;
+       
+		textQuestContents.text = questData.strExplain;
+
+		textProgressValue.text = getGold.ToString () + "/" + questData.nCompleteCondition.ToString ();
+		nCompareCondition = questData.nCompleteCondition;
+		if (questData.nRewardGold != 0)
+		{
+			textReward.text = questData.nRewardGold.ToString ();
+		}
+
+		if (questData.nRewardHonor != 0) 
+		{
+			textReward.text = questData.nRewardHonor.ToString ();
+		}
+
+		if (questData.nRewardBossPotion != 0) 
+		{
+			textReward.text = questData.nRewardBossPotion.ToString ();
+		}
+
+		Button sButton = startButton.GetComponent<Button> ();
+		sButton.onClick.AddListener (() =>  questManager.CompleteQuest(float.Parse(textReward.text)));
+        
+    }
+
+	public void QuestComplete()
+	{
+		startButton.SetActive (true);
+
+		//ScoreManager.ScoreInstance.goldText.text = GameManager.Instance.player
+	}
+
+
+
+}
