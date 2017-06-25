@@ -52,8 +52,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public BossWeapon[] bossWeaponInfo = null;
 
-    public ArbaitData[] tenkInstance;
-
     //private List<WeaponsData> weaponDataBase = new List<WeaponsData>();
     private List<ArbaitData> arbaitDataBase = new List<ArbaitData>();
 
@@ -707,35 +705,63 @@ public class CGameEquiment
     public int nAccuracyRate = 0;
 }
 
-[System.Serializable]
-public class CGameItemList
-{
-    public List<CGameEquiment> items;
-}
+
 
 [System.Serializable]
 public class ArbaitData
 {
     //id값
-    public int id;
+    public int index;
     //레벨
     public int level;
     //이름
     public string name;
+
+	public string strAnimation;
     //현재 등급
-    public int nowGrade;
-    //최고 등급
-    public int maxGrade;
+	public int grade;
+
     //배치 위치 (-1 = 배치안함) 0, 1, 2
     public int batch;
+
     //수리 량
-    public float repairPower;
-    //레벨당 수리 증가량
-    public float repairLevelPlus;
-    //캐릭터를 구매하는데 드는 골드
-    public int costGold;
-    //구매 할 수 있는지 없는지
-    public bool isBuyCheck;
+	public float fRepairPower;
+
+	//공격속도
+	public float fAttackSpeed;
+
+	//크리티컬 
+	public float fCritical;
+
+	//명중률
+	public float fAccuracyRate;
+
+	//특수 능력 인덱스
+	public string strBuffIndexs;
+
+	//특수능력 설명 
+	public string strExplains;
+
+	//스킬 지속시간 
+	public float fCurrentFloat;
+
+	//영입 카운트 
+	public int nScoutCount;
+
+	//영입 골드 
+	public int nScoutGold;
+
+	//영입 명예
+	public int nScoutHonor;
+
+	//영입 다이아 
+	public int nScoutDia;
+
+	//다이아로 구매 가능한지
+	public int nIsDia;
+
+	//구매 했는지
+	public bool bIsBuyCheck;
 }
 
 [System.Serializable]

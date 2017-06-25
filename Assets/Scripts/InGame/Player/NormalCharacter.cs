@@ -23,6 +23,10 @@ public class NormalCharacter : Character {
 	//무기가 보일 말풍선(?) // 미정
 	private GameObject WeaponBackground;
 
+	private Transform ComplateScale;
+
+	private SpriteRenderer backGround;
+
 	//움직일 이동 거리
 	private Vector3 m_VecMoveDistance;
 
@@ -38,27 +42,36 @@ public class NormalCharacter : Character {
 	//캐릭터가 지정한 위치에 도달했는가
 	private bool m_bIsArrival = false;
 
-    void Awake()
+	public override void Awake()
     {
         base.Awake();
 
-		m_VecEndPos = GameObject.Find("EndPoint").transform.position;
+
+		boxCollider = gameObject.GetComponent<BoxCollider2D>();
 
 		WeaponBackground = transform.FindChild("Case").gameObject;
+
+		backGround = WeaponBackground.GetComponent<SpriteRenderer> ();
+
+		m_VecEndPos = GameObject.Find("EndPoint").transform.position;
+
+		spawnTransform = GameObject.Find("SpawnPoint").gameObject.transform;
 
 		RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
 
 		weaponsSprite = WeaponBackground.transform.FindChild("WeaponSprite").GetComponent<SpriteRenderer>();
 
-		boxCollider = gameObject.GetComponent<BoxCollider2D>();
-
-        spawnTransform = GameObject.Find("SpawnPoint").gameObject.transform;
+		ComplateScale = WeaponBackground.transform.FindChild ("ComplateGaugeParent").GetComponent<Transform> ();
 
         m_VecStartPos = spawnTransform.position;
+
+		ComplateScale.localScale = new Vector3 (1.0f, 0, 1.0f);
     }
 
 	void OnEnable()
     {
+		backGround.sprite = NoneSpeech;
+
         mySprite.flipX = true;
 
         m_bIsRepair = false;
@@ -144,17 +157,24 @@ public class NormalCharacter : Character {
 			transform.position = Vector3.MoveTowards (transform.position, m_VecMoveDistance, fSpeed * Time.deltaTime);
 
 			if ((transform.position.x == m_VecMoveDistance.x)) {
-				m_bIsArrival = true;
 
-				if (m_bIsFirst == false) {
-					m_bIsFirst = true;
+				if (m_bIsArrival == false) {
+					m_bIsArrival = true;
 
 					m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
 
 					if (m_nCheck != (int)E_CHECK.E_FAIL) {
 						m_bIsRepair = true;
+
+						SpeechSelect (m_nCheck);
+
 						SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
 					}
+				}
+
+				if (m_bIsFirst == false) {
+					m_bIsFirst = true;
+
 					WeaponBackground.SetActive (true);
 				}
 			}
@@ -225,6 +245,20 @@ public class NormalCharacter : Character {
 		m_bIsRepair = _bIsRepair;
 		m_fComplate = _fComplate;
 		m_fTemperator = m_fTemperator;
+
+		if (m_bIsRepair == false)
+			SpeechSelect ((int)E_SPEECH.E_NONE);
+	}
+
+	public void SpeechSelect(int _nIndex)
+	{
+		switch (_nIndex) {
+		case (int)E_SPEECH.E_NONE: backGround.sprite = NoneSpeech; break;
+		case (int)E_SPEECH.E_ARBAITONE: backGround.sprite = ArbaitOneSpeech; break;
+		case (int)E_SPEECH.E_ARBAITTWO: backGround.sprite = ArbaitTwoSpeech; break;
+		case (int)E_SPEECH.E_ARBAITTHREE: backGround.sprite = ArbaitThreeSpeech;break;
+		case (int)E_SPEECH.E_PLAYER: backGround.sprite = PlayerRepairSpeech; break;
+		}
 	}
 
 	void OnMouseDown()
@@ -234,13 +268,17 @@ public class NormalCharacter : Character {
 			//onPointerDown 보다 먼저 호출
 			if (!EventSystem.current.IsPointerOverGameObject ()) {
 
-				//아르바이트가 현재 오브젝트를 수리중일경우 리턴
-				if (SpawnManager.Instance.OverlapArbaitData (gameObject))
-					return;
+				//현재 아르바이트가 수리중인지 확인 
+				ArbaitBatch arbait =  SpawnManager.Instance.OverlapArbaitData (gameObject);
 
 				RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
 
 				m_bIsRepair = true;
+
+				if (arbait != null) 
+					arbait.ResetWeaponData ();
+				
+				backGround.sprite = PlayerRepairSpeech;
 			}
 		}
 	}

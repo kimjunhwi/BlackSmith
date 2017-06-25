@@ -36,6 +36,17 @@ namespace ReadOnlys
 	public enum E_ARBAIT : int
 	{
 		E_BLUEHAIR = 0,
+		E_REDHAIR,
+		E_NURSE,
+	}
+
+	public enum E_SPEECH : int
+	{
+		E_ARBAITONE = 0,
+		E_ARBAITTWO,
+		E_ARBAITTHREE,
+		E_PLAYER,
+		E_NONE,
 	}
 
     enum E_CHECK
