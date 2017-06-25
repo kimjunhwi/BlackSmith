@@ -51,6 +51,9 @@ public class Shop : MonoBehaviour {
     {
         EquimentList = GameManager.Instance.GetEquimentShopData();
 
+		if (EquimentList.Count == 0)
+			EquimentList = new List<CGameEquiment> ();
+
         if (PlayerPrefs.HasKey("NowTime"))
         {
             strTime = PlayerPrefs.GetString("NowTime");
@@ -68,7 +71,7 @@ public class Shop : MonoBehaviour {
 		int nCheck = Mathf.Abs(nEndTime - nStartTime);
 
         //1시간이 지났거나 하루차이가 있을 경우
-        if(timeCal.Days != 0 || nCheck >= 3600)
+		if(timeCal.Days != 0 || nCheck >= 3600 && EquimentList.Count != 0)
         {
             PlayerPrefs.SetString("NowTime", EndData.ToString());
 
@@ -87,7 +90,7 @@ public class Shop : MonoBehaviour {
         }
         else
         {
-			if (EquimentList != null)
+			if (EquimentList.Count != 0)
             {
 
                 foreach(CGameEquiment equit in EquimentList )

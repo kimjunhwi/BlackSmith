@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BossMusicMan : Boss 
+public class BossMusicMan :  BossCharacter
 {
 
 	// Use this for initialization

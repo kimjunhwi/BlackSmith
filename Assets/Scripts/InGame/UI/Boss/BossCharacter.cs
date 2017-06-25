@@ -24,7 +24,9 @@ public class BossCharacter : Character
 
 
 	public Boss boss;
-	protected EBOSS_STATE eCureentBossState;
+	public int nIndex;
+	public RepairObject repairObj;
+	public EBOSS_STATE eCureentBossState;
 
 
 	protected virtual IEnumerator BossWait() 	{ yield return null;}		//보스 대기(연출)
@@ -36,5 +38,8 @@ public class BossCharacter : Character
 	protected virtual IEnumerator BossDie() 	{ yield return null;}		//보스 격퇴
 	protected virtual IEnumerator BossResult() {yield return null;}			//보스 결과
 
-
+	void Awake()
+	{
+		repairObj = FindObjectOfType<RepairObject> ();
+	}
 }

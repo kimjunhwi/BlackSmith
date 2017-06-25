@@ -53,9 +53,11 @@ public class BossCreator : MonoBehaviour
 			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossSasin"));
 			bossInstance.transform.SetParent (bossRespawnPoint.transform);
 			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
-			bossInstance.AddComponent<BossSasin> ();
+			//bossInstance.AddComponent<BossSasin> ();
 			BossSasin bossSasin = bossInstance.GetComponent<BossSasin> ();
+			bossSasin.nIndex = _index;
 			bossSasin.boss = GameManager.Instance.bossInfo [_index];
+			SpawnManager.Instance.AllCharacterComplate ();
 
 		}
 

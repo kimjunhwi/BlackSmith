@@ -50,7 +50,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public Boss[] bossInfo = null;
 
-	public BossWeapon[] boosWeaponInfo = null;
+	public BossWeapon[] bossWeaponInfo = null;
 
     public ArbaitData[] tenkInstance;
 
@@ -494,7 +494,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	void Load_TableInfo_BossWeapon()
 	{
-		if (boosWeaponInfo.Length != 0) return;
+		if (bossWeaponInfo.Length != 0) return;
 
 		string txtFilePath = "BossWeapon";
 
@@ -522,7 +522,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].explain = Cells[5];
 		}
 
-		boosWeaponInfo = kInfo;
+		bossWeaponInfo = kInfo;
 	}
     public int GetEquimentLength()
     {
