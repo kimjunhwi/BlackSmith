@@ -13,6 +13,19 @@ public class Character : MonoBehaviour
         WAIT,
         BACK,
     }
+
+	public enum EBOSS_STATE
+	{
+		CREATEBOSS = 0,		//보스생성
+		WAIT,				//대기(등장 연출)
+		PHASE_00,			//스킬 기본 시작 
+		PHASE_01,			//스킬1 시작
+		PHASE_02,			//스킬2 시작
+		DIE,				//죽음
+		RESULT,				//결과
+		FINISH,				//끝
+	}
+
     public enum CHARACTER_GRADE
     {
         NORMAL = 0,
