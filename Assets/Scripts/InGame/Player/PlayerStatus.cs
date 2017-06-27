@@ -3,11 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using ReadOnlys;
 
-public class PlayerStatus : MonoBehaviour {
+public class PlayerStatus{
 
 	float fDefaultAttack;
 
 	List<Buff> buffs;
+
+    public void AddBuff(Buff _buff)
+    {
+        buffs.Add(_buff);
+    }
+
+    public void DeleteBuff(Buff _buff)
+    {
+        buffs.Remove(_buff);
+    }
 
 	public float attack
 	{
