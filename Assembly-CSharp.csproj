@@ -92,6 +92,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMusicMan.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\PopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\Inventory.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryButton.cs" />

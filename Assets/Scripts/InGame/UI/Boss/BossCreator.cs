@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-enum E_BOSSNAME 
+public enum E_BOSSNAME 
 {
 	E_BOSSNAME_ICE = 0,
 	E_BOSSNAME_SASIN = 1,
@@ -17,6 +17,7 @@ public class BossCreator : MonoBehaviour
 	private SpawnManager spawnManager;
 	public GameObject bossRespawnPoint;
 	public BossConsumeItemInfo bossConsumeItemInfo;
+
 
 	void Awake()
 	{
@@ -38,14 +39,14 @@ public class BossCreator : MonoBehaviour
 	}
 	public IEnumerator BossCreate(int _index) 
 	{
-		yield return new WaitForSeconds(1.0f);
+		yield return new WaitForSeconds(0.2f);
 
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
 
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
-			
+			Debug.Log ("Ice Created!!!");	
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_SASIN) 
@@ -63,12 +64,12 @@ public class BossCreator : MonoBehaviour
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_FIRE) 
 		{
-			
+			Debug.Log ("Fire Created!!!");	
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 		{
-	
+			Debug.Log ("Music Created!!!");	
 		}
 
 		uiManager.AllDisable ();
