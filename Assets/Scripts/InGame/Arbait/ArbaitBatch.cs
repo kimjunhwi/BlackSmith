@@ -7,6 +7,10 @@ public class ArbaitBatch : MonoBehaviour {
 
 	public ArbaitData arbaitData;
 
+    List<Buff> buff = new List<Buff>();
+
+    string[] strBuffsIndex;
+
     public bool bIsRepair = false;
 
     public bool bIsComplate = false;
@@ -69,13 +73,29 @@ public class ArbaitBatch : MonoBehaviour {
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
     public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
     {
+        buff.Clear();
+
         nIndex = _nIndex;
 
         arbaitData = _data;
 
         ArbaitPanelObject = _obj;
 
-		animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController> ("Animation/" + _data.strAnimation);
+        strBuffsIndex = arbaitData.strBuffIndexs.Split(',');
+
+        for (int nBuffIndex = 0; nBuffIndex < strBuffsIndex.Length; nBuffIndex++)
+        {
+            Buff stBuff;
+
+            stBuff.nIndex       = System.Convert.ToInt32(strBuffsIndex[nBuffIndex]);
+            stBuff.fValue       = arbaitData.fSkillPercent;
+            stBuff.fCurrentFloat = arbaitData.fSkillPercent;
+            stBuff.strBuffExplain = arbaitData.strExplains;
+
+            buff.Add(stBuff);
+        }
+
+        animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/" + _data.strAnimation);
     }
 
     //무기 받음
@@ -100,7 +120,7 @@ public class ArbaitBatch : MonoBehaviour {
         E_STATE = E_ArbaitState.E_REPAIR;
     }
 
-	protected virtual IEnumerator CheckCharacterState(){ yield return null; }
+    protected virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
 
 	protected virtual IEnumerator CharacterAction() { yield return null; }
 
@@ -108,14 +128,14 @@ public class ArbaitBatch : MonoBehaviour {
     {
         SpawnManager.Instance.ComplateCharacter(AfootOjbect,weaponData.fComplate);
 
-		Init(true);
+		Init();
 
         SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
     }
 
     public void ResetWeaponData()
     {
-        Init(true);
+        Init(false);
         //AfootOjbect = _obj;
         SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
     }
@@ -123,22 +143,24 @@ public class ArbaitBatch : MonoBehaviour {
 	public void Init(bool bIsReturn = false)
     {
 		if (bIsReturn == false)
-			SpawnManager.Instance.ReturnInsertData (AfootOjbect, m_fComplate, m_fTemperator);
-
-        bIsRepair = false;
-
-        bIsComplate = false;
-
-        AfootOjbect = null;
-
-        ArbaitPanelObject = null;
-
-        weaponData = null;
+			SpawnManager.Instance.ReturnInsertData (AfootOjbect,true, m_fComplate, m_fTemperator);
 
         fTime = 0.0f;
 
         m_fComplate = 0.0f;
 
-        m_fMaxComplate = 0.0f;  
+        m_fMaxComplate = 0.0f;
+
+        bIsRepair = false;
+
+        bIsComplate = false;
+
+        weaponData = null;
+        
+        AfootOjbect = null;
+
+        ArbaitPanelObject = null;
+
+        CheckCharacterState(E_ArbaitState.E_WAIT);
     }
 }

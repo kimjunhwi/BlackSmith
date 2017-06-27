@@ -85,6 +85,7 @@ public class RepairObject : MonoBehaviour {
 
 		fCurrentWater = 0f;
 		fUseWater  = 10.0f;
+
 		fPlusWater = player.GetWaterPlus ();
 		fMaxWater = player.GetMaxWaterPlus();
 		fWeaponDownDamage = player.GetRepairPower ();
@@ -148,7 +149,7 @@ public class RepairObject : MonoBehaviour {
         }
         else
         {
-			SpawnManager.Instance.ReturnInsertData(AfootObject, fCurrentComplate, fCurrentTemperature);
+			SpawnManager.Instance.ReturnInsertData(AfootObject,false, fCurrentComplate, fCurrentTemperature);
 
             AfootObject = obj;
 
@@ -395,7 +396,7 @@ public class RepairObject : MonoBehaviour {
     {
         if (_obj == AfootObject)
         {
-			SpawnManager.Instance.ReturnInsertData(AfootObject, fCurrentComplate, TemperatureSlider.value);
+			SpawnManager.Instance.ReturnInsertData(AfootObject,false, fCurrentComplate, TemperatureSlider.value);
             InitWeaponData();
         }
     }
