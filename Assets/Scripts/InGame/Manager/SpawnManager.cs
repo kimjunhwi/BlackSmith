@@ -160,14 +160,14 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     }
 
     //게임 오브젝트를 찾아서 데이터를 넣어줌
-    public void ReturnInsertData(GameObject obj,float _fComplate,float _fTemperator)
+    public void ReturnInsertData(GameObject obj,bool bIsRepair, float _fComplate,float _fTemperator)
     {
         GameObject tempObject = null;
 
         tempObject = SearchCharacter(obj);
 
         if (tempObject)
-			tempObject.GetComponent<NormalCharacter>().GetRepairData(false, _fComplate, _fTemperator);
+            tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair, _fComplate, _fTemperator);
     }
 
     public void ComplateCharacter(GameObject _obj,float fComplate)

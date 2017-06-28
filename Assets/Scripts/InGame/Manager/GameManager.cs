@@ -62,16 +62,18 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     private LogoManager logoManager;
 
-	private string strArbaitPath = "ArbaitData.json";
-    private string strEquiementPath = "Equiment.json";
-    private string strInvetoryPath = "Inventory.json";
-
+    private const string strPlayerPath = "PlayerData.json";
+    private const string strArbaitPath = "ArbaitData.json";
+    private const string strEquiementPath = "Equiment.json";
+    private const string strInvetoryPath = "Inventory.json";
 
     private string strWeaponPath;
 
     int[] ArrGradeCount = new int[5];
 
     public Player player;
+
+    public CGamePlayerData playerData;
 
     public void DataLoad()
     {
@@ -103,10 +105,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		arbaitDataBase = ConstructString<ArbaitData>(strArbaitPath);
 
-
         equimnetData = ConstructString<CGameEquiment>(strEquiementPath);
 
         cInvetoryInfo = ConstructString<CGameEquiment>(strInvetoryPath);
+
+        playerData = ConstructString<CGamePlayerData>(strPlayerPath)[0];
 
         //ConstructEquimentDatabase();
 
@@ -152,7 +155,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         player = new Player();
 
-		player.Init(cInvetoryInfo);
+		player.Init(cInvetoryInfo,playerData);
 
 
 		logoManager.bIsSuccessed = true;
@@ -742,6 +745,9 @@ public class ArbaitData
 	//특수능력 설명 
 	public string strExplains;
 
+    //특스 능력들 증가량
+    public float fSkillPercent;
+
 	//스킬 지속시간 
 	public float fCurrentFloat;
 
@@ -792,6 +798,26 @@ public class CGameQuestInfo
     
 }
 
+[System.Serializable]
+public class CGamePlayerData
+{
+    public string strName;		//닉네임			
+    public float fRepairPower;		//수리력 
+    public float fTemperatureMinus;		//온도 감소 수치량 
+    public float fArbaitsPower;		//알바수리력 
+    public float fHornorPlusPercent;		//명예추가 증가량
+    public float fGold;
+    public float fGoldPlusPercent;		//골드추가 증가량
+    public float fWaterPlus;		//물증가량
+    public float fMaxWaterPlus;		//물최대치 증가량 
+    public float fCriticalChance;		//크리티컬 확률
+    public float fCriticalDamage;		//크리데미지
+    public float fBigSuccessed;		//대성공
+    public float fAccuracyRate;		//정확도
+    public int nBlackSmithLevel;
+    public int nEnhanceRepaireLevel;
+    public int nEnhanaceWaterLevel;
+}
 
 
 [System.Serializable]

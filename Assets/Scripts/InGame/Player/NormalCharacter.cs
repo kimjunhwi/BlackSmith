@@ -271,12 +271,12 @@ public class NormalCharacter : Character {
 				//현재 아르바이트가 수리중인지 확인 
 				ArbaitBatch arbait =  SpawnManager.Instance.OverlapArbaitData (gameObject);
 
+                if (arbait != null)
+                    arbait.ResetWeaponData();
+
 				RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
 
 				m_bIsRepair = true;
-
-				if (arbait != null) 
-					arbait.ResetWeaponData ();
 				
 				backGround.sprite = PlayerRepairSpeech;
 			}

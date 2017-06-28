@@ -1,4 +1,4 @@
-{"list":[{
+﻿{"list":[{
 		"index": 0,
 		"level": 0,
 		"name": "BlueHair",
@@ -11,6 +11,7 @@
 		"fAccuracyRate": 10,
 		"strBuffIndexs": "0",
 		"strExplains": "대장장이 수리력 20 % 증가",
+		"fSkillPercent" : 30,
 		"fCurrentFloat": 0,
 		"nScoutCount": 0,
 		"nScoutGold": 12000,
@@ -33,6 +34,7 @@
 		"fAccuracyRate": 10,
 		"strBuffIndexs": "0",
 		"strExplains": "대장장이 수리력 20 % 증가",
+		"fSkillPercent" : 20,
 		"fCurrentFloat": 0,
 		"nScoutCount": 0,
 		"nScoutGold": 12000,
@@ -55,6 +57,7 @@
 		"fAccuracyRate": 10,
 		"strBuffIndexs": "0",
 		"strExplains": "대장장이 수리력 20 % 증가",
+		"fSkillPercent" : 20,
 		"fCurrentFloat": 0,
 		"nScoutCount": 0,
 		"nScoutGold": 12000,
@@ -62,8 +65,5 @@
 		"nScoutDia": 50,
 		"nIsDia": 1,
 		"bIsBuyCheck": 0
-	}
-
-
-		]
+	}]
 }

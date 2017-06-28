@@ -8,13 +8,15 @@ namespace ReadOnlys
 	{
 		public int nIndex;
 		public float fValue;
-		public bool bIsInfinity;
+        public float fCurrentFloat;
+        public string strBuffExplain;
 
-		public Buff(int _nIndex,float _fValue, bool _bIsInfinity)
+		public Buff(int _nIndex,float _fValue, float _fCurrentFloat ,string _strBuffExplain)
 		{
 			nIndex = _nIndex;
 			fValue = _fValue;
-			bIsInfinity = _bIsInfinity;
+            fCurrentFloat = _fCurrentFloat;
+            strBuffExplain = _strBuffExplain;
 		}
 	}
 

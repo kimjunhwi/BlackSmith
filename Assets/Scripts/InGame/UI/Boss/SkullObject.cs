@@ -54,6 +54,7 @@ public class SkullObject : MonoBehaviour ,IPointerDownHandler
 		
 		transform.Translate ( randomDir * fMoveSpeed * Time.deltaTime);
 
+		//4면 충돌 확인
 		if (myRectTransform.anchoredPosition.x >= ((canvasWidth / 2) - (skullSizeWidth / 2))) {
 			//Debug.Log ("Right Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.left);
