@@ -88,8 +88,11 @@ public class SkullObject : MonoBehaviour ,IPointerDownHandler
 		if (getInfoGameObject.gameObject.name == "Skull") 
 		{
 			float fCurComplete = repairObj.GetCurCompletion ();
-			repairObj.SetCurCompletion (fCurComplete * 0.3f);
+			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
+
+			repairObj.SetCurCompletion (fMaxComplete * 0.3f);
 			skullObjPull.ReturnObject (gameObject);
+		
 		}
 			
 	}

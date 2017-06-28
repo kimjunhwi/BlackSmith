@@ -58,9 +58,6 @@ public class BossCreator : MonoBehaviour
 	{
 		yield return new WaitForSeconds(0.2f);
 
-
-
-
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
 
@@ -75,6 +72,7 @@ public class BossCreator : MonoBehaviour
 			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossSasin"));
 			bossInstance.transform.SetParent (bossRespawnPoint.transform);
 			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
+			bossInstance.name = "Sasin";
 			//bossInstance.AddComponent<BossSasin> ();
 			BossSasin bossSasin = bossInstance.GetComponent<BossSasin> ();
 			bossSasin.nIndex = _index;
