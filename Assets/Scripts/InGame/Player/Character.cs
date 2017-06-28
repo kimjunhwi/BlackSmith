@@ -50,7 +50,7 @@ public class Character : MonoBehaviour
     public bool m_bIsRepair = false;
     
     //움직이는 속도
-    protected float fSpeed = 1.0f;
+	public float fSpeed = 1.0f;
 
     //캐릭터 내부 시간
     protected float m_fCharacterTime = 0.0f;
