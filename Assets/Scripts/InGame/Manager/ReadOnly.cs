@@ -38,7 +38,7 @@ namespace ReadOnlys
 	public enum E_ARBAIT : int
 	{
 		E_BLUEHAIR = 0,
-		E_REDHAIR,
+		E_ORANGEHAIR,
 		E_NURSE,
 	}
 

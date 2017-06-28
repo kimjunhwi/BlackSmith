@@ -110,7 +110,7 @@ public class ArbaitCharacter : MonoBehaviour {
 
         if(bIsToggle && m_bIsBatch == false)
         {
-            nGetBatchIndex = spawnManager.AddArbaitCheck();
+			nGetBatchIndex = spawnManager.AddArbaitCheck(m_CharacterData.index);
 
             if (nGetBatchIndex != (int)E_CHECK.E_FAIL)
             {

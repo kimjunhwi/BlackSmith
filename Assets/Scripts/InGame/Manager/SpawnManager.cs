@@ -36,14 +36,14 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     public ArbaitBatch[] array_ArbaitData;  //아르바이트 데이터 캐싱
 
-    public ArrayList array_Charic;
-
 	public bool bIsBossCreate = false;
 
     private float m_fCreateTime;            //몬스터 생성시간에 도달하면 몬스터 생성되는시간
     private float m_fLevelTime;             //다음 레벨 시간에 도달하게 하는 시간
 
     private float m_nNextLevelTime = 10;    //다음 레벨로 진행되는시간
+
+	private int m_nCreateArbaitAmount;
 
     private CGameWeaponInfo cLevelData;         //Level에 따른 데이터를 받아오기 위함
 
@@ -106,7 +106,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	{
 		switch (nIndex) {
 		case (int)E_ARBAIT.E_BLUEHAIR: 	_obj.AddComponent<BlueHair> (); break;
-		case (int)E_ARBAIT.E_REDHAIR:	_obj.AddComponent<BlueHair> (); break;
+		case (int)E_ARBAIT.E_ORANGEHAIR:	_obj.AddComponent<OrangeHair> (); break;
 		case (int)E_ARBAIT.E_NURSE: _obj.AddComponent<BlueHair> (); break; 
 		}
 
@@ -180,6 +180,16 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			tempObject.GetComponent<NormalCharacter>().Complate(fComplate);
 
     }
+
+	public void CheckComplateWeapon(GameObject _obj, float _fComplate)
+	{
+		GameObject tempObject = null;
+
+		tempObject = SearchCharacter(_obj);
+
+		if (tempObject)
+			tempObject.GetComponent<NormalCharacter>().CheckComplate(_fComplate);
+	}
 
     void InsertSortObject()
     {
@@ -293,9 +303,11 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     //만약 넣었을 경우 실행하는 함수 한번에 하지 않은 이유는 만약 넣을 수 없는데
     //현재 이 함수의 인자 값을 전부 복사해서 확인하면 부하가 커질거 같기 때문이다.
-    public int AddArbaitCheck()
+	public int AddArbaitCheck(int _nIndex)
     {
-		for (int nIndex = 0; nIndex < m_nMaxArbaitAmount; nIndex++)
+
+
+		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
         {
             if (m_BatchArbait[nIndex].activeSelf == false)
             {

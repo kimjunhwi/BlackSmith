@@ -5,13 +5,17 @@ using ReadOnlys;
 
 public class BlueHair : ArbaitBatch {
 
+	private Player playerData;
+
+	private float fChangeRepair = 0.0f;
+
 	protected override void Awake ()
 	{
 		base.Awake ();
 
 		nIndex = (int)E_ARBAIT.E_BLUEHAIR;
 
-
+		playerData = GameManager.Instance.player;
 	}
 
 	// Update is called once per frame
@@ -39,6 +43,20 @@ public class BlueHair : ArbaitBatch {
         CheckCharacterState(E_STATE);
 
 		SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
+
+		if (buff [0].fCurrentFloat == 0) 
+		{
+			fChangeRepair = playerData.GetRepairPower() * (buff [0].fValue * 0.01f);
+
+			playerData.SetRepairPower (playerData.GetRepairPower() + fChangeRepair);
+		}
+	}
+
+	protected override void OnDisable ()
+	{
+		playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+
+		base.OnDisable ();
 	}
 
 	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
@@ -90,7 +108,7 @@ public class BlueHair : ArbaitBatch {
 			{
                 fTime = 0.0f;
 
-                animator.SetTrigger("bIsRepair");
+				animator.SetTrigger("bIsRepair");
 
 				m_fComplate += arbaitData.fRepairPower;
 
@@ -101,6 +119,8 @@ public class BlueHair : ArbaitBatch {
 
 					ComplateWeapon();
 				}
+
+				SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate);
 			}
 			break;
 		}

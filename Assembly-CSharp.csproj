@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitBatch.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\BlueHair.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\CharacterFactory.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\ICharacter.cs" />
@@ -79,7 +80,6 @@
      <Compile Include="Assets\Scripts\InGame\Player\Character.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\NormalCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\Player.cs" />
-     <Compile Include="Assets\Scripts\InGame\Player\PlayerStatus.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\Sasin.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
@@ -92,7 +92,6 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMusicMan.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
-     <Compile Include="Assets\Scripts\InGame\UI\Boss\PopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\Inventory.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryButton.cs" />

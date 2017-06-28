@@ -215,30 +215,31 @@ public class RepairObject : MonoBehaviour {
         if (weaponData == null)
             return;
 		
-		
-
-		fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+		fCurrentComplate = fCurrentComplate + player.GetRepairPower();
 
         fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
-		//무기
-		if(fCurrentComplate >= ComplateSlider.maxValue)
-        {
-            SpawnManager.Instance.ComplateCharacter(AfootObject,weaponData.fComplate);
-            return;
-        }
+
+		SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate);
 
         if(fCurrentTemperature >= fMaxTemperature)
         {
-            SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fComplate);
-            //무기 실패취급으로 리턴
+			fCurrentTemperature = 0.0f;
+			fCurrentComplate = (fCurrentComplate) - weaponData.fComplate * 0.3f;
 
-            return;
+			if (fCurrentComplate > 0)
+				SpawnManager.Instance.CheckComplateWeapon (AfootObject,fCurrentComplate);
+			
+			else
+				SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
         }
+
+		if (AfootObject == null)
+			return;
 
 		ComplateSlider.value = fCurrentComplate;
         TemperatureSlider.value = fCurrentTemperature;
 	    
-		ComplateText.text = string.Format("{0} / {1}", ComplateSlider.value, weaponData.fComplate);
+		ComplateText.text = string.Format("{0} / {1}", (int)ComplateSlider.value, weaponData.fComplate);
 	
 
     }

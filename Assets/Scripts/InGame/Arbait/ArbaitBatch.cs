@@ -7,7 +7,7 @@ public class ArbaitBatch : MonoBehaviour {
 
 	public ArbaitData arbaitData;
 
-    List<Buff> buff = new List<Buff>();
+    public List<Buff> buff = new List<Buff>();
 
     string[] strBuffsIndex;
 
@@ -18,6 +18,8 @@ public class ArbaitBatch : MonoBehaviour {
 	protected int nIndex = 0;
 
     protected float fTime = 0.0f;
+
+	protected float fBuffTime = 0.0f;
     
     //무기 완성도
     protected float m_fComplate;
@@ -45,7 +47,6 @@ public class ArbaitBatch : MonoBehaviour {
     //무기가 보일 말풍선(?) // 미정
 	protected RepairObject RepairShowObject;
 
-
 	protected SpriteRenderer myCharacterSprite;
 
 	protected BoxCollider2D boxCollider;
@@ -65,7 +66,7 @@ public class ArbaitBatch : MonoBehaviour {
         RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();       
 	}
 
-    void OnDisable()
+	protected virtual void OnDisable()
     {
         Init();
     }
@@ -89,11 +90,12 @@ public class ArbaitBatch : MonoBehaviour {
 
             stBuff.nIndex       = System.Convert.ToInt32(strBuffsIndex[nBuffIndex]);
             stBuff.fValue       = arbaitData.fSkillPercent;
-            stBuff.fCurrentFloat = arbaitData.fSkillPercent;
+			stBuff.fCurrentFloat = arbaitData.fCurrentFloat;
             stBuff.strBuffExplain = arbaitData.strExplains;
 
             buff.Add(stBuff);
         }
+
 
         animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/" + _data.strAnimation);
     }
