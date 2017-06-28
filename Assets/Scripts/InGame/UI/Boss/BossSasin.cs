@@ -11,9 +11,11 @@ public class BossSasin : BossCharacter
 	private float fRandomYPos;
 	public SimpleObjectPool skullObjectPool;
 	public int nSkullCount = 0;
+	public BossBackGround bossBackGround;
 
 	private void Start()
 	{
+		bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
 		skullObjectPool = GameObject.Find ("SkullPool").GetComponent<SimpleObjectPool> ();
 		bossSkullRespawnPoint = GameObject.Find ("BossSkullCreateArea2").GetComponent<RectTransform>();
 		fXPos = bossSkullRespawnPoint.position.x;
@@ -36,6 +38,7 @@ public class BossSasin : BossCharacter
 			StopCoroutine (BossDie ());
 			StopCoroutine (BossResult ());
 			Debug.Log ("Finish Boss");
+			bossBackGround.StartReturnBossBackGroundToBackGround ();
 			Destroy (gameObject);
 
 			repairObj.SetFinishBoss ();

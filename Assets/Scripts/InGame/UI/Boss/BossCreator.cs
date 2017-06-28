@@ -17,12 +17,23 @@ public class BossCreator : MonoBehaviour
 	private SpawnManager spawnManager;
 	public GameObject bossRespawnPoint;
 	public BossConsumeItemInfo bossConsumeItemInfo;
+	public BossBackGround bossBackGround;
 
+	private int nBossIndex =0; 
 
 	void Awake()
 	{
 		spawnManager = FindObjectOfType<SpawnManager> ();
 		uiManager = FindObjectOfType<UIManager> ();
+	}
+
+	void Update()
+	{
+		if (bossBackGround.isBossBackGround == true)
+		{
+			StartBossCreate ();
+			bossBackGround.isBossBackGround = false;
+		}
 	}
 
 	public void BossCreateInit(int _index)
@@ -32,14 +43,23 @@ public class BossCreator : MonoBehaviour
 			return;
 		//캐릭들을 전부 되돌림 
 		spawnManager.AllCharacterComplate ();
+		//배경화면 전환
+		SpawnManager.Instance.AllCharacterComplate ();
+		bossBackGround.StartChangeBackGroundToBossBackGround ();
 
-		//1초 뒤에 생성
-		//Invoke ("BossCreate", 1.0f);
-		StartCoroutine(BossCreate(_index));
+		nBossIndex = _index;
 	}
+	public void StartBossCreate()
+	{
+		StartCoroutine(BossCreate(nBossIndex));
+	}
+
 	public IEnumerator BossCreate(int _index) 
 	{
 		yield return new WaitForSeconds(0.2f);
+
+
+
 
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
@@ -51,14 +71,15 @@ public class BossCreator : MonoBehaviour
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_SASIN) 
 		{
-			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossSasin"));
+			
+			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossSasin"));
 			bossInstance.transform.SetParent (bossRespawnPoint.transform);
 			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
 			//bossInstance.AddComponent<BossSasin> ();
 			BossSasin bossSasin = bossInstance.GetComponent<BossSasin> ();
 			bossSasin.nIndex = _index;
 			bossSasin.boss = GameManager.Instance.bossInfo [_index];
-			SpawnManager.Instance.AllCharacterComplate ();
+
 
 		}
 
@@ -69,7 +90,14 @@ public class BossCreator : MonoBehaviour
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 		{
-			Debug.Log ("Music Created!!!");	
+			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossMusic"));
+			bossInstance.transform.SetParent (bossRespawnPoint.transform);
+			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
+			//bossInstance.AddComponent<BossSasin> ();
+			BossMusic bossMusic = bossInstance.GetComponent<BossMusic> ();
+			bossMusic.nIndex = _index;
+			bossMusic.boss = GameManager.Instance.bossInfo [_index];
+			SpawnManager.Instance.AllCharacterComplate ();
 		}
 
 		uiManager.AllDisable ();

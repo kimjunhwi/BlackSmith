@@ -227,6 +227,13 @@ public class NormalCharacter : Character {
         yield return null;
     }
 
+	public void RetreatCharacter(float _fSpeed,bool _bIsBack)
+	{
+		fSpeed = _fSpeed;
+		m_bIsBack = _bIsBack;
+		m_bIsArrival = true;
+	}
+
 	public void Move(int _nIndex)
 	{
 		m_nIndex = _nIndex;

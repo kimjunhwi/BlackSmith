@@ -210,8 +210,10 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	{
 		bIsBossCreate = true;
 
-		for(int nIndex = 0; nIndex < list_Character.Count; nIndex++)
-			list_Character[nIndex].GetComponent<NormalCharacter>().m_bIsBack = true;
+		for (int nIndex = 0; nIndex < list_Character.Count; nIndex++) {
+			list_Character [nIndex].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+		}
+			
 	}
 
     //이동
