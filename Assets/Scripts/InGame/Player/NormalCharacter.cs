@@ -99,6 +99,8 @@ public class NormalCharacter : Character {
         boxCollider.isTrigger = false;
         
         WeaponBackground.SetActive(false);
+
+		ComplateScale.localScale = new Vector3(1.0f, 0.0f , 1.0f);
     }
 
     void OnDisable()
@@ -290,21 +292,32 @@ public class NormalCharacter : Character {
 		}
 	}
 
+	public override void CheckComplate (float _fComplate)
+	{
+		float fCurCompletY;
+
+		m_fComplate = _fComplate;
+
+		fCurCompletY = m_fComplate / weaponData.fComplate;
+
+		if (fCurCompletY >= 1.0f)
+			Complate (weaponData.fComplate);
+
+		ComplateScale.localScale = new Vector3( ComplateScale.localScale.x, fCurCompletY , ComplateScale.localScale.z);
+	}
+
 	public override void Complate(float _fComplate = 0.0f)
 	{
 		//50%이상
-		if((weaponData.fComplate * 0.5) < _fComplate)
-		{
+		if ((weaponData.fComplate * 0.5) < _fComplate) {
 			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fComplate);
 
-			ScoreManager.ScoreInstance.GoldPlus(fGold);
+			ScoreManager.ScoreInstance.GoldPlus (fGold);
 		}
-		//50%이하
-		else
+		//50%이하 실패 
+		else 
 		{
-			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fComplate);
 
-			ScoreManager.ScoreInstance.GoldPlus(-fGold);
 		}
 
 		m_bIsBack = true;
