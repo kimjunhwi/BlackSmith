@@ -10,6 +10,9 @@ public class BossBackGround : MonoBehaviour {
 	public bool isBossBackGround = false;
 	public bool isOriginBackGround = false;
 
+
+
+
 	public void StartChangeBackGroundToBossBackGround()
 	{
 		StartCoroutine (ChangeBackGroundToBossBackGround ());
@@ -48,6 +51,7 @@ public class BossBackGround : MonoBehaviour {
 			else
 				yield return null;
 		}
+
 		yield break;
 	}
 
@@ -80,6 +84,8 @@ public class BossBackGround : MonoBehaviour {
 			else
 				yield return null;
 		}
+
+	
 		yield break;
 	}
 }

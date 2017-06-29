@@ -1,26 +1,26 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossCreator.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossSasin.cs">
     <Files>
       <File FileName="Assets/Scripts/InGame/Arbait/ArbaitBatch.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/UIManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="59" Column="38" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="85" Column="40" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="137" Column="45" />
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="424" Column="6" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/SkullObject.cs" Line="95" Column="3" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="48" Column="42" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="277" Column="43" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossBackGround.cs" Line="80" Column="32" />
+      <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="226" Column="4" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="142" Column="4" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossAnimation.cs" Line="20" Column="35" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossConsumeItemInfo.cs" line="161" column="1" />
-      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="281" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Window/PopUpWindow.cs" line="109" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Window/PopUpWindow.cs" line="63" column="1" />
-      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossSasin.cs" line="86" column="1" />
-      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossSasin.cs" line="83" column="1" />
-      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" line="112" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossSasin.cs" line="90" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossBackGround.cs" line="49" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossAnimation.cs" line="18" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

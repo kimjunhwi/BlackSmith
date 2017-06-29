@@ -39,9 +39,12 @@ public class BossPopUpWindow : MonoBehaviour
 
 	public Image BossRewardBackGround;
 
+	public SimpleObjectPool backLightPool;
+	public RectTransform backLightPosition;
+	public RectTransform canvasRect;
 
-
-
+	Vector3 ViewportPosition;
+	Camera cam;
 	void Start()
 	{
 		PopUpWindow_Yes_Text = PopUpWindow_Yes.GetComponentInChildren<Text> ();
@@ -58,11 +61,12 @@ public class BossPopUpWindow : MonoBehaviour
 		PopUpWindow_YesNo_YesButton.onClick.AddListener (() => bossCreator.BossCreateInit (nBossIndex));
 		PopUpWindow_Reward_YesButton.onClick.AddListener (PopUpWindowReward_Switch);
 
-		 
 
+		cam = Camera.main;
 		PopUpWindow_Yes.SetActive (false);
 		PopUpWindow_YesNo.SetActive (false);
 		PopUpWindow_Reward.SetActive (false);
+
 	}
 
 
@@ -110,7 +114,6 @@ public class BossPopUpWindow : MonoBehaviour
 
 	public void PopUpWindowReward_Switch()
 	{
-
 		if (PopUpWindow_Reward.activeSelf != true) 
 		{
 			//bossSasin.ItemInfo.....
@@ -135,11 +138,11 @@ public class BossPopUpWindow : MonoBehaviour
 	{
 		if (_isFailed == false) {
 			PopUpWindow_RewardPanel.SetActive (true);
-			BossRewardBackGround.sprite = Resources.Load ("DungeonUI/dungeon_success_panel", typeof(Sprite)) as Sprite;
+			BossRewardBackGround.sprite = Resources.Load ("DungeonUI/dungeon_reward_clear", typeof(Sprite)) as Sprite;
 		}
 		else
 		{
-			BossRewardBackGround.sprite = Resources.Load ("DungeonUI/dungeon_fail_panel", typeof(Sprite)) as Sprite;
+			BossRewardBackGround.sprite = Resources.Load ("DungeonUI/dungeon_reward_fail", typeof(Sprite)) as Sprite;
 			PopUpWindow_RewardPanel.SetActive (false);
 		}
 	}

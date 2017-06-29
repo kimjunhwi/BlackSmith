@@ -218,11 +218,15 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public void AllCharacterComplate()
 	{
-		bIsBossCreate = true;
-
+		
 		for (int nIndex = 0; nIndex < list_Character.Count; nIndex++) {
 			list_Character [nIndex].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+		
+				
 		}
+		bIsBossCreate = true;
+	
+
 			
 	}
 
