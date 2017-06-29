@@ -30,6 +30,8 @@ public class Player
 
 	public float GetAccuracyRate() { return changeStats.fAccuracyRate; }
 
+    public float GetCriticalChance() { return changeStats.fCriticalChance; }
+
 	public float GetTemperatureMinus() { return changeStats.fTemperatureMinus; }
 
 	public void SetWaterPlus(float _fValue) { changeStats.fWaterPlus = _fValue; }
@@ -39,6 +41,8 @@ public class Player
 	public void SetMaxWaterPlus(float _fValue) { changeStats.fMaxWaterPlus = _fValue; }
 
 	public void SetAccuracyRate(float _fValue) { changeStats.fAccuracyRate = _fValue; }
+
+    public void SetCriticalChance(float _fValue) { changeStats.fCriticalChance = _fValue; }
 
 	public void SetTemperatureMinus(float _fValue) { changeStats.fTemperatureMinus = _fValue; }
 

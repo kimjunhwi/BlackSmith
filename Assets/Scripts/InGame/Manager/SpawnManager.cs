@@ -104,15 +104,17 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	//배치 되는 아르바이트의 컴포넌트를 추가하고 그 캐릭터를 생성하는 패널을 추가한다.
 	public void Factory(int nIndex, GameObject _obj)
 	{
+        //인덱스에 맞는 스크립트를 추가해준다
 		switch (nIndex) {
-		case (int)E_ARBAIT.E_BLUEHAIR: 	_obj.AddComponent<BlueHair> (); break;
+		case (int)E_ARBAIT.E_BLUEHAIR: 	    _obj.AddComponent<BlueHair> (); break;
 		case (int)E_ARBAIT.E_ORANGEHAIR:	_obj.AddComponent<OrangeHair> (); break;
-		case (int)E_ARBAIT.E_NURSE: _obj.AddComponent<BlueHair> (); break; 
+		case (int)E_ARBAIT.E_NURSE:         _obj.AddComponent<Nurse> (); break; 
 		}
 
+        //미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
 		array_ArbaitData [nIndex] = _obj.GetComponent<ArbaitBatch> ();
 
-		_obj.GetComponent<ArbaitBatch> ().arbaitData = GameManager.Instance.GetArbaitData (nIndex);
+        array_ArbaitData[nIndex].arbaitData = GameManager.Instance.GetArbaitData(nIndex);
 
 		GameObject createArbaitUI = Instantiate (ArbaitPanel);
 

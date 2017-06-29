@@ -42,9 +42,22 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     public CGameEquiment[] cEquimentInfo = null;                //장비 정보들
 
     public CGameQuestInfo[] cQusetInfo = null;                  //퀘스트 정보들
+
+    public CGameSmithEnhace[] cSmithEnhaceInfo = null;          //대장간 강화 정보
+
+    public CGameRepairEnhance[] cRepairEnhanceInfo = null;      //수리 강화 정보
+
+    public CGameMaxWaterEnhance[] cMaxWaterEnhanceInfo = null;  //물 최대치 강화 정보
+
+    public CGameWaterPlusEnhance[] cWaterPlusEnhanceInfo = null;//물 증가량 강화 정보
+
+    public CGameAccuracyRate[] cAccuracyRateInfo = null;        //명중률 강화 정보
+
+    public CGameCriticalEnhance[] cCriticalEnhance = null;      //크리티컬 강화 정보
+
+
+
 	public List<int> cQuestSaveIndex = new List<int>();			//남아 있는 퀘스트 저장 
-	public float curLeftQuestTime_Minute = 0f;
-	public float curLeftQuestTime_Second = 0f;					//남아 있는 시간 저장
 	
     public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
 
@@ -74,6 +87,10 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     public Player player;
 
     public CGamePlayerData playerData;
+
+    public float curLeftQuestTime_Minute = 0f;
+
+    public float curLeftQuestTime_Second = 0f;					//남아 있는 시간 저장
 
     public void DataLoad()
     {
@@ -399,10 +416,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].nRewardGold = int.Parse(Cells[4]);
 			kInfo[i - 1].nRewardHonor = int.Parse(Cells[5]);
 			kInfo[i - 1].nRewardBossPotion = int.Parse(Cells[6]);
-
-
         }
-
 
         cQusetInfo = kInfo;
     }
@@ -525,25 +539,36 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		bossWeaponInfo = kInfo;
 	}
-    public int GetEquimentLength()
+
+    void Load_TableInfo_SmithEnhance()
     {
-		if (cEquimentInfo == null)
-			return 0;
+        if (bossWeaponInfo.Length != 0) return;
 
-        if (cEquimentInfo.Length != 0)
-            return cEquimentInfo.Length;
+        string txtFilePath = "SmithEnhace";
 
-        else
-            return 0;
-    }
+        TextAsset ta = LoadTextAsset(txtFilePath);
 
-    public int GetInvetoryListCount()
-    {
-        if (cInvetoryInfo.Count != 0)
-            return cInvetoryInfo.Count;
+        List<string> line = LineSplit(ta.text);
 
-        else
-            return 0;
+        CGameSmithEnhace[] kInfo = new CGameSmithEnhace[line.Count - 1];
+
+        for (int i = 0; i < line.Count; i++)
+        {
+            //Console.WriteLine("line : " + line[i]);
+            if (line[i] == null) continue;
+            if (i == 0) continue; 	// Title skip
+
+            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+            if (Cells[0] == "") continue;
+
+            kInfo[i - 1]            = new CGameSmithEnhace();
+            kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
+            kInfo[i - 1].strName    = Cells[1];
+            kInfo[i - 1].nGoldCost  = int.Parse(Cells[3]);
+            kInfo[i - 1].nLevel     = int.Parse(Cells[4]);
+        }
+
+        cSmithEnhaceInfo = kInfo;
     }
 
     TextAsset LoadTextAsset(string _txtFile)
@@ -620,6 +645,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     }
     */
 
+
+
     public CGameWeaponInfo GetWeaponData(int _nGrade)
     {
         int nRandom;
@@ -628,13 +655,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         return cWeaponInfo[nRandom];
     }
-    public ArbaitData GetArbaitData(int _id)
-    {
-        if (_id < 0 || arbaitDataBase.Count <= _id)
-            return null;
-
-        return arbaitDataBase[_id];
-    }
+    
 
     public int EquimentShopLength()
     {
@@ -654,10 +675,43 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         return cEquimentInfo[nIndex];
     }
 
+    #region Arbait
     public int ArbaitLength()
     {
         return arbaitDataBase.Count;
     }
+
+    public ArbaitData GetArbaitData(int _id)
+    {
+        if (_id < 0 || arbaitDataBase.Count <= _id)
+            return null;
+
+        return arbaitDataBase[_id];
+    }
+    #endregion
+
+    #region Inventory
+    public int GetEquimentLength()
+    {
+        if (cEquimentInfo == null)
+            return 0;
+
+        if (cEquimentInfo.Length != 0)
+            return cEquimentInfo.Length;
+
+        else
+            return 0;
+    }
+
+    public int GetInvetoryListCount()
+    {
+        if (cInvetoryInfo.Count != 0)
+            return cInvetoryInfo.Count;
+
+        else
+            return 0;
+    }
+    #endregion 
 }
 
 enum E_Equiment
@@ -782,6 +836,55 @@ public class CGameWeaponInfo
     public float fLimitedTime = 0.0f;
     public float fGold = 0.0f;
     public Sprite WeaponSprite = null;
+}
+
+[System.Serializable]
+public class CGameSmithEnhace
+{
+    public int nIndex;
+    public string strName;
+    public int nGoldCost;
+    public int nLevel;
+}
+
+[System.Serializable]
+public class CGameRepairEnhance
+{
+    public int nIndex;
+    public int nCost;
+    public int nResultValue;
+}
+
+[System.Serializable]
+public class CGameMaxWaterEnhance
+{
+    public int nIndex;
+    
+    public int nCost;
+
+    public int nResultValue;
+}
+
+[System.Serializable]
+public class CGameWaterPlusEnhance
+{
+    public int nIndex;
+    public float fResultValue;
+    public int nCost;
+}
+
+public class CGameAccuracyRate
+{
+    public int nIndex = 0;
+    public float fResultValue;
+    public int nCost;
+}
+
+public class CGameCriticalEnhance
+{
+    public int nIndex;
+    public float fResultValue;
+    public int nCost;
 }
 
 [System.Serializable]

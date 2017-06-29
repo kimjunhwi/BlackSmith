@@ -7,7 +7,7 @@ public class OrangeHair : ArbaitBatch {
 
 	private Player playerData;
 
-	private float fChangeRepair = 0.0f;
+	private float fChangePlusWater = 0.0f;
 
 	protected override void Awake ()
 	{
@@ -24,8 +24,7 @@ public class OrangeHair : ArbaitBatch {
 		StartCoroutine(this.CharacterAction());
 	}
 
-
-	void OnEnable()
+    protected override void OnEnable()
 	{
 		if (arbaitData == null)
 			return;
@@ -42,22 +41,32 @@ public class OrangeHair : ArbaitBatch {
 
 		CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
+        ApplySkill();
 
-		if (buff [0].fCurrentFloat == 0) 
-		{
-			fChangeRepair = playerData.GetRepairPower() * (buff [0].fValue * 0.01f);
+        SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
+    }
 
-			playerData.SetRepairPower (playerData.GetRepairPower() + fChangeRepair);
-		}
-	}
+    protected override void OnDisable()
+    {
+        ReliveSkill();
 
-	protected override void OnDisable ()
-	{
-		playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+        base.OnDisable();
+    }
 
-		base.OnDisable ();
-	}
+    protected override void ApplySkill()
+    {
+        if (fChangePlusWater != 0)
+            ReliveSkill();
+
+        fChangePlusWater = playerData.GetWaterPlus() * (buff[0].fValue * 0.01f);
+
+        playerData.SetWaterPlus(playerData.GetWaterPlus() + fChangePlusWater);
+    }
+
+    protected override void ReliveSkill()
+    {
+        playerData.SetWaterPlus(playerData.GetWaterPlus() - fChangePlusWater);
+    }
 
 	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
