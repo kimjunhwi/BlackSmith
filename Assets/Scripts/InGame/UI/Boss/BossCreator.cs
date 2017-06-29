@@ -42,11 +42,10 @@ public class BossCreator : MonoBehaviour
 		if (bossRespawnPoint.transform.childCount > 0)
 			return;
 		//캐릭들을 전부 되돌림 
-		spawnManager.AllCharacterComplate ();
-		//배경화면 전환
 		SpawnManager.Instance.AllCharacterComplate ();
+		//배경화면 전환
 		bossBackGround.StartChangeBackGroundToBossBackGround ();
-
+		bossBackGround.isBossBackGround = true;
 		nBossIndex = _index;
 	}
 	public void StartBossCreate()
