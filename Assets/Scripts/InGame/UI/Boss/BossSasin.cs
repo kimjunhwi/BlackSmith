@@ -34,7 +34,7 @@ public class BossSasin : BossCharacter
 	{
 		bossImage = GetComponent<SpriteRenderer> ();
 		//bossImage.enabled = false;
-		bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
+		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
 		skullObjectPool = GameObject.Find ("SkullPool").GetComponent<SimpleObjectPool> ();
 		bossAppearEffectPool = GameObject.Find ("BossAppearPool").GetComponent<SimpleObjectPool> ();
 		bossDisappearEffectPool = GameObject.Find ("BossDisappearPool ").GetComponent<SimpleObjectPool> ();

@@ -175,7 +175,8 @@ public class RepairObject : MonoBehaviour {
 		float _fTemperator , Boss _bossData, BossSasin _bossSasinData)
 	{
 		Debug.Log ("Arbait Get Damage!");
-		fWeaponDownDamage += SpawnManager.Instance.GetActiveArbaitRepair ();
+		//fWeaponDownDamage += SpawnManager.Instance.GetActiveArbaitRepair ();
+		fWeaponDownDamage = player.GetRepairPower ();
 		bossWeaponObject.SetActive (true);
 		bossWaterObject.SetActive (true);
 		WeaponObject.SetActive (false);
