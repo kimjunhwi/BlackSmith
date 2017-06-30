@@ -19,12 +19,24 @@ public class BossCreator : MonoBehaviour
 	public BossConsumeItemInfo bossConsumeItemInfo;
 	public BossBackGround bossBackGround;
 
+	public GameObject[] bossList;
+	public BossElement[] bossElementList;
+
+	public int nBossSasinLeftCount = 3;
+	public int nBossIceLeftCount = 3;
+	public int nBossFireLeftCount = 3;
+	public int nBossMusicLeftCount = 3;
+
+	public int nBossMaxLeftCount = 3;
+
 	private int nBossIndex =0; 
 
 	void Awake()
 	{
 		spawnManager = FindObjectOfType<SpawnManager> ();
 		uiManager = FindObjectOfType<UIManager> ();
+
+
 	}
 
 	void Update()
@@ -35,18 +47,27 @@ public class BossCreator : MonoBehaviour
 			bossBackGround.isBossBackGround = false;
 		}
 	}
+	private void OnEnable()
+	{
+		bossElementList[0].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossIceLeftCount, nBossMaxLeftCount);
+		bossElementList[1].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossSasinLeftCount, nBossMaxLeftCount);
+		bossElementList[2].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossFireLeftCount, nBossMaxLeftCount);
+		bossElementList[3].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossMusicLeftCount, nBossMaxLeftCount);
+	}
 
 	public void BossCreateInit(int _index)
 	{
 		//만약 보스가 이미 생성 됐다면 리턴
-		if (bossRespawnPoint.transform.childCount > 0)
-			return;
+		//if (bossRespawnPoint.transform.childCount > 0)
+		//	return;
 		//캐릭들을 전부 되돌림 
 		SpawnManager.Instance.AllCharacterComplate ();
 		//배경화면 전환
 		bossBackGround.StartChangeBackGroundToBossBackGround ();
 		bossBackGround.isBossBackGround = true;
 		nBossIndex = _index;
+
+
 	}
 	public void StartBossCreate()
 	{
@@ -63,26 +84,27 @@ public class BossCreator : MonoBehaviour
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
 			Debug.Log ("Ice Created!!!");	
+			nBossIceLeftCount--;
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_SASIN) 
 		{
 			
-			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossSasin"));
-			bossInstance.transform.SetParent (bossRespawnPoint.transform);
-			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
-			bossInstance.name = "Sasin";
-			//bossInstance.AddComponent<BossSasin> ();
-			BossSasin bossSasin = bossInstance.GetComponent<BossSasin> ();
-			bossSasin.nIndex = _index;
-			bossSasin.boss = GameManager.Instance.bossInfo [_index];
 
+
+			bossList [1].SetActive (true);
+			BossSasin bossSasin = bossList[1].GetComponent<BossSasin> ();
+
+			bossSasin.nIndex = _index;
+			bossSasin.bossInfo = GameManager.Instance.bossInfo [_index];
+			nBossSasinLeftCount--;
 
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_FIRE) 
 		{
 			Debug.Log ("Fire Created!!!");	
+			nBossFireLeftCount--;
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
@@ -93,8 +115,9 @@ public class BossCreator : MonoBehaviour
 			//bossInstance.AddComponent<BossSasin> ();
 			BossMusic bossMusic = bossInstance.GetComponent<BossMusic> ();
 			bossMusic.nIndex = _index;
-			bossMusic.boss = GameManager.Instance.bossInfo [_index];
+			bossMusic.bossInfo = GameManager.Instance.bossInfo [_index];
 			SpawnManager.Instance.AllCharacterComplate ();
+			nBossMusicLeftCount--;
 		}
 
 		uiManager.AllDisable ();

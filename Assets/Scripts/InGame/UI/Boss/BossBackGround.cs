@@ -46,6 +46,7 @@ public class BossBackGround : MonoBehaviour {
 
 			if (fOriginBackGround_AlphaValue <= 0) {
 				isBossBackGround = true;
+				isOriginBackGround = false;
 				break;
 			}
 			else
@@ -78,6 +79,7 @@ public class BossBackGround : MonoBehaviour {
 			if (fBackGroundBoss_AlphaValue <= 0)
 			{
 				isOriginBackGround = true;	
+				isBossBackGround = false;
 				break;
 			}
 		

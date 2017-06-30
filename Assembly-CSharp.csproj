@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitBatch.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\BlueHair.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\Nurse.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\CharacterFactory.cs" />
@@ -89,6 +90,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossConsumeItemInfo.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossCreator.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossElement.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossFire.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossIce.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMusic.cs" />
@@ -96,7 +98,6 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossRewardFx.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
-     <Compile Include="Assets\Scripts\InGame\UI\Boss\PopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\Inventory.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryButton.cs" />
@@ -119,11 +120,17 @@
      <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Test\TestReporter.cs" />
      <None Include="Assets\Resources\Data\Shop.txt" />
      <None Include="Assets\Resources\Data\Quest.txt" />
+     <None Include="Assets\Resources\Data\SmithEnhance.txt" />
      <None Include="Assets\Resources\Data\Weapon.txt" />
      <None Include="Assets\Resources\Data\BossWeapon.txt" />
      <None Include="Assets\Resources\Data\Character.txt" />
      <None Include="Assets\Resources\Data\Arbait.txt" />
+     <None Include="Assets\Resources\Data\RepairEnhance.txt" />
+     <None Include="Assets\Resources\Data\CriticalEnhance.txt" />
+     <None Include="Assets\Resources\Data\AccuractRate.txt" />
      <None Include="Assets\Resources\Data\Boss.txt" />
+     <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
+     <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
      <None Include="Assets\StreamingAssets\build_info.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

@@ -43,6 +43,7 @@ public class BossPopUpWindow : MonoBehaviour
 	public RectTransform backLightPosition;
 	public RectTransform canvasRect;
 
+
 	Vector3 ViewportPosition;
 	Camera cam;
 	void Start()
@@ -85,24 +86,26 @@ public class BossPopUpWindow : MonoBehaviour
 			isActivePopUp = true;
 			
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_SASIN) {
-				
 				PopUpWindow_YesNo_Text.text = "보스(사신)을 소환 하시겠습니까?";
-		
-				
-			} else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE) {
+
+			} 
+			else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE) {
 				//PopUpWindow_YesNo_YesButton.onClick.AddListener (() => bossCreator.BossCreateInit (nBossIndex));
 				PopUpWindow_YesNo_Text.text = "보스(얼음)을 소환 하시겠습니까?";
 			
 
-			} else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE) {
+			}
+			else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE) {
 				//PopUpWindow_YesNo_YesButton.onClick.AddListener (() => bossCreator.BossCreateInit (nBossIndex));
 				PopUpWindow_YesNo_Text.text = "보스(불)을 소환 하시겠습니까?";
 
-			} else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
+			}
+			else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
 				//PopUpWindow_YesNo_YesButton.onClick.AddListener (() => bossCreator.BossCreateInit (nBossIndex));
 				PopUpWindow_YesNo_Text.text = "보스(음악)을 소환 하시겠습니까?";
 		
-			} else
+			}
+			else
 				PopUpWindow_YesNo_Text.text = "보스 소환 실패";
 			
 			PopUpWindow_YesNo.SetActive (true);
