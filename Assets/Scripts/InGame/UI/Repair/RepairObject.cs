@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RepairObject : MonoBehaviour {
 
+
     public Slider ComplateSlider;
     public Slider TemperatureSlider;
     public Slider WaterSlider;
@@ -53,6 +54,7 @@ public class RepairObject : MonoBehaviour {
 
 	Image BossWeaponAlphaSprite;
 	Image BossWeaponSprite;
+
 
 	void Start()
 	{
@@ -426,9 +428,12 @@ public class RepairObject : MonoBehaviour {
 	{
 		return fCurrentComplate;
 	}
+
+
 	public void SetCurCompletion(float _value)
 	{
 		fCurrentComplate -= _value;
+		ComplateSlider.value = fCurrentComplate;
 		ComplateText.text = string.Format("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 	}
 	public void SetFinishBoss()

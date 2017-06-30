@@ -66,6 +66,8 @@ public class ArbaitBatch : MonoBehaviour {
         RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();       
 	}
 
+    protected virtual void OnEnable() { }
+
 	protected virtual void OnDisable()
     {
         Init();
@@ -126,17 +128,30 @@ public class ArbaitBatch : MonoBehaviour {
 
 	protected virtual IEnumerator CharacterAction() { yield return null; }
 
+    //스킬 적용
+    protected virtual void ApplySkill() { }
+
+    //스킬 해제
+    protected virtual void ReliveSkill() { }
+
+
+    //무기 수리 완료시 호출
 	protected void ComplateWeapon()
     {
+        //현재 수리중인 오브젝트와 무기의 완성도를 보내 수리한다.
         SpawnManager.Instance.ComplateCharacter(AfootOjbect,weaponData.fComplate);
 
+        //초기화
 		Init();
 
+        //수리중인 무기가없을것이므로 무기를 찾아 넣어준다.
         SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
     }
 
+    //현재 수리중인 무기를 되돌려준다.
     public void ResetWeaponData()
     {
+
         Init(false);
         //AfootOjbect = _obj;
         SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);

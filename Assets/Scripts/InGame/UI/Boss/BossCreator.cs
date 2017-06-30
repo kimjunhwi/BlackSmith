@@ -42,11 +42,10 @@ public class BossCreator : MonoBehaviour
 		if (bossRespawnPoint.transform.childCount > 0)
 			return;
 		//캐릭들을 전부 되돌림 
-		spawnManager.AllCharacterComplate ();
-		//배경화면 전환
 		SpawnManager.Instance.AllCharacterComplate ();
+		//배경화면 전환
 		bossBackGround.StartChangeBackGroundToBossBackGround ();
-
+		bossBackGround.isBossBackGround = true;
 		nBossIndex = _index;
 	}
 	public void StartBossCreate()
@@ -57,9 +56,6 @@ public class BossCreator : MonoBehaviour
 	public IEnumerator BossCreate(int _index) 
 	{
 		yield return new WaitForSeconds(0.2f);
-
-
-
 
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
@@ -75,6 +71,7 @@ public class BossCreator : MonoBehaviour
 			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossSasin"));
 			bossInstance.transform.SetParent (bossRespawnPoint.transform);
 			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
+			bossInstance.name = "Sasin";
 			//bossInstance.AddComponent<BossSasin> ();
 			BossSasin bossSasin = bossInstance.GetComponent<BossSasin> ();
 			bossSasin.nIndex = _index;

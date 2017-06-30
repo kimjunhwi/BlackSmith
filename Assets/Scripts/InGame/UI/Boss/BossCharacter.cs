@@ -27,7 +27,7 @@ public class BossCharacter : Character
 	public int nIndex;
 	public RepairObject repairObj;
 	public EBOSS_STATE eCureentBossState;
-
+	public RectTransform bossAppearAndDisappearPos;
 
 	protected virtual IEnumerator BossWait() 	{ yield return null;}		//보스 대기(연출)
 
@@ -41,5 +41,6 @@ public class BossCharacter : Character
 	void Awake()
 	{
 		repairObj = FindObjectOfType<RepairObject> ();
+		bossAppearAndDisappearPos = GameObject.Find ("BossEffect").GetComponent<RectTransform> ();
 	}
 }

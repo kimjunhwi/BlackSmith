@@ -25,7 +25,7 @@ public class BlueHair : ArbaitBatch {
 	}
 
 
-	void OnEnable()
+	protected override void OnEnable()
 	{
 		if (arbaitData == null)
 			return;
@@ -42,22 +42,32 @@ public class BlueHair : ArbaitBatch {
 
         CheckCharacterState(E_STATE);
 
+        ApplySkill();
+
 		SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
-
-		if (buff [0].fCurrentFloat == 0) 
-		{
-			fChangeRepair = playerData.GetRepairPower() * (buff [0].fValue * 0.01f);
-
-			playerData.SetRepairPower (playerData.GetRepairPower() + fChangeRepair);
-		}
 	}
 
 	protected override void OnDisable ()
 	{
-		playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+        ReliveSkill();
 
 		base.OnDisable ();
 	}
+
+    protected override void ApplySkill()
+    {
+        if (fChangeRepair != 0)
+            ReliveSkill();
+
+        fChangeRepair = playerData.GetRepairPower() * (buff[0].fValue * 0.01f);
+
+        playerData.SetRepairPower(playerData.GetRepairPower() + fChangeRepair);
+    }
+
+    protected override void ReliveSkill()
+    {
+        playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+    }
 
 	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
@@ -82,7 +92,6 @@ public class BlueHair : ArbaitBatch {
                 }
                 break;
         }
-
 	}
 
 	protected override IEnumerator CharacterAction()
