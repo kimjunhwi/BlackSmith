@@ -340,20 +340,25 @@ public class RepairObject : MonoBehaviour {
 
             WaterSlider.value = fCurrentWater;
 
+			fCurrentTemperature -= fMinusTemperature;
+
 			if (fCurrentComplate > weaponData.fComplate)
 				fCurrentComplate = weaponData.fComplate;
 
 			if (fCurrentWater < 0)
 				fCurrentWater = 0;
 
+			if (fCurrentTemperature < 0)
+				fCurrentTemperature = 0;
+
 			int nCurComplete = (int)fCurrentComplate;
 
 			ComplateSlider.value = (float)nCurComplete;
-
+			TemperatureSlider.value = fCurrentTemperature;
 
             ComplateText.text = string.Format("{0} / {1}", ComplateSlider.value, weaponData.fComplate);
 
-            if(ComplateSlider.value >= weaponData.fComplate)
+			if(nCurComplete >= weaponData.fComplate)
                 SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fComplate);
         }
     }
@@ -370,7 +375,7 @@ public class RepairObject : MonoBehaviour {
 			fMinusWater = ((1 + (fCurrentComplate / fMinusTemperature) * fWeaponDownDamage) * (1 + (fUseWater * 0.01f) + fWeaponDownTemperature));
 
 			fCurrentWater -= fMinusTemperature;
-			fCurrentTemperature = 0;
+			fCurrentTemperature = fMinusTemperature;
 
 			fCurrentComplate += fMinusWater;
 
@@ -381,6 +386,9 @@ public class RepairObject : MonoBehaviour {
 
 			if (fCurrentWater < 0)
 				fCurrentWater = 0;
+
+			if (fCurrentTemperature < 0)
+				fCurrentTemperature = 0;
 
 			int nCurComplete = (int)fCurrentComplate;
 

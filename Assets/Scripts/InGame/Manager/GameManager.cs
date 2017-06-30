@@ -92,6 +92,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public float curLeftQuestTime_Second = 0f;					//남아 있는 시간 저장
 
+	public GameObject Root_ui;
+
     public void DataLoad()
     {
 		
@@ -112,6 +114,18 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		Load_TableInfo_Boss ();
 
 		Load_TableInfo_BossWeapon ();
+
+		Load_TableInfo_SmithEnhance ();
+
+		Load_TableInfo_RepairEnhance ();
+
+		Load_TableInfo_MaxWaterEnhance ();
+
+		Load_TableInfo_WaterPlusEnhance ();
+
+		Load_TableInfo_AccuracyEnhance ();
+
+		Load_TableInfo_CriticalEnhance ();
 
 
 #if UNITY_EDITOR
@@ -308,6 +322,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     {
         return player;
     }
+
+	#region LoadTableInfo
 
     void Load_TableInfo_Weapon()
     {
@@ -542,9 +558,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     void Load_TableInfo_SmithEnhance()
     {
-        if (bossWeaponInfo.Length != 0) return;
+		if (cSmithEnhaceInfo.Length != 0) return;
 
-        string txtFilePath = "SmithEnhace";
+        string txtFilePath = "SmithEnhance";
 
         TextAsset ta = LoadTextAsset(txtFilePath);
 
@@ -563,13 +579,165 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
             kInfo[i - 1]            = new CGameSmithEnhace();
             kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-            kInfo[i - 1].strName    = Cells[1];
-            kInfo[i - 1].nGoldCost  = int.Parse(Cells[3]);
-            kInfo[i - 1].nLevel     = int.Parse(Cells[4]);
+            kInfo[i - 1].nGoldCost  = int.Parse(Cells[1]);
         }
 
         cSmithEnhaceInfo = kInfo;
     }
+
+	void Load_TableInfo_RepairEnhance()
+	{
+		if (cRepairEnhanceInfo.Length != 0) return;
+
+		string txtFilePath = "RepairEnhance";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameRepairEnhance[] kInfo = new CGameRepairEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1]            	= new CGameRepairEnhance();
+			kInfo[i - 1].nIndex     	= int.Parse(Cells[0]);
+			kInfo[i - 1].nCost     		= int.Parse(Cells[1]);
+			kInfo [i - 1].nResultValue 	= int.Parse (Cells [2]);
+		}
+
+		cRepairEnhanceInfo = kInfo;
+	}
+
+	void Load_TableInfo_MaxWaterEnhance()
+	{
+		if (cMaxWaterEnhanceInfo.Length != 0) return;
+
+		string txtFilePath = "MaxWaterEnhance";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameMaxWaterEnhance[] kInfo = new CGameMaxWaterEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1]            	= new CGameMaxWaterEnhance();
+			kInfo[i - 1].nIndex     	= int.Parse(Cells[0]);
+			kInfo[i - 1].nCost  		= int.Parse(Cells[1]);
+			kInfo [i - 1].nResultValue 	= int.Parse (Cells [2]);
+		}
+
+		cMaxWaterEnhanceInfo = kInfo;
+	}
+
+	void Load_TableInfo_WaterPlusEnhance()
+	{
+		if (cWaterPlusEnhanceInfo.Length != 0) return;
+
+		string txtFilePath = "WaterPlusEnhance";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameWaterPlusEnhance[] kInfo = new CGameWaterPlusEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1]            	= new CGameWaterPlusEnhance();
+			kInfo[i - 1].nIndex     	= int.Parse(Cells[0]);
+			kInfo[i - 1].nCost 			= int.Parse (Cells [1]);
+			kInfo[i - 1].fResultValue 	=	float.Parse (Cells [2]);
+		}
+
+		cWaterPlusEnhanceInfo = kInfo;
+	}
+
+	void Load_TableInfo_AccuracyEnhance()
+	{
+		if (cAccuracyRateInfo.Length != 0) return;
+
+		string txtFilePath = "AccuracyRate";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameAccuracyRate[] kInfo = new CGameAccuracyRate[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1]            = new CGameAccuracyRate();
+			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
+			kInfo[i - 1].nCost  = int.Parse(Cells[1]);
+			kInfo [i - 1].fResultValue = float.Parse (Cells [2]);
+		}
+
+		cAccuracyRateInfo = kInfo;
+	}
+
+	void Load_TableInfo_CriticalEnhance()
+	{
+		if (cCriticalEnhance.Length != 0) return;
+
+		string txtFilePath = "CriticalEnhance";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameCriticalEnhance[] kInfo = new CGameCriticalEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1]            = new CGameCriticalEnhance();
+			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
+			kInfo[i - 1].nCost  = int.Parse(Cells[1]);
+			kInfo [i - 1].fResultValue = float.Parse (Cells [2]);
+		}
+
+		cCriticalEnhance = kInfo;
+	}
+
+	#endregion
+
+	#region SplitText
 
     TextAsset LoadTextAsset(string _txtFile)
     {
@@ -629,21 +797,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         return lines;
     }
-
-    /*
-    public WeaponsData GetWeaponData(int _nGrade)
-    {
-        int nRandom;
-        int nLength = 0;
-
-        for (int i = 0; i <= _nGrade; i++)
-            nLength += ArrGradeCount[i];
-
-        nRandom = Random.Range(0, nLength);
-
-        return weaponDataBase[nRandom];
-    }
-    */
+	#endregion
 
 
 
@@ -655,7 +809,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         return cWeaponInfo[nRandom];
     }
-    
 
     public int EquimentShopLength()
     {
@@ -675,6 +828,34 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         return cEquimentInfo[nIndex];
     }
 
+	// 윈도우 팝업 ---------------------------------------------------------------------------------------
+	//CGame.Instance.Window_notice("213123 213123 ", rt => { if (rt == "0") print("notice");  });
+	public void Window_notice(string _msg, System.Action<string> _callback)
+	{
+		//GameObject Root_ui = GameObject.Find("root_window)"); //ui attach
+		GameObject go = GameObject.Instantiate(Resources.Load("prefabs/Window_notice"), Vector3.zero, Quaternion.identity) as GameObject;
+		go.transform.parent = Root_ui.transform;
+		go.transform.localPosition = Vector3.zero;
+		go.transform.localRotation = Quaternion.identity;
+		go.transform.localScale = Vector3.one;
+
+		CWindowNotice w = go.GetComponent<CWindowNotice>();
+		w.Show(_msg, _callback);
+	}
+
+	public void Window_yesno(string _title, string _msg, System.Action<string> _callback)
+	{
+		//GameObject Root_ui = GameObject.Find("root_window)"); //ui attach
+		GameObject go = GameObject.Instantiate(Resources.Load("prefabs/Window_yesno"), Vector3.zero, Quaternion.identity) as GameObject;
+		go.transform.parent = Root_ui.transform;
+		go.transform.localPosition = Vector3.zero;
+		go.transform.localRotation = Quaternion.identity;
+		go.transform.localScale = Vector3.one;
+
+		CWindowYesNo w = go.GetComponent<CWindowYesNo>();
+		w.Show(_title, _msg, _callback);
+	}
+
     #region Arbait
     public int ArbaitLength()
     {
@@ -690,7 +871,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     }
     #endregion
 
-    #region Inventory
+	#region Inventory
     public int GetEquimentLength()
     {
         if (cEquimentInfo == null)
@@ -731,6 +912,8 @@ enum E_Equiment
 	E_ACCURACY,
 	E_MAX,
 }
+
+#region Classese
 
 [System.Serializable]
 public class AllArbaitData
@@ -822,6 +1005,12 @@ public class ArbaitData
 
 	//구매 했는지
 	public bool bIsBuyCheck;
+
+
+	public ArbaitData(int nValue)
+	{
+		Debug.Log (nValue);
+	}
 }
 
 [System.Serializable]
@@ -842,9 +1031,7 @@ public class CGameWeaponInfo
 public class CGameSmithEnhace
 {
     public int nIndex;
-    public string strName;
     public int nGoldCost;
-    public int nLevel;
 }
 
 [System.Serializable]
@@ -873,6 +1060,7 @@ public class CGameWaterPlusEnhance
     public int nCost;
 }
 
+[System.Serializable]
 public class CGameAccuracyRate
 {
     public int nIndex = 0;
@@ -880,6 +1068,7 @@ public class CGameAccuracyRate
     public int nCost;
 }
 
+[System.Serializable]
 public class CGameCriticalEnhance
 {
     public int nIndex;
@@ -904,9 +1093,9 @@ public class CGameQuestInfo
 [System.Serializable]
 public class CGamePlayerData
 {
-    public string strName;		//닉네임			
+    public string strName;			//닉네임			
     public float fRepairPower;		//수리력 
-    public float fTemperatureMinus;		//온도 감소 수치량 
+    public float fTemperatureMinus;	//온도 감소 수치량 
     public float fArbaitsPower;		//알바수리력 
     public float fHornorPlusPercent;		//명예추가 증가량
     public float fGold;
@@ -919,7 +1108,11 @@ public class CGamePlayerData
     public float fAccuracyRate;		//정확도
     public int nBlackSmithLevel;
     public int nEnhanceRepaireLevel;
-    public int nEnhanaceWaterLevel;
+    public int nEnhanceMaxWaterLevel;
+	public int nEnhanceWaterPlusLevel;
+	public int nEnhanceAccuracyRateLevel;
+	public int nEnhanceCriticalLevel;
+
 }
 
 
@@ -984,3 +1177,5 @@ public class BossWeapon
 	public string strGrade;
 	public string explain;
 }
+
+#endregion

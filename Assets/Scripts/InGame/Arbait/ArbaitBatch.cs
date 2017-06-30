@@ -176,8 +176,6 @@ public class ArbaitBatch : MonoBehaviour {
         
         AfootOjbect = null;
 
-        ArbaitPanelObject = null;
-
         CheckCharacterState(E_ArbaitState.E_WAIT);
     }
 }
