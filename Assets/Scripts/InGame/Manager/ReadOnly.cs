@@ -20,6 +20,16 @@ namespace ReadOnlys
 		}
 	}
 
+	enum E_Enhace
+	{
+		E_SMITH = 0,
+		E_REPAIR,
+		E_MAXWATER,
+		E_WATERPLUS,
+		E_ACCURACY,
+		E_CRITICAL,
+	}
+
     enum E_SortingSprite
     {
         E_BACK = 2,
@@ -40,6 +50,7 @@ namespace ReadOnlys
 		E_BLUEHAIR = 0,
 		E_ORANGEHAIR,
 		E_NURSE,
+		E_CLEO,
 	}
 
 	public enum E_SPEECH : int

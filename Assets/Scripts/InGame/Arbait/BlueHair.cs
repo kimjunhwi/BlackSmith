@@ -9,6 +9,10 @@ public class BlueHair : ArbaitBatch {
 
 	private float fChangeRepair = 0.0f;
 
+	private float fGetRepairPower = 0.0f;
+
+	private float fMinusRepair = 0.0f;
+
 	protected override void Awake ()
 	{
 		base.Awake ();
@@ -59,14 +63,24 @@ public class BlueHair : ArbaitBatch {
         if (fChangeRepair != 0)
             ReliveSkill();
 
-        fChangeRepair = playerData.GetRepairPower() * (buff[0].fValue * 0.01f);
+		fGetRepairPower = playerData.GetRepairPower ();
 
-        playerData.SetRepairPower(playerData.GetRepairPower() + fChangeRepair);
+		fChangeRepair = fGetRepairPower * (buff[0].fValue * 0.01f);
+
+		fChangeRepair =  Mathf.Round (fChangeRepair);
+
+		playerData.SetRepairPower(fGetRepairPower + fChangeRepair);
     }
 
     protected override void ReliveSkill()
     {
-        playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+		fGetRepairPower = playerData.GetRepairPower ();
+
+		fMinusRepair = fGetRepairPower - fChangeRepair;
+
+		fMinusRepair =  Mathf.Round (fMinusRepair);
+
+		playerData.SetRepairPower(fMinusRepair);
     }
 
 	protected override void CheckCharacterState(E_ArbaitState _E_STATE)

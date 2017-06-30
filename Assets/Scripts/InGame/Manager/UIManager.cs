@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
 	void Start()
 	{
 		AllDisable ();
+
+		GameManager.Instance.Root_ui = gameObject;
 	}
 
 	public void ActiveMenu(int nIndex)
