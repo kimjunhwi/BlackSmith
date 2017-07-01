@@ -94,6 +94,7 @@
     <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitBatch.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\BlueHair.cs" />
+    <Compile Include="Assets\Scripts\InGame\Arbait\Cleo.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\Nurse.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
     <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
@@ -120,10 +121,12 @@
     <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QusetManager.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Boss\BossAnimation.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossBackGround.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossCharacter.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossConsumeItemInfo.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossCreator.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Boss\BossElement.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossFire.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossIce.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMusic.cs" />
@@ -132,6 +135,13 @@
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossRewardFx.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\AccuracyPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\CriticalPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\EnhanceUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\MaxWaterPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\RepairPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\SmithPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\WaterPlusPanelUI.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\Inventory.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryButton.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryScrollList.cs" />
@@ -141,6 +151,10 @@
     <Compile Include="Assets\Scripts\InGame\UI\Shop\ShopButton.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Shop\ShopShowPanel.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\UIDisable.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Window\CWindow.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowNotice.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowOk.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowYesNo.cs" />
     <Compile Include="Assets\Scripts\Logo\LogoManager.cs" />
     <Compile Include="Assets\Scripts\Mario.cs" />
     <Compile Include="Assets\Scripts\MonsterArrival.cs" />
@@ -153,7 +167,7 @@
     <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Test\TestReporter.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Resources\Data\AccuractRate.txt" />
+    <None Include="Assets\Resources\Data\AccuracyRate.txt" />
     <None Include="Assets\Resources\Data\Arbait.txt" />
     <None Include="Assets\Resources\Data\Boss.txt" />
     <None Include="Assets\Resources\Data\BossWeapon.txt" />

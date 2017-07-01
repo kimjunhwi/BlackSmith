@@ -423,6 +423,22 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         }
     }
 
+    public float ActtiveArbaitRepair()
+    {
+        float fResultValue = 0.0f;
+
+        for(int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+        {
+            if(m_BatchArbait[nIndex].activeSelf)
+            {
+                fResultValue += array_ArbaitData[nIndex].arbaitData.fRepairPower;
+            }
+        }
+
+        return fResultValue;
+    }
+
+
     #endregion
 }
 

@@ -132,7 +132,7 @@
     <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Editor\ReporterEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Resources\Data\AccuractRate.txt" />
+    <None Include="Assets\Resources\Data\AccuracyRate.txt" />
     <None Include="Assets\Resources\Data\Arbait.txt" />
     <None Include="Assets\Resources\Data\Boss.txt" />
     <None Include="Assets\Resources\Data\BossWeapon.txt" />
