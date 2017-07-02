@@ -7,10 +7,10 @@ using ReadOnlys;
 public class Player 
 {	
 	//변화될 값 
-	public CGamePlayerData changeStats = new CGamePlayerData();
+	public CGamePlayerData changeStats;
 
 	//기본 값 
-	public CGamePlayerData defaultStats = new CGamePlayerData();
+	public CGamePlayerData defaultStats;
 
 
     public List<CGameEquiment> List_items;
@@ -78,8 +78,8 @@ public class Player
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
     {
         List_items = _itemList;
-        defaultStats = _defaultStats;
-		changeStats = _defaultStats;
+		defaultStats = new CGamePlayerData( _defaultStats);
+		changeStats = new CGamePlayerData( _defaultStats);
     }
 
     public void SetInventroy(Inventory _inventory)

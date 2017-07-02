@@ -1113,6 +1113,28 @@ public class CGamePlayerData
 	public int nEnhanceAccuracyRateLevel;
 	public int nEnhanceCriticalLevel;
 
+	public CGamePlayerData(CGamePlayerData playerData)
+	{
+		strName = playerData.strName;
+		fRepairPower = playerData.fRepairPower;
+		fTemperatureMinus = playerData.fTemperatureMinus;
+		fArbaitsPower = playerData.fArbaitsPower;		 
+		fHornorPlusPercent = playerData.fHornorPlusPercent;		
+		fGold = playerData.fGold;
+		fGoldPlusPercent= playerData.fGoldPlusPercent;		
+		fWaterPlus= playerData.fWaterPlus;		
+		fMaxWaterPlus = playerData.fMaxWaterPlus;		 
+		fCriticalChance= playerData.fCriticalChance;		
+		fCriticalDamage = playerData.fCriticalDamage;		
+		fBigSuccessed = playerData.fBigSuccessed;		
+		fAccuracyRate= playerData.fAccuracyRate;		
+		nBlackSmithLevel= playerData.nBlackSmithLevel;
+		nEnhanceRepaireLevel= playerData.nEnhanceRepaireLevel;
+		nEnhanceMaxWaterLevel= playerData.nEnhanceMaxWaterLevel;
+		nEnhanceWaterPlusLevel= playerData.nEnhanceWaterPlusLevel;
+		nEnhanceAccuracyRateLevel= playerData.nEnhanceAccuracyRateLevel;
+		nEnhanceCriticalLevel= playerData.nEnhanceCriticalLevel;
+	}
 }
 
 
