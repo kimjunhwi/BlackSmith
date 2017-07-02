@@ -19,6 +19,7 @@ public class BossSasin : BossCharacter
 
 	public SpriteRenderer bossImage;
 	public BossPopUpWindow bossPopUpWindow;
+	public BossEffect bossEffect;
 
 	private bool isFailed = false;
 
@@ -46,6 +47,7 @@ public class BossSasin : BossCharacter
 
 		//Debug.Log (fXPos + "," + fYPos);
 		bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
+		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
 		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
@@ -180,6 +182,7 @@ public class BossSasin : BossCharacter
 	{
 		float fTime = 0f;
 		GameObject Skull;
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		while (true)
 		{
 			
@@ -284,6 +287,7 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		while (true)
 		{
 

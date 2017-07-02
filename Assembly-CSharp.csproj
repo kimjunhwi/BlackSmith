@@ -91,6 +91,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossConsumeItemInfo.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossCreator.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossEffect.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossElement.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossFire.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossIce.cs" />
