@@ -23,7 +23,7 @@ public class BossCharacter : Character
 
 
 
-	public Boss boss;
+	public Boss bossInfo;
 	public int nIndex;
 	public RepairObject repairObj;
 	public EBOSS_STATE eCureentBossState;
@@ -41,6 +41,6 @@ public class BossCharacter : Character
 	void Awake()
 	{
 		repairObj = FindObjectOfType<RepairObject> ();
-		bossAppearAndDisappearPos = GameObject.Find ("BossEffect").GetComponent<RectTransform> ();
+		//bossAppearAndDisappearPos = GameObject.Find ("BossEffect").GetComponent<RectTransform> ();
 	}
 }

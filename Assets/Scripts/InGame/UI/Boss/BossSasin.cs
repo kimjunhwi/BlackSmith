@@ -19,6 +19,7 @@ public class BossSasin : BossCharacter
 
 	public SpriteRenderer bossImage;
 	public BossPopUpWindow bossPopUpWindow;
+	public BossEffect bossEffect;
 
 	private bool isFailed = false;
 
@@ -28,11 +29,13 @@ public class BossSasin : BossCharacter
 
 	Animator animator;
 
+	bool isFirstActive = false;
+
 	private void Start()
 	{
 		bossImage = GetComponent<SpriteRenderer> ();
-		bossImage.enabled = false;
-		bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
+		//bossImage.enabled = false;
+		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
 		skullObjectPool = GameObject.Find ("SkullPool").GetComponent<SimpleObjectPool> ();
 		bossAppearEffectPool = GameObject.Find ("BossAppearPool").GetComponent<SimpleObjectPool> ();
 		bossDisappearEffectPool = GameObject.Find ("BossDisappearPool ").GetComponent<SimpleObjectPool> ();
@@ -44,15 +47,34 @@ public class BossSasin : BossCharacter
 
 		//Debug.Log (fXPos + "," + fYPos);
 		bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
+		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
-
-		eCureentBossState = EBOSS_STATE.CREATEBOSS;
-		StartCoroutine (BossWait ());
-
-
+		gameObject.SetActive (false);
+		animator = gameObject.GetComponent<Animator> ();
 	}
+	private void OnEnable()
+	{
+		if (isFirstActive == false) {
+			isFirstActive = true;
+		} 
+		else {
 
 
+			eCureentBossState = EBOSS_STATE.CREATEBOSS;
+
+			StartCoroutine (BossWait ());
+		}
+	
+	}
+	private void OnDisable()
+	{
+		StopCoroutine (BossWait ());
+		StopCoroutine (BossSkillStandard ());
+		StopCoroutine (BossSkill_01 ());
+		StopCoroutine (BossSKill_02 ());
+		StopCoroutine (BossDie ());
+		StopCoroutine (BossResult ());
+	} 
 
 	private void Update()
 	{
@@ -66,17 +88,23 @@ public class BossSasin : BossCharacter
 			Debug.Log ("Finish Boss");
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 			repairObj.SetFinishBoss ();		//수리 패널 초기화
+			eCureentBossState = EBOSS_STATE.CREATEBOSS;
+			isFailed = false;
 
-			bossBackGround.isBossBackGround = false;
-			bossBackGround.isOriginBackGround = false;
+			if (bossBackGround.isBossBackGround == true) {
+				SpawnManager.Instance.bIsBossCreate = false;
+				bossBackGround.isBossBackGround = false;
+				bossBackGround.isOriginBackGround = true;
+			}
+		
 
-			SpawnManager.Instance.bIsBossCreate = false;
-			Destroy (gameObject);
+			gameObject.SetActive (false);
 			while (bossSkullRespawnPoint.childCount != 0) 
 			{
 				GameObject go = bossSkullRespawnPoint.GetChild (0).gameObject;
 				skullObjectPool.ReturnObject(go);
 			}
+
 		}		
 	}
 
@@ -85,35 +113,32 @@ public class BossSasin : BossCharacter
 
 		while (true)
 		{
+			
 			//무기 이미지 추가
-			repairObj.GetBossWeapon(GameManager.Instance.cWeaponInfo[0],GameManager.Instance.bossInfo[1].fComplate,0,0 , boss  , this);
 			if (bossBackGround.isBossBackGround == true) {
-				//등장 이펙트
+				
+				animator.SetBool ("isBackGroundChanged", true);
 
-				//AnimationClip
-				bossAppear_AnimationObject = bossAppearEffectPool.GetObject ();
-				animator = bossAppear_AnimationObject.GetComponent<Animator> ();
-				animator.Play ("SasinAppear");
+				if (animator.GetCurrentAnimatorStateInfo (0).length > 1.0f) {
+					yield return new WaitForSeconds (0.5f);
+					animator.SetBool ("isAppear", true);
+					eCureentBossState = EBOSS_STATE.PHASE_00;
 
-				bossAppear_AnimationObject.transform.SetParent (bossAppearAndDisappearPos.transform);
-				bossAppear_AnimationObject.transform.position = bossAppearAndDisappearPos.transform.transform.position;
-				yield return new WaitForSeconds (1.3f);
-				animator.Play ("SasinAppearIdle");
-				yield return new WaitForSeconds (0.1f);
-				bossImage.enabled = true;
+				} 
+				else
+					yield return null;
 
-				bossAppearEffectPool.ReturnObject (bossAppear_AnimationObject);
-				//Debug.Log ("BossWait Active!!");
-				//eCureentBossState = EBOSS_STATE.PHASE_00;
 
-				eCureentBossState = EBOSS_STATE.PHASE_00;
+				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
+					repairObj.GetBossWeapon (GameManager.Instance.cWeaponInfo [0], bossInfo.fComplate, 0, 0, bossInfo, this);
 
-				if (eCureentBossState == EBOSS_STATE.PHASE_00)
 					break;
-			} else
+				}
+			}
+			else
 				yield return null;
 		
-			
+
 		}
 		StartCoroutine (BossSkillStandard ());
 		yield break;
@@ -125,7 +150,7 @@ public class BossSasin : BossCharacter
 		{
 			
 			float fCurComplete = repairObj.GetCurCompletion ();
-			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
+			float fMaxComplete = bossInfo.fComplate;
 
 			if (fCurComplete < 0) {
 				isFailed = true;
@@ -157,6 +182,7 @@ public class BossSasin : BossCharacter
 	{
 		float fTime = 0f;
 		GameObject Skull;
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		while (true)
 		{
 			
@@ -234,7 +260,7 @@ public class BossSasin : BossCharacter
 				fTime = 0f;
 			}
 			float fCurComplete = repairObj.GetCurCompletion ();
-			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
+			float fMaxComplete = bossInfo.fComplate;
 
 			if (fCurComplete < 0) {
 				isFailed = true;
@@ -261,29 +287,45 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		while (true)
 		{
 
-
+			/*
 			bossDisappear_AnimationObject = bossDisappearEffectPool.GetObject();
 			bossDisappear_AnimationObject.transform.SetParent (bossAppearAndDisappearPos.transform);
 			bossDisappear_AnimationObject.transform.position = bossAppearAndDisappearPos.transform.transform.position;
 			animator = bossDisappear_AnimationObject.GetComponent<Animator> ();
 			animator.Play ("SasinDisAppear");
-			yield return new WaitForSeconds (0.3f);
+			yield return new WaitForSeconds (0.5f);
 			bossImage.enabled = false;
-			yield return new WaitForSeconds (1.0f);
-			animator.Play ("SasinDisappearIdle");
+			yield return new WaitForSeconds (0.6f);
+			animator.Play ("SasinAppearIdle");
 			yield return new WaitForSeconds (0.1f);
 			bossDisappearEffectPool.ReturnObject (bossDisappear_AnimationObject);
+			*/
+
+			animator.SetBool ("isDisappear", true);
+
+			yield return new WaitForSeconds (0.1f);
 
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
+			{
+				animator.SetBool ("isAppear", false);
+				animator.SetBool ("isDisappear", false);
+				animator.SetBool ("isBackGroundChanged", false);	
+			
 				break;
+			}
 			else
 				yield return null;
 		}
+
+
+
 		StartCoroutine (BossResult ());
+
 		yield break;
 	}
 
@@ -293,6 +335,7 @@ public class BossSasin : BossCharacter
 		{
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
+			animator.Play ("BossSasinIdle");
 			bossPopUpWindow.PopUpWindowReward_Switch();
 			bossPopUpWindow.GetBossInfo (this);
 			eCureentBossState = EBOSS_STATE.FINISH;

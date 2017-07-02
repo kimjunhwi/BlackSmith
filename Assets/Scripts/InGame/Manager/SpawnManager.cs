@@ -172,6 +172,20 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
             tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair, _fComplate, _fTemperator);
     }
 
+	public float GetActiveArbaitRepair()
+	{
+		float fResultValue = 0.0f;
+
+		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
+
+			if (m_BatchArbait [nIndex].activeSelf) {
+				fResultValue += array_ArbaitData [nIndex].arbaitData.fRepairPower;
+			}
+		}
+
+		return fResultValue;
+	}
+
     public void ComplateCharacter(GameObject _obj,float fComplate)
     {
         GameObject tempObject = null;
@@ -408,6 +422,22 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
             nIndex++;
         }
     }
+
+    public float ActtiveArbaitRepair()
+    {
+        float fResultValue = 0.0f;
+
+        for(int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+        {
+            if(m_BatchArbait[nIndex].activeSelf)
+            {
+                fResultValue += array_ArbaitData[nIndex].arbaitData.fRepairPower;
+            }
+        }
+
+        return fResultValue;
+    }
+
 
     #endregion
 }

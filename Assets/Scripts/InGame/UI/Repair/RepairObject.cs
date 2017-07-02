@@ -91,7 +91,7 @@ public class RepairObject : MonoBehaviour {
 		fPlusWater = player.GetWaterPlus ();
 		fMaxWater = player.GetMaxWaterPlus();
 		fWeaponDownDamage = player.GetRepairPower ();
-		fWeaponDownDamage += 30;
+		//fWeaponDownDamage += 30;
 		fMinusTemperature = player.GetTemperatureMinus ();
 
 		TemperatureSlider.maxValue = fMaxTemperature;
@@ -174,7 +174,9 @@ public class RepairObject : MonoBehaviour {
 	public void GetBossWeapon(CGameWeaponInfo data, float _fMaxBossComplete ,float _fComplate,
 		float _fTemperator , Boss _bossData, BossSasin _bossSasinData)
 	{
-
+		Debug.Log ("Arbait Get Damage!");
+		//fWeaponDownDamage += SpawnManager.Instance.GetActiveArbaitRepair ();
+		fWeaponDownDamage = player.GetRepairPower ();
 		bossWeaponObject.SetActive (true);
 		bossWaterObject.SetActive (true);
 		WeaponObject.SetActive (false);
@@ -248,6 +250,7 @@ public class RepairObject : MonoBehaviour {
 
 	public void TouchBossWeapon()
 	{
+		
 		int nRandom = Random.Range (0, 100);
 
 		if (bossCharacter == null)
