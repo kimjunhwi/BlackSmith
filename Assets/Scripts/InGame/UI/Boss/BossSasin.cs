@@ -24,8 +24,6 @@ public class BossSasin : BossCharacter
 	private bool isFailed = false;
 
 
-	GameObject bossAppear_AnimationObject;
-	GameObject bossDisappear_AnimationObject;
 
 	Animator animator;
 
@@ -37,10 +35,7 @@ public class BossSasin : BossCharacter
 		//bossImage.enabled = false;
 		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
 		skullObjectPool = GameObject.Find ("SkullPool").GetComponent<SimpleObjectPool> ();
-		bossAppearEffectPool = GameObject.Find ("BossAppearPool").GetComponent<SimpleObjectPool> ();
-		bossDisappearEffectPool = GameObject.Find ("BossDisappearPool ").GetComponent<SimpleObjectPool> ();
-
-
+	
 		bossSkullRespawnPoint = GameObject.Find ("BossSkullCreateArea2").GetComponent<RectTransform>();
 		fXPos = bossSkullRespawnPoint.position.x;
 		fYPos = bossSkullRespawnPoint.position.y;
@@ -130,7 +125,7 @@ public class BossSasin : BossCharacter
 
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-					repairObj.GetBossWeapon (GameManager.Instance.cWeaponInfo [0], bossInfo.fComplate, 0, 0, bossInfo, this);
+					repairObj.GetBossWeapon (GameManager.Instance.cWeaponInfo [0], bossInfo.fComplate, 0, 0, this);
 
 					break;
 				}
@@ -191,6 +186,12 @@ public class BossSasin : BossCharacter
 
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (bossSkullRespawnPoint.sizeDelta.y/2), fYPos + (bossSkullRespawnPoint.sizeDelta.y/2));
+
+			if (fRandomXPos < 0)
+				fRandomXPos = 35f;
+			if (fRandomXPos > 720)
+				fRandomXPos = 690f;
+
 
 			fTime += Time.deltaTime;
 			//해골 생성 

@@ -42,13 +42,12 @@ public class RepairObject : MonoBehaviour {
 	Player player;
 
 	//Boss
-	Boss bossCharacter;					//보스 캐릭터 받는 것
+	BossCharacter bossCharacter;		//보스 캐릭터 받는 것
 	private float fBossMaxComplete;		//보스 캐릭터 최대 완성도
 	GameObject waterObject;				//물 오브젝트
 	GameObject bossWeaponObject;		//보스 무기 버튼
 	GameObject bossWaterObject;			//보스 물 버튼 
 
-	BossSasin bossSasin;
 
 	int nChancePercent = 100;			//성공확률
 
@@ -172,7 +171,7 @@ public class RepairObject : MonoBehaviour {
     }
 
 	public void GetBossWeapon(CGameWeaponInfo data, float _fMaxBossComplete ,float _fComplate,
-		float _fTemperator , Boss _bossData, BossSasin _bossSasinData)
+		float _fTemperator , BossCharacter _bossData)
 	{
 		Debug.Log ("Arbait Get Damage!");
 		//fWeaponDownDamage += SpawnManager.Instance.GetActiveArbaitRepair ();
@@ -188,7 +187,7 @@ public class RepairObject : MonoBehaviour {
 		else if (_bossData.nIndex == 1)
 		{
 			bossCharacter = _bossData;
-			bossSasin = _bossSasinData;
+			//bossSasin = _bossSasinData;
 		}
 			
 		else if (_bossData.nIndex == 2)
@@ -201,16 +200,16 @@ public class RepairObject : MonoBehaviour {
 		BossWeaponSprite.sprite = data.WeaponSprite;
 		//weaponData = data;
 
-		fMaxTemperature = bossCharacter.fComplate * 0.3f;
+		fMaxTemperature = bossCharacter.bossInfo.fComplate * 0.3f;
 		TemperatureSlider.maxValue = fMaxTemperature;
 
 		fCurrentComplate = _fComplate;
-		fBossMaxComplete = bossCharacter.fComplate ;
+		fBossMaxComplete = bossCharacter.bossInfo.fComplate ;
 		ComplateSlider.maxValue = _fMaxBossComplete;
 		ComplateSlider.value = fCurrentComplate;
 
 		fCurrentTemperature = _fTemperator;
-		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.fComplate);
+		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
 	}
 
     //무기터치
@@ -258,23 +257,23 @@ public class RepairObject : MonoBehaviour {
 		//Sasin
 		if (bossCharacter.nIndex == 1 ) 
 		{ 
-			if (bossSasin.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
 				Debug.Log ("SasinPhase00");
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.fComplate * 0.01f);
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 
 			}
-			else if (bossSasin.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossSasin.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
 				Debug.Log ("SasinPhase01");
 				if (nRandom <= nChancePercent) {
 					Debug.Log ("SasinPhase01");
 					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.fComplate * 0.01f);
+					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 				}
 				else
 					Debug.Log ("Miss");
 			} 
-			else if (bossSasin.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
 			{
 				Debug.Log ("SasinPhase02");
 
@@ -283,7 +282,7 @@ public class RepairObject : MonoBehaviour {
 					//Debug.Log ("SasinPhase02");
 					fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
 					fCurrentComplate = fCurrentComplate  + fWeaponDownDamage;
-					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.fComplate * 0.01f);
+					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 					fWeaponDownDamage = 40;
 				}
 
@@ -291,7 +290,45 @@ public class RepairObject : MonoBehaviour {
 					Debug.Log ("Miss");
 			}
 		}
-			
+
+		//MusicMan
+		if (bossCharacter.nIndex == 3 ) 
+		{ 
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
+				Debug.Log ("MusicPhase00");
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+
+			}
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
+				Debug.Log ("MusicPhase01");
+				if (nRandom <= nChancePercent) {
+					Debug.Log ("MusicPhase01");
+					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+				}
+				else
+					Debug.Log ("Miss");
+			} 
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
+			{
+				Debug.Log ("MusicPhase02");
+
+				if (nRandom <= nChancePercent) 
+				{
+					//Debug.Log ("SasinPhase02");
+					fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
+					fCurrentComplate = fCurrentComplate  + fWeaponDownDamage;
+					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+					fWeaponDownDamage = 40;
+				}
+
+				else
+					Debug.Log ("Miss");
+			}
+		}
+
+
 		//온도
 		if(fCurrentTemperature >= fMaxTemperature)
 		{
@@ -317,7 +354,7 @@ public class RepairObject : MonoBehaviour {
 
 		TemperatureSlider.value = fCurrentTemperature;
 		
-		ComplateText.text = string.Format("{0} / {1}", ComplateSlider.value, bossCharacter.fComplate);
+		ComplateText.text = string.Format("{0} / {1}", ComplateSlider.value, bossCharacter.bossInfo.fComplate);
 
 
 
@@ -382,8 +419,8 @@ public class RepairObject : MonoBehaviour {
 
 			WaterSlider.value = fCurrentWater;
 
-			if (fCurrentComplate > bossCharacter.fComplate)
-				fCurrentComplate = bossCharacter.fComplate;
+			if (fCurrentComplate > bossCharacter.bossInfo.fComplate)
+				fCurrentComplate = bossCharacter.bossInfo.fComplate;
 
 			if (fCurrentWater < 0)
 				fCurrentWater = 0;
@@ -396,9 +433,9 @@ public class RepairObject : MonoBehaviour {
 			ComplateSlider.value = (float)nCurComplete;
 			TemperatureSlider.value = fCurrentTemperature;
 
-			ComplateText.text = string.Format ("{0} / {1}", ComplateSlider.value, bossCharacter.fComplate);
+			ComplateText.text = string.Format ("{0} / {1}", ComplateSlider.value, bossCharacter.bossInfo.fComplate);
 
-			if (ComplateSlider.value >= bossCharacter.fComplate) {
+			if (ComplateSlider.value >= bossCharacter.bossInfo.fComplate) {
 				SpawnManager.Instance.bIsBossCreate = false;
 				//bossCharacter.
 			}

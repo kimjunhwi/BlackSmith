@@ -109,14 +109,17 @@ public class BossCreator : MonoBehaviour
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 		{
-			GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossMusic"));
-			bossInstance.transform.SetParent (bossRespawnPoint.transform);
-			bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
+			//GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossMusic"));
+			//bossInstance.transform.SetParent (bossRespawnPoint.transform);
+			//bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
 			//bossInstance.AddComponent<BossSasin> ();
-			BossMusic bossMusic = bossInstance.GetComponent<BossMusic> ();
+
+			bossList [3].SetActive (true);
+			BossMusic bossMusic = bossList[3].GetComponent<BossMusic> ();
+
 			bossMusic.nIndex = _index;
 			bossMusic.bossInfo = GameManager.Instance.bossInfo [_index];
-			SpawnManager.Instance.AllCharacterComplate ();
+
 			nBossMusicLeftCount--;
 		}
 

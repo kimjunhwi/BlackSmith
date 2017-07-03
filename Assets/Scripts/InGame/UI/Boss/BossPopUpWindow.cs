@@ -35,7 +35,7 @@ public class BossPopUpWindow : MonoBehaviour
 
 	private bool isActivePopUp =false;
 
-	public BossSasin bossSasin;
+	public BossCharacter bossInfo;
 
 	public Image BossRewardBackGround;
 
@@ -119,7 +119,7 @@ public class BossPopUpWindow : MonoBehaviour
 	{
 		if (PopUpWindow_Reward.activeSelf != true) 
 		{
-			//bossSasin.ItemInfo.....
+			//bossInfo.ItemInfo.....
 
 			PopUpWindow_Reward.SetActive (true);
 		}
@@ -132,9 +132,10 @@ public class BossPopUpWindow : MonoBehaviour
 		nBossIndex = _index;
 	}
 
-	public void GetBossInfo(BossSasin _bossSasin)
+	public void GetBossInfo(BossCharacter _bossSasin)
 	{
-		bossSasin = _bossSasin;
+		//if(_bossSasin
+		bossInfo = _bossSasin;
 	}
 
 	public void SetBossRewardBackGroundImage(bool _isFailed)
