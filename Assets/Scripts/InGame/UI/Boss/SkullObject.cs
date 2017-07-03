@@ -7,15 +7,14 @@ using UnityEngine.EventSystems;
 public class SkullObject : MonoBehaviour ,IPointerDownHandler 
 {
 
-	GameObject getInfoGameObject;
-	public SimpleObjectPool skullObjPull;
-	public RectTransform parentTransform;
-	private RectTransform myRectTransform;
+	GameObject getInfoGameObject;				//터치하는 오브젝트 정보
+	public SimpleObjectPool skullObjPull;		//해당 오브젝트 풀
+	public RectTransform parentTransform;		
+	private RectTransform myRectTransform;		
 
 	public RepairObject repairObj;
 
 	//private;
-
 	public float fTime;
 
 	private float fRandomX;
