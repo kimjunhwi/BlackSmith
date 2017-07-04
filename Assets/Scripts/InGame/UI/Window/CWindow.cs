@@ -17,7 +17,7 @@ public class CWindow : MonoBehaviour {
 
     public Action<string> callback_func = null;
 
-    bool m_Active = false;   // 활성여부.
+    bool        m_Active = false;   // 활성여부.
         
     //void Start()
     //{
