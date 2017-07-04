@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bossweapon : MonoBehaviour 
-{
+public class Bossweapon : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
