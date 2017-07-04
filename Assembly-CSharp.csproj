@@ -100,6 +100,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossRewardFx.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\Bossweapon.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\NoteObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\AccuracyPanelUI.cs" />

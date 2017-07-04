@@ -47,7 +47,12 @@ public class RepairObject : MonoBehaviour {
 	GameObject waterObject;				//물 오브젝트
 	GameObject bossWeaponObject;		//보스 무기 버튼
 	GameObject bossWaterObject;			//보스 물 버튼 
-
+	//BossMusic
+	private float canvasWidth = 720f;
+	private float canvasHeight = 1130f;
+	private float fMoveSpeed = 200.0f;
+	private Vector3 randomDir;
+	private RectTransform BossMusicWeaponRect;
 
 	int nChancePercent = 100;			//성공확률
 
@@ -104,6 +109,43 @@ public class RepairObject : MonoBehaviour {
 		bossWaterObject.SetActive (false);
 		WeaponObject.SetActive (true);
 		waterObject.SetActive (true);
+
+
+	}
+
+	public IEnumerator BossMusicWeaponMove()
+	{
+		BossMusicWeaponRect = bossWeaponObject.GetComponent<RectTransform> ();
+		while (true) {
+			bossWeaponObject.transform.Translate ( randomDir * fMoveSpeed * Time.deltaTime);
+
+			//4면 충돌 확인
+			if (BossMusicWeaponRect.anchoredPosition.x >= ((canvasWidth / 2) - (BossMusicWeaponRect.sizeDelta.x / 2))) {
+				//Debug.Log ("Right Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.left);
+			}
+
+			if (BossMusicWeaponRect.anchoredPosition.x <= -((canvasWidth / 2) - (BossMusicWeaponRect.sizeDelta.x  / 2))) 
+			{
+				//Debug.Log ("Left Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.right);
+			}
+
+			if (BossMusicWeaponRect.anchoredPosition.y >= ((canvasHeight / 2) - (BossMusicWeaponRect.sizeDelta.y / 2))) 
+			{
+				//Debug.Log ("Top Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.down);
+			}
+
+			if (BossMusicWeaponRect.anchoredPosition.y <= -((canvasHeight / 2) - (BossMusicWeaponRect.sizeDelta.y / 2))) {
+				//Debug.Log ("Down Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.up);
+
+			}
+			yield return null;
+
+		}
+		yield return null;
 	}
 
     IEnumerator PlusWater()
@@ -196,6 +238,9 @@ public class RepairObject : MonoBehaviour {
 			bossCharacter = _bossData;
 		else
 			return;
+		//MusicBoss Weapon Move
+		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC)
+			//StartCoroutine (BossMusicWeaponMove ());
 
 		BossWeaponSprite.sprite = data.WeaponSprite;
 		//weaponData = data;
