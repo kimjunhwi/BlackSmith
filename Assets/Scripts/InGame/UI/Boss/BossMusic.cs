@@ -162,10 +162,10 @@ public class BossMusic : BossCharacter
 				Note = noteObjectPool.GetObject ();
 				Note.transform.SetParent (bossNoteRespawnPoint.transform);
 				Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-				Note.name = "Music";
+				Note.name = "Note";
 
 				NoteObject noteObj = Note.GetComponent<NoteObject> ();
-				noteObj.skullObjPull = noteObjectPool;
+				noteObj.noteObjPull = noteObjectPool;
 				noteObj.parentTransform = bossNoteRespawnPoint;
 				noteObj.fTime = nContinueTime;
 				noteObj.repairObj = repairObj;
@@ -220,10 +220,10 @@ public class BossMusic : BossCharacter
 				Note = noteObjectPool.GetObject ();
 				Note.transform.SetParent (bossNoteRespawnPoint.transform);
 				Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-				Note.name = "Music";
+				Note.name = "Note";
 
 				NoteObject noteObj = Note.GetComponent<NoteObject> ();
-				noteObj.skullObjPull = noteObjectPool;
+				noteObj.noteObjPull = noteObjectPool;
 				noteObj.parentTransform = bossNoteRespawnPoint;
 				noteObj.fTime = nContinueTime;
 				noteObj.repairObj = repairObj;
@@ -270,10 +270,10 @@ public class BossMusic : BossCharacter
 				Note = noteObjectPool.GetObject ();
 				Note.transform.SetParent (bossNoteRespawnPoint.transform);
 				Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-				Note.name = "Music";
+				Note.name = "Note";
 
 				NoteObject noteObj = Note.GetComponent<NoteObject> ();
-				noteObj.skullObjPull = noteObjectPool;
+				noteObj.noteObjPull = noteObjectPool;
 				noteObj.parentTransform = bossNoteRespawnPoint;
 				noteObj.fTime = nContinueTime;
 				noteObj.repairObj = repairObj;

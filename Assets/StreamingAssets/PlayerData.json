@@ -2,7 +2,7 @@
 "list": [
 	{
 	"strName" : "player",
-	"fRepairPower" : 100,
+	"fRepairPower" : 40,
     "fTemperatureMinus" : 0,
     "fArbaitsPower" : 0,
     "fHornorPlusPercent" : 0,

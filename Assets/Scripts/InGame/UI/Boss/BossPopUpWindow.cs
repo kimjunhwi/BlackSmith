@@ -45,9 +45,15 @@ public class BossPopUpWindow : MonoBehaviour
 
 
 	Vector3 ViewportPosition;
+
+	public BossEffect bossEffect;
 	Camera cam;
+
 	void Start()
 	{
+
+		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
+		 
 		PopUpWindow_Yes_Text = PopUpWindow_Yes.GetComponentInChildren<Text> ();
 		PopUpWindow_Yes_Button = PopUpWindow_Yes.GetComponentInChildren<Button> ();
 
@@ -117,6 +123,7 @@ public class BossPopUpWindow : MonoBehaviour
 
 	public void PopUpWindowReward_Switch()
 	{
+		//bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		if (PopUpWindow_Reward.activeSelf != true) 
 		{
 			//bossInfo.ItemInfo.....

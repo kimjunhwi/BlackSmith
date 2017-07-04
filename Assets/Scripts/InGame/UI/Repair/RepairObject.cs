@@ -49,14 +49,33 @@ public class RepairObject : MonoBehaviour {
 	GameObject bossWaterObject;			//보스 물 버튼 
 
 
-	int nChancePercent = 100;			//성공확률
-
 	Image BossWeaponAlphaSprite;
 	Image BossWeaponSprite;
+
+	//BossSasinText
+	//tmp value
+	private GameObject textObj;
+	BossMissText bossMissText;
+	public RectTransform textRectTrasnform;
+	//textPool
+	public SimpleObjectPool textObjectPool;
+	//RandomPosition
+	private float fRandomXPos;
+	private float fRandomYPos;
+	private float fXPos;
+	private float fYPos;
+
+	int nChancePercent = 50;			//미스 확률
+
 
 
 	void Start()
 	{
+		fXPos = textRectTrasnform.position.x;
+		fYPos = textRectTrasnform.position.y;
+
+		fRandomXPos = 0;
+		fRandomYPos = 0;
 		WaterSlider.minValue = 0;
 		ComplateSlider.minValue = 0;
 		TemperatureSlider.minValue = 0;
@@ -187,7 +206,7 @@ public class RepairObject : MonoBehaviour {
 		else if (_bossData.nIndex == 1)
 		{
 			bossCharacter = _bossData;
-			//bossSasin = _bossSasinData;
+		
 		}
 			
 		else if (_bossData.nIndex == 2)
@@ -196,7 +215,7 @@ public class RepairObject : MonoBehaviour {
 			bossCharacter = _bossData;
 		else
 			return;
-
+		//input Image
 		BossWeaponSprite.sprite = data.WeaponSprite;
 		//weaponData = data;
 
@@ -252,6 +271,9 @@ public class RepairObject : MonoBehaviour {
 		
 		int nRandom = Random.Range (0, 100);
 
+		fRandomXPos = Random.Range (fXPos - (textRectTrasnform.sizeDelta.x/2), fXPos + (textRectTrasnform.sizeDelta.x/2));
+		fRandomYPos = Random.Range (fYPos - (textRectTrasnform.sizeDelta.y/2), fYPos + (textRectTrasnform.sizeDelta.y/2));
+		Debug.Log(fRandomXPos + "," +fRandomYPos);
 		if (bossCharacter == null)
 			return;
 		//Sasin
@@ -269,25 +291,43 @@ public class RepairObject : MonoBehaviour {
 					Debug.Log ("SasinPhase01");
 					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-				}
-				else
+				} else {
 					Debug.Log ("Miss");
+
+					textObj = textObjectPool.GetObject ();
+					textObj.transform.SetParent (textRectTrasnform.transform);
+					textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, textObj.transform.position.z);
+					textObj.name ="Miss";
+
+					bossMissText = textObj.GetComponent<BossMissText> ();
+					bossMissText.textObjPool = textObjectPool;
+					bossMissText.leftSecond = 2.0f;
+					bossMissText.parentTransform = textRectTrasnform;
+				}
 			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
 			{
 				Debug.Log ("SasinPhase02");
 
-				if (nRandom <= nChancePercent) 
-				{
+				if (nRandom <= nChancePercent) {
 					//Debug.Log ("SasinPhase02");
 					fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
-					fCurrentComplate = fCurrentComplate  + fWeaponDownDamage;
+					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 					fWeaponDownDamage = 40;
-				}
-
-				else
+				} else {
 					Debug.Log ("Miss");
+					textObj = textObjectPool.GetObject ();
+					textObj.transform.SetParent (textRectTrasnform.transform);
+					textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, 0);
+					textObj.name ="Miss";
+
+					bossMissText = textObj.GetComponent<BossMissText> ();
+					bossMissText.textObjPool = textObjectPool;
+					bossMissText.leftSecond = 2.0f;
+					bossMissText.parentTransform = textRectTrasnform;
+				}
+					
 			}
 		}
 
@@ -415,7 +455,7 @@ public class RepairObject : MonoBehaviour {
 			fCurrentWater -= fMinusTemperature;
 			fCurrentTemperature = fMinusTemperature;
 
-			fCurrentComplate += fMinusWater;
+			fCurrentComplate -= fMinusWater;
 
 			WaterSlider.value = fCurrentWater;
 
@@ -482,6 +522,10 @@ public class RepairObject : MonoBehaviour {
 	{
 		fCurrentComplate -= _value;
 		ComplateSlider.value = fCurrentComplate;
+
+		int nCurComplete = (int)fCurrentComplate;
+
+
 		ComplateText.text = string.Format("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 	}
 	public void SetFinishBoss()

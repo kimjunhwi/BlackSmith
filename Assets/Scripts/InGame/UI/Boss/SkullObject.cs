@@ -15,21 +15,22 @@ public class SkullObject : MonoBehaviour ,IPointerDownHandler
 	public RepairObject repairObj;
 
 	//private;
-	public float fTime;
+	public float fTime;							//남은 시간을 줄여주는 시간
+		
+	private float fRandomX;						//랜덤 방향 X
+	private float fRandomY;						//랜덤 방향 Y
+	private float fMoveSpeed = 100.0f;			//속도
 
-	private float fRandomX;
-	private float fRandomY;
-	private float fMoveSpeed = 100.0f;
+	private Vector3 randomDir;					//랜덤 방향  
+								
+												//충돌범위
+	private float canvasWidth = 720f;			//캔버스 가로
+	private float canvasHeight = 520f;			//캔버스 세로
 
-	private Vector3 randomDir;
-
-	private float canvasWidth = 720f;
-	private float canvasHeight = 520f;
-
-	private float skullSizeWidth = 60f;
+	//해골 사이즈
+	private float skullSizeWidth = 80f;			
 	private float skullSizeHeight = 80f;
 
-	Vector2 vec2;
 	void Start()
 	{
 		myRectTransform = GetComponent<RectTransform> ();
@@ -44,8 +45,6 @@ public class SkullObject : MonoBehaviour ,IPointerDownHandler
 	void Update()
 	{
 		fTime -= Time.deltaTime;
-		vec2 = new Vector2 (myRectTransform.anchoredPosition.x, myRectTransform.anchoredPosition.y);
-
 
 		//지속 시간
 		if (fTime <= 0f)
@@ -89,7 +88,7 @@ public class SkullObject : MonoBehaviour ,IPointerDownHandler
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
 
-			repairObj.SetCurCompletion (fMaxComplete * 0.3f);
+			repairObj.SetCurCompletion (fMaxComplete * 0.03f);
 			skullObjPull.ReturnObject (gameObject);
 		
 		}
