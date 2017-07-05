@@ -1007,9 +1007,46 @@ public class ArbaitData
 	public bool bIsBuyCheck;
 
 
-	public ArbaitData(int nValue)
+	public ArbaitData(ArbaitData _data)
 	{
-		Debug.Log (nValue);
+		index = _data.index;
+
+		level= _data.level;
+		name = _data.name;
+
+		strAnimation = _data.strAnimation;
+
+		grade = _data.grade;
+
+		batch = _data.batch;
+
+		fRepairPower = _data.fRepairPower;
+
+		fAttackSpeed = _data.fAttackSpeed;
+
+		fCritical = _data.fCritical;
+
+		fAccuracyRate = _data.fAccuracyRate;
+
+		strBuffIndexs= _data.strBuffIndexs;
+
+		strExplains= _data.strExplains;
+
+		fSkillPercent= _data.fSkillPercent;
+
+		fCurrentFloat= _data.fCurrentFloat;
+
+		nScoutCount= _data.nScoutCount;
+
+		nScoutGold= _data.nScoutGold;
+
+		nScoutHonor= _data.nScoutHonor;
+
+		nScoutDia= _data.nScoutDia;
+
+		nIsDia= _data.nIsDia;
+
+		bIsBuyCheck= _data.bIsBuyCheck;
 	}
 }
 
