@@ -20,6 +20,7 @@ public class Note3Object : MonoBehaviour  ,IPointerDownHandler
 	private float fRandomX;
 	private float fRandomY;
 	private float fMoveSpeed = 200.0f;
+	private float fDecreaseWeaponSpeedRate = 0.1f;
 
 	private Vector3 randomDir;
 
@@ -88,13 +89,15 @@ public class Note3Object : MonoBehaviour  ,IPointerDownHandler
 
 		if (getInfoGameObject.gameObject.name == "Note3") 
 		{
-			//float fCurComplete = repairObj.GetCurCompletion ();
-			//float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
-
-			//repairObj.SetCurCompletion (fMaxComplete * 0.3f);
+			
+			repairObj.MinusWeaponSpeed (fMoveSpeed * (fDecreaseWeaponSpeedRate / 4));
 			note3ObjPull.ReturnObject (gameObject);
-
 		}
 
+	}
+
+	public void EraseObj()
+	{
+		note3ObjPull.ReturnObject (gameObject);
 	}
 }

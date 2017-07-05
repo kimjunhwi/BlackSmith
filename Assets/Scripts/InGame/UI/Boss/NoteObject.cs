@@ -13,7 +13,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 	public SimpleObjectPool noteObjPull;		//해당 오브젝트 풀
 	public RectTransform parentTransform;		
 	private RectTransform myRectTransform;		
-
+	private BossMusic bossMusic;
 	public RepairObject repairObj;
 
 	//private;
@@ -21,7 +21,10 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 	private float fRandomX;
 	private float fRandomY;
-	private float fMoveSpeed = 200.0f;
+	public  float fMoveSpeed = 200.0f;
+	public  float fBossSpeed = 5.0f;
+	private float fDecreaseWeaponSpeedRate = 0.1f;
+
 
 	private Vector3 randomDir;
 
@@ -39,12 +42,14 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 	void Start()
 	{
+		fBossSpeed = 5.0f;
 		myRectTransform = GetComponent<RectTransform> ();
 		fRandomX = Random.Range (-2.0f, 2.0f);
 		fRandomY = Random.Range (-2.0f, 2.0f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 		note2ObjectPool = GameObject.Find ("Note2Pool").GetComponent<SimpleObjectPool>();
+		bossMusic = GameObject.Find ("BossMusic").GetComponent<BossMusic> ();
 	}
 
 
@@ -88,33 +93,53 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 		if (getInfoGameObject.gameObject.name == "Note") 
 		{
-
-			noteObjPull.ReturnObject (gameObject);
-			
-			note2_Left = note2ObjectPool.GetObject ();
-			note2_Left.name = "Note2";
-			note2_Left.transform.SetParent (parentTransform);
-			note2_Left.transform.position = new Vector3 (getInfoGameObject.transform.position.x - 40f, getInfoGameObject.transform.position.y,
-				getInfoGameObject.transform.position.z);
-			
-			note2Obj = note2_Left.GetComponent<Note2Object> ();
-			note2Obj.note2ObjPull = note2ObjectPool;
-			note2Obj.parentTransform = parentTransform;
-			note2Obj.repairObj = repairObj;
-			
-			note2_Right = note2ObjectPool.GetObject ();
-			note2_Right.name = "Note2";
-			note2_Right.transform.SetParent (parentTransform);
-			note2_Right.transform.position = new Vector3 (getInfoGameObject.transform.position.x + 40f, getInfoGameObject.transform.position.y,
-				getInfoGameObject.transform.position.z);
-
-			note2Obj = note2_Right.GetComponent<Note2Object> ();
-			note2Obj.note2ObjPull = note2ObjectPool;
-			note2Obj.parentTransform = parentTransform;
-			note2Obj.repairObj = repairObj;
+			CreateNote ();
 		} 
 		else
 			return;
 
+	}
+
+	public void CreateNote()
+	{
+
+		noteObjPull.ReturnObject (gameObject);
+		repairObj.MinusWeaponSpeed (fBossSpeed * fDecreaseWeaponSpeedRate);
+
+		note2ObjectPool = GameObject.Find ("Note2Pool").GetComponent<SimpleObjectPool>();
+
+
+		note2_Left = note2ObjectPool.GetObject ();
+		note2_Left.name = "Note2";
+		note2_Left.transform.SetParent (parentTransform);
+		note2_Left.transform.position = new Vector3 (gameObject.transform.position.x - 40f, gameObject.transform.position.y,
+			gameObject.transform.position.z);
+
+
+
+		note2Obj = note2_Left.GetComponent<Note2Object> ();
+		note2Obj.note2ObjPull = note2ObjectPool;
+		note2Obj.parentTransform = parentTransform;
+		note2Obj.repairObj = repairObj;
+		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
+
+		note2_Right = note2ObjectPool.GetObject ();
+		note2_Right.name = "Note2";
+		note2_Right.transform.SetParent (parentTransform);
+		note2_Right.transform.position = new Vector3 (gameObject.transform.position.x + 40f, gameObject.transform.position.y,
+			gameObject.transform.position.z);
+
+		note2Obj = note2_Right.GetComponent<Note2Object> ();
+		note2Obj.note2ObjPull = note2ObjectPool;
+		note2Obj.parentTransform = parentTransform;
+		note2Obj.repairObj = repairObj;
+		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
+
+		bossMusic.nNoteCount--;
+	}
+
+	public void EraseObj()
+	{
+		noteObjPull.ReturnObject (gameObject);
 	}
 }

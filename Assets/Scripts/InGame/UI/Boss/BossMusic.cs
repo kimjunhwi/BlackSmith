@@ -21,7 +21,13 @@ public class BossMusic : BossCharacter
 	private int nNoteMaxCount = 7;
 	private float nBossGenerateTime = 2.0f;
 	private float nContinueTime = 10f;
+	private float nBossSpeedIncreaseValue =0f;    //보스 무기 속도 증가량
+	private float nBossSpeedIncreaseRate = 0.1f;  //보스 무기 속도 증가비율
+	private string sBossSprite = "Weapons/Boss/deathnote";
 
+	//임시 변수
+	private float fTime = 0f;					  //보스 리젠 시간
+	GameObject Note;							  //노트 변수
 
 
 	Animator animator;
@@ -30,6 +36,7 @@ public class BossMusic : BossCharacter
 
 	private void Start()
 	{
+		
 		bossImage = GetComponent<SpriteRenderer> ();
 		//bossImage.enabled = false;
 		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
@@ -45,6 +52,8 @@ public class BossMusic : BossCharacter
 
 		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
+
+
 	}
 	private void OnEnable()
 	{
@@ -74,6 +83,7 @@ public class BossMusic : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
+			StopCoroutine (repairObj.BossMusicWeaponMove ());
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
 			StopCoroutine (BossSKill_02 ());
@@ -113,18 +123,19 @@ public class BossMusic : BossCharacter
 
 				animator.SetBool ("isBackGroundChanged", true);
 
-				if (animator.GetCurrentAnimatorStateInfo (0).length > 1.0f) {
+				if (animator.GetCurrentAnimatorStateInfo (0).length > 0.75f) 
+				{
 					yield return new WaitForSeconds (0.5f);
 					animator.SetBool ("isAppear", true);
 					eCureentBossState = EBOSS_STATE.PHASE_00;
-
 				} 
 				else
 					yield return null;
 
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-					repairObj.GetBossWeapon (GameManager.Instance.cWeaponInfo [0], bossInfo.fComplate, 0, 0, this);
+					
+					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossSprite), bossInfo.fComplate, 0, 0, this);
 
 					break;
 				}
@@ -140,36 +151,21 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
-		float fTime = 0f;
-		GameObject Note;
-
-
-		float fCurComplete = repairObj.GetCurCompletion ();
-		float fMaxComplete = bossInfo.fComplate;
-
 		while (true)
 		{
-
-
 			fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
 
 			fTime += Time.deltaTime;
 
-			if (fTime >= nBossGenerateTime && bossNoteRespawnPoint.childCount != nNoteMaxCount) 
+			float fCurComplete = repairObj.GetCurCompletion ();
+			float fMaxComplete =  bossInfo.fComplate;
+
+
+
+			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
 			{
-
-				Note = noteObjectPool.GetObject ();
-				Note.transform.SetParent (bossNoteRespawnPoint.transform);
-				Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-				Note.name = "Note";
-
-				NoteObject noteObj = Note.GetComponent<NoteObject> ();
-				noteObj.noteObjPull = noteObjectPool;
-				noteObj.parentTransform = bossNoteRespawnPoint;
-				noteObj.fTime = nContinueTime;
-				noteObj.repairObj = repairObj;
-				fTime = 0f;
+				CreateNote ();
 			}
 
 			if (fCurComplete < 0) {
@@ -184,9 +180,6 @@ public class BossMusic : BossCharacter
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
 				eCureentBossState = EBOSS_STATE.PHASE_01;
 
-			//yield return new WaitForSeconds (2.0f);
-			//Debug.Log ("BossPhase00 Active!!");
-
 			if (eCureentBossState == EBOSS_STATE.PHASE_01)
 				break;
 			else
@@ -200,37 +193,29 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
-		float fTime = 0f;
-		GameObject Note;
+		
+
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+
+	
 		while (true)
 		{
-
-
-
-
+			
 			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
 
 			fTime += Time.deltaTime;
-			//해골 생성 
-			if (fTime >= nBossGenerateTime && bossNoteRespawnPoint.childCount != nNoteMaxCount) 
+
+			float fCurComplete = repairObj.GetCurCompletion ();
+			float fMaxComplete = bossInfo.fComplate;
+
+			//Note 생성 
+			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
 			{
 
-				Note = noteObjectPool.GetObject ();
-				Note.transform.SetParent (bossNoteRespawnPoint.transform);
-				Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-				Note.name = "Note";
-
-				NoteObject noteObj = Note.GetComponent<NoteObject> ();
-				noteObj.noteObjPull = noteObjectPool;
-				noteObj.parentTransform = bossNoteRespawnPoint;
-				noteObj.fTime = nContinueTime;
-				noteObj.repairObj = repairObj;
-				fTime = 0f;
+				CreateNote ();
 			}
-			float fCurComplete = repairObj.GetCurCompletion ();
-			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
+		
 
 			if (fCurComplete < 0) {
 				isFailed = true;
@@ -255,32 +240,22 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
-		float fTime = 0f;
-		GameObject Note;
+		
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
 
 			fTime += Time.deltaTime;
-			//해골 생성 
-			if (fTime >= nBossGenerateTime && bossNoteRespawnPoint.childCount != nNoteMaxCount) 
-			{
 
-				Note = noteObjectPool.GetObject ();
-				Note.transform.SetParent (bossNoteRespawnPoint.transform);
-				Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-				Note.name = "Note";
-
-				NoteObject noteObj = Note.GetComponent<NoteObject> ();
-				noteObj.noteObjPull = noteObjectPool;
-				noteObj.parentTransform = bossNoteRespawnPoint;
-				noteObj.fTime = nContinueTime;
-				noteObj.repairObj = repairObj;
-				fTime = 0f;
-			}
 			float fCurComplete = repairObj.GetCurCompletion ();
-			float fMaxComplete = bossInfo.fComplate;
+			float fMaxComplete =  bossInfo.fComplate;
+			//Note 생성 
+			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
+			{
+				CreateNote ();
+			}
+
 
 			if (fCurComplete < 0) {
 				isFailed = true;
@@ -311,19 +286,6 @@ public class BossMusic : BossCharacter
 		while (true)
 		{
 
-			/*
-			bossDisappear_AnimationObject = bossDisappearEffectPool.GetObject();
-			bossDisappear_AnimationObject.transform.SetParent (bossAppearAndDisappearPos.transform);
-			bossDisappear_AnimationObject.transform.position = bossAppearAndDisappearPos.transform.transform.position;
-			animator = bossDisappear_AnimationObject.GetComponent<Animator> ();
-			animator.Play ("SasinDisAppear");
-			yield return new WaitForSeconds (0.5f);
-			bossImage.enabled = false;
-			yield return new WaitForSeconds (0.6f);
-			animator.Play ("SasinAppearIdle");
-			yield return new WaitForSeconds (0.1f);
-			bossDisappearEffectPool.ReturnObject (bossDisappear_AnimationObject);
-			*/
 
 			animator.SetBool ("isDisappear", true);
 
@@ -355,7 +317,7 @@ public class BossMusic : BossCharacter
 		{
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
-			animator.Play ("BossSasinIdle");
+			animator.Play ("BossIdle");
 			bossPopUpWindow.PopUpWindowReward_Switch();
 			bossPopUpWindow.GetBossInfo (this);
 			eCureentBossState = EBOSS_STATE.FINISH;
@@ -368,4 +330,25 @@ public class BossMusic : BossCharacter
 		//Destroy (gameObject);
 		yield break;
 	}	
+
+	public void CreateNote()
+	{
+		Note = noteObjectPool.GetObject ();
+		Note.transform.SetParent (bossNoteRespawnPoint.transform);
+		Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
+		Note.name = "Note";
+
+		NoteObject noteObj = Note.GetComponent<NoteObject> ();
+		noteObj.noteObjPull = noteObjectPool;
+		noteObj.parentTransform = bossNoteRespawnPoint;
+		noteObj.fTime = nContinueTime;
+		noteObj.repairObj = repairObj;
+		nBossSpeedIncreaseValue = 5.0f;
+		repairObj.AddBossWeaponSpeed (nBossSpeedIncreaseValue * nBossSpeedIncreaseRate);
+		nBossSpeedIncreaseValue = 0f;
+		fTime = 0f;
+
+		nNoteCount++;
+
+	}
 }

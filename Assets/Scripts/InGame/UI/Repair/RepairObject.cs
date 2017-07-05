@@ -72,11 +72,21 @@ public class RepairObject : MonoBehaviour {
 	private float fRandomY;
 	private float canvasWidth = 65f;
 	private float canvasHeight = 630f;
-	private float fMoveSpeed = 200f;
+	private float fMoveSpeed;
 	private RectTransform bossWeaponRectTransform;
+	public RectTransform bossNoteRectTransform;
+	public BossMusic bossMusic;
+	public NoteObject noteObj;
+	public Note2Object note2Obj;
+	public Note3Object note3Obj;
+	private Transform noteGameObject;							//물 사용시 없어질 노트 obj
+	private Vector3 bossWeaponObjOriginPosition;
+	private bool isMoveWeapon = false;
+
 
 	void Start()
 	{
+		fMoveSpeed = 5f;
 		fXPos = textRectTrasnform.position.x;
 		fYPos = textRectTrasnform.position.y;
 
@@ -96,6 +106,9 @@ public class RepairObject : MonoBehaviour {
 
 		bossWeaponObject = transform.FindChild ("BossWeaponButton").gameObject;
 		bossWaterObject = transform.FindChild ("BossWaterButton").gameObject;
+
+		bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
+			transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
 
         WeaponAlphaSpirte = WeaponObject.transform.GetChild(0).GetComponent<Image>();
         WeaponSprite = WeaponObject.transform.GetChild(1).GetComponent<Image>();
@@ -124,23 +137,39 @@ public class RepairObject : MonoBehaviour {
 		WaterSlider.maxValue = fMaxWater;
 		WaterSlider.value = 0;
 
+		bossWeaponObjOriginPosition = bossWeaponObject.transform.position;
 
 		bossWeaponObject.SetActive (false);
 		bossWaterObject.SetActive (false);
 		WeaponObject.SetActive (true);
 		waterObject.SetActive (true);
 	}
+	public void AddBossWeaponSpeed(float _speed)
+	{
+		fMoveSpeed += _speed;
+		Debug.Log("Plus Cur Speed = " + fMoveSpeed);
+	}
+	public void MinusWeaponSpeed(float _speed)
+	{
+		fMoveSpeed -= _speed;
+		Debug.Log("Minus Cur Speed = " + fMoveSpeed);
+	}
+
 	public IEnumerator BossMusicWeaponMove()
 	{
+		
 		fRandomX = Random.Range (-2.0f, 2.0f);
 		fRandomY = Random.Range (-2.0f, 2.0f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 
 		bossWeaponRectTransform = bossWeaponObject.GetComponent<RectTransform> ();
-		while (true) {
+		while (isMoveWeapon == false)
+		{
+
 			
-			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed * Time.deltaTime);
+			Debug.Log ("MoveBOssWeapon");
+			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed);
 
 			//4면 충돌 확인
 			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - (bossWeaponRectTransform.sizeDelta.x / 2))) {
@@ -162,10 +191,11 @@ public class RepairObject : MonoBehaviour {
 				//Debug.Log ("Down Collision");
 				randomDir = Vector3.Reflect (randomDir, Vector3.up);
 			}
+		
 
 			yield return null;
 		}
-		yield return null;
+		yield break;
 	}
 
     IEnumerator PlusWater()
@@ -232,14 +262,16 @@ public class RepairObject : MonoBehaviour {
         ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fComplate);
     }
 
-	public void GetBossWeapon(CGameWeaponInfo data, float _fMaxBossComplete ,float _fComplate,
+	public void GetBossWeapon(Sprite _sprite, float _fMaxBossComplete ,float _fComplate,
 		float _fTemperator , BossCharacter _bossData)
 	{
 		Debug.Log ("Arbait Get Damage!");
 		//fWeaponDownDamage += SpawnManager.Instance.GetActiveArbaitRepair ();
+
 		fWeaponDownDamage = player.GetRepairPower ();
 		bossWeaponObject.SetActive (true);
 		bossWaterObject.SetActive (true);
+
 		WeaponObject.SetActive (false);
 		waterObject.SetActive (false);
 
@@ -247,10 +279,8 @@ public class RepairObject : MonoBehaviour {
 		if (_bossData.nIndex == 0)
 			bossCharacter = _bossData;
 		else if (_bossData.nIndex == 1)
-		{
 			bossCharacter = _bossData;
 		
-		}
 			
 		else if (_bossData.nIndex == 2)
 			bossCharacter = _bossData;
@@ -258,11 +288,13 @@ public class RepairObject : MonoBehaviour {
 			bossCharacter = _bossData;
 		else
 			return;
-		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC)
+		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
+		{
+			isMoveWeapon = false;
 			StartCoroutine (BossMusicWeaponMove ());
-
+		}
 		//input Image
-		BossWeaponSprite.sprite = data.WeaponSprite;
+		BossWeaponSprite.sprite = _sprite;
 		//weaponData = data;
 
 		fMaxTemperature = bossCharacter.bossInfo.fComplate * 0.3f;
@@ -319,7 +351,7 @@ public class RepairObject : MonoBehaviour {
 
 		fRandomXPos = Random.Range (fXPos - (textRectTrasnform.sizeDelta.x/2), fXPos + (textRectTrasnform.sizeDelta.x/2));
 		fRandomYPos = Random.Range (fYPos - (textRectTrasnform.sizeDelta.y/2), fYPos + (textRectTrasnform.sizeDelta.y/2));
-		Debug.Log(fRandomXPos + "," +fRandomYPos);
+
 		if (bossCharacter == null)
 			return;
 		//Sasin
@@ -384,33 +416,17 @@ public class RepairObject : MonoBehaviour {
 				Debug.Log ("MusicPhase00");
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-
 			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
-				Debug.Log ("MusicPhase01");
-				if (nRandom <= nChancePercent) {
-					Debug.Log ("MusicPhase01");
-					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-				}
-				else
-					Debug.Log ("Miss");
+
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			} 
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
-			{
-				Debug.Log ("MusicPhase02");
-
-				if (nRandom <= nChancePercent) 
-				{
-					//Debug.Log ("SasinPhase02");
-					fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
-					fCurrentComplate = fCurrentComplate  + fWeaponDownDamage;
-					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-					fWeaponDownDamage = 40;
-				}
-
-				else
-					Debug.Log ("Miss");
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
+				fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+				fWeaponDownDamage = 40;
 			}
 		}
 
@@ -492,16 +508,49 @@ public class RepairObject : MonoBehaviour {
 		if (bossCharacter == null)
 			return;
 
+	
+
 		if (fCurrentWater >= fUseWater) {
+
+			//물 터치시 노트 한단계씩 떨어진다.
+			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
+			{
+				bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
+					transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
+				int nChildCount = bossNoteRectTransform.childCount;
+			
+				while(nChildCount != 0)
+				{
+					
+					Debug.Log ("CurCount = " + nChildCount);
+					if (bossNoteRectTransform.FindChild("Note")) {
+						
+						noteGameObject = bossNoteRectTransform.FindChild("Note");
+						noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
+						noteObj.CreateNote ();
+
+					} else if (bossNoteRectTransform.FindChild("Note2")) {
+						noteGameObject = bossNoteRectTransform.FindChild("Note2");
+						note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
+						note2Obj.CreateNote ();
+					} else if (bossNoteRectTransform.FindChild("Note3")) {
+						Debug.Log ("Delete Note");
+						noteGameObject = bossNoteRectTransform.FindChild("Note3");
+						note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
+						note3Obj.EraseObj ();
+					} 
+					nChildCount--;
+				}
+			}
 			//useWater
 			fMinusTemperature = (fMaxTemperature * 0.3f) * (1 + fWeaponDownTemperature);
 
 			fMinusWater = ((1 + (fCurrentComplate / fMinusTemperature) * fWeaponDownDamage) * (1 + (fUseWater * 0.01f) + fWeaponDownTemperature));
 
 			fCurrentWater -= fMinusTemperature;
-			fCurrentTemperature = fMinusTemperature;
+			fCurrentTemperature -= fMinusTemperature;
 
-			fCurrentComplate -= fMinusWater;
+			fCurrentComplate += fMinusWater;
 
 			WaterSlider.value = fCurrentWater;
 
@@ -572,10 +621,13 @@ public class RepairObject : MonoBehaviour {
 		int nCurComplete = (int)fCurrentComplate;
 
 
-		ComplateText.text = string.Format("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
+		ComplateText.text = string.Format("{0} / {1}", nCurComplete, ComplateSlider.maxValue);
 	}
 	public void SetFinishBoss()
 	{
+		StopCoroutine (BossMusicWeaponMove ());
+		bossWeaponObject.transform.position = bossWeaponObjOriginPosition;
+
 		bossWeaponObject.SetActive (false);
 		bossWaterObject.SetActive (false);
 		WeaponObject.SetActive (true);
@@ -592,9 +644,9 @@ public class RepairObject : MonoBehaviour {
 
 		fCurrentWater = 0f;
 		fCurrentTemperature = 0f;
-		fUseWater  = 10.0f;
+		fUseWater = 10.0f;
 		fPlusWater = player.GetWaterPlus ();
-		fMaxWater = player.GetMaxWaterPlus();
+		fMaxWater = player.GetMaxWaterPlus ();
 		fWeaponDownDamage = player.GetRepairPower ();
 
 		fMinusTemperature = player.GetTemperatureMinus ();
@@ -606,7 +658,37 @@ public class RepairObject : MonoBehaviour {
 		WaterSlider.value = 0;
 
 		WeaponSprite = null;
-		ComplateText.text = string.Format("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
-	}
+		ComplateText.text = string.Format ("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 
+
+		//물 터치시 노트 한단계씩 떨어진다.
+		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
+			bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
+				transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
+			int nChildCount = bossNoteRectTransform.childCount;
+
+			while (nChildCount != 0) {
+
+				Debug.Log ("CurCount = " + nChildCount);
+				if (bossNoteRectTransform.FindChild ("Note")) {
+
+					noteGameObject = bossNoteRectTransform.FindChild ("Note");
+					noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
+					noteObj.EraseObj ();
+
+				} else if (bossNoteRectTransform.FindChild ("Note2")) {
+					noteGameObject = bossNoteRectTransform.FindChild ("Note2");
+					note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
+					note2Obj.EraseObj ();
+				} else if (bossNoteRectTransform.FindChild ("Note3")) {
+					
+					noteGameObject = bossNoteRectTransform.FindChild ("Note3");
+					note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
+					note3Obj.EraseObj ();
+				} 
+				nChildCount--;
+			}
+			isMoveWeapon = true;
+		}
+	}
 }

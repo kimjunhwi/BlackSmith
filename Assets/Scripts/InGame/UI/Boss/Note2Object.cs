@@ -22,6 +22,8 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	private float fRandomX;
 	private float fRandomY;
 	private float fMoveSpeed = 200.0f;
+	private float fBossSpeed = 5.0f;
+	private float fDecreaseWeaponSpeedRate = 0.1f;
 
 	private Vector3 randomDir;
 
@@ -39,12 +41,14 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 
 	void Start()
 	{
+		fBossSpeed = 5.0f;
 		myRectTransform = GetComponent<RectTransform> ();
 		fRandomX = Random.Range (-2.0f, 2.0f);
 		fRandomY = Random.Range (-2.0f, 2.0f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 		note3ObjectPool = GameObject.Find ("Note3Pool").GetComponent<SimpleObjectPool>();
+
 	}
 
 
@@ -85,32 +89,46 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 
 		if (getInfoGameObject.gameObject.name == "Note2") 
 		{
-			note2ObjPull.ReturnObject (gameObject);
-
-		
-			note3_Left = note3ObjectPool.GetObject ();
-			note3_Left.name = "Note3";
-			note3_Left.transform.SetParent (parentTransform);
-			note3_Left.transform.position = new Vector3 (getInfoGameObject.transform.position.x - 40f, getInfoGameObject.transform.position.y,
-				getInfoGameObject.transform.position.z);
-
-			note3Obj = note3_Left.GetComponent<Note3Object> ();
-			note3Obj.note3ObjPull = note3ObjectPool;
-			note3Obj.parentTransform = parentTransform;
-			note3Obj.repairObj = repairObj;
-
-			note3_Right = note3ObjectPool.GetObject ();
-			note3_Right.name = "Note2";
-			note3_Right.transform.SetParent (parentTransform);
-			note3_Right.transform.position = new Vector3 (getInfoGameObject.transform.position.x + 40f, getInfoGameObject.transform.position.y,
-				getInfoGameObject.transform.position.z);
-
-			note3Obj = note3_Right.GetComponent<Note3Object> ();
-			note3Obj.note3ObjPull = note3ObjectPool;
-			note3Obj.parentTransform = parentTransform;
-			note3Obj.repairObj = repairObj;
+			
+			CreateNote ();
 		} else
 			return;
+	}
 
+	public void CreateNote()
+	{
+		note3ObjectPool = GameObject.Find ("Note3Pool").GetComponent<SimpleObjectPool>();
+
+		note2ObjPull.ReturnObject (gameObject);
+		repairObj.MinusWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate/2));
+
+		note3_Left = note3ObjectPool.GetObject ();
+		note3_Left.name = "Note3";
+		note3_Left.transform.SetParent (parentTransform);
+		note3_Left.transform.position = new Vector3 (gameObject.transform.position.x - 40f, gameObject.transform.position.y,
+			gameObject.transform.position.z);
+
+		note3Obj = note3_Left.GetComponent<Note3Object> ();
+		note3Obj.note3ObjPull = note3ObjectPool;
+		note3Obj.parentTransform = parentTransform;
+		note3Obj.repairObj = repairObj;
+		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 4));
+
+		note3_Right = note3ObjectPool.GetObject ();
+		note3_Right.name = "Note3";
+		note3_Right.transform.SetParent (parentTransform);
+		note3_Right.transform.position = new Vector3 (gameObject.transform.position.x + 40f, gameObject.transform.position.y,
+			gameObject.transform.position.z);
+
+		note3Obj = note3_Right.GetComponent<Note3Object> ();
+		note3Obj.note3ObjPull = note3ObjectPool;
+		note3Obj.parentTransform = parentTransform;
+		note3Obj.repairObj = repairObj;
+		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 4));
+	}
+
+	public void EraseObj()
+	{
+		note2ObjPull.ReturnObject (gameObject);
 	}
 }
