@@ -96,11 +96,15 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossElement.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossFire.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossIce.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMissText.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMusic.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossRewardFx.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\Bossweapon.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\Note2Object.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\Note3Object.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\NoteObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\AccuracyPanelUI.cs" />

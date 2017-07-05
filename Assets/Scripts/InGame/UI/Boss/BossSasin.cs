@@ -11,6 +11,7 @@ public class BossSasin : BossCharacter
 	private float fYPos;
 	private float fRandomXPos;
 	private float fRandomYPos;
+
 	public SimpleObjectPool skullObjectPool;
 	public SimpleObjectPool bossAppearEffectPool;
 	public SimpleObjectPool bossDisappearEffectPool;
@@ -22,7 +23,7 @@ public class BossSasin : BossCharacter
 	public BossEffect bossEffect;
 
 	private bool isFailed = false;
-
+	private string sBossSprite = "Weapons/Boss/deathnote";
 
 
 	Animator animator;
@@ -75,6 +76,11 @@ public class BossSasin : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
+			animator.SetBool ("isAppear", false);
+			animator.SetBool ("isDisappear", false);
+			animator.SetBool ("isBackGroundChanged", false);	
+
+			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
 			StopCoroutine (BossSKill_02 ());
@@ -82,7 +88,7 @@ public class BossSasin : BossCharacter
 			StopCoroutine (BossResult ());
 			Debug.Log ("Finish Boss");
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-			repairObj.SetFinishBoss ();		//수리 패널 초기화
+			repairObj.SetFinishBoss ();									//수리 패널 초기화
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
 
@@ -125,7 +131,7 @@ public class BossSasin : BossCharacter
 
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-					repairObj.GetBossWeapon (GameManager.Instance.cWeaponInfo [0], bossInfo.fComplate, 0, 0, this);
+					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossSprite), bossInfo.fComplate, 0, 0, this);
 
 					break;
 				}
@@ -141,6 +147,7 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		
 		while (true)
 		{
 			
@@ -187,10 +194,6 @@ public class BossSasin : BossCharacter
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (bossSkullRespawnPoint.sizeDelta.y/2), fYPos + (bossSkullRespawnPoint.sizeDelta.y/2));
 
-			if (fRandomXPos < 0)
-				fRandomXPos = 35f;
-			if (fRandomXPos > 720)
-				fRandomXPos = 690f;
 
 
 			fTime += Time.deltaTime;
@@ -288,23 +291,10 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+		//bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		while (true)
 		{
 
-			/*
-			bossDisappear_AnimationObject = bossDisappearEffectPool.GetObject();
-			bossDisappear_AnimationObject.transform.SetParent (bossAppearAndDisappearPos.transform);
-			bossDisappear_AnimationObject.transform.position = bossAppearAndDisappearPos.transform.transform.position;
-			animator = bossDisappear_AnimationObject.GetComponent<Animator> ();
-			animator.Play ("SasinDisAppear");
-			yield return new WaitForSeconds (0.5f);
-			bossImage.enabled = false;
-			yield return new WaitForSeconds (0.6f);
-			animator.Play ("SasinAppearIdle");
-			yield return new WaitForSeconds (0.1f);
-			bossDisappearEffectPool.ReturnObject (bossDisappear_AnimationObject);
-			*/
 
 			animator.SetBool ("isDisappear", true);
 
@@ -336,7 +326,7 @@ public class BossSasin : BossCharacter
 		{
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
-			animator.Play ("BossSasinIdle");
+			animator.Play ("BossIdle");
 			bossPopUpWindow.PopUpWindowReward_Switch();
 			bossPopUpWindow.GetBossInfo (this);
 			eCureentBossState = EBOSS_STATE.FINISH;

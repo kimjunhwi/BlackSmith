@@ -1051,6 +1051,7 @@ public class ArbaitData
 }
 
 [System.Serializable]
+
 public class CGameWeaponInfo
 {
     public int nIndex = 0;
