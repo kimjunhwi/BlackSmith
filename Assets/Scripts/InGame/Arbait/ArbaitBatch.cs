@@ -7,6 +7,9 @@ public class ArbaitBatch : MonoBehaviour {
 
 	public ArbaitData arbaitData;
 
+	protected ArbaitData m_CharacterDefaultData;
+	protected ArbaitData m_CharacterChangeData;
+
     public List<Buff> buff = new List<Buff>();
 
     string[] strBuffsIndex;
@@ -55,6 +58,28 @@ public class ArbaitBatch : MonoBehaviour {
 
     //무기 등급을 어디까지 받아올지를 정하기 위해 사용
     public int nGrade { get; set; }
+
+	public float GetRepairPower(){ return m_CharacterChangeData.fRepairPower; }
+	public void SetRepairPower(float _fValue) { m_CharacterChangeData.fRepairPower = _fValue; }
+
+	public float GetAttackSpeed() { return m_CharacterChangeData.fAttackSpeed; }
+	public void SetAttackSpeed(float _fValue) { m_CharacterChangeData.fAttackSpeed = _fValue; }
+
+	public float GetCriticalChance() { return m_CharacterChangeData.fCritical; }
+	public void SetCriticalChance(float _fValue) { m_CharacterChangeData.fCritical = _fValue; }
+
+	public void SetDefaultRepair(float _fValue) {m_CharacterChangeData.fRepairPower += _fValue;}
+	public void SetDefaultAccuracy(float _fValue) {m_CharacterChangeData.fAccuracyRate += _fValue;}
+	public void SetDefaultCritical(float _fValue) {m_CharacterChangeData.fCritical += _fValue;}
+
+	public virtual void ApplyRepairBuff() { }
+	public virtual void ReliveRepairBuff(int nValue){ }
+
+	public virtual void ApplyAttackSpeedBuff() {}
+	public virtual void ReliveAttackSppedBuff(int nValue){}
+
+	public virtual void ApplyCriticalChaceBuff(){}
+	public virtual void ReliveCriticalChanceBuff(int nValue){}
 
 	// Use this for initialization
 	protected virtual void Awake()

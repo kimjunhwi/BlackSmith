@@ -42,7 +42,6 @@ public class Cleo : ArbaitBatch {
 
 		CheckCharacterState(E_STATE);
 
-
 		SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
 	}
 
@@ -53,15 +52,7 @@ public class Cleo : ArbaitBatch {
 		base.OnDisable();
 	}
 
-	protected override void ApplySkill()
-	{
-		if (fChangeCritical != 0)
-			ReliveSkill();
 
-		fChangeCritical = playerData.GetCriticalChance() * (buff[0].fValue * 0.01f);
-
-		playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
-	}
 
 	protected override void ReliveSkill()
 	{
