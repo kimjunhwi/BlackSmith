@@ -5,6 +5,7 @@ using UnityEngine;
 public enum BOSSEFFECT
 {
 	BOSSEFFECT_SASINANGRY = 0,
+	BOSSEFFECT_RUCIOVOLUMEUP = 1,
 
 }
 

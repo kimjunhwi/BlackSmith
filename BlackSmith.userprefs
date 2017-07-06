@@ -2,18 +2,20 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossMusic.cs">
     <Files>
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="126" Column="63" />
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="676" Column="70" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/NoteObject.cs" Line="107" Column="3" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/Note2Object.cs" Line="25" Column="33" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="285" Column="63" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/NoteObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/Note2Object.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/Note3Object.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/Note3Object.cs" Line="94" Column="43" />
       <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Manager/ObjectCashing.cs" Line="31" Column="5" />
+      <File FileName="Assets/Scripts/InGame/Manager/ObjectCashing.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/SkullObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossEffect.cs" Line="8" Column="31" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMissText.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -24,7 +26,7 @@
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Arbait/BlueHair.cs" line="109" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Arbait/OrangeHair.cs" line="47" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Arbait/ArbaitCharacter.cs" line="113" column="1" />
-      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="360" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="378" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

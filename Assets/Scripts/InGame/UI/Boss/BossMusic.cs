@@ -123,9 +123,9 @@ public class BossMusic : BossCharacter
 
 				animator.SetBool ("isBackGroundChanged", true);
 
-				if (animator.GetCurrentAnimatorStateInfo (0).length > 0.75f) 
+				if (animator.GetCurrentAnimatorStateInfo (0).IsName("RucioAppear")) 
 				{
-					yield return new WaitForSeconds (0.5f);
+					//yield return new WaitForSeconds (0.1f);
 					animator.SetBool ("isAppear", true);
 					eCureentBossState = EBOSS_STATE.PHASE_00;
 				} 
@@ -195,7 +195,7 @@ public class BossMusic : BossCharacter
 	{
 		
 
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 
 	
 		while (true)
@@ -282,7 +282,7 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 		while (true)
 		{
 
