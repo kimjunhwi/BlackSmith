@@ -66,12 +66,12 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	public BossWeapon[] bossWeaponInfo = null;
 
     //private List<WeaponsData> weaponDataBase = new List<WeaponsData>();
-    private List<ArbaitData> arbaitDataBase = new List<ArbaitData>();
+    private List<ArbaitData> ArbaitDataBase = new List<ArbaitData>();
 
     private List<CGameEquiment> equimnetData = new List<CGameEquiment>();
 
     private JsonData itemData;
-    private JsonData arbaitData;
+    private JsonData ArbaitData;
 
     private LogoManager logoManager;
 
@@ -134,7 +134,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
             Application.dataPath + "/StreamingAssets/WeaponsData.json"));
 
 
-		arbaitDataBase = ConstructString<ArbaitData>(strArbaitPath);
+		ArbaitDataBase = ConstructString<ArbaitData>(strArbaitPath);
 
         equimnetData = ConstructString<CGameEquiment>(strEquiementPath);
 
@@ -146,7 +146,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         //ConstructWeaponDatabase();
 
-        //arbaitData = JsonMapper.ToObject(File.ReadAllText(
+        //ArbaitData = JsonMapper.ToObject(File.ReadAllText(
         //    Application.dataPath + "/StreamingAssets/ArbaitData.json"));
 
         //ConstructArbaitDatabase();
@@ -206,9 +206,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		Debug.Log (dataAsJson);
 
-        arbaitDataBase = JsonHelper.ListFromJson<ArbaitData>(dataAsJson);
+        ArbaitDataBase = JsonHelper.ListFromJson<ArbaitData>(dataAsJson);
 
-		Debug.Log ("arbaitData Count" + arbaitDataBase.Count);
+		Debug.Log ("ArbaitData Count" + ArbaitDataBase.Count);
 
 		Debug.Log("3");
     }
@@ -859,15 +859,15 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     #region Arbait
     public int ArbaitLength()
     {
-        return arbaitDataBase.Count;
+        return ArbaitDataBase.Count;
     }
 
     public ArbaitData GetArbaitData(int _id)
     {
-        if (_id < 0 || arbaitDataBase.Count <= _id)
+        if (_id < 0 || ArbaitDataBase.Count <= _id)
             return null;
 
-        return arbaitDataBase[_id];
+        return ArbaitDataBase[_id];
     }
     #endregion
 

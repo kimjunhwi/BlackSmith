@@ -114,7 +114,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         //미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
 		array_ArbaitData [nIndex] = _obj.GetComponent<ArbaitBatch> ();
 
-        array_ArbaitData[nIndex].arbaitData = GameManager.Instance.GetArbaitData(nIndex);
+		array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
 
 		GameObject createArbaitUI = Instantiate (ArbaitPanel);
 
@@ -179,7 +179,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
 
 			if (m_BatchArbait [nIndex].activeSelf) {
-				fResultValue += array_ArbaitData [nIndex].arbaitData.fRepairPower;
+				fResultValue += array_ArbaitData [nIndex].m_CharacterChangeData.fRepairPower;
 			}
 		}
 
@@ -431,13 +431,45 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         {
             if(m_BatchArbait[nIndex].activeSelf)
             {
-                fResultValue += array_ArbaitData[nIndex].arbaitData.fRepairPower;
+				fResultValue += array_ArbaitData[nIndex].m_CharacterChangeData.fRepairPower;
             }
         }
 
         return fResultValue;
     }
 
+	//물 사용시 아르바이트중에 물 사용시 버프가 있을 경우 적용
+	public void UseWater()
+	{
+		//ArbaitData arbait;
+
+		if (m_BatchArbait [(int)E_ARBAIT.E_CLEO].activeSelf) 
+		{
+			//arbait = array_ArbaitData [E_ARBAIT.E_CLEO].m_CharacterChangeData;
+
+			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+			{
+				array_ArbaitData [nIndex].ApplyWaterBuffAttackSpeed (20, 3);
+			}
+		}
+
+		if (m_BatchArbait [(int)E_ARBAIT.E_ELSA].activeSelf) 
+		{
+			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+			{
+				array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (30, 3);
+			}
+		}
+
+		if (m_BatchArbait [(int)E_ARBAIT.E_REDHAIR].activeSelf) 
+		{
+			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+			{
+				array_ArbaitData [nIndex].ApplyWaterBuffCritical (20, 0);
+			}
+		}
+
+	}
 
     #endregion
 }

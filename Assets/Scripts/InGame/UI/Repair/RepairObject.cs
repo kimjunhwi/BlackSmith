@@ -469,6 +469,9 @@ public class RepairObject : MonoBehaviour {
 
         if (fCurrentWater >= fUseWater)
         {
+
+			SpawnManager.Instance.UseWater ();
+
             //useWater
             fMinusTemperature = (fMaxTemperature * 0.3f) * (1 + fWeaponDownTemperature);
 
