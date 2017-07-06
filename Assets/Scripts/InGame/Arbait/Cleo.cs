@@ -27,16 +27,16 @@ public class Cleo : ArbaitBatch {
 
 	protected override void OnEnable()
 	{
-		if (arbaitData == null)
+		if (m_CharacterChangeData == null)
 			return;
 
 		bIsComplate = false;
 
-		string strPath = string.Format("ArbaitUI/{0}", arbaitData.name);
+		string strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
 
 		myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
-		nGrade = arbaitData.grade;
+		nGrade = m_CharacterChangeData.grade;
 
 		E_STATE = E_ArbaitState.E_WAIT;
 
@@ -51,8 +51,6 @@ public class Cleo : ArbaitBatch {
 
 		base.OnDisable();
 	}
-
-
 
 	protected override void ReliveSkill()
 	{
@@ -109,7 +107,7 @@ public class Cleo : ArbaitBatch {
 
 				animator.SetTrigger("bIsRepair");
 
-				m_fComplate += arbaitData.fRepairPower;
+				m_fComplate += m_CharacterChangeData.fRepairPower;
 
 				//완성 됐을 경우
 				if (m_fComplate >= weaponData.fComplate)

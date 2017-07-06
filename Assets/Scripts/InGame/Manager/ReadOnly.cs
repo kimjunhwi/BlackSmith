@@ -51,6 +51,12 @@ namespace ReadOnlys
 		E_ORANGEHAIR,
 		E_NURSE,
 		E_CLEO,
+		E_ELSA,
+		E_REDHAIR,
+		E_KNIGHT,
+		E_ELF,
+		E_CLERIC,
+		E_BELL,
 	}
 
 	public enum E_SPEECH : int

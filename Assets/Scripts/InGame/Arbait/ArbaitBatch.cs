@@ -5,10 +5,8 @@ using ReadOnlys;
 
 public class ArbaitBatch : MonoBehaviour {
 
-	public ArbaitData arbaitData;
-
 	protected ArbaitData m_CharacterDefaultData;
-	protected ArbaitData m_CharacterChangeData;
+	public ArbaitData m_CharacterChangeData;
 
     public List<Buff> buff = new List<Buff>();
 
@@ -91,6 +89,11 @@ public class ArbaitBatch : MonoBehaviour {
         RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();       
 	}
 
+	protected virtual void Update()
+	{
+
+	}
+
     protected virtual void OnEnable() { }
 
 	protected virtual void OnDisable()
@@ -99,26 +102,28 @@ public class ArbaitBatch : MonoBehaviour {
     }
 
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
-    public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
+	public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
     {
         buff.Clear();
 
         nIndex = _nIndex;
 
-        arbaitData = _data;
+		m_CharacterDefaultData = _data;
+
+		m_CharacterChangeData = new ArbaitData (_data);
 
         ArbaitPanelObject = _obj;
 
-        strBuffsIndex = arbaitData.strBuffIndexs.Split(',');
+        strBuffsIndex = m_CharacterChangeData.strBuffIndexs.Split(',');
 
         for (int nBuffIndex = 0; nBuffIndex < strBuffsIndex.Length; nBuffIndex++)
         {
             Buff stBuff;
 
             stBuff.nIndex       = System.Convert.ToInt32(strBuffsIndex[nBuffIndex]);
-            stBuff.fValue       = arbaitData.fSkillPercent;
-			stBuff.fCurrentFloat = arbaitData.fCurrentFloat;
-            stBuff.strBuffExplain = arbaitData.strExplains;
+            stBuff.fValue       = m_CharacterChangeData.fSkillPercent;
+			stBuff.fCurrentFloat = m_CharacterChangeData.fCurrentFloat;
+            stBuff.strBuffExplain = m_CharacterChangeData.strExplains;
 
             buff.Add(stBuff);
         }
@@ -158,6 +163,31 @@ public class ArbaitBatch : MonoBehaviour {
 
     //스킬 해제
     protected virtual void ReliveSkill() { }
+
+	private bool bIsWaterAttackSpeed = false;
+	private bool bIsWaterRepairPower = false;
+	private bool bIsWaterCritical = false;
+
+	private float fWaterAttackSpeedTime = 0.0f;
+	private float fWaterRepairPowerTime = 0.0f;
+	private float fWaterCriticalTime = 0.0f;
+
+
+	public void ApplyWaterBuffAttackSpeed(float _fValue, float _fTime) 
+	{ 
+
+
+	}
+
+	public void ApplyWaterBuffRepairPower(float _fValue, float _fTime) 
+	{
+	
+	}
+
+	public void ApplyWaterBuffCritical(float _fValue, float _fTime) 
+	{
+	
+	}
 
 
     //무기 수리 완료시 호출
