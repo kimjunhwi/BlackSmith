@@ -285,21 +285,21 @@ public class BossMusic : BossCharacter
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 		while (true)
 		{
-
-
 			animator.SetBool ("isDisappear", true);
 
-			yield return new WaitForSeconds (0.1f);
-
-			eCureentBossState = EBOSS_STATE.RESULT;
-			if (eCureentBossState == EBOSS_STATE.RESULT)
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("RucioDisappear")) 
 			{
-				animator.SetBool ("isAppear", false);
-				animator.SetBool ("isDisappear", false);
-				animator.SetBool ("isBackGroundChanged", false);	
+				eCureentBossState = EBOSS_STATE.RESULT;
+				if (eCureentBossState == EBOSS_STATE.RESULT)
+				{
+					animator.SetBool ("isAppear", false);
+					animator.SetBool ("isDisappear", false);
+					animator.SetBool ("isBackGroundChanged", false);	
 
-				break;
+					break;
+				}
 			}
+				
 			else
 				yield return null;
 		}

@@ -32,8 +32,8 @@ public class RepairObject : MonoBehaviour {
     private float fMinusTemperature;
     private float fMinusWater;
 
-	Image WeaponSprite;
-    Image WeaponAlphaSpirte;
+	public Image WeaponSprite;
+    public Image WeaponAlphaSpirte;
 
 
 
@@ -87,8 +87,18 @@ public class RepairObject : MonoBehaviour {
 	private bool isMoveWeapon = false;
 
 
+	//WaterFx
+	public GameObject waterFxObj;
+	public Animator bossWaterCat_animator;						//보스무기일때의 고양이
+	public Animator weaponWaterCat_animator;					//그냥무기일때의 고양이
+	public Animator CatWater_animator;							//물 이펙트
+
+	private bool isTouchWater;
+
 	void Start()
 	{
+		isTouchWater = false;
+
 		bossWeaponObjOriginSize = new Vector2 (590f, 470f);
 		bossWeaponSize = new Vector2 (380f, 270f);
 		fXPos = textRectTrasnform.position.x;
@@ -105,7 +115,7 @@ public class RepairObject : MonoBehaviour {
 		TemperatureSlider.maxValue = 0;
 
 		//Add GameObject(button)
-        WeaponObject = transform.FindChild("WeaponButton").gameObject;
+		WeaponObject = transform.FindChild("WeaponButton").gameObject;
 		waterObject = transform.FindChild ("WaterButton").gameObject;
 
 		bossWeaponObject = transform.FindChild ("BossWeaponButton").gameObject;
@@ -122,7 +132,10 @@ public class RepairObject : MonoBehaviour {
 		BossWeaponSprite = bossWeaponObject.transform.GetChild (1).GetComponent<Image> ();
 
 
-        this.StartCoroutine(this.PlusWater());
+		this.StartCoroutine (this.PlusWater ());
+		this.StartCoroutine (this.StartWaterCat ());
+		this.StartCoroutine (this.StartWaterFx ());
+	
 
 		player = GameManager.Instance.player;
 
@@ -151,6 +164,104 @@ public class RepairObject : MonoBehaviour {
 		WeaponObject.SetActive (true);
 		waterObject.SetActive (true);
 	}
+	public IEnumerator StartWaterCat()
+	{
+		while (true)
+		{
+			if (bossCharacter != null)
+			{
+				if (isTouchWater == true) 
+				{
+					Debug.Log("BossWeaponWCatFx !!");
+					bossWaterCat_animator.SetBool ("isTouchWater", true);
+					if (bossWaterCat_animator.GetCurrentAnimatorStateInfo (0).IsName ("WaterCat_spread")) {
+
+						yield return new WaitForSeconds (0.5f);
+						Debug.Log ("BossWeaponWCatFx !!");
+						waterFxObj.transform.SetAsFirstSibling ();
+						bossWaterCat_animator.SetBool ("isTouchWater", false);
+						//CatWater_animator.SetBool ("isTouchWater", false);
+						isTouchWater = false;
+						bossWaterCat_animator.Play ("WaterCat_Idle");
+						//CatWater_animator.Play ("Water_Fx_Idle");
+
+
+					} 
+					else
+						yield return null;
+				}
+			}
+
+			yield break;
+		}
+
+
+	}
+
+
+	public IEnumerator StartWaterFx()
+	{
+		while (true)
+		{
+			if (bossCharacter != null) 
+			{
+				//BossWepaonWater
+				if (isTouchWater == true)
+				{
+					waterFxObj.transform.SetAsLastSibling ();
+					Debug.Log("BossWeaponWaterFx !!");
+					CatWater_animator.SetBool ("isTouchWater", true);
+
+					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread"))
+					{
+						
+						yield return new WaitForSeconds (0.5f);
+						Debug.Log ("BossWeaponWaterFinish !!");
+						waterFxObj.transform.SetAsFirstSibling ();
+						//bossWaterCat_animator.SetBool ("isTouchWater", false);
+						CatWater_animator.SetBool ("isTouchWater", false);
+						isTouchWater = false;
+						//bossWaterCat_animator.Play ("WaterCat_Idle");
+						CatWater_animator.Play ("Water_Fx_Idle");
+						
+					}
+
+						
+					else
+						yield return null;
+
+				}
+			} 
+			else 
+			{
+				//normalWeaponWater
+				if (isTouchWater == true)
+				{
+					waterFxObj.transform.SetAsLastSibling ();
+					Debug.Log("NormalWeaponWater !!");
+					CatWater_animator.SetBool ("isTouchWater", true);
+					weaponWaterCat_animator.SetBool ("isTouchWater", true);
+
+					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread")) {
+						yield return new WaitForSeconds (0.5f);
+						Debug.Log ("WeaponWaterFinish !!");
+						waterFxObj.transform.SetAsFirstSibling ();
+						weaponWaterCat_animator.SetBool ("isTouchWater", false);
+						CatWater_animator.SetBool ("isTouchWater", false);
+						isTouchWater = false;
+						weaponWaterCat_animator.Play ("WaterCat_Idle");
+						CatWater_animator.Play ("Water_Fx_Idle");
+					} else
+						yield return new WaitForSeconds(0.1f);
+
+				}
+			}
+			yield return null;
+
+		}
+			
+	}
+
 	public void AddBossWeaponSpeed(float _speed)
 	{
 		fMoveSpeed += _speed;
@@ -493,6 +604,10 @@ public class RepairObject : MonoBehaviour {
 
         if (fCurrentWater >= fUseWater)
         {
+			Debug.Log ("TouchWater!!");
+			//bossWaterCat_animator.SetBool ("isTouchWater", true);
+
+			isTouchWater = true;
 
 			SpawnManager.Instance.UseWater ();
 
@@ -536,8 +651,12 @@ public class RepairObject : MonoBehaviour {
 			return;
 
 		if (fCurrentWater >= fUseWater) {
-
+			
 			//물 터치시 노트 한단계씩 떨어진다.
+
+		
+			isTouchWater = true;
+
 			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 			{
 				bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
@@ -568,6 +687,12 @@ public class RepairObject : MonoBehaviour {
 				}
 			}
 			//useWater
+
+			Debug.Log ("TouchBossWater!!");
+			//bossWaterCat_animator.SetBool ("isTouchWater", true);
+
+			isTouchWater = true;
+
 			fMinusTemperature = (fMaxTemperature * 0.3f) * (1 + fWeaponDownTemperature);
 
 			fMinusWater = ((1 + (fCurrentComplate / fMinusTemperature) * fWeaponDownDamage) * (1 + (fUseWater * 0.01f) + fWeaponDownTemperature));
@@ -683,7 +808,7 @@ public class RepairObject : MonoBehaviour {
 		WaterSlider.maxValue = fMaxWater;
 		WaterSlider.value = 0;
 
-		WeaponSprite = null;
+		WeaponSprite.sprite = null;
 		ComplateText.text = string.Format ("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 
 

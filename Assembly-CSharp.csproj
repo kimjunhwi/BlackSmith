@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\BlueHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Cleo.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\Druid.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Nurse.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
@@ -142,14 +143,18 @@
      <None Include="Assets\Resources\Data\Quest.txt" />
      <None Include="Assets\Resources\Data\RepairEnhance.txt" />
      <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
+     <None Include="Assets\Resources\Data\ThreeGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\Weapon.txt" />
      <None Include="Assets\Resources\Data\BossWeapon.txt" />
      <None Include="Assets\Resources\Data\Character.txt" />
+     <None Include="Assets\Resources\Data\OneGradeEnhance.txt" />
+     <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\CriticalEnhance.txt" />
      <None Include="Assets\Resources\Data\Arbait.txt" />
      <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
      <None Include="Assets\Resources\Data\AccuracyRate.txt" />
      <None Include="Assets\Resources\Data\Boss.txt" />
+     <None Include="Assets\Resources\Data\FourGradeEnhance.txt" />
      <None Include="Assets\StreamingAssets\build_info.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
