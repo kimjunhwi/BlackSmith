@@ -8,7 +8,7 @@
     "fHornorPlusPercent" : 0,
     "fGold" : 0,
     "fGoldPlusPercent" : 0,
-    "fWaterPlus" :100,
+    "fWaterPlus" :5,
     "fMaxWaterPlus" : 30,
     "fCriticalChance" : 0,
     "fCriticalDamage" : 0,

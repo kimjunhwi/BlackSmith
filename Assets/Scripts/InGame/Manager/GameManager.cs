@@ -55,7 +55,13 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public CGameCriticalEnhance[] cCriticalEnhance = null;      //크리티컬 강화 정보
 
+    public CGameEnhanceData[] cOneGradeEnhance = null;          //1등급 강화 데이터 모음
 
+    public CGameEnhanceData[] cTwoGradeEnhance = null;          //2등급 강화 데이터 모음
+
+    public CGameEnhanceData[] cThreeGradeEnhance = null;          //3등급 강화 데이터 모음
+
+    public CGameEnhanceData[] cFourGradeEnhance = null;          //4등급 강화 데이터 모음
 
 	public List<int> cQuestSaveIndex = new List<int>();			//남아 있는 퀘스트 저장 
 	
@@ -127,12 +133,18 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		Load_TableInfo_CriticalEnhance ();
 
+        Load_TableInfo_OneGradeEnhance();
+
+        Load_TableInfo_TwoGradeEnhance();
+
+        Load_TableInfo_ThreeGradeEnhance();
+
+        Load_TableInfo_FourGradeEnhance();
 
 #if UNITY_EDITOR
 
         itemData = JsonMapper.ToObject(File.ReadAllText(
             Application.dataPath + "/StreamingAssets/WeaponsData.json"));
-
 
 		ArbaitDataBase = ConstructString<ArbaitData>(strArbaitPath);
 
@@ -735,6 +747,130 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		cCriticalEnhance = kInfo;
 	}
 
+    void Load_TableInfo_OneGradeEnhance()
+    {
+        if (cCriticalEnhance.Length != 0) return;
+
+        string txtFilePath = "OneGradeEnhance";
+
+        TextAsset ta = LoadTextAsset(txtFilePath);
+
+        List<string> line = LineSplit(ta.text);
+
+        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
+
+        for (int i = 0; i < line.Count; i++)
+        {
+            //Console.WriteLine("line : " + line[i]);
+            if (line[i] == null) continue;
+            if (i == 0) continue; 	// Title skip
+
+            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+            if (Cells[0] == "") continue;
+
+            kInfo[i - 1] = new CGameEnhanceData();
+            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
+            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
+            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
+            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
+        }
+
+        cOneGradeEnhance = kInfo;
+    }
+
+    void Load_TableInfo_TwoGradeEnhance()
+    {
+        if (cCriticalEnhance.Length != 0) return;
+
+        string txtFilePath = "TwoGradeEnhance";
+
+        TextAsset ta = LoadTextAsset(txtFilePath);
+
+        List<string> line = LineSplit(ta.text);
+
+        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
+
+        for (int i = 0; i < line.Count; i++)
+        {
+            //Console.WriteLine("line : " + line[i]);
+            if (line[i] == null) continue;
+            if (i == 0) continue; 	// Title skip
+
+            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+            if (Cells[0] == "") continue;
+
+            kInfo[i - 1] = new CGameEnhanceData();
+            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
+            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
+            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
+            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
+        }
+
+        cTwoGradeEnhance = kInfo;
+    }
+
+    void Load_TableInfo_ThreeGradeEnhance()
+    {
+        if (cCriticalEnhance.Length != 0) return;
+
+        string txtFilePath = "ThreeGradeEnhance";
+
+        TextAsset ta = LoadTextAsset(txtFilePath);
+
+        List<string> line = LineSplit(ta.text);
+
+        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
+
+        for (int i = 0; i < line.Count; i++)
+        {
+            //Console.WriteLine("line : " + line[i]);
+            if (line[i] == null) continue;
+            if (i == 0) continue; 	// Title skip
+
+            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+            if (Cells[0] == "") continue;
+
+            kInfo[i - 1] = new CGameEnhanceData();
+            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
+            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
+            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
+            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
+        }
+
+        cThreeGradeEnhance = kInfo;
+    }
+
+    void Load_TableInfo_FourGradeEnhance()
+    {
+        if (cCriticalEnhance.Length != 0) return;
+
+        string txtFilePath = "FourGradeEnhance";
+
+        TextAsset ta = LoadTextAsset(txtFilePath);
+
+        List<string> line = LineSplit(ta.text);
+
+        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
+
+        for (int i = 0; i < line.Count; i++)
+        {
+            //Console.WriteLine("line : " + line[i]);
+            if (line[i] == null) continue;
+            if (i == 0) continue; 	// Title skip
+
+            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+            if (Cells[0] == "") continue;
+
+            kInfo[i - 1] = new CGameEnhanceData();
+            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
+            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
+            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
+            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
+        }
+
+        cFourGradeEnhance = kInfo;
+    }
+
 	#endregion
 
 	#region SplitText
@@ -828,7 +964,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         return cEquimentInfo[nIndex];
     }
 
-	// 윈도우 팝업 ---------------------------------------------------------------------------------------
+    #region window popup
+
+    // 윈도우 팝업 ---------------------------------------------------------------------------------------
 	//CGame.Instance.Window_notice("213123 213123 ", rt => { if (rt == "0") print("notice");  });
 	public void Window_notice(string _msg, System.Action<string> _callback)
 	{
@@ -855,6 +993,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		CWindowYesNo w = go.GetComponent<CWindowYesNo>();
 		w.Show(_title, _msg, _callback);
 	}
+    #endregion
 
     #region Arbait
     public int ArbaitLength()
@@ -1126,6 +1265,15 @@ public class CGameQuestInfo
 	public int nRewardHonor=0;
 	public int nRewardBossPotion =0;
     
+}
+
+[System.Serializable]
+public class CGameEnhanceData
+{
+    public int nLevel;
+    public int nPercent;
+    public int nGoldCost;
+    public int nHonorCost;
 }
 
 [System.Serializable]

@@ -106,9 +106,10 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	{
         //인덱스에 맞는 스크립트를 추가해준다
 		switch (nIndex) {
-		case (int)E_ARBAIT.E_BLUEHAIR: 	    _obj.AddComponent<BlueHair> (); break;
-		case (int)E_ARBAIT.E_ORANGEHAIR:	_obj.AddComponent<OrangeHair> (); break;
-		case (int)E_ARBAIT.E_NURSE:         _obj.AddComponent<Nurse> (); break; 
+		case (int)E_ARBAIT.E_BLUEHAIR: 	    _obj.AddComponent<BlueHair> ();     break;
+		case (int)E_ARBAIT.E_ORANGEHAIR:	_obj.AddComponent<OrangeHair> ();   break;
+		case (int)E_ARBAIT.E_NURSE:         _obj.AddComponent<Nurse> ();        break;
+        case (int)E_ARBAIT.E_CLEO:          _obj.AddComponent<Cleo>();          break;
 		}
 
         //미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
@@ -121,6 +122,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		createArbaitUI.GetComponent<ArbaitCharacter> ().SetUp (nIndex,arbaitSprite[nIndex]);
 
 		createArbaitUI.transform.SetParent (contentsPanel, false);
+
+        createArbaitUI.transform.localScale = Vector3.one;
 	}
 
     //WeaponData
@@ -325,44 +328,48 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     //만약 넣었을 경우 실행하는 함수 한번에 하지 않은 이유는 만약 넣을 수 없는데
     //현재 이 함수의 인자 값을 전부 복사해서 확인하면 부하가 커질거 같기 때문이다.
-	public int AddArbaitCheck(int _nIndex)
+	public int AddArbaitCheck()
     {
-
+        int nCount = 0;
 
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
         {
-            if (m_BatchArbait[nIndex].activeSelf == false)
-            {
-                return nIndex;
-            }
+            if (m_BatchArbait[nIndex].activeSelf == true)
+                nCount++;
+
+            if(nCount >= m_nMaxBatchArbaitAmount)
+                return (int)E_CHECK.E_FAIL;
         }
-        return (int)E_CHECK.E_FAIL;
+
+        return nCount;
     }
 
     //아르바이트 추가
-    public bool AddArbait(int _nIndex,GameObject _obj, ArbaitData _data)
+    //추가될 캐릭터 인덱스, 배치되는 인덱스,오브젝트,데이터를 추가해준다.
+    public bool AddArbait(int _nCharacterIndex, int _nIndex,GameObject _obj, ArbaitData _data)
     {
-		for (int nIndex = 0; nIndex < m_nMaxArbaitAmount; nIndex++)
+        if (m_BatchArbait[_nCharacterIndex].activeSelf == false)
         {
-            if (m_BatchArbait[nIndex].activeSelf == false)
-            {
-				
-                array_ArbaitData[nIndex].GetArbaitData(nIndex,_obj, _data);
-                m_BatchArbait[nIndex].transform.position = m_BatchPosition[nIndex].position;
-                m_BatchArbait[nIndex].SetActive(true);
-                return true;
-            }
+            array_ArbaitData[_nCharacterIndex].GetArbaitData(_nIndex, _obj, _data);
+            m_BatchArbait[_nCharacterIndex].transform.position = m_BatchPosition[_nIndex].position;
+            m_BatchArbait[_nCharacterIndex].SetActive(true);
+            return true;
         }
 
         return false;
     }
+    
+    //배치된 아르바이트의 인덱스를 가져옴
+    public int GetArbaitBatchIndex(int _nIndex)
+    {
+        return array_ArbaitData[_nIndex].nIndex;
+    }
 
     ///////// 무기에서 아르바이트 를 넣을 수 있는지 판별 하는 함수 부분
-
     //인자로 넣은 값을 넣을 수 있는지 없는지를 확인한다.
     public int InsertArbatiWeaponCheck(int _nGrade)
     {
-		for (int nIndex = 0; nIndex <  m_nMaxArbaitAmount; nIndex++)
+        for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
         {
             if (m_BatchArbait[nIndex].activeSelf)
             {
@@ -447,29 +454,33 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		{
 			//arbait = array_ArbaitData [E_ARBAIT.E_CLEO].m_CharacterChangeData;
 
-			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
-			{
-				array_ArbaitData [nIndex].ApplyWaterBuffAttackSpeed (20, 3);
-			}
+            for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+            {
+                if(m_BatchArbait[nIndex].activeSelf)
+                    StartCoroutine(array_ArbaitData[nIndex].ApplyWaterBuffAttackSpeed(90, 5));
+            }
 		}
 
-		if (m_BatchArbait [(int)E_ARBAIT.E_ELSA].activeSelf) 
-		{
-			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
-			{
-				array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (30, 3);
-			}
-		}
+        //if (m_BatchArbait [(int)E_ARBAIT.E_ELSA].activeSelf) 
+        //{
+        //    for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+        //        array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (30, 3);
+        //}
 
-		if (m_BatchArbait [(int)E_ARBAIT.E_REDHAIR].activeSelf) 
-		{
-			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
-			{
-				array_ArbaitData [nIndex].ApplyWaterBuffCritical (20, 0);
-			}
-		}
-
+        //if (m_BatchArbait [(int)E_ARBAIT.E_REDHAIR].activeSelf) 
+        //{
+        //    for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+        //        array_ArbaitData [nIndex].ApplyWaterBuffCritical (20, 0);
+        //}
 	}
+
+    public void PlayerCritical()
+    {
+        if (m_BatchArbait[(int)E_ARBAIT.E_DRUID].activeSelf)
+        {
+            array_ArbaitData[(int)E_ARBAIT.E_DRUID].ApplySkill();
+        }
+    }
 
     #endregion
 }

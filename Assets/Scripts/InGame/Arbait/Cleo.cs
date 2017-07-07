@@ -101,9 +101,11 @@ public class Cleo : ArbaitBatch {
 			fTime += Time.deltaTime;
 
 			//수리 시간이 되면 0으로 초기화 하고 수리해줌
-			if (fTime >= m_fRepairTime)
+			if (fTime >= m_CharacterChangeData.fAttackSpeed)
 			{
 				fTime = 0.0f;
+
+                Debug.Log(m_CharacterChangeData.fAttackSpeed);
 
 				animator.SetTrigger("bIsRepair");
 

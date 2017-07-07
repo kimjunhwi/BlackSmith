@@ -47,7 +47,7 @@ public class BossMusic : BossCharacter
 		fYPos = bossNoteRespawnPoint.position.y + 60;
 
 		//Debug.Log (fXPos + "," + fYPos);
-		bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
+		//bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
 		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
 		gameObject.SetActive (false);

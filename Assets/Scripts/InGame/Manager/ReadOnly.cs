@@ -54,7 +54,7 @@ namespace ReadOnlys
 		E_ELSA,
 		E_REDHAIR,
 		E_KNIGHT,
-		E_ELF,
+		E_DRUID,
 		E_CLERIC,
 		E_BELL,
 	}
