@@ -935,7 +935,29 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     }
 	#endregion
 
+	public CGameEnhanceData[] GetEnhanceArbaitData(int _nIndex)
+	{
+		switch (_nIndex) {
+		case 1:
+			return cOneGradeEnhance;
+			break;
 
+		case 2:
+			return cTwoGradeEnhance;
+			break;
+		case 3:
+			return cThreeGradeEnhance;
+			break;
+		case 4:
+			return cFourGradeEnhance;
+			break;
+		default:
+			Debug.Log ("Range Error");
+			return null;
+			break;
+
+		}
+	}
 
     public CGameWeaponInfo GetWeaponData(int _nGrade)
     {
@@ -943,7 +965,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         nRandom = Random.Range(0, 7);
 
-        return cWeaponInfo[nRandom];
+		CGameWeaponInfo ResultWeapon = new CGameWeaponInfo (cWeaponInfo [nRandom]);
+
+		return ResultWeapon;
     }
 
     public int EquimentShopLength()
@@ -1202,6 +1226,23 @@ public class CGameWeaponInfo
     public float fLimitedTime = 0.0f;
     public float fGold = 0.0f;
     public Sprite WeaponSprite = null;
+
+	public CGameWeaponInfo()
+	{
+	}
+
+	public CGameWeaponInfo(CGameWeaponInfo weaponData)
+	{
+		nIndex = weaponData.nIndex;
+		nGrade = weaponData.nGrade;
+		strName = weaponData.strName;
+		strPath = weaponData.strPath;
+		fComplate = weaponData.fComplate;
+		fPlusTemperature = weaponData.fPlusTemperature;
+		fLimitedTime = weaponData.fLimitedTime;
+		fGold = weaponData.fGold;
+		WeaponSprite = weaponData.WeaponSprite;
+	}
 }
 
 [System.Serializable]

@@ -260,7 +260,7 @@ public class RepairObject : MonoBehaviour {
         }
         else
         {
-			SpawnManager.Instance.ReturnInsertData(AfootObject,false, fCurrentComplate, fCurrentTemperature);
+			SpawnManager.Instance.ReturnInsertData(AfootObject,false,false, fCurrentComplate, fCurrentTemperature);
 
             AfootObject = obj;
 
@@ -345,7 +345,14 @@ public class RepairObject : MonoBehaviour {
 
         fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
-		SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate);
+		if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate)) {
+			ComplateSlider.value = 0;
+			TemperatureSlider.value = 0;
+
+			ComplateText.text = string.Format("{0} / {1}", (int)ComplateSlider.value, 0);
+
+			return;
+		}
 
         if(fCurrentTemperature >= fMaxTemperature)
         {
@@ -358,9 +365,6 @@ public class RepairObject : MonoBehaviour {
 			else
 				SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
         }
-
-		if (AfootObject == null)
-			return;
 
 		ComplateSlider.value = fCurrentComplate;
         TemperatureSlider.value = fCurrentTemperature;
@@ -607,7 +611,7 @@ public class RepairObject : MonoBehaviour {
     {
         if (_obj == AfootObject)
         {
-			SpawnManager.Instance.ReturnInsertData(AfootObject,false, fCurrentComplate, TemperatureSlider.value);
+			SpawnManager.Instance.ReturnInsertData(AfootObject,true,false, fCurrentComplate, TemperatureSlider.value);
             InitWeaponData();
         }
     }

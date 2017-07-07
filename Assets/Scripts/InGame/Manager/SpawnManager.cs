@@ -16,6 +16,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     const int m_nMaxPollAmount = 5;         //오브젝트풀로 만들어둘 최대 개수
 
+
+
 	public Transform contentsPanel;
 
 	public GameObject ArbaitPanel;
@@ -165,15 +167,25 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     }
 
     //게임 오브젝트를 찾아서 데이터를 넣어줌
-    public void ReturnInsertData(GameObject obj,bool bIsRepair, float _fComplate,float _fTemperator)
+	public void ReturnInsertData(GameObject obj,bool bIsRepair,bool bIsResearch, float _fComplate,float _fTemperator)
     {
         GameObject tempObject = null;
 
         tempObject = SearchCharacter(obj);
 
         if (tempObject)
-            tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair, _fComplate, _fTemperator);
+			tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair,bIsResearch, _fComplate, _fTemperator);
     }
+
+	public void ResetInsertDataArbait(GameObject obj,bool bIsRepair,bool bIsResearch, float _fComplate,float _fTemperator)
+	{
+		GameObject tempObject = null;
+
+		tempObject = SearchCharacter(obj);
+
+		if (tempObject)
+			tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair,bIsResearch, _fComplate, _fTemperator);
+	}
 
 	public float GetActiveArbaitRepair()
 	{
@@ -196,18 +208,20 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         tempObject = SearchCharacter(_obj);
 
         if (tempObject)
-			tempObject.GetComponent<NormalCharacter>().Complate(fComplate);
+			tempObject.GetComponent<NormalCharacter>().m_bIsBack = true;
 
     }
 
-	public void CheckComplateWeapon(GameObject _obj, float _fComplate)
+	public bool CheckComplateWeapon(GameObject _obj, float _fComplate)
 	{
 		GameObject tempObject = null;
 
 		tempObject = SearchCharacter(_obj);
 
-		if (tempObject)
-			tempObject.GetComponent<NormalCharacter>().CheckComplate(_fComplate);
+		if (tempObject) 
+			return tempObject.GetComponent<NormalCharacter> ().CheckComplate (_fComplate);
+
+		return false;
 	}
 
     void InsertSortObject()
@@ -237,16 +251,12 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public void AllCharacterComplate()
 	{
-		
-		for (int nIndex = 0; nIndex < list_Character.Count; nIndex++) {
-			list_Character [nIndex].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
-		
-				
-		}
-		bIsBossCreate = true;
-	
 
-			
+		while (list_Character.Count != 0) {
+			list_Character [0].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+		}
+
+		bIsBossCreate = true;
 	}
 
     //이동
@@ -309,9 +319,10 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         {
             if (objData[i].activeSelf == false)
             {
-                objData[i].SetActive(true);
-                
-                InsertCharacter(objData[i]);
+				objData[i].SetActive(true);
+
+				InsertCharacter(objData[i]);
+
                 return true;
             }
         }
@@ -330,18 +341,33 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //현재 이 함수의 인자 값을 전부 복사해서 확인하면 부하가 커질거 같기 때문이다.
 	public int AddArbaitCheck()
     {
-        int nCount = 0;
+		bool bIsSearch = true;
 
-		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+		for (int nIndex = 0; nIndex < m_nMaxBatchArbaitAmount; nIndex++)
         {
-            if (m_BatchArbait[nIndex].activeSelf == true)
-                nCount++;
+			for (int nSearch = 0; nSearch < array_ArbaitData.Length; nSearch++) 
+			{
+				if (nIndex == array_ArbaitData [nSearch].nBatchIndex) {
+					bIsSearch = false;
+					break;
+				}
+			}
 
-            if(nCount >= m_nMaxBatchArbaitAmount)
-                return (int)E_CHECK.E_FAIL;
+			if (bIsSearch) 
+				return nIndex;
+			
+			else
+				bIsSearch = true;
         }
 
-        return nCount;
+		int nCount = 0;
+
+		for (int nIndex = 0; nIndex <m_BatchArbait.Length; nIndex++) {
+			if (m_BatchArbait [nIndex].activeSelf)
+				nCount++;
+		}
+
+		return (nCount > m_nMaxBatchArbaitAmount) ? (int)E_CHECK.E_FAIL : nCount;
     }
 
     //아르바이트 추가
@@ -350,7 +376,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     {
         if (m_BatchArbait[_nCharacterIndex].activeSelf == false)
         {
-            array_ArbaitData[_nCharacterIndex].GetArbaitData(_nIndex, _obj, _data);
+			array_ArbaitData[_nCharacterIndex].GetArbaitData(_nIndex, _obj, _data);
             m_BatchArbait[_nCharacterIndex].transform.position = m_BatchPosition[_nIndex].position;
             m_BatchArbait[_nCharacterIndex].SetActive(true);
             return true;
@@ -369,28 +395,44 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //인자로 넣은 값을 넣을 수 있는지 없는지를 확인한다.
     public int InsertArbatiWeaponCheck(int _nGrade)
     {
-        for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
-        {
-            if (m_BatchArbait[nIndex].activeSelf)
-            {
-                if ((array_ArbaitData[nIndex].nGrade <= _nGrade) 
-                    && (array_ArbaitData[nIndex].bIsRepair == false))
-                    return nIndex;
-                
-            }
-        }
-            return (int)E_CHECK.E_FAIL;
+		int nMinValue = 10;
+
+		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
+			
+			if (m_BatchArbait [nIndex].activeSelf) {
+
+				if ((array_ArbaitData [nIndex].nGrade <= _nGrade)
+				     && (array_ArbaitData [nIndex].bIsRepair == false)) {
+
+					if (array_ArbaitData [nIndex].nBatchIndex < nMinValue)
+						nMinValue = array_ArbaitData [nIndex].nBatchIndex;
+
+					if (nMinValue == 0)
+						return nMinValue;
+				}
+
+			}
+		}
+
+		return (nMinValue > m_nMaxBatchArbaitAmount) ? (int)E_CHECK.E_FAIL : nMinValue;
     }
 
     //만약 넣었을 경우 실행하는 함수 한번에 하지 않은 이유는 만약 넣을 수 없는데
     //현재 이 함수의 인자 값을 전부 복사해서 확인하면 부하가 커질거 같기 때문이다.
-    public void InsertArbaitWeapon(int nIndex, GameObject _obj, CGameWeaponInfo _data, float _fComplate, float _fTemperator)
+    public void InsertArbaitWeapon(int _nIndex, GameObject _obj, CGameWeaponInfo _data, float _fComplate, float _fTemperator)
     {
+		int nIndex;
+
+		for (nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+		{
+			if (array_ArbaitData [nIndex].nBatchIndex == _nIndex)
+				break;
+		}
         array_ArbaitData[nIndex].GetWeaponData(_obj, _data, _fComplate, _fTemperator);
     }
     ////////////////////////////////////////////////////////////////
 
-    public void InsertWeaponArbait(int _nIndex, int _nGrade)
+	public void InsertWeaponArbait(int _nIndex,int _nBatchIndex, int _nGrade)
     {
 		NormalCharacter charData;
 
@@ -398,11 +440,11 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         {
 			charData = _obj.GetComponent<NormalCharacter>();
 
-            if (charData.weaponData.nGrade <= _nGrade && charData.m_bIsRepair == false && charData.E_STATE == Character.ENORMAL_STATE.WAIT)
+			if (charData.weaponData.nGrade <= _nGrade && charData.m_bIsRepair == false && charData.E_STATE == Character.ENORMAL_STATE.WAIT)
             {
                 charData.m_bIsRepair = true;
 
-				charData.SpeechSelect (_nIndex);
+				charData.SpeechSelect (_nBatchIndex);
 
                 array_ArbaitData[_nIndex].GetWeaponData(_obj, charData.weaponData, charData.m_fComplate, charData.m_fTemperator);
                 break;
@@ -412,22 +454,17 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     public void DeleteArbait(GameObject _obj)
     {
-        int nIndex = 0;
-
-        foreach(GameObject obj in m_BatchArbait)
-        {
-            if(obj.activeSelf)
-            {
-                if(array_ArbaitData[nIndex].ArbaitPanelObject == _obj)
-                {
-                    array_ArbaitData[nIndex].Init();
-                    obj.SetActive(false);
-                    break;
-                }
-            }
-
-            nIndex++;
-        }
+		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
+		{
+			if (m_BatchArbait [nIndex].activeSelf) 
+			{
+				if (array_ArbaitData [nIndex].ArbaitPanelObject == _obj) {
+					array_ArbaitData[nIndex].Init();
+					m_BatchArbait[nIndex].SetActive(false);
+					break;
+				}
+			}
+		}
     }
 
     public float ActtiveArbaitRepair()

@@ -48,7 +48,7 @@ public class Druid : ArbaitBatch
 
         CheckCharacterState(E_STATE);
 
-        SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nIndex, nGrade);
     }
 
     protected override void OnDisable()

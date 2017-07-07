@@ -12,7 +12,7 @@ public class NormalCharacter : Character {
 	private int m_nCheck = -1;
 
 	//캐릭터 인덱스
-	private int m_nIndex = -1;
+	public int m_nIndex = -1;
 
 	//도착 지점
 	private Vector3 m_VecEndPos;
@@ -76,7 +76,11 @@ public class NormalCharacter : Character {
 
         m_bIsRepair = false;
 
+		m_bIsFirstBack = false;
+
         mySprite.sortingOrder = (int)E_SortingSprite.E_WALK;
+
+		fSpeed = 1.0f;
 
         m_nIndex = -1;
 
@@ -109,6 +113,8 @@ public class NormalCharacter : Character {
 
         m_bIsFirst = false;
 
+		m_bIsRepair = false;
+
         m_bIsFirstBack = false;
 
         m_bIsArrival = false;
@@ -139,14 +145,14 @@ public class NormalCharacter : Character {
     {
         yield return new WaitForSeconds(0.3f);
 
-        if (m_fCharacterTime < m_fCharacterWaitTime && m_bIsArrival == false)
-            E_STATE = ENORMAL_STATE.WALK;
-
-        else if (m_fCharacterTime >= m_fCharacterWaitTime || m_bIsBack == true)
-            E_STATE = ENORMAL_STATE.BACK;
-
-        else
-            E_STATE = ENORMAL_STATE.WAIT;
+		if (m_fCharacterTime >= m_fCharacterWaitTime || m_bIsBack == true)
+			E_STATE = ENORMAL_STATE.BACK;
+		
+		else if(m_fCharacterTime < m_fCharacterWaitTime && m_bIsArrival == false)
+			E_STATE = ENORMAL_STATE.WALK;
+		
+		else
+			E_STATE = ENORMAL_STATE.WAIT;
     }
 
     IEnumerator CharacterAction()
@@ -160,17 +166,21 @@ public class NormalCharacter : Character {
 
 			if ((transform.position.x == m_VecMoveDistance.x)) {
 
-				if (m_bIsArrival == false) {
+				if (m_bIsArrival == false) 
+				{
 					m_bIsArrival = true;
 
-					m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
+					if (!m_bIsRepair) {
 
-					if (m_nCheck != (int)E_CHECK.E_FAIL) {
-						m_bIsRepair = true;
+						m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
 
-                        SpeechSelect(SpawnManager.Instance.GetArbaitBatchIndex(m_nCheck));
+						if (m_nCheck != (int)E_CHECK.E_FAIL) {
+							m_bIsRepair = true;
 
-						SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
+							SpeechSelect (m_nCheck);
+
+							SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
+						}
 					}
 				}
 
@@ -188,7 +198,8 @@ public class NormalCharacter : Character {
 
 		case ENORMAL_STATE.BACK:
 
-			if (!m_bIsFirstBack) {
+			if (!m_bIsFirstBack) 
+			{
 				m_bIsFirstBack = true;
 
 				boxCollider.isTrigger = true;
@@ -202,24 +213,19 @@ public class NormalCharacter : Character {
 
 				RepairShowObject.CheckMyObject (gameObject);
 
+				SpawnManager.Instance.DeleteObject(gameObject);
+
 				WeaponBackground.SetActive (false);
-
-				//무기수리 했거나 
-				if (m_bIsRepair)
-					Complate (m_fComplate);
-
-				//시간이 지났을 경우 
-				else if (m_fCharacterTime >= m_fCharacterWaitTime)
-					Complate(m_fComplate);
 			}
-                
 
 			transform.position = Vector3.MoveTowards (transform.position, m_VecStartPos, fSpeed * Time.deltaTime);
 
-			if (Vector3.Distance (transform.position, m_VecStartPos) < 0.5f)
+			if (Vector3.Distance (transform.position, m_VecStartPos) < 0.5f) 
+			{
+				Complate (m_fComplate);
+
 				gameObject.SetActive (false);
-
-
+			}
 			break;
 
 		default:
@@ -232,8 +238,10 @@ public class NormalCharacter : Character {
 	public void RetreatCharacter(float _fSpeed,bool _bIsBack)
 	{
 		fSpeed = _fSpeed;
-		m_bIsBack = _bIsBack;
-		m_bIsArrival = true;
+
+		m_bIsArrival = _bIsBack;
+
+		m_bIsBack = true;
 	}
 
 	public void Move(int _nIndex)
@@ -249,15 +257,51 @@ public class NormalCharacter : Character {
 		m_VecMoveDistance = new Vector3(m_VecEndPos.x + fDistance, transform.position.y, 0);
 	}
 
-	public void GetRepairData(bool _bIsRepair, float _fComplate, float _fTemperator)
+	public void GetRepairData(bool _bIsRepair,bool _bIsResearch, float _fComplate, float _fTemperator)
 	{
 		m_bIsRepair = _bIsRepair;
+		m_bIsArrival = false;
 		m_fComplate = _fComplate;
 		m_fTemperator = m_fTemperator;
 
-		if (m_bIsRepair == false)
-			SpeechSelect ((int)E_SPEECH.E_NONE);
+		if (_bIsResearch) 
+		{
+			m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
+
+			if (m_nCheck != (int)E_CHECK.E_FAIL) {
+				m_bIsRepair = true;
+
+				SpeechSelect (m_nCheck);
+
+				SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
+			}
+		}
+		SpeechSelect ((int)E_SPEECH.E_NONE);
 	}
+
+	public void GetResetData(bool _bIsRepair,bool _bIsResearch, float _fComplate, float _fTemperator)
+	{
+		m_bIsRepair = false;
+		m_bIsArrival = false;
+		m_fComplate = _fComplate;
+		m_fTemperator = m_fTemperator;
+
+		if (_bIsResearch) 
+		{
+			m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
+
+			if (m_nCheck != (int)E_CHECK.E_FAIL) {
+				m_bIsRepair = true;
+
+				SpeechSelect (m_nCheck);
+
+				SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
+			}
+		}
+		SpeechSelect ((int)E_SPEECH.E_NONE);
+	}
+
+
 
 	public void SpeechSelect(int _nIndex)
 	{
@@ -292,7 +336,7 @@ public class NormalCharacter : Character {
 		}
 	}
 
-	public override void CheckComplate (float _fComplate)
+	public override bool CheckComplate (float _fComplate)
 	{
 		float fCurCompletY;
 
@@ -300,10 +344,17 @@ public class NormalCharacter : Character {
 
 		fCurCompletY = m_fComplate / weaponData.fComplate;
 
-		if (fCurCompletY >= 1.0f)
-			Complate (weaponData.fComplate);
+		if (fCurCompletY >= 1.0f) {
+			m_bIsBack = true;
 
-		ComplateScale.localScale = new Vector3( ComplateScale.localScale.x, fCurCompletY , ComplateScale.localScale.z);
+			ComplateScale.localScale = new Vector3 (ComplateScale.localScale.x, fCurCompletY, ComplateScale.localScale.z);
+
+			return true;
+		}
+
+		ComplateScale.localScale = new Vector3 (ComplateScale.localScale.x, fCurCompletY, ComplateScale.localScale.z);
+	
+		return false;
 	}
 
 	public override void Complate(float _fComplate = 0.0f)
@@ -332,7 +383,5 @@ public class NormalCharacter : Character {
 		RepairShowObject.CheckMyObject(gameObject);
 
 		WeaponBackground.SetActive(false);
-
-		SpawnManager.Instance.DeleteObject(gameObject);
 	}
 }

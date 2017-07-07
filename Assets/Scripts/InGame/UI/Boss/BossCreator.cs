@@ -66,8 +66,6 @@ public class BossCreator : MonoBehaviour
 		bossBackGround.StartChangeBackGroundToBossBackGround ();
 		bossBackGround.isBossBackGround = true;
 		nBossIndex = _index;
-
-
 	}
 	public void StartBossCreate()
 	{

@@ -31,7 +31,7 @@ public class OrangeHair : ArbaitBatch {
 
 		bIsComplate = false;
 
-		string strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
+		strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
 
 		myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
@@ -43,7 +43,7 @@ public class OrangeHair : ArbaitBatch {
 
         ApplySkill();
 
-        SpawnManager.Instance.InsertWeaponArbait(nIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nIndex, nGrade);
     }
 
     protected override void OnDisable()
@@ -81,6 +81,7 @@ public class OrangeHair : ArbaitBatch {
 		{
 		case E_ArbaitState.E_WAIT:
 			{
+				myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
 			}
 			break;
@@ -103,7 +104,7 @@ public class OrangeHair : ArbaitBatch {
 		case E_ArbaitState.E_WAIT:
 
 			//대기중 수리 아이템이 있을 경우 수리로 바꿈
-			if (AfootOjbect != null)
+			if (AfootOjbect != null && bIsRepair == true)
 				CheckCharacterState(E_ArbaitState.E_REPAIR);
 
 			break;
@@ -111,6 +112,9 @@ public class OrangeHair : ArbaitBatch {
 
 			//수리
 			fTime += Time.deltaTime;
+
+			if(AfootOjbect == null || bIsRepair == false)
+				CheckCharacterState(E_ArbaitState.E_WAIT);
 
 			//수리 시간이 되면 0으로 초기화 하고 수리해줌
 			if(fTime >= m_fRepairTime)
