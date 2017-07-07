@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
 
 
 	public GameObject []uiPanels;
+	public GameObject []uiButtons;
 	void Start()
 	{
 		AllDisable ();
@@ -29,6 +30,7 @@ public class UIManager : MonoBehaviour
 			uiPanels [nIndex].SetActive (true);
 		}
 	}
+
 
 	public void AllDisable()
 	{

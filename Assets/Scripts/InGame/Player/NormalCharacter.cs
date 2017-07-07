@@ -57,7 +57,7 @@ public class NormalCharacter : Character {
 
 		spawnTransform = GameObject.Find("SpawnPoint").gameObject.transform;
 
-		RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
+		RepairShowObject = GameObject.Find("RepairPanel").GetComponentInChildren<RepairObject>();
 
 		weaponsSprite = WeaponBackground.transform.FindChild("WeaponSprite").GetComponent<SpriteRenderer>();
 
