@@ -168,7 +168,7 @@ public class NormalCharacter : Character {
 					if (m_nCheck != (int)E_CHECK.E_FAIL) {
 						m_bIsRepair = true;
 
-						SpeechSelect (m_nCheck);
+                        SpeechSelect(SpawnManager.Instance.GetArbaitBatchIndex(m_nCheck));
 
 						SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
 					}

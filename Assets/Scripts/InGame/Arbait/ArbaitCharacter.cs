@@ -7,6 +7,7 @@ using ReadOnlys;
 public class ArbaitCharacter : MonoBehaviour {
 
     public int nIndex;
+    private int nEnhanceCost;
     private int nGetBatchIndex;
 
     protected bool m_bIsBatch = false;
@@ -110,11 +111,11 @@ public class ArbaitCharacter : MonoBehaviour {
 
         if(bIsToggle && m_bIsBatch == false)
         {
-			nGetBatchIndex = spawnManager.AddArbaitCheck(m_CharacterData.index);
+			nGetBatchIndex = spawnManager.AddArbaitCheck();
 
             if (nGetBatchIndex != (int)E_CHECK.E_FAIL)
             {
-                spawnManager.AddArbait(nGetBatchIndex, gameObject, m_CharacterData);
+                spawnManager.AddArbait(m_CharacterData.index, nGetBatchIndex, gameObject, m_CharacterData);
                 m_bIsBatch = true;
             }
         }
@@ -130,6 +131,6 @@ public class ArbaitCharacter : MonoBehaviour {
 
 	public void EnhanceEvent()
 	{
-
+        
 	}
 }

@@ -54,7 +54,7 @@ public class Nurse : ArbaitBatch {
         base.OnDisable();
     }
 
-    protected override void ApplySkill()
+    public override void ApplySkill()
     {
         if (fChangeCritical != 0)
             ReliveSkill();

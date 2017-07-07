@@ -138,11 +138,15 @@
     <None Include="Assets\Resources\Data\BossWeapon.txt" />
     <None Include="Assets\Resources\Data\Character.txt" />
     <None Include="Assets\Resources\Data\CriticalEnhance.txt" />
+    <None Include="Assets\Resources\Data\FourGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
+    <None Include="Assets\Resources\Data\OneGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\Quest.txt" />
     <None Include="Assets\Resources\Data\RepairEnhance.txt" />
     <None Include="Assets\Resources\Data\Shop.txt" />
     <None Include="Assets\Resources\Data\SmithEnhance.txt" />
+    <None Include="Assets\Resources\Data\ThreeGradeEnhance.txt" />
+    <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
     <None Include="Assets\Resources\Data\Weapon.txt" />
     <None Include="Assets\StreamingAssets\build_info.txt" />

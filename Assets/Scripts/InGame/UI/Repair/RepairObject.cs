@@ -306,6 +306,7 @@ public class RepairObject : MonoBehaviour {
 			bossCharacter = _bossData;
 		else
 			return;
+
 		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 		{
 			isMoveWeapon = false;
@@ -335,6 +336,13 @@ public class RepairObject : MonoBehaviour {
 		
 		fCurrentComplate = fCurrentComplate + player.GetRepairPower();
 
+        //크리티컬 확률 
+        if( Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
+        {
+            SpawnManager.Instance.PlayerCritical();
+            fCurrentComplate *= 1.5f;
+        }
+
         fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
 		SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate);
@@ -358,8 +366,6 @@ public class RepairObject : MonoBehaviour {
         TemperatureSlider.value = fCurrentTemperature;
 	    
 		ComplateText.text = string.Format("{0} / {1}", (int)ComplateSlider.value, weaponData.fComplate);
-	
-
     }
 
 	public void TouchBossWeapon()
@@ -528,8 +534,6 @@ public class RepairObject : MonoBehaviour {
 	{
 		if (bossCharacter == null)
 			return;
-
-	
 
 		if (fCurrentWater >= fUseWater) {
 

@@ -53,7 +53,7 @@ public class OrangeHair : ArbaitBatch {
         base.OnDisable();
     }
 
-    protected override void ApplySkill()
+    public override void ApplySkill()
     {
         if (fChangePlusWater != 0)
             ReliveSkill();

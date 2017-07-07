@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using ReadOnlys;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ReadOnlys;
 
 public class ArbaitBatch : MonoBehaviour {
 
@@ -16,7 +16,7 @@ public class ArbaitBatch : MonoBehaviour {
 
     public bool bIsComplate = false;
 
-	protected int nIndex = 0;
+	public int nIndex = 0;
 
     protected float fTime = 0.0f;
 
@@ -26,7 +26,7 @@ public class ArbaitBatch : MonoBehaviour {
     protected float m_fComplate;
 
     //무기 수리 시간
-    protected float m_fRepairTime = 2.0f;
+    protected float m_fRepairTime;
 
     // 무기 온도
     protected float m_fTemperator;
@@ -54,21 +54,37 @@ public class ArbaitBatch : MonoBehaviour {
 
 	protected Animator animator;
 
+    private bool m_bIsWaterAttackSpeed = false;
+    private bool m_bIsWaterRepairPower = false;
+    private bool m_bIsWaterCritical = false;
+
+    private float m_fWaterAttackSpeedValue = 0.0f;
+    private float m_fWaterRepairPowerValue = 0.0f;
+    private float m_fWaterCriticalValue = 0.0f;
+
+    private float m_fWaterAttackSpeedTime = 0.0f;
+    private float m_fWaterRepairPowerTime = 0.0f;
+    private float m_fWaterCriticalTime = 0.0f;
+
+    private float m_fWaterAttackSpeedPlusTime = 0.0f;
+    private float m_fWaterRepairPowerPlusTime = 0.0f;
+    private float m_fWaterCriticalPlusTime = 0.0f;
+
     //무기 등급을 어디까지 받아올지를 정하기 위해 사용
     public int nGrade { get; set; }
 
-	public float GetRepairPower(){ return m_CharacterChangeData.fRepairPower; }
-	public void SetRepairPower(float _fValue) { m_CharacterChangeData.fRepairPower = _fValue; }
+    //public float GetRepairPower(){ return m_CharacterChangeData.fRepairPower; }
+    //public void SetRepairPower(float _fValue) { m_CharacterChangeData.fRepairPower = _fValue; }
 
-	public float GetAttackSpeed() { return m_CharacterChangeData.fAttackSpeed; }
-	public void SetAttackSpeed(float _fValue) { m_CharacterChangeData.fAttackSpeed = _fValue; }
+    //public float GetAttackSpeed() { return m_CharacterChangeData.fAttackSpeed; }
+    //public void SetAttackSpeed(float _fValue) { m_CharacterChangeData.fAttackSpeed = _fValue; }
 
-	public float GetCriticalChance() { return m_CharacterChangeData.fCritical; }
-	public void SetCriticalChance(float _fValue) { m_CharacterChangeData.fCritical = _fValue; }
+    //public float GetCriticalChance() { return m_CharacterChangeData.fCritical; }
+    //public void SetCriticalChance(float _fValue) { m_CharacterChangeData.fCritical = _fValue; }
 
-	public void SetDefaultRepair(float _fValue) {m_CharacterChangeData.fRepairPower += _fValue;}
-	public void SetDefaultAccuracy(float _fValue) {m_CharacterChangeData.fAccuracyRate += _fValue;}
-	public void SetDefaultCritical(float _fValue) {m_CharacterChangeData.fCritical += _fValue;}
+    //public void SetDefaultRepair(float _fValue) {m_CharacterChangeData.fRepairPower += _fValue;}
+    //public void SetDefaultAccuracy(float _fValue) {m_CharacterChangeData.fAccuracyRate += _fValue;}
+    //public void SetDefaultCritical(float _fValue) {m_CharacterChangeData.fCritical += _fValue;}
 
 	public virtual void ApplyRepairBuff() { }
 	public virtual void ReliveRepairBuff(int nValue){ }
@@ -98,6 +114,39 @@ public class ArbaitBatch : MonoBehaviour {
 
 	protected virtual void OnDisable()
     {
+        //만약 각 버프들이 활성화 중이라면 false로 바꾼후 수치를 원래대로 바꾼다.
+        #region Disable Check Active Buff
+        if (m_bIsWaterAttackSpeed)
+        {
+            m_bIsWaterAttackSpeed = false;
+            m_CharacterChangeData.fAttackSpeed += m_fWaterAttackSpeedValue;
+        }
+
+        if (m_bIsWaterRepairPower)
+        {
+            m_bIsWaterRepairPower = false;
+            m_CharacterChangeData.fRepairPower -= m_fWaterRepairPowerValue;
+        }
+
+        if (m_bIsWaterCritical)
+        {
+             m_bIsWaterCritical = false;
+             m_CharacterChangeData.fCritical += m_fWaterCriticalValue;
+        }
+
+        if (m_bIsSmithBuffAccuracy)
+        {
+            m_bIsSmithBuffAccuracy = false;
+            m_CharacterChangeData.fAccuracyRate += m_fSmithAccuracyValue;
+        }
+
+        if (m_bIsSmithCriticalAttackSpeed)
+        {
+            m_bIsSmithCriticalAttackSpeed = false;
+            m_CharacterChangeData.fAttackSpeed += m_fSmithCriticalAttackSpeedValue;
+        }
+        #endregion
+
         Init();
     }
 
@@ -128,6 +177,7 @@ public class ArbaitBatch : MonoBehaviour {
             buff.Add(stBuff);
         }
 
+        m_fRepairTime = m_CharacterChangeData.fAttackSpeed;
 
         animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/" + _data.strAnimation);
     }
@@ -159,35 +209,214 @@ public class ArbaitBatch : MonoBehaviour {
 	protected virtual IEnumerator CharacterAction() { yield return null; }
 
     //스킬 적용
-    protected virtual void ApplySkill() { }
+    public virtual void ApplySkill() { }
 
     //스킬 해제
     protected virtual void ReliveSkill() { }
 
-	private bool bIsWaterAttackSpeed = false;
-	private bool bIsWaterRepairPower = false;
-	private bool bIsWaterCritical = false;
+    //물 사용 했을 때 버프를 적용시키기 위함
+    //만약 버프가 활성화 중이라면 경과시간을 0초로 바꿔줌
 
-	private float fWaterAttackSpeedTime = 0.0f;
-	private float fWaterRepairPowerTime = 0.0f;
-	private float fWaterCriticalTime = 0.0f;
+    #region if Use Water, Apply and Relive Buff
 
-
-	public void ApplyWaterBuffAttackSpeed(float _fValue, float _fTime) 
-	{ 
-
-
-	}
-
-	public void ApplyWaterBuffRepairPower(float _fValue, float _fTime) 
+    public IEnumerator ApplyWaterBuffAttackSpeed(float _fValue, float _fTime) 
 	{
-	
+        //만약 활성화 중이라면 0초로 바꿔줌
+        if (m_bIsWaterAttackSpeed)
+            m_fWaterAttackSpeedPlusTime = 0.0f;
+
+        //비활성화 중이라면 코룬틴으올 동작시킴
+        else
+            yield return StartCoroutine(ReliveWaterBuffAttackSpeed(_fValue, _fTime));
 	}
 
-	public void ApplyWaterBuffCritical(float _fValue, float _fTime) 
+    public IEnumerator ReliveWaterBuffAttackSpeed(float _fValue, float _fTime)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        m_bIsWaterAttackSpeed = true;
+
+        m_fWaterAttackSpeedValue = m_CharacterChangeData.fAttackSpeed * (_fValue * 0.01f);
+
+        m_CharacterChangeData.fAttackSpeed -= m_fWaterAttackSpeedValue;
+
+        while(true)
+        {
+            yield return null;
+
+            m_fWaterAttackSpeedPlusTime += Time.deltaTime;
+
+            if (m_fWaterAttackSpeedPlusTime > _fTime)
+                break;
+        }
+
+        Debug.Log("Remove");
+
+        m_bIsWaterAttackSpeed = false;
+        m_CharacterChangeData.fAttackSpeed += m_fWaterAttackSpeedValue;
+    }
+
+    public IEnumerator ApplyWaterBuffRepairPower(float _fValue, float _fTime) 
 	{
-	
+        if (m_bIsWaterRepairPower)
+            m_fWaterRepairPowerPlusTime = 0.0f;
+
+        else
+            yield return StartCoroutine(ReliveWaterBuffRepairPower(_fValue, _fTime));
 	}
+
+    public IEnumerator ReliveWaterBuffRepairPower(float _fValue, float _fTime)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        m_bIsWaterRepairPower = true;
+
+        m_fWaterRepairPowerValue = m_CharacterChangeData.fRepairPower * (_fValue * 0.01f);
+
+        m_CharacterChangeData.fRepairPower += m_fWaterRepairPowerValue;
+
+        while (true)
+        {
+            yield return null;
+
+            m_fWaterRepairPowerPlusTime += Time.deltaTime;
+
+            if (m_fWaterRepairPowerPlusTime > _fTime)
+                break;
+        }
+
+        m_bIsWaterRepairPower = false;
+        m_CharacterChangeData.fRepairPower -= m_fWaterRepairPowerValue;
+    }
+
+    public IEnumerator ApplyWaterBuffCritical(float _fValue, float _fTime) 
+	{
+        if (m_bIsWaterCritical)
+            m_fWaterCriticalPlusTime = 0.0f;
+
+        else
+            yield return StartCoroutine(ReliveWaterBuffBuffCritical(_fValue, _fTime));
+	}
+
+    public IEnumerator ReliveWaterBuffBuffCritical(float _fValue, float _fTime)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        m_bIsWaterCritical = true;
+
+        m_fWaterCriticalValue = m_CharacterChangeData.fCritical * (_fValue * 0.01f);
+
+        m_CharacterChangeData.fCritical += m_fWaterCriticalValue;
+
+        while (true)
+        {
+            yield return null;
+
+            m_fWaterCriticalPlusTime += Time.deltaTime;
+
+            if (m_fWaterCriticalPlusTime > _fTime)
+                break;
+        }
+
+        m_bIsWaterCritical = false;
+        m_CharacterChangeData.fCritical += m_fWaterCriticalValue;
+    }
+
+    #endregion
+
+    #region if Smith Critical, Apply and Relive Accuracy Buff
+
+    private bool m_bIsSmithBuffAccuracy = false;
+
+    private float m_fSmithAccuracyPlusTime = 0.0f;
+    private float m_fSmithAccuracyValue = 0.0f;
+
+
+    public IEnumerator ApplySmithCriticalBuffAccuracy(float _fValue, float _fTime)
+    {
+        //만약 활성화 중이라면 0초로 바꿔줌
+        if (m_bIsSmithBuffAccuracy)
+            m_fSmithAccuracyPlusTime = 0.0f;
+
+        //비활성화 중이라면 코룬틴으올 동작시킴
+        else
+            yield return StartCoroutine(ReliveSmithCriticalAccuracy(_fValue, _fTime));
+    }
+
+    public IEnumerator ReliveSmithCriticalAccuracy(float _fValue, float _fTime)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        m_bIsSmithBuffAccuracy = true;
+
+        m_fSmithAccuracyValue = m_CharacterChangeData.fAccuracyRate * (_fValue * 0.01f);
+
+        m_CharacterChangeData.fAccuracyRate -= m_fSmithAccuracyValue;
+
+        while (true)
+        {
+            yield return null;
+
+            m_fSmithAccuracyPlusTime += Time.deltaTime;
+
+            if (m_fSmithAccuracyPlusTime > _fTime)
+                break;
+        }
+
+        m_bIsSmithBuffAccuracy = false;
+        m_CharacterChangeData.fAccuracyRate += m_fSmithAccuracyValue;
+    }
+
+    #endregion
+
+    #region if Smith Critical, Apply and Relive AttackSpeed Buff
+
+    private bool m_bIsSmithCriticalAttackSpeed = false;
+
+    private float m_fSmithCriticalAttackSpeedPlusTime = 0.0f;
+    private float m_fSmithCriticalAttackSpeedValue = 0.0f;
+
+
+    public IEnumerator ApplySmithCriticalBuffAttackSpeed(float _fValue, float _fTime)
+    {
+        //만약 활성화 중이라면 0초로 바꿔줌
+        if (m_bIsSmithCriticalAttackSpeed)
+            m_fSmithCriticalAttackSpeedPlusTime = 0.0f;
+
+        //비활성화 중이라면 코룬틴으올 동작시킴
+        else
+            yield return StartCoroutine(ReliveWaterBuffAttackSpeed(_fValue, _fTime));
+
+        m_fSmithCriticalAttackSpeedPlusTime = 0.0f;
+    }
+
+    public IEnumerator ReliveSmithCriticalAttackSpeed(float _fValue, float _fTime)
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        m_bIsSmithCriticalAttackSpeed = true;
+
+
+        m_fSmithCriticalAttackSpeedValue = m_CharacterChangeData.fAttackSpeed * (_fValue * 0.01f);
+
+        m_CharacterChangeData.fAttackSpeed -= m_fSmithCriticalAttackSpeedValue;
+
+        while (true)
+        {
+            yield return null;
+
+            m_fSmithCriticalAttackSpeedPlusTime += Time.deltaTime;
+
+            if (m_fSmithCriticalAttackSpeedPlusTime > _fTime)
+                break;
+        }
+
+        m_bIsSmithCriticalAttackSpeed = false;
+        m_CharacterChangeData.fAttackSpeed += m_fSmithCriticalAttackSpeedValue;
+    }
+
+    #endregion
+
 
 
     //무기 수리 완료시 호출

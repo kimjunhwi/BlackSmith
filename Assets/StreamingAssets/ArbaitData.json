@@ -65,5 +65,31 @@
 		"nScoutDia": 50,
 		"nIsDia": 1,
 		"bIsBuyCheck": 0
-	}]
+	}
+,
+	{
+		"index": 3,
+		"level": 0,
+		"name": "Cleo",
+		"strAnimation" : "Cleo",
+		"grade": 1,
+		"batch": -1,
+		"fRepairPower": 12,
+		"fAttackSpeed": 1,
+		"fCritical": 10,
+		"fAccuracyRate": 10,
+		"strBuffIndexs": "2",
+		"strExplains": "물 사용시 모든 직원 공격속도 20% 증가",
+		"fSkillPercent" : 20,
+		"fCurrentFloat": 0,
+		"nScoutCount": 0,
+		"nScoutGold": 12000,
+		"nScoutHonor": 0,
+		"nScoutDia": 50,
+		"nIsDia": 1,
+		"bIsBuyCheck": 0
+	}
+
+
+]
 }
