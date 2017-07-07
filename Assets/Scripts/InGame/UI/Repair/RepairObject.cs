@@ -67,11 +67,12 @@ public class RepairObject : MonoBehaviour {
 	int nChancePercent = 50;			//미스 확률
 
 	//BossMusic
-	private Vector3 randomDir;
-	private float fRandomX;
-	private float fRandomY;
-	private float canvasWidth = 65f;
-	private float canvasHeight = 630f;
+	private Vector3 randomDir;									//루시오 보스무기가 갈 랜덤 방향
+	private Vector3 getReflectDir;
+	private float fRandomX;										//랜덤 방향 X
+	private float fRandomY;										//랜덤 방향 Y
+	private float canvasWidth = 655f;							//체크 할 
+	private float canvasHeight = 1100f;
 	private float fMoveSpeed;
 	private RectTransform bossWeaponRectTransform;
 	public RectTransform bossNoteRectTransform;
@@ -80,13 +81,16 @@ public class RepairObject : MonoBehaviour {
 	public Note2Object note2Obj;
 	public Note3Object note3Obj;
 	private Transform noteGameObject;							//물 사용시 없어질 노트 obj
-	private Vector3 bossWeaponObjOriginPosition;
+	private Vector3 bossWeaponObjOriginPosition;				//원래 수리 패널에 있을때의 무기 위치
+	private Vector2 bossWeaponObjOriginSize;					//원래 수리 패널에 터치 인식 범위의 크기
+	private Vector2 bossWeaponSize;								//무기 이미지 만큼의 크기
 	private bool isMoveWeapon = false;
 
 
 	void Start()
 	{
-		fMoveSpeed = 5f;
+		bossWeaponObjOriginSize = new Vector2 (590f, 470f);
+		bossWeaponSize = new Vector2 (380f, 270f);
 		fXPos = textRectTrasnform.position.x;
 		fYPos = textRectTrasnform.position.y;
 
@@ -139,6 +143,9 @@ public class RepairObject : MonoBehaviour {
 
 		bossWeaponObjOriginPosition = bossWeaponObject.transform.position;
 
+
+		bossWeaponRectTransform = bossWeaponObject.GetComponent<RectTransform> ();
+
 		bossWeaponObject.SetActive (false);
 		bossWaterObject.SetActive (false);
 		WeaponObject.SetActive (true);
@@ -157,39 +164,50 @@ public class RepairObject : MonoBehaviour {
 
 	public IEnumerator BossMusicWeaponMove()
 	{
+		bossWeaponRectTransform.sizeDelta = bossWeaponSize;
+		//무기 초기 스피드
+		fMoveSpeed = 5f;		
 		
 		fRandomX = Random.Range (-2.0f, 2.0f);
 		fRandomY = Random.Range (-2.0f, 2.0f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 
-		bossWeaponRectTransform = bossWeaponObject.GetComponent<RectTransform> ();
 		while (isMoveWeapon == false)
 		{
 
 			
-			Debug.Log ("MoveBOssWeapon");
+			//Debug.Log ("MoveBOssWeapon");
 			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed);
 
 			//4면 충돌 확인
-			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - (bossWeaponRectTransform.sizeDelta.x / 2))) {
-				//Debug.Log ("Right Collision");
-				randomDir = Vector3.Reflect (randomDir, Vector3.left);
+			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 65f ) {
+
+				getReflectDir = Vector3.Reflect (randomDir, Vector3.left);
+				randomDir = new Vector3 (getReflectDir.x, Random.Range (-2.0f, 2.0f), getReflectDir.z);
+				//Debug.Log ("Right Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
 
-			if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth / 2) - (bossWeaponRectTransform.sizeDelta.x / 2))) {
-				//Debug.Log ("Left Collision");
-				randomDir = Vector3.Reflect (randomDir, Vector3.right);
+			if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth  - bossWeaponRectTransform.sizeDelta.x) -65f)) {
+				
+				getReflectDir = Vector3.Reflect (randomDir, Vector3.right);
+				randomDir = new Vector3 (getReflectDir.x, Random.Range (-2.0f, 2.0f), getReflectDir.z);
+				//Debug.Log ("Left Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
 
-			if (bossWeaponRectTransform.anchoredPosition.y >= (50f) - (bossWeaponRectTransform.sizeDelta.y / 2)) {
-				//Debug.Log ("Top Collision");
-				randomDir = Vector3.Reflect (randomDir, Vector3.down);
+			if (bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 80f) {
+
+				getReflectDir = Vector3.Reflect (randomDir, Vector3.down);
+				randomDir = new Vector3 (Random.Range(-2.0f,2.0f), getReflectDir.y, getReflectDir.z);
+				//Debug.Log ("Top Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
 
-			if (bossWeaponRectTransform.anchoredPosition.y <= ((1050f) - (bossWeaponRectTransform.sizeDelta.y / 2))) {
-				//Debug.Log ("Down Collision");
-				randomDir = Vector3.Reflect (randomDir, Vector3.up);
+			if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 190f))) {
+		
+				getReflectDir = Vector3.Reflect (randomDir, Vector3.up);
+				randomDir = new Vector3 (Random.Range(-2.0f,2.0f), getReflectDir.y, getReflectDir.z);
+
+				//Debug.Log ("Bottom Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
 		
 
@@ -634,6 +652,7 @@ public class RepairObject : MonoBehaviour {
 	{
 		StopCoroutine (BossMusicWeaponMove ());
 		bossWeaponObject.transform.position = bossWeaponObjOriginPosition;
+		bossWeaponRectTransform.sizeDelta = bossWeaponObjOriginSize;
 
 		bossWeaponObject.SetActive (false);
 		bossWaterObject.SetActive (false);
