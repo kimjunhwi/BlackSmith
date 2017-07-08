@@ -42,7 +42,7 @@ public class RepairObject : MonoBehaviour {
 	Player player;
 
 	//Boss
-	BossCharacter bossCharacter;		//보스 캐릭터 받는 것
+	public BossCharacter bossCharacter;		//보스 캐릭터 받는 것
 	private float fBossMaxComplete;		//보스 캐릭터 최대 완성도
 	GameObject waterObject;				//물 오브젝트
 	GameObject bossWeaponObject;		//보스 무기 버튼
@@ -93,7 +93,7 @@ public class RepairObject : MonoBehaviour {
 	public Animator weaponWaterCat_animator;					//그냥무기일때의 고양이
 	public Animator CatWater_animator;							//물 이펙트
 
-	private bool isTouchWater;
+	public bool isTouchWater;
 
 	void Start()
 	{
@@ -133,7 +133,7 @@ public class RepairObject : MonoBehaviour {
 
 
 		this.StartCoroutine (this.PlusWater ());
-		this.StartCoroutine (this.StartWaterCat ());
+	
 		this.StartCoroutine (this.StartWaterFx ());
 	
 
@@ -164,45 +164,14 @@ public class RepairObject : MonoBehaviour {
 		WeaponObject.SetActive (true);
 		waterObject.SetActive (true);
 	}
-	public IEnumerator StartWaterCat()
-	{
-		while (true)
-		{
-			if (bossCharacter != null)
-			{
-				if (isTouchWater == true) 
-				{
-					Debug.Log("BossWeaponWCatFx !!");
-					bossWaterCat_animator.SetBool ("isTouchWater", true);
-					if (bossWaterCat_animator.GetCurrentAnimatorStateInfo (0).IsName ("WaterCat_spread")) {
 
-						yield return new WaitForSeconds (0.5f);
-						Debug.Log ("BossWeaponWCatFx !!");
-						waterFxObj.transform.SetAsFirstSibling ();
-						bossWaterCat_animator.SetBool ("isTouchWater", false);
-						//CatWater_animator.SetBool ("isTouchWater", false);
-						isTouchWater = false;
-						bossWaterCat_animator.Play ("WaterCat_Idle");
-						//CatWater_animator.Play ("Water_Fx_Idle");
-
-
-					} 
-					else
-						yield return null;
-				}
-			}
-
-			yield break;
-		}
-
-
-	}
 
 
 	public IEnumerator StartWaterFx()
 	{
 		while (true)
 		{
+			
 			if (bossCharacter != null) 
 			{
 				//BossWepaonWater
@@ -210,26 +179,20 @@ public class RepairObject : MonoBehaviour {
 				{
 					waterFxObj.transform.SetAsLastSibling ();
 					Debug.Log("BossWeaponWaterFx !!");
+					bossWaterCat_animator.SetBool ("isTouchWater", true);
 					CatWater_animator.SetBool ("isTouchWater", true);
 
-					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread"))
-					{
-						
+					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread")) {
 						yield return new WaitForSeconds (0.5f);
 						Debug.Log ("BossWeaponWaterFinish !!");
 						waterFxObj.transform.SetAsFirstSibling ();
-						//bossWaterCat_animator.SetBool ("isTouchWater", false);
+						bossWaterCat_animator.SetBool ("isTouchWater", false);
 						CatWater_animator.SetBool ("isTouchWater", false);
 						isTouchWater = false;
-						//bossWaterCat_animator.Play ("WaterCat_Idle");
+						bossWaterCat_animator.Play ("WaterCat_Idle");
 						CatWater_animator.Play ("Water_Fx_Idle");
 						
 					}
-
-						
-					else
-						yield return null;
-
 				}
 			} 
 			else 
@@ -239,10 +202,13 @@ public class RepairObject : MonoBehaviour {
 				{
 					waterFxObj.transform.SetAsLastSibling ();
 					Debug.Log("NormalWeaponWater !!");
-					CatWater_animator.SetBool ("isTouchWater", true);
+					//weaponWaterCat_animator.Play ("WaterCat_spread");
 					weaponWaterCat_animator.SetBool ("isTouchWater", true);
+					//yield return new WaitForSeconds(0.2f);
+					CatWater_animator.SetBool ("isTouchWater", true);
 
-					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread")) {
+					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread"))
+					{
 						yield return new WaitForSeconds (0.5f);
 						Debug.Log ("WeaponWaterFinish !!");
 						waterFxObj.transform.SetAsFirstSibling ();
@@ -251,8 +217,7 @@ public class RepairObject : MonoBehaviour {
 						isTouchWater = false;
 						weaponWaterCat_animator.Play ("WaterCat_Idle");
 						CatWater_animator.Play ("Water_Fx_Idle");
-					} else
-						yield return new WaitForSeconds(0.1f);
+					} 
 
 				}
 			}
@@ -659,7 +624,6 @@ public class RepairObject : MonoBehaviour {
 			//물 터치시 노트 한단계씩 떨어진다.
 
 		
-			isTouchWater = true;
 
 			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 			{
