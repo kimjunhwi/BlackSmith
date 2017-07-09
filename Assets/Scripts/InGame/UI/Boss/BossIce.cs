@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class BossIce : BossCharacter 
 {
-	private RectTransform bossNoteRespawnPoint;
-	private float fXPos;
-	private float fYPos;
-	private float fRandomXPos;
-	private float fRandomYPos;
-	public SimpleObjectPool noteObjectPool;
 	public int nNoteCount = 0;
 	public BossBackGround bossBackGround;
 
@@ -19,39 +13,32 @@ public class BossIce : BossCharacter
 
 	private bool isFailed = false;
 	private int nNoteMaxCount = 7;
-	private float nBossGenerateTime = 2.0f;
+
 	private float nContinueTime = 10f;
 	private float nBossSpeedIncreaseValue =0f;    //보스 무기 속도 증가량
 	private float nBossSpeedIncreaseRate = 0.1f;  //보스 무기 속도 증가비율
 	private string sBossSprite = "Weapons/Boss/deathnote";
 
-	//임시 변수
-	private float fTime = 0f;					  //보스 리젠 시간
-	GameObject Note;							  //노트 변수
 
+	Animator animator;							  //BossAnimator
+	bool isFirstActive = false;					  //처음 실행시 체크 변수
 
-	Animator animator;
-
-	bool isFirstActive = false;
+	//IceWall
+	public GameObject iceWall;
+	public bool isIceWallOn;					  //IceWall이 켜졌는지 아닌지
+	public float fIceWallGenerateTimer =0f;
+	private float nBossIceWallGenerateTime = 10.0f;
 
 	private void Start()
 	{
 
 		bossImage = GetComponent<SpriteRenderer> ();
-		//bossImage.enabled = false;
-		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
-		noteObjectPool = GameObject.Find ("NotePool").GetComponent<SimpleObjectPool> ();
-
-		bossNoteRespawnPoint = GameObject.Find ("BossNoteCreateArea").GetComponent<RectTransform>();
-		fXPos = bossNoteRespawnPoint.position.x + 60;
-		fYPos = bossNoteRespawnPoint.position.y + 60;
-
-		//Debug.Log (fXPos + "," + fYPos);
-		//bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
 		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
 		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
+
+		iceWall.SetActive (false);
 
 
 	}
@@ -103,11 +90,6 @@ public class BossIce : BossCharacter
 
 
 			gameObject.SetActive (false);
-			while (bossNoteRespawnPoint.childCount != 0) 
-			{
-				GameObject go = bossNoteRespawnPoint.GetChild (0).gameObject;
-				noteObjectPool.ReturnObject(go);
-			}
 
 		}		
 	}
@@ -153,19 +135,17 @@ public class BossIce : BossCharacter
 	{
 		while (true)
 		{
-			fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
-
-			fTime += Time.deltaTime;
+			if(isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
 
 
-			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
+			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 			{
-				CreateNote ();
+				ActiveIceWall ();
 			}
 
 			if (fCurComplete < 0) {
@@ -200,20 +180,19 @@ public class BossIce : BossCharacter
 
 		while (true)
 		{
-
-			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
-
-			fTime += Time.deltaTime;
+			
+			if(isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
+			
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
 			//Note 생성 
-			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
-			{
 
-				CreateNote ();
+			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
+			{
+				ActiveIceWall ();
 			}
 
 
@@ -243,17 +222,18 @@ public class BossIce : BossCharacter
 
 		while (true)
 		{
-			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
 
-			fTime += Time.deltaTime;
+			if(isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
+			
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 			//Note 생성 
-			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
+
+			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 			{
-				CreateNote ();
+				ActiveIceWall ();
 			}
 
 
@@ -331,24 +311,19 @@ public class BossIce : BossCharacter
 		yield break;
 	}	
 
-	public void CreateNote()
+	public void ActiveIceWall()
 	{
-		Note = noteObjectPool.GetObject ();
-		Note.transform.SetParent (bossNoteRespawnPoint.transform);
-		Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
-		Note.name = "Note";
-
-		NoteObject noteObj = Note.GetComponent<NoteObject> ();
-		noteObj.noteObjPull = noteObjectPool;
-		noteObj.parentTransform = bossNoteRespawnPoint;
-		noteObj.fTime = nContinueTime;
-		noteObj.repairObj = repairObj;
-		nBossSpeedIncreaseValue = 5.0f;
-		repairObj.AddBossWeaponSpeed (nBossSpeedIncreaseValue * nBossSpeedIncreaseRate);
-		nBossSpeedIncreaseValue = 0f;
-		fTime = 0f;
-
-		nNoteCount++;
-
+		if (iceWall.activeSelf == true) {
+			iceWall.SetActive (false);
+			isIceWallOn = false;
+		}
+		else 
+		{
+			iceWall.SetActive (true);
+			isIceWallOn = true;
+			fIceWallGenerateTimer = 0f;
+		}
 	}
+
+
 }
