@@ -151,9 +151,9 @@ public class ArbaitBatch : MonoBehaviour {
         }
         #endregion
 
-		nBatchIndex = -1;
-
         Init();
+
+		nBatchIndex = -1;
     }
 
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
@@ -429,10 +429,24 @@ public class ArbaitBatch : MonoBehaviour {
 	protected void ComplateWeapon()
     {
         //현재 수리중인 오브젝트와 무기의 완성도를 보내 수리한다.
-        SpawnManager.Instance.ComplateCharacter(AfootOjbect,weaponData.fComplate);
+		SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate, m_fTemperator);
 
         //초기화
-		Init(true);
+		fTime = 0.0f;
+
+		bIsRepair = false;
+
+		bIsComplate = false;
+
+		weaponData = null;
+
+		AfootOjbect = null;
+
+		m_fComplate = 0.0f;
+
+		m_fMaxComplate = 0.0f;
+
+		m_fTemperator = 0.0f;
 
         //수리중인 무기가없을것이므로 무기를 찾아 넣어준다.
 		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
@@ -441,13 +455,29 @@ public class ArbaitBatch : MonoBehaviour {
     //현재 수리중인 무기를 되돌려준다.
     public void ResetWeaponData()
     {
+		fTime = 0.0f;
 
-        Init();
+		bIsRepair = false;
+
+		bIsComplate = false;
+
+		weaponData = null;
+			
+		SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate, m_fTemperator);
+		
+		m_fComplate = 0.0f;
+
+		m_fMaxComplate = 0.0f;
+
+		m_fTemperator = 0.0f;
+
+		AfootOjbect = null;
+
         //AfootOjbect = _obj;
 		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
     }
 
-	public void Init(bool bIsReturn = false)
+	public void Init()
     {
 		fTime = 0.0f;
 
@@ -457,37 +487,13 @@ public class ArbaitBatch : MonoBehaviour {
 
 		weaponData = null;
 
-		CheckCharacterState(E_ArbaitState.E_WAIT);
-
-		if (bIsReturn == false && AfootOjbect != null)
-			SpawnManager.Instance.ReturnInsertData (AfootOjbect,false,false, m_fComplate, m_fTemperator);
-
+		if (AfootOjbect != null) 
+			SpawnManager.Instance.ReturnInsertData (AfootOjbect,false,true, m_fComplate, m_fTemperator);
+		
 		m_fComplate = 0.0f;
 
 		m_fMaxComplate = 0.0f;
 
-		AfootOjbect = null;
+		m_fTemperator = 0.0f;
     }
-
-	public void RemoveArbait()
-	{
-		fTime = 0.0f;
-
-		bIsRepair = false;
-
-		bIsComplate = false;
-
-		weaponData = null;
-
-		CheckCharacterState(E_ArbaitState.E_WAIT);
-
-		if (AfootOjbect != null)
-			
-
-		m_fComplate = 0.0f;
-
-		m_fMaxComplate = 0.0f;
-
-		AfootOjbect = null;
-	}
 }

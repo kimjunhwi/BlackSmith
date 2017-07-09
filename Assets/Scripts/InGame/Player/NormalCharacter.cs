@@ -40,7 +40,7 @@ public class NormalCharacter : Character {
 	private bool m_bIsFirst = false;
 
 	//캐릭터가 지정한 위치에 도달했는가
-	private bool m_bIsArrival = false;
+	public bool m_bIsArrival = false;
 
 	public override void Awake()
     {
@@ -215,6 +215,15 @@ public class NormalCharacter : Character {
 
 				SpawnManager.Instance.DeleteObject(gameObject);
 
+				Complate (m_fComplate);
+
+				//현재 아르바이트가 수리중인지 확인 
+				ArbaitBatch arbait =  SpawnManager.Instance.OverlapArbaitData (gameObject);
+
+				if (arbait != null)
+					arbait.ResetWeaponData();
+				
+
 				WeaponBackground.SetActive (false);
 			}
 
@@ -222,7 +231,7 @@ public class NormalCharacter : Character {
 
 			if (Vector3.Distance (transform.position, m_VecStartPos) < 0.5f) 
 			{
-				Complate (m_fComplate);
+				
 
 				gameObject.SetActive (false);
 			}
@@ -234,6 +243,12 @@ public class NormalCharacter : Character {
 
         yield return null;
     }
+
+	public void ResetData()
+	{
+		m_bIsArrival = true;
+
+	}
 
 	public void RetreatCharacter(float _fSpeed,bool _bIsBack)
 	{
@@ -260,7 +275,6 @@ public class NormalCharacter : Character {
 	public void GetRepairData(bool _bIsRepair,bool _bIsResearch, float _fComplate, float _fTemperator)
 	{
 		m_bIsRepair = _bIsRepair;
-		m_bIsArrival = false;
 		m_fComplate = _fComplate;
 		m_fTemperator = m_fTemperator;
 
@@ -274,6 +288,8 @@ public class NormalCharacter : Character {
 				SpeechSelect (m_nCheck);
 
 				SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
+
+				return;
 			}
 		}
 		SpeechSelect ((int)E_SPEECH.E_NONE);
@@ -296,6 +312,8 @@ public class NormalCharacter : Character {
 				SpeechSelect (m_nCheck);
 
 				SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
+
+				return;
 			}
 		}
 		SpeechSelect ((int)E_SPEECH.E_NONE);
@@ -321,6 +339,8 @@ public class NormalCharacter : Character {
 			//onPointerDown 보다 먼저 호출
 			if (!EventSystem.current.IsPointerOverGameObject ()) {
 
+				m_bIsRepair = true;
+
 				//현재 아르바이트가 수리중인지 확인 
 				ArbaitBatch arbait =  SpawnManager.Instance.OverlapArbaitData (gameObject);
 
@@ -329,18 +349,17 @@ public class NormalCharacter : Character {
 
 				RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
 
-				m_bIsRepair = true;
-				
 				backGround.sprite = PlayerRepairSpeech;
 			}
 		}
 	}
 
-	public override bool CheckComplate (float _fComplate)
+	public override bool CheckComplate (float _fComplate,float _fTemperator)
 	{
 		float fCurCompletY;
 
 		m_fComplate = _fComplate;
+		m_fTemperator = _fTemperator;
 
 		fCurCompletY = m_fComplate / weaponData.fComplate;
 
@@ -371,16 +390,12 @@ public class NormalCharacter : Character {
 
 		}
 
-		m_bIsBack = true;
-
-		m_bIsRepair = false;
+		m_bIsRepair = true;
 
 		//이미지 변경이나 효과 애니메이션 변경등을 진행
 		mySprite.flipX = false; 
 
 		mySprite.sortingOrder = (int)E_SortingSprite.E_BACK;
-
-		RepairShowObject.CheckMyObject(gameObject);
 
 		WeaponBackground.SetActive(false);
 	}

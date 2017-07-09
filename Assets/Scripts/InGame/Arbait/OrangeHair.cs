@@ -43,7 +43,7 @@ public class OrangeHair : ArbaitBatch {
 
         ApplySkill();
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
     }
 
     protected override void OnDisable()
@@ -133,7 +133,7 @@ public class OrangeHair : ArbaitBatch {
 					ComplateWeapon();
 				}
 
-				SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate);
+				SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate,m_fTemperator);
 			}
 			break;
 		}

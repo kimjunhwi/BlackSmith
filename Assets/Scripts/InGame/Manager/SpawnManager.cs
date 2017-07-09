@@ -212,17 +212,19 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     }
 
-	public bool CheckComplateWeapon(GameObject _obj, float _fComplate)
+	public bool CheckComplateWeapon(GameObject _obj, float _fComplate,float _fTemperator)
 	{
 		GameObject tempObject = null;
 
 		tempObject = SearchCharacter(_obj);
 
 		if (tempObject) 
-			return tempObject.GetComponent<NormalCharacter> ().CheckComplate (_fComplate);
+			return tempObject.GetComponent<NormalCharacter> ().CheckComplate (_fComplate,_fTemperator);
 
 		return false;
 	}
+
+
 
     void InsertSortObject()
     {
@@ -459,7 +461,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			if (m_BatchArbait [nIndex].activeSelf) 
 			{
 				if (array_ArbaitData [nIndex].ArbaitPanelObject == _obj) {
-					array_ArbaitData[nIndex].Init();
 					m_BatchArbait[nIndex].SetActive(false);
 					break;
 				}

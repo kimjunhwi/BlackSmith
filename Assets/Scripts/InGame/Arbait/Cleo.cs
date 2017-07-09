@@ -122,7 +122,7 @@ public class Cleo : ArbaitBatch {
 					ComplateWeapon();
 				}
 
-				SpawnManager.Instance.CheckComplateWeapon(AfootOjbect, m_fComplate);
+				SpawnManager.Instance.CheckComplateWeapon(AfootOjbect, m_fComplate,m_fTemperator);
 			}
 			break;
 		}
