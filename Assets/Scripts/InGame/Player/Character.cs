@@ -94,7 +94,7 @@ public class Character : MonoBehaviour
 		m_anim = gameObject.GetComponent<Animator> ();
 	}
 
-	public virtual bool CheckComplate(float _fComplate) {return false; }
+	public virtual bool CheckComplate(float _fComplate,float _fTemperator) {return false; }
     
     public virtual void Complate(float _fComplate = 0.0f) { }
 
