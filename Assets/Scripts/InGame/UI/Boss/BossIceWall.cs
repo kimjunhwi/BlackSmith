@@ -9,6 +9,10 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 	public int nCountBreakWall;
 	public BossIce bossIce;
 
+	void Start()
+	{
+		gameObject.SetActive (false);
+	}
 
 	public void TapWall(int _hitDamage)
 	{
@@ -29,18 +33,47 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		if (getInfoGameObject.gameObject == null)
 			return;
 
-		if (getInfoGameObject.gameObject.name == "BossIceWall_Arbait1") 
-		{
-			//float fCurComplete = repairObj.GetCurCompletion ();
-			//float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
 
-			/*
-			nCountBreakWall_Arbait--;
-			if (nCountBreakWall_Arbait == 0) {
-				nCountBreakWall_Arbait = 10;
-				gameObject.SetActive (false);
+		if (getInfoGameObject.gameObject.name == "bossIceWall") 
+		{
+			nCountBreakWall--;
+			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
+			if (nCountBreakWall == 0) {
+				bossIce.ActiveIceWall ();
 			}
-			*/
+		}
+
+		if (getInfoGameObject.gameObject.name == "bossIceWall_Arbait1") 
+		{
+			nCountBreakWall--;
+			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
+			if (nCountBreakWall == 0) {
+				gameObject.SetActive (false);
+				SpawnManager.Instance.DeFreezeArbait (0);
+				bossIce.isIceWall_ArbaitOn [0] = false;
+			}
+		}
+
+		if (getInfoGameObject.gameObject.name == "bossIceWall_Arbait2") 
+		{
+			nCountBreakWall--;
+			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
+			if (nCountBreakWall == 0) {
+				gameObject.SetActive (false);
+				SpawnManager.Instance.DeFreezeArbait (1);
+				bossIce.isIceWall_ArbaitOn [1] = false;
+			}
+		}
+
+		if (getInfoGameObject.gameObject.name == "bossIceWall_Arbait3") 
+		{
+			nCountBreakWall--;
+			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
+			if (nCountBreakWall == 0) {
+				gameObject.SetActive (false);
+				SpawnManager.Instance.DeFreezeArbait (2);
+				bossIce.isIceWall_ArbaitOn [2] = false;
+			}
 		}
 	}
 

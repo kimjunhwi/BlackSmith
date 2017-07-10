@@ -23,7 +23,10 @@ public class BossSasin : BossCharacter
 	public BossEffect bossEffect;
 
 	private bool isFailed = false;
+	private bool isStandardPhaseFailed = false;
 	private string sBossSprite = "Weapons/Boss/deathnote";
+
+
 
 
 	Animator animator;
@@ -32,6 +35,7 @@ public class BossSasin : BossCharacter
 
 	private void Start()
 	{
+
 		bossImage = GetComponent<SpriteRenderer> ();
 		//bossImage.enabled = false;
 		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
@@ -79,8 +83,12 @@ public class BossSasin : BossCharacter
 			animator.SetBool ("isAppear", false);
 			animator.SetBool ("isDisappear", false);
 			animator.SetBool ("isBackGroundChanged", false);	
+			animator.Play ("BossIdle");
 
-			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+			if(isStandardPhaseFailed == false)
+				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+
+
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
 			StopCoroutine (BossSKill_02 ());
@@ -91,7 +99,7 @@ public class BossSasin : BossCharacter
 			repairObj.SetFinishBoss ();									//수리 패널 초기화
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
-
+			isStandardPhaseFailed = false;
 			if (bossBackGround.isBossBackGround == true) {
 				SpawnManager.Instance.bIsBossCreate = false;
 				bossBackGround.isBossBackGround = false;
@@ -132,6 +140,7 @@ public class BossSasin : BossCharacter
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossSprite), bossInfo.fComplate, 0, 0, this);
+					ActiveTimer ();
 
 					break;
 				}
@@ -147,7 +156,8 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
-		
+
+		isStandardPhaseFailed = true;
 		while (true)
 		{
 			
@@ -155,12 +165,7 @@ public class BossSasin : BossCharacter
 			float fMaxComplete = bossInfo.fComplate;
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
@@ -185,6 +190,7 @@ public class BossSasin : BossCharacter
 		float fTime = 0f;
 		GameObject Skull;
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+		isStandardPhaseFailed = false;
 		while (true)
 		{
 			
@@ -217,11 +223,7 @@ public class BossSasin : BossCharacter
 			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
@@ -267,11 +269,7 @@ public class BossSasin : BossCharacter
 			float fMaxComplete = bossInfo.fComplate;
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-			
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -338,5 +336,30 @@ public class BossSasin : BossCharacter
 		}
 		//Destroy (gameObject);
 		yield break;
+	}
+
+	public void ActiveTimer()
+	{
+		if (bossTimer_Obj.activeSelf == true)
+		{
+			bossTimer_Obj.SetActive (false);
+		}
+		else 
+		{
+			bossTimer_Obj.SetActive (true);
+			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
+			bossTimer.StartTimer (0f, 10f);
+			bossTimer.bossSasin = this;
+		}
+	}
+
+	public void FailState()
+	{
+		ActiveTimer ();
+		isFailed = true;
+		bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+		bossPopUpWindow.PopUpWindowReward_Switch ();
+
+		eCureentBossState = EBOSS_STATE.FINISH;
 	}
 }

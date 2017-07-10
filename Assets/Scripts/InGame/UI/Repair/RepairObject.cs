@@ -458,6 +458,28 @@ public class RepairObject : MonoBehaviour {
 
 		if (bossCharacter == null)
 			return;
+
+		//Ice
+		if (bossCharacter.nIndex == 0 ) 
+		{ 
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
+				Debug.Log ("IcePhase00");
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+			}
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
+
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+			} 
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
+				fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+				fWeaponDownDamage = 40;
+			}
+		}
+
 		//Sasin
 		if (bossCharacter.nIndex == 1 ) 
 		{ 

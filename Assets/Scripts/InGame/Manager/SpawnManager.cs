@@ -31,6 +31,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     public List<GameObject> list_Character = new List<GameObject>();
 
 	public List<GameObject> list_FreeazeCharacter = new List<GameObject> ();
+	public int nRandomIndex;
 
     public Transform[] m_BatchPosition;
 
@@ -192,13 +193,21 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //보스 소환시 호출 캐릭터를 이동속도를 3으로 한후 전부 되돌림
 	public void AllCharacterComplate()
 	{
+		bIsBossCreate = true;
 
-		while (list_Character.Count != 0) {
-			list_Character [0].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
-			list_Character.Remove (list_Character [0]);
+		if (list_Character.Count == 0)
+			return;
+
+		int nIndex = 0;
+
+		while (true) {
+			list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+
+			if (nIndex >= list_Character.Count)
+				break;
 		}
 
-		bIsBossCreate = true;
+
 	}
 
     //이동
@@ -441,14 +450,14 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     }
 
 
-	public void FreezeArbait()
+	public int FreezeArbait()
 	{
-		int nRandomIndex;
+		
 		list_FreeazeCharacter.Clear ();
 
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
 		{
-			if (m_BatchArbait [nIndex].activeSelf) {
+			if (m_BatchArbait [nIndex].activeSelf && array_ArbaitData[nIndex].E_STATE != E_ArbaitState.E_FREEZE) {
 				list_FreeazeCharacter.Add (m_BatchArbait [nIndex]);
 			}
 		}
@@ -459,12 +468,12 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			array_ArbaitData[nRandomIndex].CheckCharacterState (E_ArbaitState.E_FREEZE);
 
 		}
-		//return nRandomIndex;
+		return nRandomIndex;
 	}
 
-	public void DeFreezeArbait()
+	public void DeFreezeArbait(int _nIndex)
 	{
-
+		array_ArbaitData[_nIndex].CheckCharacterState (E_ArbaitState.E_WAIT);
 	}
 
     #endregion

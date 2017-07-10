@@ -254,8 +254,6 @@ public class NormalCharacter : Character {
 	{
 		fSpeed = _fSpeed;
 
-		m_bIsArrival = _bIsBack;
-
 		m_bIsBack = true;
 	}
 
