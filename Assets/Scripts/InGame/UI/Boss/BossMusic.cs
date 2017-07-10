@@ -18,6 +18,7 @@ public class BossMusic : BossCharacter
 	public BossEffect bossEffect;
 
 	private bool isFailed = false;
+	private bool isStandardPhaseFailed = false;
 	private int nNoteMaxCount = 7;
 	private float nBossGenerateTime = 2.0f;
 	private float nContinueTime = 10f;
@@ -83,6 +84,11 @@ public class BossMusic : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
+
+
+			if(isStandardPhaseFailed == false)
+				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+
 			StopCoroutine (repairObj.BossMusicWeaponMove ());
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
@@ -94,6 +100,8 @@ public class BossMusic : BossCharacter
 			repairObj.SetFinishBoss ();		//수리 패널 초기화
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
+			isStandardPhaseFailed = false;
+	
 
 			if (bossBackGround.isBossBackGround == true) {
 				SpawnManager.Instance.bIsBossCreate = false;
@@ -136,7 +144,7 @@ public class BossMusic : BossCharacter
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 					
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossSprite), bossInfo.fComplate, 0, 0, this);
-
+					ActiveTimer ();
 					break;
 				}
 			}
@@ -151,6 +159,7 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		isStandardPhaseFailed = true;
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
@@ -165,16 +174,13 @@ public class BossMusic : BossCharacter
 
 			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
 			{
+				
 				CreateNote ();
 			}
 
 			if (fCurComplete < 0) {
-				isFailed = true;
 
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
@@ -197,7 +203,7 @@ public class BossMusic : BossCharacter
 
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 
-	
+		isStandardPhaseFailed = false;
 		while (true)
 		{
 			
@@ -212,17 +218,12 @@ public class BossMusic : BossCharacter
 			//Note 생성 
 			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
 			{
-
 				CreateNote ();
 			}
 		
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
@@ -258,11 +259,7 @@ public class BossMusic : BossCharacter
 
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -350,5 +347,30 @@ public class BossMusic : BossCharacter
 
 		nNoteCount++;
 
+	}
+
+	public void ActiveTimer()
+	{
+		if (bossTimer_Obj.activeSelf == true)
+		{
+			bossTimer_Obj.SetActive (false);
+		}
+		else 
+		{
+			bossTimer_Obj.SetActive (true);
+			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
+			bossTimer.StartTimer (0f, 10f);
+			bossTimer.bossMusic = this;
+		}
+	}
+
+	public void FailState()
+	{
+		ActiveTimer ();
+		isFailed = true;
+		bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+		bossPopUpWindow.PopUpWindowReward_Switch ();
+
+		eCureentBossState = EBOSS_STATE.FINISH;
 	}
 }

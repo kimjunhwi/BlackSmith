@@ -39,7 +39,7 @@ public class ArbaitBatch : MonoBehaviour {
     protected float m_fMaxComplate;
 
     //아르바이트 현재 상태
-	protected E_ArbaitState E_STATE;
+	public E_ArbaitState E_STATE;
 
     //진행중인 오브젝트
     public GameObject AfootOjbect;

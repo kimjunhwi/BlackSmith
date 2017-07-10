@@ -104,17 +104,12 @@ public class BlueHair : ArbaitBatch {
                 }
                 break;
 
-		case E_ArbaitState.E_REPAIR:
-			{
+			case E_ArbaitState.E_REPAIR:
+				{
 
-			}
+				}
 			break;
-		case E_ArbaitState.E_FREEZE:
-			{
-				
-			}
-				
-                break;
+	
 		case E_ArbaitState.E_FREEZE:
 			{
 				animator.speed = 0.0f;

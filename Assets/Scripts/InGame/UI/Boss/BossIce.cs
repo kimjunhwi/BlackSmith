@@ -29,6 +29,7 @@ public class BossIce : BossCharacter
 	public float fIceWallGenerateTimer =0f;
 	private float nBossIceWallGenerateTime = 15.0f;
 	//IceWall Arbait
+	int iceWallIndex = 0;
 	private float fIceWallArbaitTimer =0f;
 	private float fIceWallArbaitGenerateTime = 10.0f;
 	public GameObject[] iceWall_Arbait;
@@ -139,37 +140,19 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
-		int iceWallIndex = 0;
+		
 		while (true)
 		{
-			//Boss Ice Wall Timer
-			if(isIceWallOn == false)
-				fIceWallGenerateTimer += Time.deltaTime;
-			//Arbait Ice Wall Timer
-			if (isIceWall_ArbaitOn [0] == false || isIceWall_ArbaitOn [1] == false || isIceWall_ArbaitOn [2] == false)
-				fIceWallArbaitTimer += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			if (fIceWallArbaitTimer >= fIceWallArbaitGenerateTime) 
-			{
-				//iceWallIndex = SpawnManager.Instance.FreezeArbait ();
-				if (isIceWall_ArbaitOn [iceWallIndex] != true)
-					isIceWall_ArbaitOn [iceWallIndex] = true;
-				else
-				{
-					while (true) {
-						//iceWallIndex = SpawnManager.Instance.FreezeArbait ();
-						if (isIceWall_ArbaitOn [iceWallIndex] != true) {
-							isIceWall_ArbaitOn [iceWallIndex] = true;
-						}
-					}
-				}
-			}
 
-
-
+			//Boss Ice Wall Timer
+			if(isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
+		
+		
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 			{
 				ActiveIceWall ();
@@ -207,21 +190,37 @@ public class BossIce : BossCharacter
 
 		while (true)
 		{
-			
-			if(isIceWallOn == false)
-				fIceWallGenerateTimer += Time.deltaTime;
-			
-
+			//BossWeapon info
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
-			//Note 생성 
+			//Boss Ice Wall Timer
+			if(isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
 
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 			{
 				ActiveIceWall ();
 			}
 
+
+			//Arbait Ice Wall Timer
+			if (isIceWall_ArbaitOn [0] == false || isIceWall_ArbaitOn [1] == false || isIceWall_ArbaitOn [2] == false)
+				fIceWallArbaitTimer += Time.deltaTime;
+			
+
+			if (fIceWallArbaitTimer >= fIceWallArbaitGenerateTime) 
+			{
+				iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+				if (isIceWall_ArbaitOn [iceWallIndex] != true) {
+					isIceWall_ArbaitOn [iceWallIndex] = true;
+					iceWall_Arbait [iceWallIndex].SetActive (true);
+					iceWall_instance = iceWall_Arbait [iceWallIndex].GetComponent<BossIceWall> ();
+					iceWall_instance.nCountBreakWall = 10;
+					fIceWallArbaitTimer = 0f;
+				}
+			}
+		
 
 			if (fCurComplete < 0) {
 				isFailed = true;
@@ -250,17 +249,33 @@ public class BossIce : BossCharacter
 		while (true)
 		{
 
-			if(isIceWallOn == false)
-				fIceWallGenerateTimer += Time.deltaTime;
-			
-
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
-			//Note 생성 
+	
 
+
+
+			if(isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 			{
 				ActiveIceWall ();
+			}
+				
+			//Arbait Ice Wall Timer
+			if (isIceWall_ArbaitOn [0] == false || isIceWall_ArbaitOn [1] == false || isIceWall_ArbaitOn [2] == false)
+				fIceWallArbaitTimer += Time.deltaTime;
+
+
+			if (fIceWallArbaitTimer >= fIceWallArbaitGenerateTime) 
+			{
+				iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+				if (isIceWall_ArbaitOn [iceWallIndex] != true) {
+					isIceWall_ArbaitOn [iceWallIndex] = true;
+					iceWall_Arbait [iceWallIndex].SetActive (true);
+					iceWall_instance = iceWall_Arbait [iceWallIndex].GetComponent<BossIceWall> ();
+					iceWall_instance.nCountBreakWall = 10;
+				}
 			}
 
 
@@ -343,15 +358,16 @@ public class BossIce : BossCharacter
 		if (iceWall.activeSelf == true)
 		{
 			iceWall.SetActive (false);
-			iceWall_instance = iceWall.GetComponent<BossIceWall> ();
-			iceWall_instance.nCountBreakWall = 15;
 			isIceWallOn = false;
+			fIceWallGenerateTimer = 0f;
 		}
 		else 
 		{
 			iceWall.SetActive (true);
 			isIceWallOn = true;
-			fIceWallGenerateTimer = 0f;
+			iceWall_instance = iceWall.GetComponent<BossIceWall> ();
+			iceWall_instance.nCountBreakWall = 15;
+		
 		}
 	}
 

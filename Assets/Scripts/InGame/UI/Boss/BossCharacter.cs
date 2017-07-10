@@ -28,6 +28,9 @@ public class BossCharacter : Character
 	public RepairObject repairObj;
 	public EBOSS_STATE eCureentBossState;
 	public RectTransform bossAppearAndDisappearPos;
+	public GameObject bossTimer_Obj;
+	public BossTimer bossTimer;
+
 
 	protected virtual IEnumerator BossWait() 	{ yield return null;}		//보스 대기(연출)
 

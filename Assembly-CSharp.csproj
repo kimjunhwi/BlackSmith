@@ -109,6 +109,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossPopUpWindow.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossRewardFx.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSasin.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTimer.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Bossweapon.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Note2Object.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Note3Object.cs" />
@@ -126,7 +127,6 @@
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryScrollList.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryShowPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Repair\RepairObject.cs" />
-     <Compile Include="Assets\Scripts\InGame\UI\Repair\WaterFx.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Shop\Shop.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Shop\ShopButton.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Shop\ShopShowPanel.cs" />
