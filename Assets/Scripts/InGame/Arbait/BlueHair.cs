@@ -52,6 +52,12 @@ public class BlueHair : ArbaitBatch {
         ReliveSkill();
 
 		base.OnDisable ();
+
+		fChangeRepair = 0.0f;
+
+		fGetRepairPower = 0.0f;
+
+		fMinusRepair = 0.0f;
 	}
 
     public override void ApplySkill()
