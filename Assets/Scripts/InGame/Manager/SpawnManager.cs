@@ -26,14 +26,11 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     public GameObject[] m_CharicPool;
 
-	public GameObject[] m_ArbaitPool;
-
     public ArrayList m_GuestList = new ArrayList();
 
     public List<GameObject> list_Character = new List<GameObject>();
 
-	//얼음 골렘 랜덤 저장을 위함
-	public List<GameObject> freezeCharacter  = new List<GameObject>();
+	public List<GameObject> list_FreeazeCharacter = new List<GameObject> ();
 
     public Transform[] m_BatchPosition;
 
@@ -57,6 +54,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         m_nMaxArbaitAmount = GameManager.Instance.ArbaitLength();
 
 		array_ArbaitData = new ArbaitBatch[m_nMaxArbaitAmount];
+		m_BatchArbait = new GameObject[m_nMaxArbaitAmount];
 
         //몬스터 풀을 만듬
         CreateMonsterPool();
@@ -97,24 +95,38 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
         {
             //화면에 보이는 배치 오브젝트
-			m_BatchArbait[nIndex] = Instantiate(m_BatchArbait[nIndex]);
+			m_BatchArbait[nIndex] = Instantiate(m_ArbaitData);
 
-			//미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
-			array_ArbaitData [nIndex] = m_BatchArbait[nIndex].GetComponent<ArbaitBatch> ();
-
-			array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
-
-			GameObject createArbaitUI = Instantiate (ArbaitPanel);
-
-			createArbaitUI.GetComponent<ArbaitCharacter> ().SetUp (nIndex,arbaitSprite[nIndex]);
-
-			createArbaitUI.transform.SetParent (contentsPanel, false);
-
-			createArbaitUI.transform.localScale = Vector3.one;
+			Factory (nIndex, m_BatchArbait [nIndex]);
 
 			m_BatchArbait[nIndex].SetActive(false);
         }
     }
+
+	//배치 되는 아르바이트의 컴포넌트를 추가하고 그 캐릭터를 생성하는 패널을 추가한다.
+	public void Factory(int nIndex, GameObject _obj)
+	{
+        //인덱스에 맞는 스크립트를 추가해준다
+		switch (nIndex) {
+		case (int)E_ARBAIT.E_BLUEHAIR: 	    _obj.AddComponent<BlueHair> ();     break;
+		case (int)E_ARBAIT.E_ORANGEHAIR:	_obj.AddComponent<OrangeHair> ();   break;
+		case (int)E_ARBAIT.E_NURSE:         _obj.AddComponent<Nurse> ();        break;
+        case (int)E_ARBAIT.E_CLEO:          _obj.AddComponent<Cleo>();          break;
+		}
+
+        //미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
+		array_ArbaitData [nIndex] = _obj.GetComponent<ArbaitBatch> ();
+
+		array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
+
+		GameObject createArbaitUI = Instantiate (ArbaitPanel);
+
+		createArbaitUI.GetComponent<ArbaitCharacter> ().SetUp (nIndex,arbaitSprite[nIndex]);
+
+		createArbaitUI.transform.SetParent (contentsPanel, false);
+
+        createArbaitUI.transform.localScale = Vector3.one;
+	}
 
     //WeaponData
     #region
@@ -198,6 +210,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 		while (list_Character.Count != 0) {
 			list_Character [0].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+			list_Character.Remove (list_Character [0]);
 		}
 
 		bIsBossCreate = true;
@@ -441,17 +454,17 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	public void FreezeArbait()
 	{
 
-		freezeCharacter.Clear ();
+		list_FreeazeCharacter.Clear ();
 
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
 		{
 			if(m_BatchArbait[nIndex].activeSelf)
-				freezeCharacter.Add(m_BatchArbait[nIndex]);
+				list_FreeazeCharacter.Add(m_BatchArbait[nIndex]);
 		}
 
-		if (freezeCharacter.Count != 0) 
+		if (list_FreeazeCharacter.Count != 0) 
 		{
-			int nRandomIndex = Random.Range (0, freezeCharacter.Count);
+			int nRandomIndex = Random.Range (0, list_FreeazeCharacter.Count);
 
 			array_ArbaitData [nRandomIndex].CheckCharacterState (E_ArbaitState.E_FREEZE);
 		}
@@ -459,6 +472,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	}
 
     #endregion
+
 }
 
 

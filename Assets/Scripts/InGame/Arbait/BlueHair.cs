@@ -115,6 +115,12 @@ public class BlueHair : ArbaitBatch {
 			}
 				
                 break;
+		case E_ArbaitState.E_FREEZE:
+			{
+				
+			}
+			break;
+		
         }
 	}
 
@@ -159,6 +165,12 @@ public class BlueHair : ArbaitBatch {
 				SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate,m_fTemperator);
 			}
 			break;
+
+		case E_ArbaitState.E_FREEZE:
+
+			break;
 		}
+
+	
 	}
 }

@@ -43,7 +43,6 @@ namespace ReadOnlys
         E_WAIT ,
         //수리중
         E_REPAIR,
-
 		E_FREEZE,
     }
 
