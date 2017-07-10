@@ -52,7 +52,7 @@ namespace ReadOnlys
 		E_NURSE,
 		E_CLEO,
 		E_ELSA,
-		E_REDHAIR,
+		E_BROWNHAIR,
 		E_KNIGHT,
 		E_DRUID,
 		E_CLERIC,
