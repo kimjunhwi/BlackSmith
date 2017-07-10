@@ -83,7 +83,7 @@ public class BlueHair : ArbaitBatch {
 		playerData.SetRepairPower(fMinusRepair);
     }
 
-	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
+	public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
         if (E_STATE == _E_STATE)
            return;
@@ -106,6 +106,12 @@ public class BlueHair : ArbaitBatch {
 
                 }
                 break;
+		case E_ArbaitState.E_FREEZE:
+			{
+				
+			}
+			break;
+		
         }
 	}
 
@@ -150,6 +156,12 @@ public class BlueHair : ArbaitBatch {
 				SpawnManager.Instance.CheckComplateWeapon (AfootOjbect, m_fComplate,m_fTemperator);
 			}
 			break;
+
+		case E_ArbaitState.E_FREEZE:
+
+			break;
 		}
+
+	
 	}
 }

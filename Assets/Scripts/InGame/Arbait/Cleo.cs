@@ -57,7 +57,7 @@ public class Cleo : ArbaitBatch {
 		playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
 	}
 
-	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
+	public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
 		if (E_STATE == _E_STATE)
 			return;

@@ -32,6 +32,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     public List<GameObject> list_Character = new List<GameObject>();
 
+	public List<GameObject> list_FreeazeCharacter = new List<GameObject> ();
+
     public Transform[] m_BatchPosition;
 
     public GameObject[] m_BatchArbait;      //배치 아르바이트
@@ -256,6 +258,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 		while (list_Character.Count != 0) {
 			list_Character [0].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+			list_Character.Remove (list_Character [0]);
 		}
 
 		bIsBossCreate = true;
@@ -520,7 +523,29 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         }
     }
 
+
+	public void FreezeArbait()
+	{
+
+		list_FreeazeCharacter.Clear ();
+
+		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
+		{
+			if(m_BatchArbait[nIndex].activeSelf)
+				list_FreeazeCharacter.Add(m_BatchArbait[nIndex]);
+		}
+
+		if (list_FreeazeCharacter.Count != 0) 
+		{
+			int nRandomIndex = Random.Range (0, list_FreeazeCharacter.Count);
+
+			array_ArbaitData [nRandomIndex].CheckCharacterState (E_ArbaitState.E_FREEZE);
+		}
+
+	}
+
     #endregion
+
 }
 
 

@@ -210,7 +210,7 @@ public class ArbaitBatch : MonoBehaviour {
         E_STATE = E_ArbaitState.E_REPAIR;
     }
 
-    protected virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
+	public virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
 
 	protected virtual IEnumerator CharacterAction() { yield return null; }
 

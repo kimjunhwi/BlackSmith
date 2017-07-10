@@ -68,7 +68,7 @@ public class OrangeHair : ArbaitBatch {
         playerData.SetWaterPlus(playerData.GetWaterPlus() - fChangePlusWater);
     }
 
-	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
+	public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
 		if (E_STATE == _E_STATE)
 			return;

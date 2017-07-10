@@ -141,6 +141,7 @@ public class BossIce : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
+			//SpawnManager.Instance.FreezeArbait ();
 
 
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
