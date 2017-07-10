@@ -83,6 +83,13 @@ public class BossCreator : MonoBehaviour
 		{
 			Debug.Log ("Ice Created!!!");	
 			nBossIceLeftCount--;
+
+			bossList [0].SetActive (true);
+			BossIce bossIce = bossList[0].GetComponent<BossIce> ();
+
+			bossIce.nIndex = _index;
+			bossIce.bossInfo = GameManager.Instance.bossInfo [_index];
+			nBossSasinLeftCount--;
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_SASIN) 
