@@ -58,9 +58,14 @@
      <Compile Include="Assets\Scripts\CoinMove.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitBatch.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\Bell.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\BlueHair.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\BrownHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Cleo.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\Cleric.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Druid.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\Elsa.cs" />
+     <Compile Include="Assets\Scripts\InGame\Arbait\Knight.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Nurse.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
