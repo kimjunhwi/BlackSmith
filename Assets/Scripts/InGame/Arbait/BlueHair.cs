@@ -96,8 +96,8 @@ public class BlueHair : ArbaitBatch {
         {
             case E_ArbaitState.E_WAIT:
                 {
-				myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
-
+					myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
+				animator.speed = 1.0f;
                 }
                 break;
 
@@ -108,7 +108,7 @@ public class BlueHair : ArbaitBatch {
                 break;
 		case E_ArbaitState.E_FREEZE:
 			{
-				
+				animator.speed = 0.0f;
 			}
 			break;
 		

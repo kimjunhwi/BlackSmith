@@ -19,27 +19,33 @@ public class BossIce : BossCharacter
 	private float nBossSpeedIncreaseRate = 0.1f;  //보스 무기 속도 증가비율
 	private string sBossSprite = "Weapons/Boss/deathnote";
 
-
 	Animator animator;							  //BossAnimator
 	bool isFirstActive = false;					  //처음 실행시 체크 변수
 
 	//IceWall
+	private BossIceWall iceWall_instance;
 	public GameObject iceWall;
 	public bool isIceWallOn;					  //IceWall이 켜졌는지 아닌지
 	public float fIceWallGenerateTimer =0f;
-	private float nBossIceWallGenerateTime = 10.0f;
+	private float nBossIceWallGenerateTime = 15.0f;
+	//IceWall Arbait
+	private float fIceWallArbaitTimer =0f;
+	private float fIceWallArbaitGenerateTime = 10.0f;
+	public GameObject[] iceWall_Arbait;
+	public bool[] isIceWall_ArbaitOn;
 
 	private void Start()
 	{
-
 		bossImage = GetComponent<SpriteRenderer> ();
 		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
-		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
-
 		iceWall.SetActive (false);
 
+		for (int i = 0; i < 3; i++) 
+			isIceWall_ArbaitOn [i] = false;
+		
+		gameObject.SetActive (false);
 
 	}
 	private void OnEnable()
@@ -133,15 +139,35 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		int iceWallIndex = 0;
 		while (true)
 		{
+			//Boss Ice Wall Timer
 			if(isIceWallOn == false)
 				fIceWallGenerateTimer += Time.deltaTime;
+			//Arbait Ice Wall Timer
+			if (isIceWall_ArbaitOn [0] == false || isIceWall_ArbaitOn [1] == false || isIceWall_ArbaitOn [2] == false)
+				fIceWallArbaitTimer += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			//SpawnManager.Instance.FreezeArbait ();
+			if (fIceWallArbaitTimer >= fIceWallArbaitGenerateTime) 
+			{
+				//iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+				if (isIceWall_ArbaitOn [iceWallIndex] != true)
+					isIceWall_ArbaitOn [iceWallIndex] = true;
+				else
+				{
+					while (true) {
+						//iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+						if (isIceWall_ArbaitOn [iceWallIndex] != true) {
+							isIceWall_ArbaitOn [iceWallIndex] = true;
+						}
+					}
+				}
+			}
+
 
 
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
@@ -314,8 +340,11 @@ public class BossIce : BossCharacter
 
 	public void ActiveIceWall()
 	{
-		if (iceWall.activeSelf == true) {
+		if (iceWall.activeSelf == true)
+		{
 			iceWall.SetActive (false);
+			iceWall_instance = iceWall.GetComponent<BossIceWall> ();
+			iceWall_instance.nCountBreakWall = 15;
 			isIceWallOn = false;
 		}
 		else 

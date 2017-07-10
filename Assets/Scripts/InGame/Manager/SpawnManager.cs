@@ -453,21 +453,27 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public void FreezeArbait()
 	{
-
+		int nRandomIndex;
 		list_FreeazeCharacter.Clear ();
 
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
 		{
-			if(m_BatchArbait[nIndex].activeSelf)
-				list_FreeazeCharacter.Add(m_BatchArbait[nIndex]);
+			if (m_BatchArbait [nIndex].activeSelf) {
+				list_FreeazeCharacter.Add (m_BatchArbait [nIndex]);
+			}
 		}
 
 		if (list_FreeazeCharacter.Count != 0) 
 		{
-			int nRandomIndex = Random.Range (0, list_FreeazeCharacter.Count);
+			nRandomIndex = Random.Range (0, list_FreeazeCharacter.Count);
+			array_ArbaitData[nRandomIndex].CheckCharacterState (E_ArbaitState.E_FREEZE);
 
-			array_ArbaitData [nRandomIndex].CheckCharacterState (E_ArbaitState.E_FREEZE);
 		}
+		//return nRandomIndex;
+	}
+
+	public void DeFreezeArbait()
+	{
 
 	}
 
