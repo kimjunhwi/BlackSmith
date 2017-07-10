@@ -15,9 +15,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     const int m_nMaxBatchArbaitAmount = 3;  //배치될 아르바이트 최대 개수
 
     const int m_nMaxPollAmount = 5;         //오브젝트풀로 만들어둘 최대 개수
-
-
-
+   
 	public Transform contentsPanel;
 
 	public GameObject ArbaitPanel;
@@ -88,7 +86,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //몬스터 오브젝트풀을 생성한다.
     private void CreateMonsterPool()
     {
-        for (int i = 0; i < m_nMaxPollAmount; i++)
+        for (int i = 0; i < m_CharicPool.Length; i++)
         {
             m_CharicPool[i] = Instantiate(m_CharicPool[i]);
             m_CharicPool[i].SetActive(false);
@@ -137,17 +135,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     {
         int nSearchIndex = 0;
 
-		//for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
-        //{
-            //만약 배치된 아르바이트 중에 같은 무기가 있을경우 그 무기를 초기화 시켜줌
-        //    if (array_ArbaitData[nIndex].AfootOjbect == _obj)
-        //    {
-        //        nSearchIndex = nIndex;
-        //        array_ArbaitData[nIndex].ResetWeaponData();
-        //        break;
-        //    }
-        //}
-
         nSearchIndex = list_Character.IndexOf(_obj);
 
         //캐릭터를 리스트에서 지움
@@ -178,16 +165,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         if (tempObject)
 			tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair,bIsResearch, _fComplate, _fTemperator);
     }
-
-	public void ResetInsertDataArbait(GameObject obj,bool bIsRepair,bool bIsResearch, float _fComplate,float _fTemperator)
-	{
-		GameObject tempObject = null;
-
-		tempObject = SearchCharacter(obj);
-
-		if (tempObject)
-			tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair,bIsResearch, _fComplate, _fTemperator);
-	}
 
 	public float GetActiveArbaitRepair()
 	{
@@ -227,32 +204,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	}
 
 
-
-    void InsertSortObject()
-    {
-        bool bIsNull = false;
-        int nNullIndex = 0;
-        GameObject tempObject = null;
-
-        for(int i = 0; i< m_nMaxPollAmount; i++)
-        {
-            if(list_Character[i] != null && bIsNull == true)
-            {
-                tempObject = list_Character[i];
-                list_Character[i] = list_Character[nNullIndex];
-                list_Character[nNullIndex] = tempObject;
-                bIsNull = false;
-                i = nNullIndex;
-            }
-
-            if(list_Character[i] == null && bIsNull == false)
-            {
-                nNullIndex = i;
-                bIsNull = true;
-            }
-        }
-    }
-
+    //보스 소환시 호출 캐릭터를 이동속도를 3으로 한후 전부 되돌림
 	public void AllCharacterComplate()
 	{
 
@@ -285,54 +237,29 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     {
         int nSelectCharacter;
 
-        //어떤 몬스터를 생성할지에 대한 범위를 위한 변수
-        int nCreateRange = 1;
+        while(true)
+        { 
+            //범위안에 랜덤으로 선택
+            nSelectCharacter = Random.Range(0, m_CharicPool.Length);
 
-        bool bIsCreateCharacter = false;
+            //만약 이미 활성화 돼있다면 뒤로 돌림
+            if (m_CharicPool[nSelectCharacter].activeSelf)
+                continue;
 
-        ////만약 LFMonster나 Lerp몬스터가 있을경우 ++해줌 
-        //nCreateRange = (m_nCreateLFAmount > 0) ? nCreateRange + 1 : nCreateRange;
-        //nCreateRange = (m_nCreateLerpAmount > 0) ? ++nCreateRange + 1 : nCreateRange;
+            //만약 비활성화 상태라면 활성화 시킨후
+            m_CharicPool[nSelectCharacter].SetActive(true);
 
-        //0이상 nCreateRange미만
-        nSelectCharacter = Random.Range(0, nCreateRange);
+            //손님 리스트에 추가
+            InsertCharacter(m_CharicPool[nSelectCharacter]);
 
-        switch (nSelectCharacter)
-        {
-            case (int)CharacterType.StreightMonster:
-                bIsCreateCharacter = IsCreateCharacter(5, m_CharicPool);
-                break;
-            //case (int)CharacterType.LFMonster:
-            //    bIsCreateMonster = IsCreateMonster(m_nCreateLFAmount, m_LFPool);
-            //    break;
-            //case (int)CharacterType.LerpMonster:
-            //    bIsCreateMonster = IsCreateMonster(m_nCreateLerpAmount, m_LerpPool);
-            //    break;
-
-            default: Debug.Log("캐릭터 생성이 잘못됨!!"); break;
+            //루프 탈출
+            break;
         }
+      
 
         //몬스터가 생성됐을 경우에 m_fCreateTime을 0으로 해줌
-        if (bIsCreateCharacter)
-            m_fCreateTime = 0;
+        m_fCreateTime = 0;
 
-    }
-
-    private bool IsCreateCharacter(int _nMaxPool, GameObject[] objData)
-    {
-        for (int i = 0; i < _nMaxPool; i++)
-        {
-            if (objData[i].activeSelf == false)
-            {
-				objData[i].SetActive(true);
-
-				InsertCharacter(objData[i]);
-
-                return true;
-            }
-        }
-
-        return false;
     }
 
     #endregion 

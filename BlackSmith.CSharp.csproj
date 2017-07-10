@@ -155,6 +155,7 @@
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryScrollList.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryShowPanel.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Repair\RepairObject.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Repair\WaterFx.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Shop\Shop.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Shop\ShopButton.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Shop\ShopShowPanel.cs" />
