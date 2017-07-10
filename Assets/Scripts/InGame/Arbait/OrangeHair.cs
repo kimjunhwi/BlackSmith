@@ -26,7 +26,7 @@ public class OrangeHair : ArbaitBatch {
 
     protected override void OnEnable()
 	{
-		if (m_CharacterChangeData == null)
+		if (m_CharacterChangeData == null || buff.Count == 0)
 			return;
 
 		bIsComplate = false;
@@ -55,7 +55,7 @@ public class OrangeHair : ArbaitBatch {
 
     public override void ApplySkill()
     {
-        if (fChangePlusWater != 0)
+        if (fChangePlusWater != 0 )
             ReliveSkill();
 
         fChangePlusWater = playerData.GetWaterPlus() * (buff[0].fValue * 0.01f);
@@ -68,7 +68,7 @@ public class OrangeHair : ArbaitBatch {
         playerData.SetWaterPlus(playerData.GetWaterPlus() - fChangePlusWater);
     }
 
-	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
+	public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
 		if (E_STATE == _E_STATE)
 			return;

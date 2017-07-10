@@ -106,7 +106,9 @@ public class ArbaitBatch : MonoBehaviour {
 
 		myCharacterSprite = gameObject.GetComponent<SpriteRenderer>();
 
-        RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();       
+        RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
+
+		animator = GetComponent<Animator> ();
 	}
 
 	protected virtual void Update()
@@ -184,8 +186,6 @@ public class ArbaitBatch : MonoBehaviour {
         }
 
         m_fRepairTime = m_CharacterChangeData.fAttackSpeed;
-
-        animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("Animation/" + _data.strAnimation);
     }
 
     //무기 받음
@@ -210,7 +210,7 @@ public class ArbaitBatch : MonoBehaviour {
         E_STATE = E_ArbaitState.E_REPAIR;
     }
 
-    protected virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
+	public virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
 
 	protected virtual IEnumerator CharacterAction() { yield return null; }
 

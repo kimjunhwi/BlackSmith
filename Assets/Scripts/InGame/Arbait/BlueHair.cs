@@ -31,7 +31,7 @@ public class BlueHair : ArbaitBatch {
 
 	protected override void OnEnable()
 	{
-		if (m_CharacterChangeData == null)
+		if (m_CharacterChangeData == null || buff.Count == 0)
 			return;
 
 		bIsComplate = false;
@@ -74,6 +74,9 @@ public class BlueHair : ArbaitBatch {
 
     protected override void ReliveSkill()
     {
+		if (fChangeRepair == 0)
+			return;
+
 		fGetRepairPower = playerData.GetRepairPower ();
 
 		fMinusRepair = fGetRepairPower - fChangeRepair;
@@ -83,7 +86,7 @@ public class BlueHair : ArbaitBatch {
 		playerData.SetRepairPower(fMinusRepair);
     }
 
-	protected override void CheckCharacterState(E_ArbaitState _E_STATE)
+	public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
         if (E_STATE == _E_STATE)
            return;
@@ -101,10 +104,16 @@ public class BlueHair : ArbaitBatch {
                 }
                 break;
 
-            case E_ArbaitState.E_REPAIR:
-                {
+		case E_ArbaitState.E_REPAIR:
+			{
 
-                }
+			}
+			break;
+		case E_ArbaitState.E_FREEZE:
+			{
+				
+			}
+				
                 break;
         }
 	}

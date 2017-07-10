@@ -27,8 +27,8 @@ public class Nurse : ArbaitBatch {
 
     protected override void OnEnable()
     {
-        if (m_CharacterChangeData == null)
-            return;
+		if (m_CharacterChangeData == null || buff.Count == 0)
+			return;
 
         bIsComplate = false;
 
@@ -66,10 +66,13 @@ public class Nurse : ArbaitBatch {
 
     protected override void ReliveSkill()
     {
+		if (fChangeCritical ==0)
+			return;
+		
         playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
     }
 
-    protected override void CheckCharacterState(E_ArbaitState _E_STATE)
+	public override void CheckCharacterState(E_ArbaitState _E_STATE)
     {
         if (E_STATE == _E_STATE)
             return;
