@@ -8,8 +8,6 @@ public class ArbaitBatch : MonoBehaviour {
 	protected ArbaitData m_CharacterDefaultData;
 	public ArbaitData m_CharacterChangeData;
 
-    public List<Buff> buff = new List<Buff>();
-
     string[] strBuffsIndex;
 
     public bool bIsRepair = false;
@@ -161,7 +159,6 @@ public class ArbaitBatch : MonoBehaviour {
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
 	public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
     {
-        buff.Clear();
 
 		nBatchIndex = _nIndex;
 
@@ -170,20 +167,6 @@ public class ArbaitBatch : MonoBehaviour {
 		m_CharacterChangeData = new ArbaitData (_data);
 
         ArbaitPanelObject = _obj;
-
-        strBuffsIndex = m_CharacterChangeData.strBuffIndexs.Split(',');
-
-        for (int nBuffIndex = 0; nBuffIndex < strBuffsIndex.Length; nBuffIndex++)
-        {
-            Buff stBuff;
-
-            stBuff.nIndex       = System.Convert.ToInt32(strBuffsIndex[nBuffIndex]);
-            stBuff.fValue       = m_CharacterChangeData.fSkillPercent;
-			stBuff.fCurrentFloat = m_CharacterChangeData.fCurrentFloat;
-            stBuff.strBuffExplain = m_CharacterChangeData.strExplains;
-
-            buff.Add(stBuff);
-        }
 
         m_fRepairTime = m_CharacterChangeData.fAttackSpeed;
     }
@@ -423,6 +406,56 @@ public class ArbaitBatch : MonoBehaviour {
 
     #endregion
 
+	#region if Smith Critical, Apply and Relive Arbait AttackSpeed Buff
+
+	private bool m_bIsCriticalArbaitAttackSpeed = false;
+
+	private float m_fCriticalArbaitAttackSpeedPlusTime = 0.0f;
+	private float m_fCriticalArbaitAttackSpeedValue = 0.0f;
+
+
+	public IEnumerator ApplyCriticalArbaitBuffAttackSpeed(float _fValue, float _fTime)
+	{
+		//만약 활성화 중이라면 0초로 바꿔줌
+		if (m_bIsCriticalArbaitAttackSpeed)
+			m_fCriticalArbaitAttackSpeedPlusTime = 0.0f;
+
+		//비활성화 중이라면 코룬틴으올 동작시킴
+		else
+			yield return StartCoroutine(ReliveWaterBuffAttackSpeed(_fValue, _fTime));
+
+		m_fCriticalArbaitAttackSpeedPlusTime = 0.0f;
+	}
+
+	public IEnumerator ReliveCriticalArbaitAttackSpeed(float _fValue, float _fTime)
+	{
+		yield return new WaitForSeconds(0.1f);
+
+		m_bIsCriticalArbaitAttackSpeed = true;
+
+
+		m_fCriticalArbaitAttackSpeedValue = m_CharacterChangeData.fAttackSpeed * (_fValue * 0.01f);
+
+		m_CharacterChangeData.fAttackSpeed -= m_fCriticalArbaitAttackSpeedValue;
+
+		while (true)
+		{
+			yield return null;
+
+			m_fCriticalArbaitAttackSpeedPlusTime += Time.deltaTime;
+
+			if (m_fCriticalArbaitAttackSpeedPlusTime > _fTime)
+				break;
+		}
+
+		if (!m_bIsCriticalArbaitAttackSpeed)
+			yield break;
+
+		m_bIsCriticalArbaitAttackSpeed = false;
+		m_CharacterChangeData.fAttackSpeed += m_fCriticalArbaitAttackSpeedValue;
+	}
+
+	#endregion
 
 
     //무기 수리 완료시 호출

@@ -31,14 +31,10 @@ public class BlueHair : ArbaitBatch {
 
 	protected override void OnEnable()
 	{
-		if (m_CharacterChangeData == null || buff.Count == 0)
+		if (m_CharacterChangeData == null || nBatchIndex == -1)
 			return;
 
 		bIsComplate = false;
-
-		strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
-
-		myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
 		nGrade = m_CharacterChangeData.grade;
 
@@ -65,7 +61,7 @@ public class BlueHair : ArbaitBatch {
 
 		fGetRepairPower = playerData.GetRepairPower ();
 
-		fChangeRepair = fGetRepairPower * (buff[0].fValue * 0.01f);
+		fChangeRepair = fGetRepairPower * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
 		fChangeRepair =  Mathf.Round (fChangeRepair);
 
@@ -99,8 +95,7 @@ public class BlueHair : ArbaitBatch {
         {
             case E_ArbaitState.E_WAIT:
                 {
-					myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
-				animator.speed = 1.0f;
+					animator.speed = 1.0f;
                 }
                 break;
 
@@ -108,13 +103,8 @@ public class BlueHair : ArbaitBatch {
 			{
 
 			}
-			break;
-		case E_ArbaitState.E_FREEZE:
-			{
 				
-			}
-				
-                break;
+            break;
 		case E_ArbaitState.E_FREEZE:
 			{
 				animator.speed = 0.0f;

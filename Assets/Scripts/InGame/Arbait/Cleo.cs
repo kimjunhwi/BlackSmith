@@ -27,14 +27,10 @@ public class Cleo : ArbaitBatch {
 
 	protected override void OnEnable()
 	{
-		if (m_CharacterChangeData == null)
+		if (m_CharacterChangeData == null || nBatchIndex == -1)
 			return;
 
 		bIsComplate = false;
-
-		string strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
-
-		myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
 		nGrade = m_CharacterChangeData.grade;
 

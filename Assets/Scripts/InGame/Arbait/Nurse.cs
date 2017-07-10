@@ -27,14 +27,10 @@ public class Nurse : ArbaitBatch {
 
     protected override void OnEnable()
     {
-		if (m_CharacterChangeData == null || buff.Count == 0)
+		if (m_CharacterChangeData == null || nBatchIndex == -1)
 			return;
 
         bIsComplate = false;
-
-        strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
-
-        myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
         nGrade = m_CharacterChangeData.grade;
 
@@ -59,7 +55,7 @@ public class Nurse : ArbaitBatch {
         if (fChangeCritical != 0)
             ReliveSkill();
 
-        fChangeCritical = playerData.GetCriticalChance() * (buff[0].fValue * 0.01f);
+		fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
         playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
     }
@@ -85,7 +81,6 @@ public class Nurse : ArbaitBatch {
         {
             case E_ArbaitState.E_WAIT:
                 {
-				myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
                 }
                 break;

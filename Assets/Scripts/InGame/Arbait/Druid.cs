@@ -9,7 +9,7 @@ public class Druid : ArbaitBatch
     private Player playerData;
 
     private bool m_bIsApplyBuff = false;
-    private float fBuffTime = 0.0f;
+    private float m_fBuffTime = 0.0f;
 
     private float fChangeRepair = 0.0f;
 
@@ -33,14 +33,11 @@ public class Druid : ArbaitBatch
 
     protected override void OnEnable()
     {
-        if (m_CharacterChangeData == null)
+		if (m_CharacterChangeData == null || nBatchIndex == -1)
             return;
 
         bIsComplate = false;
 
-        string strPath = string.Format("ArbaitUI/{0}", m_CharacterChangeData.name);
-
-        myCharacterSprite.sprite = ObjectCashing.Instance.LoadSpriteFromCache(strPath);
 
         nGrade = m_CharacterChangeData.grade;
 
@@ -68,7 +65,7 @@ public class Druid : ArbaitBatch
     public override void ApplySkill()
     {
         if (m_bIsApplyBuff)
-            fBuffTime = 0.0f;
+			m_fBuffTime = 0.0f;
 
         else
             StartCoroutine(ApplyDruidSkill());
@@ -82,9 +79,9 @@ public class Druid : ArbaitBatch
 
         m_bIsApplyBuff = true;
 
-        fChangeRepair = playerData.GetRepairPower() * (buff[0].fValue * 0.01f);
+		fChangeRepair = playerData.GetRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
-        fChangeCritical = playerData.GetCriticalChance() * (buff[0].fValue * 0.01f);
+		fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
         fChangeRepair = Mathf.Round(fChangeRepair);
 
@@ -98,9 +95,9 @@ public class Druid : ArbaitBatch
         {
             yield return null;
 
-            fBuffTime += Time.deltaTime;
+			m_fBuffTime += Time.deltaTime;
 
-            if (fBuffTime > 3.0f)
+			if (m_fBuffTime > 3.0f)
                 break;
         }
 
@@ -111,7 +108,7 @@ public class Druid : ArbaitBatch
         playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
     }
 
-	public override void CheckCharacterState(E_ArbaitState _E_STATE)
+    public override void CheckCharacterState(E_ArbaitState _E_STATE)
     {
         if (E_STATE == _E_STATE)
             return;

@@ -1120,7 +1120,6 @@ public class ArbaitData
     //이름
     public string name;
 
-	public string strAnimation;
     //현재 등급
 	public int grade;
 
@@ -1139,8 +1138,6 @@ public class ArbaitData
 	//명중률
 	public float fAccuracyRate;
 
-	//특수 능력 인덱스
-	public string strBuffIndexs;
 
 	//특수능력 설명 
 	public string strExplains;
@@ -1177,8 +1174,6 @@ public class ArbaitData
 		level= _data.level;
 		name = _data.name;
 
-		strAnimation = _data.strAnimation;
-
 		grade = _data.grade;
 
 		batch = _data.batch;
@@ -1190,8 +1185,6 @@ public class ArbaitData
 		fCritical = _data.fCritical;
 
 		fAccuracyRate = _data.fAccuracyRate;
-
-		strBuffIndexs= _data.strBuffIndexs;
 
 		strExplains= _data.strExplains;
 

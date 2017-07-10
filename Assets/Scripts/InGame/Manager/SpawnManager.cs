@@ -54,7 +54,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         m_nMaxArbaitAmount = GameManager.Instance.ArbaitLength();
 
 		array_ArbaitData = new ArbaitBatch[m_nMaxArbaitAmount];
-		m_BatchArbait = new GameObject[m_nMaxArbaitAmount];
 
         //몬스터 풀을 만듬
         CreateMonsterPool();
@@ -95,38 +94,24 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
         {
             //화면에 보이는 배치 오브젝트
-			m_BatchArbait[nIndex] = Instantiate(m_ArbaitData);
+			m_BatchArbait[nIndex] = Instantiate(m_BatchArbait[nIndex]);
 
-			Factory (nIndex, m_BatchArbait [nIndex]);
+			//미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
+			array_ArbaitData [nIndex] = m_BatchArbait[nIndex].GetComponent<ArbaitBatch> ();
+
+			array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
+
+			GameObject createArbaitUI = Instantiate (ArbaitPanel);
+
+			createArbaitUI.GetComponent<ArbaitCharacter> ().SetUp (nIndex,arbaitSprite[nIndex]);
+
+			createArbaitUI.transform.SetParent (contentsPanel, false);
+
+			createArbaitUI.transform.localScale = Vector3.one;
 
 			m_BatchArbait[nIndex].SetActive(false);
         }
     }
-
-	//배치 되는 아르바이트의 컴포넌트를 추가하고 그 캐릭터를 생성하는 패널을 추가한다.
-	public void Factory(int nIndex, GameObject _obj)
-	{
-        //인덱스에 맞는 스크립트를 추가해준다
-		switch (nIndex) {
-		case (int)E_ARBAIT.E_BLUEHAIR: 	    _obj.AddComponent<BlueHair> ();     break;
-		case (int)E_ARBAIT.E_ORANGEHAIR:	_obj.AddComponent<OrangeHair> ();   break;
-		case (int)E_ARBAIT.E_NURSE:         _obj.AddComponent<Nurse> ();        break;
-        case (int)E_ARBAIT.E_CLEO:          _obj.AddComponent<Cleo>();          break;
-		}
-
-        //미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
-		array_ArbaitData [nIndex] = _obj.GetComponent<ArbaitBatch> ();
-
-		array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
-
-		GameObject createArbaitUI = Instantiate (ArbaitPanel);
-
-		createArbaitUI.GetComponent<ArbaitCharacter> ().SetUp (nIndex,arbaitSprite[nIndex]);
-
-		createArbaitUI.transform.SetParent (contentsPanel, false);
-
-        createArbaitUI.transform.localScale = Vector3.one;
-	}
 
     //WeaponData
     #region
@@ -420,8 +405,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 		if (m_BatchArbait [(int)E_ARBAIT.E_CLEO].activeSelf) 
 		{
-			//arbait = array_ArbaitData [E_ARBAIT.E_CLEO].m_CharacterChangeData;
-
             for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
             {
                 if(m_BatchArbait[nIndex].activeSelf)
@@ -429,21 +412,28 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
             }
 		}
 
-        //if (m_BatchArbait [(int)E_ARBAIT.E_ELSA].activeSelf) 
-        //{
-        //    for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
-        //        array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (30, 3);
-        //}
+        if (m_BatchArbait [(int)E_ARBAIT.E_ELSA].activeSelf) 
+        {
+            for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+				if(m_BatchArbait[nIndex].activeSelf)
+					StartCoroutine(array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (30, 3));
+        }
 
-        //if (m_BatchArbait [(int)E_ARBAIT.E_REDHAIR].activeSelf) 
-        //{
-        //    for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
-        //        array_ArbaitData [nIndex].ApplyWaterBuffCritical (20, 0);
-        //}
+		if (m_BatchArbait [(int)E_ARBAIT.E_BROWNHAIR].activeSelf) 
+        {
+            for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+				if(m_BatchArbait[nIndex].activeSelf)
+					StartCoroutine(array_ArbaitData [nIndex].ApplyWaterBuffCritical (20, 0));
+        }
 	}
 
     public void PlayerCritical()
     {
+		if (m_BatchArbait[(int)E_ARBAIT.E_KNIGHT].activeSelf)
+		{
+			StartCoroutine(array_ArbaitData[(int)E_ARBAIT.E_KNIGHT].ApplyCriticalArbaitBuffAttackSpeed(20,3));
+		}
+
         if (m_BatchArbait[(int)E_ARBAIT.E_DRUID].activeSelf)
         {
             array_ArbaitData[(int)E_ARBAIT.E_DRUID].ApplySkill();
