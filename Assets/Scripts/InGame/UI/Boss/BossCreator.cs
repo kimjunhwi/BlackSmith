@@ -18,9 +18,13 @@ public class BossCreator : MonoBehaviour
 	public GameObject bossRespawnPoint;
 	public BossConsumeItemInfo bossConsumeItemInfo;
 	public BossBackGround bossBackGround;
+	public BossPopUpWindow bossPopUpWindow;
+	public GameObject bossTimer_Obj;
+	private BossTimer bossTimer;
 
 	public GameObject[] bossList;
 	public BossElement[] bossElementList;
+	public BossEffect bossEffect;
 
 	public int nBossSasinLeftCount = 3;
 	public int nBossIceLeftCount = 3;
@@ -35,8 +39,7 @@ public class BossCreator : MonoBehaviour
 	{
 		spawnManager = FindObjectOfType<SpawnManager> ();
 		uiManager = FindObjectOfType<UIManager> ();
-
-
+		bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
 	}
 
 	void Update()
@@ -74,36 +77,48 @@ public class BossCreator : MonoBehaviour
 
 	public IEnumerator BossCreate(int _index) 
 	{
-		yield return new WaitForSeconds(0.2f);
+		
 
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
 
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
-			Debug.Log ("Ice Created!!!");	
-			nBossIceLeftCount--;
+				
+			nBossIceLeftCount--;	//해당보스의 횟수 차감
 
-			bossList [0].SetActive (true);
+			//보스 리스트에서 해당 보스의 정보와 보스를 셋팅 한다.
+				
 			BossIce bossIce = bossList[0].GetComponent<BossIce> ();
 
 			bossIce.nIndex = _index;
 			bossIce.bossInfo = GameManager.Instance.bossInfo [_index];
+			bossIce.bossEffect = bossEffect;
+			bossIce.bossBackGround = bossBackGround;
+			bossIce.bossPopUpWindow = bossPopUpWindow;
+			bossIce.sBossWeaponSprite = "Weapons/Boss/deathnote";
+			bossIce.bossTimer_Obj = bossTimer_Obj;
+			bossList [0].SetActive (true);
 			nBossSasinLeftCount--;
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_SASIN) 
 		{
-			
-
-
-			bossList [1].SetActive (true);
+	
 			BossSasin bossSasin = bossList[1].GetComponent<BossSasin> ();
 
 			bossSasin.nIndex = _index;
 			bossSasin.bossInfo = GameManager.Instance.bossInfo [_index];
-			nBossSasinLeftCount--;
+			bossSasin.bossEffect = bossEffect;
+			bossSasin.bossBackGround = bossBackGround;
+			bossSasin.bossPopUpWindow = bossPopUpWindow;
+			bossSasin.sBossWeaponSprite = "Weapons/Boss/deathnote";
+			bossSasin.bossTimer_Obj = bossTimer_Obj;
+			bossSasin.bossTimer = bossTimer;
+			bossList [1].SetActive (true);
 
+
+			nBossSasinLeftCount--;
 		}
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_FIRE) 
@@ -119,15 +134,22 @@ public class BossCreator : MonoBehaviour
 			//bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
 			//bossInstance.AddComponent<BossSasin> ();
 
-			bossList [3].SetActive (true);
+
 			BossMusic bossMusic = bossList[3].GetComponent<BossMusic> ();
 
 			bossMusic.nIndex = _index;
 			bossMusic.bossInfo = GameManager.Instance.bossInfo [_index];
-
+			bossMusic.bossEffect = bossEffect;
+			bossMusic.bossBackGround = bossBackGround;
+			bossMusic.bossPopUpWindow = bossPopUpWindow;
+			bossMusic.sBossWeaponSprite = "Weapons/Boss/deathnote";
+			bossMusic.bossTimer_Obj = bossTimer_Obj;
+			bossList [3].SetActive (true);
 			nBossMusicLeftCount--;
 		}
 
 		uiManager.AllDisable ();
+
+		yield break;
 	}
 }

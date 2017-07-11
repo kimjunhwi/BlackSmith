@@ -11,45 +11,25 @@ public class BossMusic : BossCharacter
 	private float fRandomYPos;
 	public SimpleObjectPool noteObjectPool;
 	public int nNoteCount = 0;
-	public BossBackGround bossBackGround;
 
-	public SpriteRenderer bossImage;
-	public BossPopUpWindow bossPopUpWindow;
-	public BossEffect bossEffect;
-
-	private bool isFailed = false;
-	private bool isStandardPhaseFailed = false;
 	private int nNoteMaxCount = 7;
 	private float nBossGenerateTime = 2.0f;
 	private float nContinueTime = 10f;
 	private float nBossSpeedIncreaseValue =0f;    //보스 무기 속도 증가량
 	private float nBossSpeedIncreaseRate = 0.1f;  //보스 무기 속도 증가비율
-	private string sBossSprite = "Weapons/Boss/deathnote";
-
 	//임시 변수
 	private float fTime = 0f;					  //보스 리젠 시간
 	GameObject Note;							  //노트 변수
 
 
-	Animator animator;
-
-	bool isFirstActive = false;
-
 	private void Start()
 	{
 		
-		bossImage = GetComponent<SpriteRenderer> ();
-		//bossImage.enabled = false;
-		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
 		noteObjectPool = GameObject.Find ("NotePool").GetComponent<SimpleObjectPool> ();
 
 		bossNoteRespawnPoint = GameObject.Find ("BossNoteCreateArea").GetComponent<RectTransform>();
 		fXPos = bossNoteRespawnPoint.position.x + 60;
 		fYPos = bossNoteRespawnPoint.position.y + 60;
-
-		//Debug.Log (fXPos + "," + fYPos);
-		//bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
-		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
 		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
@@ -143,7 +123,7 @@ public class BossMusic : BossCharacter
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 					
-					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossSprite), bossInfo.fComplate, 0, 0, this);
+					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
 					ActiveTimer ();
 					break;
 				}
@@ -359,7 +339,7 @@ public class BossMusic : BossCharacter
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (0f, 10f);
+			bossTimer.StartTimer (1f, 30f);
 			bossTimer.bossMusic = this;
 		}
 	}

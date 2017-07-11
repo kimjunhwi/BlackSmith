@@ -5,11 +5,6 @@ using UnityEngine;
 public class BossIce : BossCharacter 
 {
 	public int nNoteCount = 0;
-	public BossBackGround bossBackGround;
-
-	public SpriteRenderer bossImage;
-	public BossPopUpWindow bossPopUpWindow;
-	public BossEffect bossEffect;
 
 	private bool isFailed = false;
 	private int nNoteMaxCount = 7;
@@ -37,9 +32,7 @@ public class BossIce : BossCharacter
 
 	private void Start()
 	{
-		bossImage = GetComponent<SpriteRenderer> ();
 		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
-
 		animator = gameObject.GetComponent<Animator> ();
 		iceWall.SetActive (false);
 

@@ -6,48 +6,25 @@ using UnityEngine.EventSystems;
 
 public class BossSasin : BossCharacter 
 {
-	private RectTransform bossSkullRespawnPoint;
-	private float fXPos;
-	private float fYPos;
-	private float fRandomXPos;
-	private float fRandomYPos;
+	//1,2 페이즈시 등장하는 해골 관련 변수들
+	private RectTransform bossSkullRespawnPoint;				//해골 등장 포인트
+	private float fXPos;										//해골 등장 포인트의 x좌표
+	private float fYPos;										//해골 등장 포인트의 y좌표
+	private float fRandomXPos;									//해골 등장 포인트의 랜덤 x좌표
+	private float fRandomYPos;									//해골 등장 포인트의 랜덤 y좌표
 
-	public SimpleObjectPool skullObjectPool;
-	public SimpleObjectPool bossAppearEffectPool;
-	public SimpleObjectPool bossDisappearEffectPool;
-	public int nSkullCount = 0;
-	public BossBackGround bossBackGround;
-
-	public SpriteRenderer bossImage;
-	public BossPopUpWindow bossPopUpWindow;
-	public BossEffect bossEffect;
-
-	private bool isFailed = false;
-	private bool isStandardPhaseFailed = false;
-	private string sBossSprite = "Weapons/Boss/deathnote";
+	public SimpleObjectPool skullObjectPool;					//1,2페이즈 시에 등장 하는 해골들
+	public int nSkullCount = 0;									//현재 나와있는 해골들의 개수
 
 
 
-
-	Animator animator;
-
-	bool isFirstActive = false;
 
 	private void Start()
 	{
-
-		bossImage = GetComponent<SpriteRenderer> ();
-		//bossImage.enabled = false;
-		//bossBackGround = GameObject.Find ("BackGround").GetComponent<BossBackGround> ();
 		skullObjectPool = GameObject.Find ("SkullPool").GetComponent<SimpleObjectPool> ();
-	
 		bossSkullRespawnPoint = GameObject.Find ("BossSkullCreateArea2").GetComponent<RectTransform>();
 		fXPos = bossSkullRespawnPoint.position.x;
 		fYPos = bossSkullRespawnPoint.position.y;
-
-		//Debug.Log (fXPos + "," + fYPos);
-		bossPopUpWindow = GameObject.Find("BossPopUpWindow").GetComponent<BossPopUpWindow>();
-		bossEffect = GameObject.Find ("BossEffect").GetComponent<BossEffect> ();
 
 		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
@@ -58,10 +35,7 @@ public class BossSasin : BossCharacter
 			isFirstActive = true;
 		} 
 		else {
-
-
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
-
 			StartCoroutine (BossWait ());
 		}
 	
@@ -124,8 +98,8 @@ public class BossSasin : BossCharacter
 		{
 			
 			//무기 이미지 추가
-			if (bossBackGround.isBossBackGround == true) {
-				
+			if (this.bossBackGround.isBossBackGround == true) 
+			{
 				animator.SetBool ("isBackGroundChanged", true);
 
 				if (animator.GetCurrentAnimatorStateInfo (0).length > 1.0f) {
@@ -139,7 +113,7 @@ public class BossSasin : BossCharacter
 
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossSprite), bossInfo.fComplate, 0, 0, this);
+					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
 					ActiveTimer ();
 
 					break;
@@ -193,14 +167,8 @@ public class BossSasin : BossCharacter
 		isStandardPhaseFailed = false;
 		while (true)
 		{
-			
-
-
-
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (bossSkullRespawnPoint.sizeDelta.y/2), fYPos + (bossSkullRespawnPoint.sizeDelta.y/2));
-
-
 
 			fTime += Time.deltaTime;
 			//해골 생성 
@@ -348,7 +316,7 @@ public class BossSasin : BossCharacter
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (0f, 10f);
+			bossTimer.StartTimer (1f, 30f);
 			bossTimer.bossSasin = this;
 		}
 	}
