@@ -21,20 +21,26 @@ public class BossCharacter : Character
 	protected float m_nGearDropPercent;	//장비 드랍율
 	*/
 
+	public Boss bossInfo;						//해당 보스의 정보
+	public int nIndex;							//해당 보스의 인덱스
+	public RepairObject repairObj;				//수리 패널
+	public EBOSS_STATE eCureentBossState;		//현재 보스의 상태
+	public GameObject bossTimer_Obj;			//보스 타이머 Obj
+	public BossTimer bossTimer;					//보스 타이머
+	public BossEffect bossEffect;				//보스에 따른 이펙트
+	public BossBackGround bossBackGround;		//보스등장시 바뀌는 배경
+	public BossPopUpWindow bossPopUpWindow;		//보스 보상창
+	public string sBossWeaponSprite;			//보스 무기 이미지
 
+	protected bool isFailed = false;								//실패시 띄우는 창에 대한 변수
+	protected bool isStandardPhaseFailed = false;					//만약 1페이즈도 못가고 죽을 때
+	protected bool isFirstActive = false;							//처음에 켜져있을때 한번만 동작하게 하는 변수  
 
-	public Boss bossInfo;
-	public int nIndex;
-	public RepairObject repairObj;
-	public EBOSS_STATE eCureentBossState;
-	public RectTransform bossAppearAndDisappearPos;
-	public GameObject bossTimer_Obj;
-	public BossTimer bossTimer;
-
+	protected Animator animator;
 
 	protected virtual IEnumerator BossWait() 	{ yield return null;}		//보스 대기(연출)
 
-	protected virtual IEnumerator BossSkillStandard() { yield return null;}	//기본스킬
+	protected virtual IEnumerator BossSkillStandard() { yield return null;}	//기본스킬(Phase 00)
 	protected virtual IEnumerator BossSkill_01() { yield return null;}		//스킬1
 	protected virtual IEnumerator BossSKill_02() { yield return null;}		//스킬2
 	 
