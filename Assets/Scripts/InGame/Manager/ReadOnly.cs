@@ -44,6 +44,7 @@ namespace ReadOnlys
         //수리중
         E_REPAIR,
 		E_FREEZE,
+		E_BOSSREPAIR,
     }
 
 	public enum E_ARBAIT : int

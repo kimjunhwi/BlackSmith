@@ -28,6 +28,8 @@ public class ArbaitCharacter : MonoBehaviour {
     private GameObject m_SettingPanel;
     private SpawnManager spawnManager;
 
+
+
     public virtual void Upgrade(){}
 
 	// Use this for initialization

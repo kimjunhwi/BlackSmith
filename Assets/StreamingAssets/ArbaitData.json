@@ -9,7 +9,7 @@
 		"fCritical": 10,
 		"fAccuracyRate": 10,
 		"strExplains": "대장장이 수리력 20 % 증가",
-		"fSkillPercent" : 30,
+		"fSkillPercent" : 20,
 		"fCurrentFloat": 0,
 		"nScoutCount": 0,
 		"nScoutGold": 12000,

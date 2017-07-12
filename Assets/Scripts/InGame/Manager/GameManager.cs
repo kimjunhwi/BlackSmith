@@ -940,21 +940,16 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		switch (_nIndex) {
 		case 1:
 			return cOneGradeEnhance;
-			break;
 
 		case 2:
 			return cTwoGradeEnhance;
-			break;
 		case 3:
 			return cThreeGradeEnhance;
-			break;
 		case 4:
 			return cFourGradeEnhance;
-			break;
 		default:
 			Debug.Log ("Range Error");
 			return null;
-			break;
 
 		}
 	}

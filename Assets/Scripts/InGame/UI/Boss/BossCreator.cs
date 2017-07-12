@@ -82,6 +82,8 @@ public class BossCreator : MonoBehaviour
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
 
+
+
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
 				

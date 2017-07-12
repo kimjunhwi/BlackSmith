@@ -16,6 +16,10 @@ public class RepairObject : MonoBehaviour {
     GameObject AfootObject;
 	GameObject WeaponObject;
 
+	float fWaterSlideTime = 0.0f;
+	float fComplateSlideTime = 0.0f;
+	float fTemperatureSlideTime = 0.0f;
+
 	private float fCurrentComplate = 0;				//현재완성도
     private float fWeaponDownDamage = 70.0f;		//현재무기 데미지
     private float fWeaponDownTemperature = 0;		//무기 수리시 올라가는 온도
@@ -132,9 +136,11 @@ public class RepairObject : MonoBehaviour {
 		BossWeaponSprite = bossWeaponObject.transform.GetChild (1).GetComponent<Image> ();
 
 
-		this.StartCoroutine (this.PlusWater ());
-	
 		this.StartCoroutine (this.StartWaterFx ());
+
+		this.StartCoroutine (this.ChangeSlider ());
+
+		this.StartCoroutine (this.OneSecondPlay ());
 	
 
 		player = GameManager.Instance.player;
@@ -292,31 +298,58 @@ public class RepairObject : MonoBehaviour {
 		yield break;
 	}
 
-    IEnumerator PlusWater()
-    {
-        while(true)
-        {
-            yield return new WaitForSeconds(1.0f);
+	IEnumerator ChangeSlider()
+	{
+		while(true)
+		{
+			yield return null;
 
-            if(fMaxWater > fCurrentWater)
-            {
-                fCurrentWater += fPlusWater;
-                WaterSlider.value = fCurrentWater;
-            }
+			if (TemperatureSlider.value != fCurrentTemperature) 
+			{
+				fTemperatureSlideTime += Time.deltaTime;
 
-            if (fCurrentTemperature > 0)
-            {
+				TemperatureSlider.value = Mathf.Lerp (TemperatureSlider.value, fCurrentTemperature, fTemperatureSlideTime);
+			}
+
+			if (fMaxWater > fCurrentWater) {
+
+				fWaterSlideTime += Time.deltaTime;
+
+				WaterSlider.value = Mathf.Lerp (WaterSlider.value, fCurrentWater, fWaterSlideTime);
+			} else
+				fCurrentWater = fMaxWater;
+
+			if (ComplateSlider.value != fCurrentComplate) 
+			{
+				fComplateSlideTime += Time.deltaTime;
+
+				ComplateSlider.value = Mathf.Lerp (ComplateSlider.value, fCurrentComplate, fComplateSlideTime);
+
+				ComplateText.text = string.Format("{0:#} / {1}", ComplateSlider.value, ComplateSlider.maxValue);
+			}
+		}
+	}
+
+	IEnumerator OneSecondPlay()
+	{
+		while (true) {
+			yield return new WaitForSeconds (1.0f);
+
+			fWaterSlideTime = 0.0f;
+			fTemperatureSlideTime = 0.0f;
+
+			fCurrentWater += fPlusWater;
+
+			if (fCurrentTemperature > 0) {
 				fDownTemperature = (fMaxTemperature - fCurrentTemperature) * 0.05f;
 
-                fCurrentTemperature -= fDownTemperature;
+				fCurrentTemperature -= fDownTemperature;
 
 				if (fCurrentTemperature < 0)
 					fCurrentTemperature = 0;
-
-                TemperatureSlider.value = fCurrentTemperature;
-            }
-        }
-    }
+			}
+		}
+	}
 
     public void GetWeapon(GameObject obj, CGameWeaponInfo data, float _fComplate, float _fTemperator)
     {
@@ -353,7 +386,11 @@ public class RepairObject : MonoBehaviour {
         fCurrentTemperature = _fTemperator;
 		WeaponSprite.sprite = weaponData.WeaponSprite;
 
-        ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fComplate);
+		if(_fComplate != 0)
+			ComplateText.text = string.Format("{0:#} / {1}", _fComplate, weaponData.fComplate);
+
+		else
+			ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fComplate);
     }
 
 	public void GetBossWeapon(Sprite _sprite, float _fMaxBossComplete ,float _fComplate,
@@ -401,7 +438,7 @@ public class RepairObject : MonoBehaviour {
 		ComplateSlider.value = fCurrentComplate;
 
 		fCurrentTemperature = _fTemperator;
-		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
+		ComplateText.text = string.Format("{0:####} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
 	}
 
     //무기터치
@@ -409,7 +446,9 @@ public class RepairObject : MonoBehaviour {
     {
         if (weaponData == null)
             return;
-		
+
+		fComplateSlideTime = 0.0f;
+
 		fCurrentComplate = fCurrentComplate + player.GetRepairPower();
 
         //크리티컬 확률 
@@ -425,7 +464,7 @@ public class RepairObject : MonoBehaviour {
 			ComplateSlider.value = 0;
 			TemperatureSlider.value = 0;
 
-			ComplateText.text = string.Format("{0} / {1}", (int)ComplateSlider.value, 0);
+			ComplateText.text = string.Format("{0:####} / {1}", (int)ComplateSlider.value, 0);
 
 			return;
 		}
@@ -441,11 +480,6 @@ public class RepairObject : MonoBehaviour {
 			else
 				SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
         }
-
-		ComplateSlider.value = fCurrentComplate;
-        TemperatureSlider.value = fCurrentTemperature;
-	    
-		ComplateText.text = string.Format("{0} / {1}", (int)ComplateSlider.value, weaponData.fComplate);
     }
 
 	public void TouchBossWeapon()
@@ -626,10 +660,9 @@ public class RepairObject : MonoBehaviour {
 
 			int nCurComplete = (int)fCurrentComplate;
 
-			ComplateSlider.value = (float)nCurComplete;
-			TemperatureSlider.value = fCurrentTemperature;
+			fCurrentComplate = nCurComplete;
 
-            ComplateText.text = string.Format("{0} / {1}", ComplateSlider.value, weaponData.fComplate);
+			TemperatureSlider.value = fCurrentTemperature;
 
 			if(nCurComplete >= weaponData.fComplate)
                 SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fComplate);

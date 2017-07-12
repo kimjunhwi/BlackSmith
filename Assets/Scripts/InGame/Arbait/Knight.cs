@@ -124,6 +124,11 @@ public class Knight : ArbaitBatch {
 				animator.speed = 0.0f;
 			}
 			break;
+		case E_ArbaitState.E_BOSSREPAIR:
+			{
+				fTime = 0.0F;
+			}
+			break;
 		}
 	}
 
@@ -169,6 +174,22 @@ public class Knight : ArbaitBatch {
 
 				SpawnManager.Instance.CheckComplateWeapon(AfootOjbect, m_fComplate,m_fTemperator);
 			}
+			break;
+		case E_ArbaitState.E_BOSSREPAIR:
+
+			//수리
+			fTime += Time.deltaTime;
+
+			//수리 시간이 되면 0으로 초기화 하고 수리해줌
+			if(fTime >= m_fRepairTime)
+			{
+				fTime = 0.0f;
+
+				animator.SetTrigger("bIsRepair");
+
+				RepairShowObject.SetCurCompletion(RepairShowObject.GetCurCompletion() +  m_CharacterChangeData.fRepairPower );
+			}
+
 			break;
 		}
 	}

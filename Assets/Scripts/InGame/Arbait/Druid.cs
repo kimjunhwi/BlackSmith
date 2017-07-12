@@ -55,6 +55,14 @@ public class Druid : ArbaitBatch
         }
 
         base.OnDisable();
+
+		m_bIsApplyBuff = false;
+
+		m_fBuffTime = 0.0f;
+
+		fChangeRepair = 0.0f;
+
+		fChangeCritical = 0.0f;
     }
 
     public override void ApplySkill()
@@ -114,17 +122,28 @@ public class Druid : ArbaitBatch
         //추후 사용 될 수 있을 부분이 있기에 만들어둠
         switch (E_STATE)
         {
-            case E_ArbaitState.E_WAIT:
-                {
+		case E_ArbaitState.E_WAIT:
+			{
+				animator.speed = 1.0f;
+			}
+			break;
 
-                }
-                break;
+		case E_ArbaitState.E_REPAIR:
+			{
 
-            case E_ArbaitState.E_REPAIR:
-                {
+			}
 
-                }
-                break;
+			break;
+		case E_ArbaitState.E_FREEZE:
+			{
+				animator.speed = 0.0f;
+			}
+			break;
+		case E_ArbaitState.E_BOSSREPAIR:
+			{
+				fTime = 0.0F;
+			}
+			break;
         }
     }
 
@@ -166,6 +185,22 @@ public class Druid : ArbaitBatch
 				SpawnManager.Instance.CheckComplateWeapon(AfootOjbect, m_fComplate,m_fTemperator);
                 }
                 break;
+		case E_ArbaitState.E_BOSSREPAIR:
+
+			//수리
+			fTime += Time.deltaTime;
+
+			//수리 시간이 되면 0으로 초기화 하고 수리해줌
+			if(fTime >= m_fRepairTime)
+			{
+				fTime = 0.0f;
+
+				animator.SetTrigger("bIsRepair");
+
+				RepairShowObject.SetCurCompletion(RepairShowObject.GetCurCompletion() +  m_CharacterChangeData.fRepairPower );
+			}
+
+			break;
         }
     }
 }

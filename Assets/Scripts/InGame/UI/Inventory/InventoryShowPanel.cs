@@ -27,6 +27,8 @@ public class InventoryShowPanel : MonoBehaviour {
 
 	CGameEquiment ItemData;
 
+	CGameEnhanceData[] enhanceData;
+
 	void Awake()
 	{
 		SellButton.onClick.AddListener (EnhanceItem);
@@ -78,6 +80,8 @@ public class InventoryShowPanel : MonoBehaviour {
 		NameText.text = ItemData.strName;
 
 		GradeText.text = ItemData.nGrade.ToString ();
+
+		enhanceData = GameManager.Instance.GetEnhanceArbaitData (ItemData.nGrade);
 
 		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache("Characters/" +ItemData.strResource);
 	
