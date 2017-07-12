@@ -64,8 +64,6 @@ public class BossMusic : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
-
-
 			if(isStandardPhaseFailed == false)
 				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 
@@ -259,7 +257,7 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+		//bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 		while (true)
 		{
 			animator.SetBool ("isDisappear", true);
