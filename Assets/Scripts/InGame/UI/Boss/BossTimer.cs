@@ -48,6 +48,7 @@ public class BossTimer : MonoBehaviour {
 				bossTimer.text = "";
 				bossSasin.FailState ();
 				bossMusic.FailState ();
+
 				break;
 			}
 

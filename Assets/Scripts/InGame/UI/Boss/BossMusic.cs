@@ -87,6 +87,9 @@ public class BossMusic : BossCharacter
 				bossBackGround.isOriginBackGround = true;
 			}
 
+			bossUIDisable.SetActive (false);
+
+			SpawnManager.Instance.ReliveArbaitBossRepair ();
 
 			gameObject.SetActive (false);
 			while (bossNoteRespawnPoint.childCount != 0) 
@@ -337,7 +340,7 @@ public class BossMusic : BossCharacter
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (1f, 30f);
+			bossTimer.StartTimer (0f, 60f);
 			bossTimer.bossMusic = this;
 		}
 	}

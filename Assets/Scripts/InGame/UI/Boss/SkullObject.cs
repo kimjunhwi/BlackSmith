@@ -88,7 +88,7 @@ public class SkullObject : MonoBehaviour ,IPointerDownHandler
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
 
-			repairObj.SetCurCompletion (fMaxComplete * 0.03f);
+			repairObj.SetCurCompletion (-fMaxComplete * 0.03f);
 			skullObjPull.ReturnObject (gameObject);
 		
 		}

@@ -152,7 +152,7 @@ public class Nurse : ArbaitBatch {
 
 				animator.SetTrigger("bIsRepair");
 
-				RepairShowObject.SetCurCompletion(RepairShowObject.GetCurCompletion() +  m_CharacterChangeData.fRepairPower );
+				RepairShowObject.SetCurCompletion(m_CharacterChangeData.fRepairPower );
 			}
 
 			break;

@@ -74,12 +74,16 @@ public class BossSasin : BossCharacter
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
 			isStandardPhaseFailed = false;
+
+
 			if (bossBackGround.isBossBackGround == true) {
 				SpawnManager.Instance.bIsBossCreate = false;
 				bossBackGround.isBossBackGround = false;
 				bossBackGround.isOriginBackGround = true;
 			}
-		
+			bossUIDisable.SetActive (false);
+
+			SpawnManager.Instance.ReliveArbaitBossRepair ();
 
 			gameObject.SetActive (false);
 			while (bossSkullRespawnPoint.childCount != 0) 
@@ -258,6 +262,7 @@ public class BossSasin : BossCharacter
 	protected override IEnumerator BossDie ()
 	{
 		//bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+
 		while (true)
 		{
 
@@ -316,7 +321,7 @@ public class BossSasin : BossCharacter
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (1f, 30f);
+			bossTimer.StartTimer (0f, 60f);
 			bossTimer.bossSasin = this;
 		}
 	}
