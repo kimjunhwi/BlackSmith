@@ -180,7 +180,8 @@ public class BossSasin : BossCharacter
 			{
 					
 				Skull = skullObjectPool.GetObject ();
-				Skull.transform.SetParent (bossSkullRespawnPoint.transform);
+				Skull.transform.SetParent (bossSkullRespawnPoint.transform, false);
+				Skull.transform.localScale = Vector3.one;
 				Skull.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Skull.transform.position.z);
 				Skull.name = "Skull";
 
@@ -226,7 +227,8 @@ public class BossSasin : BossCharacter
 			{
 
 				Skull = skullObjectPool.GetObject ();
-				Skull.transform.SetParent (bossSkullRespawnPoint.transform);
+				Skull.transform.SetParent (bossSkullRespawnPoint.transform,false);
+				Skull.transform.localScale = Vector3.one;
 				Skull.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Skull.transform.position.z);
 				Skull.name = "Skull";
 

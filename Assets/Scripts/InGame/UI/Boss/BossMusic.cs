@@ -312,7 +312,8 @@ public class BossMusic : BossCharacter
 	public void CreateNote()
 	{
 		Note = noteObjectPool.GetObject ();
-		Note.transform.SetParent (bossNoteRespawnPoint.transform);
+		Note.transform.SetParent (bossNoteRespawnPoint.transform, false);
+		Note.transform.localScale = Vector3.one;
 		Note.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Note.transform.position.z);
 		Note.name = "Note";
 

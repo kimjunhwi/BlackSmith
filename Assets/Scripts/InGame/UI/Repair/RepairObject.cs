@@ -535,7 +535,8 @@ public class RepairObject : MonoBehaviour {
 					Debug.Log ("Miss");
 
 					textObj = textObjectPool.GetObject ();
-					textObj.transform.SetParent (textRectTrasnform.transform);
+					textObj.transform.SetParent (textRectTrasnform.transform, false);
+					textObj.transform.localScale = Vector3.one;
 					textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, textObj.transform.position.z);
 					textObj.name ="Miss";
 
@@ -558,7 +559,8 @@ public class RepairObject : MonoBehaviour {
 				} else {
 					Debug.Log ("Miss");
 					textObj = textObjectPool.GetObject ();
-					textObj.transform.SetParent (textRectTrasnform.transform);
+					textObj.transform.SetParent (textRectTrasnform.transform, false);
+					textObj.transform.localScale = Vector3.one;
 					textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, 0);
 					textObj.name ="Miss";
 

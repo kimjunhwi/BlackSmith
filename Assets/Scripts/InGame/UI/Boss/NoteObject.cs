@@ -111,7 +111,8 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 		note2_Left = note2ObjectPool.GetObject ();
 		note2_Left.name = "Note2";
-		note2_Left.transform.SetParent (parentTransform);
+		note2_Left.transform.SetParent (parentTransform,false);
+		note2_Left.transform.localScale = Vector3.one;
 		note2_Left.transform.position = new Vector3 (gameObject.transform.position.x - 40f, gameObject.transform.position.y,
 			gameObject.transform.position.z);
 
@@ -125,7 +126,8 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 		note2_Right = note2ObjectPool.GetObject ();
 		note2_Right.name = "Note2";
-		note2_Right.transform.SetParent (parentTransform);
+		note2_Right.transform.SetParent (parentTransform, false);
+		note2_Right.transform.localScale = Vector3.one;
 		note2_Right.transform.position = new Vector3 (gameObject.transform.position.x + 40f, gameObject.transform.position.y,
 			gameObject.transform.position.z);
 
