@@ -50,7 +50,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     private CGameWeaponInfo cLevelData;         //Level에 따른 데이터를 받아오기 위함
 
-    private void Start()
+    private void Awake()
     {
         m_nMaxArbaitAmount = GameManager.Instance.ArbaitLength();
 

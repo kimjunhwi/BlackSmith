@@ -100,7 +100,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public GameObject Root_ui;
 
-    public void DataLoad()
+	public IEnumerator DataLoad()
     {
 		
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
@@ -110,6 +110,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		string EquimentFilePath = Path.Combine(Application.persistentDataPath, strEquiementPath);
 
 		string InventoryFilePath = Path.Combine(Application.persistentDataPath, strInvetoryPath);
+
+		string PlayerFilePath = Path.Combine (Application.persistentDataPath, strPlayerPath);
 
 		Load_TableInfo_Weapon();
 
@@ -165,45 +167,61 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 #elif UNITY_ANDROID
 
-		if(Directory.Exists(ArbaitFilePath)) StartCoroutine (LinkedArbaitAccess (ArbaitFilePath));
+		if(Directory.Exists(ArbaitFilePath)) 
+		yield return StartCoroutine (LinkedArbaitAccess (ArbaitFilePath));
 
 		else 
 		{
 			ArbaitFilePath = Path.Combine(Application.streamingAssetsPath, strArbaitPath);
-			StartCoroutine(LinkedArbaitAccess (ArbaitFilePath));
+		yield return StartCoroutine(LinkedArbaitAccess (ArbaitFilePath));
 		}
 		Debug.Log("1");
 
-		if(Directory.Exists(InventoryFilePath)) StartCoroutine (LinkedInventoryAccess (InventoryFilePath));
+		if(Directory.Exists(InventoryFilePath)) 
+		 yield return StartCoroutine (LinkedInventoryAccess (InventoryFilePath));
 
 		else 
 		{
 		InventoryFilePath = Path.Combine(Application.streamingAssetsPath, strInvetoryPath);
-		StartCoroutine(LinkedArbaitAccess (InventoryFilePath));
+
+		yield return StartCoroutine(LinkedInventoryAccess (InventoryFilePath));
 		}
 
 		Debug.Log("4");
 
-		if(Directory.Exists(EquimentFilePath)) StartCoroutine (LinkedShopAccess (EquimentFilePath));
+		if(Directory.Exists(EquimentFilePath)) 
+		yield return StartCoroutine (LinkedShopAccess (EquimentFilePath));
 
 		else 
 		{
 		EquimentFilePath = Path.Combine(Application.streamingAssetsPath, strEquiementPath);
-		StartCoroutine(LinkedArbaitAccess (EquimentFilePath));
+		yield return StartCoroutine(LinkedShopAccess (EquimentFilePath));
+		}
+
+		if(Directory.Exists(PlayerFilePath)) 
+		yield return StartCoroutine (LinkedPlayerAccess (PlayerFilePath));
+
+		else 
+		{
+		PlayerFilePath = Path.Combine(Application.streamingAssetsPath, strPlayerPath);
+		yield return StartCoroutine(LinkedPlayerAccess (PlayerFilePath));
 		}
 		Debug.Log("7");
 
 
 #endif
 
+		Debug.Log( playerData.strName);
+
         player = new Player();
 
 		player.Init(cInvetoryInfo,playerData);
 
-
 		logoManager.bIsSuccessed = true;
 
 		Debug.Log ("10");
+
+		yield break;
     }
 
     IEnumerator LinkedArbaitAccess(string filePath)
@@ -262,6 +280,21 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		Debug.Log("9");
 	}
+
+	IEnumerator LinkedPlayerAccess(string filePath)
+	{
+		WWW www = new WWW(filePath);
+
+		yield return www;
+
+		string dataAsJson = www.text.ToString();
+
+		Debug.Log (dataAsJson);
+
+
+		playerData = JsonHelper.ListFromJson<CGamePlayerData>(dataAsJson)[0];
+	}
+
 
     private List<T> ConstructString<T>(string _strPath)
     {

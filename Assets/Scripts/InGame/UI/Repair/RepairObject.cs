@@ -445,7 +445,9 @@ public class RepairObject : MonoBehaviour {
     public void TouchWeapon()
     {
         if (weaponData == null)
-            return;
+			return;
+		Debug.Log ("Touch");
+		Debug.Log (player.GetRepairPower());
 
 		fComplateSlideTime = 0.0f;
 

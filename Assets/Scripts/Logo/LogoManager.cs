@@ -13,7 +13,7 @@ public class LogoManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-        GameManager.Instance.DataLoad();
+		StartCoroutine( GameManager.Instance.DataLoad());
 	}
 	
 	// Update is called once per frame
