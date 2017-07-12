@@ -106,7 +106,7 @@ public class ArbaitBatch : MonoBehaviour {
 
 		myCharacterSprite = gameObject.GetComponent<SpriteRenderer>();
 
-        RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
+		RepairShowObject = GameObject.Find("TouchPad").GetComponent<RepairObject>();
 
 		animator = GetComponent<Animator> ();
 

@@ -481,6 +481,20 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		
     }
 
+	public void ApplyArbaitBossRepair()
+	{
+		for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++)
+			if (m_BatchArbait [nIndex].activeSelf)
+				array_ArbaitData [nIndex].CheckCharacterState (E_ArbaitState.E_BOSSREPAIR);
+	}
+
+	public void ReliveArbaitBossRepair()
+	{
+		for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++)
+			if (m_BatchArbait [nIndex].activeSelf)
+				array_ArbaitData [nIndex].CheckCharacterState (E_ArbaitState.E_WAIT);
+	}
+
 
 	public int FreezeArbait()
 	{

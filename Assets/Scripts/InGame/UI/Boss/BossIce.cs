@@ -73,7 +73,9 @@ public class BossIce : BossCharacter
 				bossBackGround.isBossBackGround = false;
 				bossBackGround.isOriginBackGround = true;
 			}
+			bossUIDisable.SetActive (false);
 
+			SpawnManager.Instance.ReliveArbaitBossRepair ();
 
 			gameObject.SetActive (false);
 

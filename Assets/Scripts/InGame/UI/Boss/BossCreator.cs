@@ -19,7 +19,9 @@ public class BossCreator : MonoBehaviour
 	public BossConsumeItemInfo bossConsumeItemInfo;
 	public BossBackGround bossBackGround;
 	public BossPopUpWindow bossPopUpWindow;
+	public GameObject bossUIDisable;
 	public GameObject bossTimer_Obj;
+
 	private BossTimer bossTimer;
 
 	public GameObject[] bossList;
@@ -40,6 +42,7 @@ public class BossCreator : MonoBehaviour
 		spawnManager = FindObjectOfType<SpawnManager> ();
 		uiManager = FindObjectOfType<UIManager> ();
 		bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
+		bossUIDisable.SetActive (false);
 	}
 
 	void Update()
@@ -68,6 +71,7 @@ public class BossCreator : MonoBehaviour
 		//배경화면 전환
 		bossBackGround.StartChangeBackGroundToBossBackGround ();
 		bossBackGround.isBossBackGround = true;
+		bossUIDisable.SetActive (true);
 		nBossIndex = _index;
 	}
 	public void StartBossCreate()
@@ -82,7 +86,7 @@ public class BossCreator : MonoBehaviour
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
 
-
+		SpawnManager.Instance.ApplyArbaitBossRepair ();
 
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
@@ -100,6 +104,7 @@ public class BossCreator : MonoBehaviour
 			bossIce.bossPopUpWindow = bossPopUpWindow;
 			bossIce.sBossWeaponSprite = "Weapons/Boss/deathnote";
 			bossIce.bossTimer_Obj = bossTimer_Obj;
+			bossIce.bossUIDisable = bossUIDisable;
 			bossList [0].SetActive (true);
 			nBossSasinLeftCount--;
 		}
@@ -117,6 +122,7 @@ public class BossCreator : MonoBehaviour
 			bossSasin.sBossWeaponSprite = "Weapons/Boss/deathnote";
 			bossSasin.bossTimer_Obj = bossTimer_Obj;
 			bossSasin.bossTimer = bossTimer;
+			bossSasin.bossUIDisable = bossUIDisable;
 			bossList [1].SetActive (true);
 
 
@@ -146,6 +152,7 @@ public class BossCreator : MonoBehaviour
 			bossMusic.bossPopUpWindow = bossPopUpWindow;
 			bossMusic.sBossWeaponSprite = "Weapons/Boss/deathnote";
 			bossMusic.bossTimer_Obj = bossTimer_Obj;
+			bossMusic.bossUIDisable = bossUIDisable;
 			bossList [3].SetActive (true);
 			nBossMusicLeftCount--;
 		}

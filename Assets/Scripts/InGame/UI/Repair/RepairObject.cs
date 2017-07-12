@@ -39,7 +39,7 @@ public class RepairObject : MonoBehaviour {
 	public Image WeaponSprite;
     public Image WeaponAlphaSpirte;
 
-
+	public SpriteRenderer main_Touch_Sprite;
 
     CGameWeaponInfo weaponData;
 
@@ -610,16 +610,7 @@ public class RepairObject : MonoBehaviour {
 		}
 
 
-		int nCurComplete = (int)fCurrentComplate;
-
-		ComplateSlider.value = (float)nCurComplete;
-
 		TemperatureSlider.value = fCurrentTemperature;
-		
-		ComplateText.text = string.Format("{0} / {1}", ComplateSlider.value, bossCharacter.bossInfo.fComplate);
-
-
-
 	}
 
     public void TouchWater()
@@ -658,13 +649,9 @@ public class RepairObject : MonoBehaviour {
 			if (fCurrentTemperature < 0)
 				fCurrentTemperature = 0;
 
-			int nCurComplete = (int)fCurrentComplate;
-
-			fCurrentComplate = nCurComplete;
-
 			TemperatureSlider.value = fCurrentTemperature;
 
-			if(nCurComplete >= weaponData.fComplate)
+			if(fCurrentComplate >= weaponData.fComplate)
                 SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fComplate);
         }
     }
@@ -736,14 +723,10 @@ public class RepairObject : MonoBehaviour {
 			if (fCurrentTemperature < 0)
 				fCurrentTemperature = 0;
 
-			int nCurComplete = (int)fCurrentComplate;
-
-			ComplateSlider.value = (float)nCurComplete;
 			TemperatureSlider.value = fCurrentTemperature;
 
-			ComplateText.text = string.Format ("{0} / {1}", ComplateSlider.value, bossCharacter.bossInfo.fComplate);
 
-			if (ComplateSlider.value >= bossCharacter.bossInfo.fComplate) {
+			if (fCurrentComplate >= bossCharacter.bossInfo.fComplate) {
 				SpawnManager.Instance.bIsBossCreate = false;
 				//bossCharacter.
 			}
@@ -767,7 +750,7 @@ public class RepairObject : MonoBehaviour {
         AfootObject = null;
 
         WeaponSprite.sprite = null;
-        WeaponAlphaSpirte.sprite = null;
+        //WeaponAlphaSpirte.sprite = null;
         
 		fCurrentComplate = 0;
 
@@ -788,13 +771,7 @@ public class RepairObject : MonoBehaviour {
 
 	public void SetCurCompletion(float _value)
 	{
-		fCurrentComplate -= _value;
-		ComplateSlider.value = fCurrentComplate;
-
-		int nCurComplete = (int)fCurrentComplate;
-
-
-		ComplateText.text = string.Format("{0} / {1}", nCurComplete, ComplateSlider.maxValue);
+		fCurrentComplate += _value;
 	}
 	public void SetFinishBoss()
 	{
