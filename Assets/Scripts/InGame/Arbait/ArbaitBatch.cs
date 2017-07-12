@@ -8,6 +8,8 @@ public class ArbaitBatch : MonoBehaviour {
 	protected ArbaitData m_CharacterDefaultData;
 	public ArbaitData m_CharacterChangeData;
 
+	protected Player playerData;
+
     string[] strBuffsIndex;
 
     public bool bIsRepair = false;
@@ -107,6 +109,8 @@ public class ArbaitBatch : MonoBehaviour {
         RepairShowObject = GameObject.Find("RepairPanel").GetComponent<RepairObject>();
 
 		animator = GetComponent<Animator> ();
+
+		playerData = GameManager.Instance.player;
 	}
 
 	protected virtual void Update()
@@ -141,7 +145,7 @@ public class ArbaitBatch : MonoBehaviour {
         if (m_bIsSmithBuffAccuracy)
         {
             m_bIsSmithBuffAccuracy = false;
-            m_CharacterChangeData.fAccuracyRate += m_fSmithAccuracyValue;
+			m_CharacterChangeData.fAccuracyRate += m_fArbaitAccuracyValue;
         }
 
         if (m_bIsSmithCriticalAttackSpeed)
@@ -313,12 +317,13 @@ public class ArbaitBatch : MonoBehaviour {
 
     #endregion
 
-    #region if Smith Critical, Apply and Relive Accuracy Buff
+	//플레이어 크리시 플레이어 
+    #region if Smith Critical, Apply and Relive Arbait Accuracy Buff
 
     private bool m_bIsSmithBuffAccuracy = false;
 
     private float m_fSmithAccuracyPlusTime = 0.0f;
-    private float m_fSmithAccuracyValue = 0.0f;
+	private float m_fArbaitAccuracyValue = 0.0f;
 
 
     public IEnumerator ApplySmithCriticalBuffAccuracy(float _fValue, float _fTime)
@@ -338,9 +343,9 @@ public class ArbaitBatch : MonoBehaviour {
 
         m_bIsSmithBuffAccuracy = true;
 
-        m_fSmithAccuracyValue = m_CharacterChangeData.fAccuracyRate * (_fValue * 0.01f);
+		m_fArbaitAccuracyValue = m_CharacterChangeData.fAccuracyRate * (_fValue * 0.01f);
 
-        m_CharacterChangeData.fAccuracyRate -= m_fSmithAccuracyValue;
+		m_CharacterChangeData.fAccuracyRate += m_fArbaitAccuracyValue;
 
         while (true)
         {
@@ -352,12 +357,16 @@ public class ArbaitBatch : MonoBehaviour {
                 break;
         }
 
+		if (!m_bIsSmithBuffAccuracy)
+			yield break;
+
         m_bIsSmithBuffAccuracy = false;
-        m_CharacterChangeData.fAccuracyRate += m_fSmithAccuracyValue;
+		m_CharacterChangeData.fAccuracyRate -= m_fArbaitAccuracyValue;
     }
 
     #endregion
 
+	//플레이어 크리시 공격속도 증가 
     #region if Smith Critical, Apply and Relive AttackSpeed Buff
 
     private bool m_bIsSmithCriticalAttackSpeed = false;
@@ -406,6 +415,7 @@ public class ArbaitBatch : MonoBehaviour {
 
     #endregion
 
+	//플레이어 크리시 아르바이트들의 공격속도 증가 
 	#region if Smith Critical, Apply and Relive Arbait AttackSpeed Buff
 
 	private bool m_bIsCriticalArbaitAttackSpeed = false;

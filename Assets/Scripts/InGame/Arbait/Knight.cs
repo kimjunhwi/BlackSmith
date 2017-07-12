@@ -5,16 +5,17 @@ using ReadOnlys;
 
 public class Knight : ArbaitBatch {
 
-	private Player playerData;
+	private bool m_bIsApplyBuff = false;
 
+	private float m_fBuffTime = 0.0f;
+
+	private float m_fChangeAccuracy = 0;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_KNIGHT;
-
-		playerData = GameManager.Instance.player;
+		nIndex = (int)E_ARBAIT.E_GLAUS;
 	}
 
 	// Update is called once per frame
@@ -38,23 +39,62 @@ public class Knight : ArbaitBatch {
 
 		CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nIndex, nGrade);
 	}
 
 	protected override void OnDisable()
 	{
-		ReliveSkill();
+		if (m_bIsApplyBuff)
+		{
+			m_bIsApplyBuff = false;
+
+			playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+		}
 
 		base.OnDisable();
 	}
 
-
-	protected override void ReliveSkill()
+	public override void ApplySkill()
 	{
-		
+		if (m_bIsApplyBuff)
+			m_fBuffTime = 0.0f;
+
+		else
+			StartCoroutine(ApplyDruidSkill());
 	}
 
+	protected override void ReliveSkill() { }
 
+	private IEnumerator ApplyDruidSkill()
+	{
+		yield return new WaitForSeconds(0.1f);
+
+		m_bIsApplyBuff = true;
+
+		m_fChangeAccuracy = playerData.GetRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+
+		m_fChangeAccuracy = Mathf.Round(m_fChangeAccuracy);
+
+		playerData.SetAccuracyRate(playerData.GetAccuracyRate() + m_fChangeAccuracy);
+
+		while (true)
+		{
+			yield return null;
+
+			m_fBuffTime += Time.deltaTime;
+
+			if (m_fBuffTime > 3.0f)
+				break;
+		}
+
+		if (!m_bIsApplyBuff)
+			yield break;
+
+
+		m_bIsApplyBuff = false;
+
+		playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+	}
 
 	public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{

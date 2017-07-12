@@ -5,8 +5,6 @@ using ReadOnlys;
 
 public class Bell : ArbaitBatch {
 
-	private Player playerData;
-
 	private float fChangeCritical = 0.0f;
 
 	protected override void Awake()
@@ -14,8 +12,6 @@ public class Bell : ArbaitBatch {
 		base.Awake();
 
 		nIndex = (int)E_ARBAIT.E_BELL;
-
-		playerData = GameManager.Instance.player;
 	}
 
 	// Update is called once per frame

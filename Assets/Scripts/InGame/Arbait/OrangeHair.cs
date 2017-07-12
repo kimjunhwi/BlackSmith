@@ -4,18 +4,13 @@ using UnityEngine;
 using ReadOnlys;
 
 public class OrangeHair : ArbaitBatch {
-
-	private Player playerData;
-
 	private float fChangePlusWater = 0.0f;
 
 	protected override void Awake ()
 	{
 		base.Awake ();
 
-		nIndex = (int)E_ARBAIT.E_ORANGEHAIR;
-
-		playerData = GameManager.Instance.player;
+		nIndex = (int)E_ARBAIT.E_MIA;
 	}
 
 	// Update is called once per frame

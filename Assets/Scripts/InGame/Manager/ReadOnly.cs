@@ -48,15 +48,15 @@ namespace ReadOnlys
 
 	public enum E_ARBAIT : int
 	{
-		E_BLUEHAIR = 0,
-		E_ORANGEHAIR,
+		E_ROY = 0,
+		E_MIA,
 		E_NURSE,
-		E_CLEO,
-		E_ELSA,
-		E_BROWNHAIR,
-		E_KNIGHT,
-		E_DRUID,
-		E_CLERIC,
+		E_CLEA,
+		E_ROSA,
+		E_LUNA,
+		E_GLAUS,
+		E_ELLIE,
+		E_MICHEAL,
 		E_BELL,
 	}
 

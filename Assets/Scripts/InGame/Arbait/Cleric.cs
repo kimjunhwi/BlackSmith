@@ -5,7 +5,10 @@ using ReadOnlys;
 
 public class Cleric : ArbaitBatch {
 
-	private Player playerData;
+	private bool m_bIsApplyBuff = false;
+	private float m_fBuffTime = 0.0f;
+
+	private float fChangeRepair = 0.0f;
 
 	private float fChangeCritical = 0.0f;
 
@@ -13,9 +16,7 @@ public class Cleric : ArbaitBatch {
 	{
 		base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_CLERIC;
-
-		playerData = GameManager.Instance.player;
+		nIndex = (int)E_ARBAIT.E_MICHEAL;
 	}
 
 	// Update is called once per frame
@@ -39,18 +40,66 @@ public class Cleric : ArbaitBatch {
 
 		CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nIndex, nGrade);
 	}
 
 	protected override void OnDisable()
 	{
-		ReliveSkill();
+		if (m_bIsApplyBuff)
+		{
+			m_bIsApplyBuff = false;
+
+			playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+
+			playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
+		}
 
 		base.OnDisable();
 	}
 
-	protected override void ReliveSkill()
+	public override void ApplySkill()
 	{
+		if (m_bIsApplyBuff)
+			m_fBuffTime = 0.0f;
+
+		else
+			StartCoroutine(ApplyDruidSkill());
+	}
+
+	protected override void ReliveSkill() { }
+
+	private IEnumerator ApplyDruidSkill()
+	{
+		yield return new WaitForSeconds(0.1f);
+
+		m_bIsApplyBuff = true;
+
+		fChangeRepair = playerData.GetRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+
+		fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+
+		fChangeRepair = Mathf.Round(fChangeRepair);
+
+		fChangeCritical = Mathf.Round(fChangeCritical);
+
+		playerData.SetRepairPower(playerData.GetRepairPower() + fChangeRepair);
+
+		playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
+
+		while (true)
+		{
+			yield return null;
+
+			m_fBuffTime += Time.deltaTime;
+
+			if (m_fBuffTime > 3.0f)
+				break;
+		}
+
+		m_bIsApplyBuff = false;
+
+		playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+
 		playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
 	}
 

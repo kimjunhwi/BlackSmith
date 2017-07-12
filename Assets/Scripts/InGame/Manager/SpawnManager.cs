@@ -411,42 +411,74 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	public void UseWater()
 	{
 		//ArbaitData arbait;
+		float fTime = 0.0f;
+		float fValue = 0.0f;
 
-		if (m_BatchArbait [(int)E_ARBAIT.E_CLEO].activeSelf) 
+
+		if (m_BatchArbait [(int)E_ARBAIT.E_CLEA].activeSelf) 
 		{
+			fTime = array_ArbaitData [(int)E_ARBAIT.E_CLEA].m_CharacterChangeData.fCurrentFloat;
+			fValue = array_ArbaitData [(int)E_ARBAIT.E_CLEA].m_CharacterChangeData.fSkillPercent;
+
             for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
             {
                 if(m_BatchArbait[nIndex].activeSelf)
-                    StartCoroutine(array_ArbaitData[nIndex].ApplyWaterBuffAttackSpeed(90, 5));
+					StartCoroutine(array_ArbaitData[nIndex].ApplyWaterBuffAttackSpeed(fValue,fTime));
             }
 		}
 
-        if (m_BatchArbait [(int)E_ARBAIT.E_ELSA].activeSelf) 
+		if (m_BatchArbait [(int)E_ARBAIT.E_ROSA].activeSelf) 
         {
+			fTime = array_ArbaitData [(int)E_ARBAIT.E_ROSA].m_CharacterChangeData.fCurrentFloat;
+			fValue = array_ArbaitData [(int)E_ARBAIT.E_ROSA].m_CharacterChangeData.fSkillPercent;
+
             for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
 				if(m_BatchArbait[nIndex].activeSelf)
-					StartCoroutine(array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (30, 3));
+					StartCoroutine(array_ArbaitData [nIndex].ApplyWaterBuffRepairPower (fValue,fTime));
         }
 
-		if (m_BatchArbait [(int)E_ARBAIT.E_BROWNHAIR].activeSelf) 
+		if (m_BatchArbait [(int)E_ARBAIT.E_LUNA].activeSelf) 
         {
+			fTime = array_ArbaitData [(int)E_ARBAIT.E_LUNA].m_CharacterChangeData.fCurrentFloat;
+			fValue = array_ArbaitData [(int)E_ARBAIT.E_LUNA].m_CharacterChangeData.fSkillPercent;
+
             for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
 				if(m_BatchArbait[nIndex].activeSelf)
-					StartCoroutine(array_ArbaitData [nIndex].ApplyWaterBuffCritical (20, 0));
+					StartCoroutine(array_ArbaitData [nIndex].ApplyWaterBuffCritical (fValue,fTime));
         }
 	}
 
     public void PlayerCritical()
     {
-		if (m_BatchArbait[(int)E_ARBAIT.E_KNIGHT].activeSelf)
+
+		float fTime = 0.0f;
+		float fValue = 0.0f;
+
+		if (m_BatchArbait[(int)E_ARBAIT.E_GLAUS].activeSelf)
 		{
-			StartCoroutine(array_ArbaitData[(int)E_ARBAIT.E_KNIGHT].ApplyCriticalArbaitBuffAttackSpeed(20,3));
+			fTime = array_ArbaitData [(int)E_ARBAIT.E_GLAUS].m_CharacterChangeData.fCurrentFloat;
+			fValue = array_ArbaitData [(int)E_ARBAIT.E_GLAUS].m_CharacterChangeData.fSkillPercent;
+
+			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+				if(m_BatchArbait[nIndex].activeSelf)
+					StartCoroutine(array_ArbaitData[nIndex].ApplySmithCriticalBuffAccuracy(fValue,fTime));
+
+			array_ArbaitData [(int)E_ARBAIT.E_GLAUS].ApplySkill ();
 		}
 
-        if (m_BatchArbait[(int)E_ARBAIT.E_DRUID].activeSelf)
+		if (m_BatchArbait[(int)E_ARBAIT.E_ELLIE].activeSelf)
         {
-            array_ArbaitData[(int)E_ARBAIT.E_DRUID].ApplySkill();
+			fTime = array_ArbaitData [(int)E_ARBAIT.E_ELLIE].m_CharacterChangeData.fCurrentFloat;
+			fValue = array_ArbaitData [(int)E_ARBAIT.E_ELLIE].m_CharacterChangeData.fSkillPercent;
+
+			for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
+				if(m_BatchArbait[nIndex].activeSelf)
+					array_ArbaitData[nIndex].ApplyCriticalArbaitBuffAttackSpeed(fValue,fTime);
         }
+
+		if (m_BatchArbait[(int)E_ARBAIT.E_MICHEAL].activeSelf)
+			array_ArbaitData[(int)E_ARBAIT.E_MICHEAL].ApplySkill();
+		
     }
 
 

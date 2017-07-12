@@ -4,9 +4,6 @@ using UnityEngine;
 using ReadOnlys;
 
 public class Nurse : ArbaitBatch {
-
-    private Player playerData;
-
     private float fChangeCritical = 0.0f;
 
     protected override void Awake()
@@ -14,8 +11,6 @@ public class Nurse : ArbaitBatch {
         base.Awake();
 
 		nIndex = (int)E_ARBAIT.E_NURSE;
-
-        playerData = GameManager.Instance.player;
     }
 
     // Update is called once per frame

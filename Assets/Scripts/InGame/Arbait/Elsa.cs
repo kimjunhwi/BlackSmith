@@ -5,17 +5,14 @@ using ReadOnlys;
 
 public class Elsa : ArbaitBatch {
 
-	private Player playerData;
-
 	private float fChangeCritical = 0.0f;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_ELSA;
+		nIndex = (int)E_ARBAIT.E_ROSA;
 
-		playerData = GameManager.Instance.player;
 	}
 
 	// Update is called once per frame

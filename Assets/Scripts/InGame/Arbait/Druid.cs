@@ -5,9 +5,6 @@ using ReadOnlys;
 
 public class Druid : ArbaitBatch
 {
-
-    private Player playerData;
-
     private bool m_bIsApplyBuff = false;
     private float m_fBuffTime = 0.0f;
 
@@ -19,9 +16,7 @@ public class Druid : ArbaitBatch
     {
         base.Awake();
 
-        nIndex = (int)E_ARBAIT.E_DRUID;
-
-        playerData = GameManager.Instance.player;
+		nIndex = (int)E_ARBAIT.E_ELLIE;
     }
 
     // Update is called once per frame

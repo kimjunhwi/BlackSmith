@@ -5,7 +5,7 @@ using ReadOnlys;
 
 public class BlueHair : ArbaitBatch {
 
-	private Player playerData;
+
 
 	private float fChangeRepair = 0.0f;
 
@@ -17,9 +17,9 @@ public class BlueHair : ArbaitBatch {
 	{
 		base.Awake ();
 
-		nIndex = (int)E_ARBAIT.E_BLUEHAIR;
+		nIndex = (int)E_ARBAIT.E_ROY;
 
-		playerData = GameManager.Instance.player;
+
 	}
 
 	// Update is called once per frame

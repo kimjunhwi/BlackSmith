@@ -5,17 +5,13 @@ using ReadOnlys;
 
 public class Cleo : ArbaitBatch {
 
-	private Player playerData;
-
 	private float fChangeCritical = 0.0f;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_CLEO;
-
-		playerData = GameManager.Instance.player;
+		nIndex = (int)E_ARBAIT.E_CLEA;
 	}
 
 	// Update is called once per frame
@@ -50,7 +46,6 @@ public class Cleo : ArbaitBatch {
 
 	protected override void ReliveSkill()
 	{
-		playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
 	}
 
 	public override void CheckCharacterState(E_ArbaitState _E_STATE)

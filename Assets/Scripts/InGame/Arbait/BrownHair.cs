@@ -5,17 +5,14 @@ using ReadOnlys;
 
 public class BrownHair : ArbaitBatch {
 
-	private Player playerData;
-
 	private float fChangeCritical = 0.0f;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_BROWNHAIR;
+		nIndex = (int)E_ARBAIT.E_LUNA;
 
-		playerData = GameManager.Instance.player;
 	}
 
 	// Update is called once per frame
