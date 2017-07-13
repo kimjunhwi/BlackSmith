@@ -29,8 +29,8 @@ public class Note3Object : MonoBehaviour  ,IPointerDownHandler
 	private float canvasHeight = 1130f;
 	//114
 
-	private float skullSizeWidth = 60f;
-	private float skullSizeHeight = 80f;
+	private float noteSizeWidth = 64f;
+	private float noteSizeHeight = 64f;
 
 
 	Vector2 vec2;
@@ -58,24 +58,25 @@ public class Note3Object : MonoBehaviour  ,IPointerDownHandler
 		transform.Translate ( randomDir * fMoveSpeed * Time.deltaTime);
 
 		//4면 충돌 확인
-		if (myRectTransform.anchoredPosition.x >= ((canvasWidth / 2) - (skullSizeWidth / 2))) {
+		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 8f ))
+		{
 			//Debug.Log ("Right Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.left);
 		}
 
-		if (myRectTransform.anchoredPosition.x <= -((canvasWidth / 2) - (skullSizeWidth / 2))) 
+		if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 18f )) 
 		{
 			//Debug.Log ("Left Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.right);
 		}
 
-		if (myRectTransform.anchoredPosition.y >= (canvasHeight/2) - (skullSizeHeight / 2)) 
+		if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 17f )) 
 		{
 			//Debug.Log ("Top Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.down);
 		}
 
-		if (myRectTransform.anchoredPosition.y <= -((canvasHeight / 2) - (skullSizeHeight / 2))) {
+		if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) -16f )) {
 			//Debug.Log ("Down Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.up);
 		}

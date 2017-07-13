@@ -81,10 +81,10 @@ public class RepairObject : MonoBehaviour {
 	private RectTransform bossWeaponRectTransform;
 	public RectTransform bossNoteRectTransform;
 	public BossMusic bossMusic;
-	public NoteObject noteObj;
-	public Note2Object note2Obj;
-	public Note3Object note3Obj;
-	private Transform noteGameObject;							//물 사용시 없어질 노트 obj
+	private NoteObject noteObj;
+	private Note2Object note2Obj;
+	private Note3Object note3Obj;
+	//private Transform noteGameObject;							//물 사용시 없어질 노트 obj
 	private Vector3 bossWeaponObjOriginPosition;				//원래 수리 패널에 있을때의 무기 위치
 	private Vector2 bossWeaponObjOriginSize;					//원래 수리 패널에 터치 인식 범위의 크기
 	private Vector2 bossWeaponSize;								//무기 이미지 만큼의 크기
@@ -235,13 +235,17 @@ public class RepairObject : MonoBehaviour {
 
 	public void AddBossWeaponSpeed(float _speed)
 	{
-		fMoveSpeed += _speed;
-		Debug.Log("Plus Cur Speed = " + fMoveSpeed);
+		if (fMoveSpeed <= 8.5f)
+			fMoveSpeed += _speed;
+		else
+			fMoveSpeed = fMoveSpeed;
+		
+		//Debug.Log("Plus Cur Speed = " + fMoveSpeed);
 	}
 	public void MinusWeaponSpeed(float _speed)
 	{
 		fMoveSpeed -= _speed;
-		Debug.Log("Minus Cur Speed = " + fMoveSpeed);
+		//Debug.Log("Minus Cur Speed = " + fMoveSpeed);
 	}
 
 	public IEnumerator BossMusicWeaponMove()
@@ -263,7 +267,7 @@ public class RepairObject : MonoBehaviour {
 			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed);
 
 			//4면 충돌 확인
-			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 65f ) {
+			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 91f ) {
 
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.left);
 				randomDir = new Vector3 (getReflectDir.x, Random.Range (-2.0f, 2.0f), getReflectDir.z);
@@ -277,17 +281,17 @@ public class RepairObject : MonoBehaviour {
 				//Debug.Log ("Left Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
 
-			if (bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 80f) {
+			if (bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 60f) {
 
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.down);
-				randomDir = new Vector3 (Random.Range(-2.0f,2.0f), getReflectDir.y, getReflectDir.z);
+				randomDir = new Vector3 (Random.Range(-1.0f,1.0f), getReflectDir.y, getReflectDir.z);
 				//Debug.Log ("Top Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
 
 			if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 190f))) {
 		
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.up);
-				randomDir = new Vector3 (Random.Range(-2.0f,2.0f), getReflectDir.y, getReflectDir.z);
+				randomDir = new Vector3 (Random.Range(-1.0f,1.0f), getReflectDir.y, getReflectDir.z);
 
 				//Debug.Log ("Bottom Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
 			}
@@ -676,28 +680,32 @@ public class RepairObject : MonoBehaviour {
 				bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
 					transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
 				int nChildCount = bossNoteRectTransform.childCount;
-			
-				while(nChildCount != 0)
+				Debug.Log ("CurCount = " + nChildCount);
+
+
+				for(int i=0; i< nChildCount; i++)
 				{
-					
-					Debug.Log ("CurCount = " + nChildCount);
-					if (bossNoteRectTransform.FindChild("Note")) {
-						
-						noteGameObject = bossNoteRectTransform.FindChild("Note");
+					Transform noteGameObject =null;		
+
+					if(bossNoteRectTransform.transform.GetChild (0).name == "Note")
+					{
+						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
 						noteObj.CreateNote ();
-
-					} else if (bossNoteRectTransform.FindChild("Note2")) {
-						noteGameObject = bossNoteRectTransform.FindChild("Note2");
+					}
+					else if(bossNoteRectTransform.transform.GetChild (0).name == "Note2")
+					{
+						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
 						note2Obj.CreateNote ();
-					} else if (bossNoteRectTransform.FindChild("Note3")) {
-						Debug.Log ("Delete Note");
-						noteGameObject = bossNoteRectTransform.FindChild("Note3");
-						note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
+					}
+
+					else if(bossNoteRectTransform.transform.GetChild (0).name == "Note3")
+					{
+						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
+							note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
 						note3Obj.EraseObj ();
-					} 
-					nChildCount--;
+					}
 				}
 			}
 			//useWater
@@ -823,7 +831,7 @@ public class RepairObject : MonoBehaviour {
 			int nChildCount = bossNoteRectTransform.childCount;
 
 			while (nChildCount != 0) {
-
+				Transform noteGameObject =null;	
 				Debug.Log ("CurCount = " + nChildCount);
 				if (bossNoteRectTransform.FindChild ("Note")) {
 

@@ -19,12 +19,12 @@ public class BossTimer : MonoBehaviour {
 		gameObject.SetActive (false);
 	}
 
-	public void StartTimer(float _Min, float _Sec)
+	public void StartTimer(float _Min, float _Sec, int _nBossIndex)
 	{
-		StartCoroutine (Timer (_Min, _Sec));
+		StartCoroutine (Timer (_Min, _Sec, _nBossIndex));
 	}
 
-	public IEnumerator Timer(float _curMin, float _curSec)
+	public IEnumerator Timer(float _curMin, float _curSec, int _nBossIndex)
 	{
 		float curMin = _curMin;
 		float curSecond = _curSec;
@@ -34,8 +34,23 @@ public class BossTimer : MonoBehaviour {
 		{
 			curSecond -= Time.deltaTime;
 			second = (int)curSecond;
-			bossTimer.text = curMin.ToString () + ":" + second.ToString ();
+			if(second >= 10)
+				bossTimer.text = curMin.ToString () + ":" + second.ToString ();
+			else
+				bossTimer.text = curMin.ToString () + " : " + "0" +second.ToString ();
 
+			if (curMin == 0 && second == 0f)
+			{
+				bossTimer.text = "";
+				if(_nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_SASIN)
+					bossSasin.FailState ();
+				if(_nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC)
+					bossMusic.FailState ();
+				if (_nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE)
+					bossIce.FailState ();
+
+				break;
+			}
 
 			if (curMin != 0 && second == 0f) 
 			{
@@ -43,14 +58,7 @@ public class BossTimer : MonoBehaviour {
 				curMin--;
 			}
 
-			if (curMin == 0 && second == 0f)
-			{
-				bossTimer.text = "";
-				bossSasin.FailState ();
-				bossMusic.FailState ();
 
-				break;
-			}
 
 			yield return null;
 		}

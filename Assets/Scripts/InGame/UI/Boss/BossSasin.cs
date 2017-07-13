@@ -323,7 +323,7 @@ public class BossSasin : BossCharacter
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (0f, 60f);
+			bossTimer.StartTimer (0f, 10f , (int)E_BOSSNAME.E_BOSSNAME_SASIN);
 			bossTimer.bossSasin = this;
 		}
 	}

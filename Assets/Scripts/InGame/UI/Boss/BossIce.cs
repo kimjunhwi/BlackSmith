@@ -106,7 +106,7 @@ public class BossIce : BossCharacter
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
-
+					ActiveTimer ();
 					break;
 				}
 			}
@@ -346,6 +346,31 @@ public class BossIce : BossCharacter
 
 			fIceWallArbaitTimer = 0f;
 		}
+	}
+
+	public void ActiveTimer()
+	{
+		if (bossTimer_Obj.activeSelf == true)
+		{
+			bossTimer_Obj.SetActive (false);
+		}
+		else 
+		{
+			bossTimer_Obj.SetActive (true);
+			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
+			bossTimer.StartTimer (1f, 30f, (int)E_BOSSNAME.E_BOSSNAME_ICE);
+			bossTimer.bossIce = this;
+		}
+	}
+
+	public void FailState()
+	{
+		ActiveTimer ();
+		isFailed = true;
+		bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+		bossPopUpWindow.PopUpWindowReward_Switch ();
+
+		eCureentBossState = EBOSS_STATE.FINISH;
 	}
 
 

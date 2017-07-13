@@ -31,8 +31,8 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	private float canvasHeight = 1130f;
 	//114
 
-	private float skullSizeWidth = 60f;
-	private float skullSizeHeight = 80f;
+	private float noteSizeWidth = 96f;
+	private float noteSizeHeight = 96f;
 
 	private SimpleObjectPool note3ObjectPool;
 
@@ -59,24 +59,25 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		transform.Translate ( randomDir * fMoveSpeed * Time.deltaTime);
 
 		//4면 충돌 확인
-		if (myRectTransform.anchoredPosition.x >= ((canvasWidth / 2) - (skullSizeWidth / 2))) {
+		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 11f )) {
 			//Debug.Log ("Right Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.left);
 		}
 
-		if (myRectTransform.anchoredPosition.x <= -((canvasWidth / 2) - (skullSizeWidth / 2))) 
+		if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 20f )) 
 		{
 			//Debug.Log ("Left Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.right);
 		}
 
-		if (myRectTransform.anchoredPosition.y >= (canvasHeight/2) - (skullSizeHeight / 2)) 
+		if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 16f )) 
 		{
 			//Debug.Log ("Top Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.down);
 		}
 
-		if (myRectTransform.anchoredPosition.y <= -((canvasHeight / 2) - (skullSizeHeight / 2))) {
+		if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 17f )) 
+		{
 			//Debug.Log ("Down Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.up);
 		}
@@ -109,6 +110,15 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		note3_Left.transform.position = new Vector3 (gameObject.transform.position.x - 40f, gameObject.transform.position.y,
 			gameObject.transform.position.z);
 
+		if(note3_Left.transform.position.x <= -346f)
+			note3_Left.transform.position = new Vector3 (gameObject.transform.position.x + 96f, gameObject.transform.position.y,
+				gameObject.transform.position.z);
+		
+		if(note3_Left.transform.position.y <= 550f)
+			note3_Left.transform.position = new Vector3 (gameObject.transform.position.x , gameObject.transform.position.y - 150f,
+				gameObject.transform.position.z);
+
+
 		note3Obj = note3_Left.GetComponent<Note3Object> ();
 		note3Obj.note3ObjPull = note3ObjectPool;
 		note3Obj.parentTransform = parentTransform;
@@ -121,6 +131,15 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		note3_Right.transform.localScale = Vector3.one;
 		note3_Right.transform.position = new Vector3 (gameObject.transform.position.x + 40f, gameObject.transform.position.y,
 			gameObject.transform.position.z);
+
+		if(note3_Left.transform.position.x >= 336f)
+			note3_Left.transform.position = new Vector3 (gameObject.transform.position.x - 196f, gameObject.transform.position.y,
+				gameObject.transform.position.z);
+
+		if(note3_Left.transform.position.y >= -517f)
+			note3_Left.transform.position = new Vector3 (gameObject.transform.position.x , gameObject.transform.position.y + 50f,
+				gameObject.transform.position.z);
+			
 
 		note3Obj = note3_Right.GetComponent<Note3Object> ();
 		note3Obj.note3ObjPull = note3ObjectPool;
