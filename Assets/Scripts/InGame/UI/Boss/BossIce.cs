@@ -33,11 +33,9 @@ public class BossIce : BossCharacter
 		if (isFirstActive == false) {
 			isFirstActive = true;
 		} 
-		else {
-
-
+		else 
+		{
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
-
 			StartCoroutine (BossWait ());
 		}
 
@@ -56,6 +54,10 @@ public class BossIce : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
+			if(isStandardPhaseFailed == false)
+				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+
+
 			StopCoroutine (repairObj.BossMusicWeaponMove ());
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
@@ -65,8 +67,10 @@ public class BossIce : BossCharacter
 			Debug.Log ("Finish Boss");
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 			repairObj.SetFinishBoss ();		//수리 패널 초기화
+
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
+			isStandardPhaseFailed = false;
 
 			if (bossBackGround.isBossBackGround == true) {
 				SpawnManager.Instance.bIsBossCreate = false;
@@ -121,7 +125,7 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
-		
+		isStandardPhaseFailed = true;
 		while (true)
 		{
 
@@ -167,7 +171,7 @@ public class BossIce : BossCharacter
 
 
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
-
+		isStandardPhaseFailed = false;
 
 		while (true)
 		{
@@ -260,7 +264,6 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 		while (true)
 		{
 
@@ -296,8 +299,20 @@ public class BossIce : BossCharacter
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
 			animator.Play ("BossIdle");
-			bossPopUpWindow.PopUpWindowReward_Switch();
-			bossPopUpWindow.GetBossInfo (this);
+			ActiveTimer ();
+			//실패가 아닐시
+			if (isFailed == false)
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch ();
+				bossPopUpWindow.GetBossInfo (this);							//보상 정보 
+			} 
+			//실패시
+			else 
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch ();
+			}
 			eCureentBossState = EBOSS_STATE.FINISH;
 			if (eCureentBossState == EBOSS_STATE.FINISH)
 				break;
@@ -333,6 +348,8 @@ public class BossIce : BossCharacter
 	{
 
 		iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+		if (iceWallIndex == -1)
+			return;
 		Debug.Log ("Create Arbait Ice Wall");
 		if (isIceWall_ArbaitOn [iceWallIndex] != true)
 		{
@@ -350,27 +367,33 @@ public class BossIce : BossCharacter
 
 	public void ActiveTimer()
 	{
+		
+
 		if (bossTimer_Obj.activeSelf == true)
 		{
 			bossTimer_Obj.SetActive (false);
+			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
+			bossTimer.StopTimer(0f,0f,(int)E_BOSSNAME.E_BOSSNAME_ICE);
 		}
 		else 
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (1f, 30f, (int)E_BOSSNAME.E_BOSSNAME_ICE);
+			bossTimer.StartTimer (1f, 30f , (int)E_BOSSNAME.E_BOSSNAME_ICE);
 			bossTimer.bossIce = this;
 		}
+
 	}
 
 	public void FailState()
 	{
-		ActiveTimer ();
 		isFailed = true;
-		bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-		bossPopUpWindow.PopUpWindowReward_Switch ();
 
-		eCureentBossState = EBOSS_STATE.FINISH;
+		StopCoroutine (BossSkillStandard ());
+		StopCoroutine (BossSkill_01 ());
+		StopCoroutine (BossSKill_02 ());
+
+		StartCoroutine (BossDie ());
 	}
 
 
