@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: 2e346aca1014f462a9a674671790d242
-timeCreated: 1499841723
+guid: 6cae53fa629744751ad04630a08df030
+timeCreated: 1500030046
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: alba_Breakstep_0
-    21300002: alba_Breakstep_1
+    21300000: alba_Breakstep2_0
+    21300002: alba_Breakstep2_1
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -68,11 +68,19 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: alba_Breakstep_0
+      name: alba_Breakstep2_0
       rect:
         serializedVersion: 2
         x: 0
@@ -85,7 +93,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: alba_Breakstep_1
+      name: alba_Breakstep2_1
       rect:
         serializedVersion: 2
         x: 256

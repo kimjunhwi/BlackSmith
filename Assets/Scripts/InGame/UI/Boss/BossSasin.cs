@@ -57,13 +57,11 @@ public class BossSasin : BossCharacter
 			if(isStandardPhaseFailed == false)
 				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 
-
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
 			StopCoroutine (BossSKill_02 ());
 			StopCoroutine (BossDie ());
 			StopCoroutine (BossResult ());
-
 
 			Debug.Log ("Finish Boss");
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
@@ -134,6 +132,7 @@ public class BossSasin : BossCharacter
 	{
 
 		isStandardPhaseFailed = true;
+		bossTalkPanel.StartShowBossTalkWindow (2f, "내가 사신이지롱");
 		while (true)
 		{
 			
@@ -167,6 +166,7 @@ public class BossSasin : BossCharacter
 		GameObject Skull;
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		isStandardPhaseFailed = false;
+		bossTalkPanel.StartShowBossTalkWindow (2f, "나 화났어 ㅡ,ㅡ");
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
@@ -214,6 +214,7 @@ public class BossSasin : BossCharacter
 	{
 		float fTime = 0f;
 		GameObject Skull;
+		bossTalkPanel.StartShowBossTalkWindow (2f, "뿌우우우우우!!!");
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
@@ -261,7 +262,7 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		
+		bossTalkPanel.StartShowBossTalkWindow (2f, "꾸앙 ㅇㅁㅇ...");
 		while (true)
 		{
 			animator.SetBool ("isDisappear", true);

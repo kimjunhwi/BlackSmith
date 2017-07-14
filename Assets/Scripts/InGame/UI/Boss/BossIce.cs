@@ -8,8 +8,8 @@ public class BossIce : BossCharacter
 	private BossIceWall iceWall_instance;
 	public GameObject iceWall;
 	public bool isIceWallOn;					  //IceWall이 켜졌는지 아닌지
-	public float fIceWallGenerateTimer =0f;
-	private float nBossIceWallGenerateTime = 15.0f;
+	public float fIceWallGenerateTimer = 0f;
+	private float nBossIceWallGenerateTime = 5.0f;
 	//IceWall Arbait
 	int iceWallIndex = 0;
 	private float fIceWallArbaitTimer =0f;
