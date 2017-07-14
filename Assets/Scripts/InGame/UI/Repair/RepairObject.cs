@@ -329,7 +329,7 @@ public class RepairObject : MonoBehaviour {
 
 				ComplateSlider.value = Mathf.Lerp (ComplateSlider.value, fCurrentComplate, fComplateSlideTime);
 
-				ComplateText.text = string.Format("{0:#} / {1}", ComplateSlider.value, ComplateSlider.maxValue);
+				ComplateText.text = string.Format("{0:F1} / {1}", ComplateSlider.value, ComplateSlider.maxValue);
 			}
 		}
 	}
@@ -391,10 +391,10 @@ public class RepairObject : MonoBehaviour {
 		WeaponSprite.sprite = weaponData.WeaponSprite;
 
 		if(_fComplate != 0)
-			ComplateText.text = string.Format("{0:#} / {1}", _fComplate, weaponData.fComplate);
+			ComplateText.text = string.Format("{0:F1} / {1}", _fComplate, weaponData.fComplate);
 
 		else
-			ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fComplate);
+			ComplateText.text = string.Format("{0:F1} / {1}", _fComplate, weaponData.fComplate);
     }
 
 	public void GetBossWeapon(Sprite _sprite, float _fMaxBossComplete ,float _fComplate,

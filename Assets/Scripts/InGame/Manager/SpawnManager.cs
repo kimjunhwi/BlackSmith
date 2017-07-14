@@ -293,7 +293,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 				nCount++;
 		}
 
-		return (nCount > m_nMaxBatchArbaitAmount) ? (int)E_CHECK.E_FAIL : nCount;
+		return (nCount >= m_nMaxBatchArbaitAmount) ? (int)E_CHECK.E_FAIL : nCount;
     }
 
     //아르바이트 추가

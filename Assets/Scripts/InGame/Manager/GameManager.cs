@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using LitJson;
 using System.IO;
 using System.Text;
+using ReadOnlys;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -62,6 +63,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     public CGameEnhanceData[] cThreeGradeEnhance = null;          //3등급 강화 데이터 모음
 
     public CGameEnhanceData[] cFourGradeEnhance = null;          //4등급 강화 데이터 모음
+
+	public CGameArbaitGrade[] cArbaitCgrade = null;				//C등급 아르바이트
+	public CGameArbaitGrade[] cArbaitBgrade = null;				//B등급 아르바이트
+	public CGameArbaitGrade[] cArbaitAgrade = null;				//S등급 아르바이트
+	public CGameArbaitGrade[] cArbaitSgrade = null;				//A등급 아르바이트
 
 	public List<int> cQuestSaveIndex = new List<int>();			//남아 있는 퀘스트 저장 
 	
@@ -142,6 +148,14 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         Load_TableInfo_ThreeGradeEnhance();
 
         Load_TableInfo_FourGradeEnhance();
+
+		Load_TableInfo_CgradeEnhance ();
+
+		Load_TableInfo_BgradeEnhance();
+
+		Load_TableInfo_AgradeEnhance();
+
+		Load_TableInfo_SgradeEnhance();
 
 #if UNITY_EDITOR
 
@@ -904,6 +918,146 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         cFourGradeEnhance = kInfo;
     }
 
+	void Load_TableInfo_CgradeEnhance()
+	{
+		if (cArbaitCgrade.Length != 0) return;
+
+		string txtFilePath = "CgradeArbait";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new CGameArbaitGrade();
+
+			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
+			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
+			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
+			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
+			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
+			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
+			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
+		}
+
+		cArbaitCgrade = kInfo;
+	}
+
+	void Load_TableInfo_BgradeEnhance()
+	{
+		if (cArbaitBgrade.Length != 0) return;
+
+		string txtFilePath = "BgradeArbait";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new CGameArbaitGrade();
+
+			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
+			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
+			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
+			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
+			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
+			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
+			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
+		}
+
+		cArbaitBgrade = kInfo;
+	}
+
+	void Load_TableInfo_AgradeEnhance()
+	{
+		if (cArbaitAgrade.Length != 0) return;
+
+		string txtFilePath = "AgradeArbait";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new CGameArbaitGrade();
+
+			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
+			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
+			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
+			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
+			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
+			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
+			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
+		}
+
+		cArbaitAgrade = kInfo;
+	}
+
+	void Load_TableInfo_SgradeEnhance()
+	{
+		if (cArbaitSgrade.Length != 0) return;
+
+		string txtFilePath = "SgradeArbait";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new CGameArbaitGrade();
+
+			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
+			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
+			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
+			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
+			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
+			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
+			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
+		}
+
+		cArbaitSgrade = kInfo;
+	}
+
 	#endregion
 
 	#region SplitText
@@ -984,6 +1138,19 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			Debug.Log ("Range Error");
 			return null;
 
+		}
+	}
+
+	public CGameArbaitGrade[] GetArbaitGradeEnhanceData(int _nGradeIndex)
+	{
+		switch (_nGradeIndex) {
+
+		case (int)E_ArbaitGrade.E_Cgrade: return cArbaitCgrade;
+		case (int)E_ArbaitGrade.E_Bgrade: return cArbaitBgrade;
+		case (int)E_ArbaitGrade.E_Agrade: return cArbaitAgrade;
+		case (int)E_ArbaitGrade.E_Sgrade: return cArbaitSgrade;
+		
+		default:	Debug.Log ("Range Error"); return null;
 		}
 	}
 
@@ -1264,6 +1431,18 @@ public class CGameWeaponInfo
 		fGold = weaponData.fGold;
 		WeaponSprite = weaponData.WeaponSprite;
 	}
+}
+
+[System.Serializable]
+public class CGameArbaitGrade
+{
+	public int nNextLevel;
+	public int nPercentPlusRepair;
+	public int nPercentPlusAccuracy;
+	public int nPercentPlusCritical;
+	public int nPercentPlusSkill;
+	public int nGoldCost;
+	public int nHonorCost;
 }
 
 [System.Serializable]

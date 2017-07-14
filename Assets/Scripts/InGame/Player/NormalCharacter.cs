@@ -290,6 +290,7 @@ public class NormalCharacter : Character {
 				return;
 			}
 		}
+
 		SpeechSelect ((int)E_SPEECH.E_NONE);
 	}
 

@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ArbaitBatch : MonoBehaviour {
 
-	protected ArbaitData m_CharacterDefaultData;
 	public ArbaitData m_CharacterChangeData;
 
 	protected Player playerData;
@@ -163,12 +162,9 @@ public class ArbaitBatch : MonoBehaviour {
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
 	public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
     {
-
 		nBatchIndex = _nIndex;
 
-		m_CharacterDefaultData = _data;
-
-		m_CharacterChangeData = new ArbaitData (_data);
+		m_CharacterChangeData = _data;
 
         ArbaitPanelObject = _obj;
 
@@ -245,6 +241,9 @@ public class ArbaitBatch : MonoBehaviour {
 
         Debug.Log("Remove");
 
+		if (!m_bIsWaterAttackSpeed)
+			yield break;
+
         m_bIsWaterAttackSpeed = false;
         m_CharacterChangeData.fAttackSpeed += m_fWaterAttackSpeedValue;
     }
@@ -268,6 +267,8 @@ public class ArbaitBatch : MonoBehaviour {
 
         m_CharacterChangeData.fRepairPower += m_fWaterRepairPowerValue;
 
+		Debug.Log ("RepairPower" + m_CharacterChangeData.fRepairPower);
+
         while (true)
         {
             yield return null;
@@ -277,6 +278,9 @@ public class ArbaitBatch : MonoBehaviour {
             if (m_fWaterRepairPowerPlusTime > _fTime)
                 break;
         }
+
+		if (!m_bIsWaterRepairPower)
+			yield break;
 
         m_bIsWaterRepairPower = false;
         m_CharacterChangeData.fRepairPower -= m_fWaterRepairPowerValue;
@@ -310,6 +314,9 @@ public class ArbaitBatch : MonoBehaviour {
             if (m_fWaterCriticalPlusTime > _fTime)
                 break;
         }
+
+		if (!m_bIsWaterCritical)
+			yield break;
 
         m_bIsWaterCritical = false;
         m_CharacterChangeData.fCritical += m_fWaterCriticalValue;
@@ -408,6 +415,9 @@ public class ArbaitBatch : MonoBehaviour {
             if (m_fSmithCriticalAttackSpeedPlusTime > _fTime)
                 break;
         }
+
+		if (!m_bIsSmithCriticalAttackSpeed)
+			yield break;
 
         m_bIsSmithCriticalAttackSpeed = false;
         m_CharacterChangeData.fAttackSpeed += m_fSmithCriticalAttackSpeedValue;

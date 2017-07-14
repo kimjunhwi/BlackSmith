@@ -17,9 +17,14 @@ public class ArbaitCharacter : MonoBehaviour {
 
     protected Sprite m_NoneImage;
     protected Sprite m_CharacterImage;
+
+	public Sprite m_GoldSprite;
+	public Sprite m_HonorSprite;
     
     protected Image m_CharacterImageObject;
-    protected ArbaitData m_CharacterData;
+    
+	protected ArbaitData m_CharacterData;
+	protected CGameArbaitGrade[] ArbaitEnhanceData; 
 
 
     private Toggle m_SettingToggle;
@@ -28,7 +33,16 @@ public class ArbaitCharacter : MonoBehaviour {
     private GameObject m_SettingPanel;
     private SpawnManager spawnManager;
 
+	public GameObject TextPanel;
 
+	public Text LevelText;
+	public Text NameText;
+	public Text SkillExplainText;
+	public Text RepairPowerText;
+	public Text AttackSpeedText;
+	public Text CriticalText;
+	public Text AccuracyText;
+	public Text GoldText;
 
     public virtual void Upgrade(){}
 
@@ -41,6 +55,16 @@ public class ArbaitCharacter : MonoBehaviour {
 
 		m_BuyButtonEvent.onClick.AddListener (BuyCharacter);
         
+		TextPanel = transform.FindChild ("TextPanel").gameObject;
+
+		LevelText = TextPanel.transform.FindChild ("LevelText").GetComponent<Text>();
+		NameText = TextPanel.transform.FindChild ("NameText").GetComponent<Text>();
+		SkillExplainText = TextPanel.transform.FindChild ("SkillExplain").GetComponent<Text>();
+		RepairPowerText = TextPanel.transform.FindChild ("RepairPower").GetComponent<Text>();
+		AttackSpeedText = TextPanel.transform.FindChild ("AttackSpeed").GetComponent<Text>();
+		CriticalText = TextPanel.transform.FindChild ("Critical").GetComponent<Text>();
+		AccuracyText = TextPanel.transform.FindChild ("Accuracy").GetComponent<Text>();
+
 		m_SettingPanel = transform.FindChild("SettingPanel").gameObject;
 
 		spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
@@ -51,9 +75,12 @@ public class ArbaitCharacter : MonoBehaviour {
 
 		m_EnhanceButtonEvent = m_SettingPanel.transform.FindChild ("EnhanceButton").GetComponent<Button> ();
 
+		GoldText = m_EnhanceButtonEvent.transform.FindChild ("CostText").GetComponent<Text>();
+
 		m_SettingToggle.onValueChanged.AddListener (OnBatchToggle);
 
 		m_EnhanceButtonEvent.onClick.AddListener (EnhanceEvent);
+
 	}
 
 	public void SetUp(int _nIndex,Sprite _sprite)
@@ -65,6 +92,8 @@ public class ArbaitCharacter : MonoBehaviour {
 		m_CharacterData = GameManager.Instance.GetArbaitData(nIndex);
 		
 		CheckBuyCharacter();
+
+		ArbaitEnhanceData = GameManager.Instance.GetArbaitGradeEnhanceData (m_CharacterData.grade);
 	}
 
     public void BuyCharacter()
@@ -87,6 +116,7 @@ public class ArbaitCharacter : MonoBehaviour {
         {
             m_BuyButton.SetActive(true);
             m_SettingPanel.SetActive(false);
+			TextPanel.SetActive (false);
             //m_CharacterImageObject.sprite = m_CharacterNoneSprite;
         }
 
@@ -95,6 +125,9 @@ public class ArbaitCharacter : MonoBehaviour {
         {
             m_BuyButton.SetActive(false);
             m_SettingPanel.SetActive(true);
+			TextPanel.SetActive (true);
+
+			ChangeArbaitText ();
             
             if (m_CharacterData.batch != -1)
                 m_SettingToggle.isOn = true;
@@ -113,11 +146,13 @@ public class ArbaitCharacter : MonoBehaviour {
         {
 			nGetBatchIndex = spawnManager.AddArbaitCheck();
 
-            if (nGetBatchIndex != (int)E_CHECK.E_FAIL)
-            {
-                spawnManager.AddArbait(m_CharacterData.index, nGetBatchIndex, gameObject, m_CharacterData);
-                m_bIsBatch = true;
-            }
+			if (nGetBatchIndex != (int)E_CHECK.E_FAIL) {
+				spawnManager.AddArbait (m_CharacterData.index, nGetBatchIndex, gameObject, m_CharacterData);
+				m_bIsBatch = true;
+			} else 
+			{
+				m_SettingToggle.isOn = false;
+			}
         }
         else if((bIsToggle == false) && m_bIsBatch)
         {
@@ -131,34 +166,42 @@ public class ArbaitCharacter : MonoBehaviour {
 
 	public void EnhanceEvent()
 	{
-		//string strExplain = cGameSmith [nLevel].nCost.ToString () +  "의 강화비용이 듭니다";;
+		//현재 골드가 비용보다 높을 경우 
+		if (ScoreManager.ScoreInstance.m_fGetGold >= ArbaitEnhanceData [m_CharacterData.level - 1].nGoldCost) 
+		{
+			ScoreManager.ScoreInstance.GoldPlus (-ArbaitEnhanceData[m_CharacterData.level - 1].nGoldCost);
 
-//		GameManager.Instance.Window_yesno ("강 화 창", strExplain, rt => { 
-//
-//			//Yes
-//			if (rt == "0") {
-//				if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith [nLevel].nCost) {
-//
-//					ScoreManager.ScoreInstance.GoldPlus (-cGameSmith [nLevel].nCost);
-//
-//					GameManager.Instance.Window_notice ("강화의 성공했습니다.", srt => { if (srt == "0") print("notice");  });
-//
-//					nLevel++;
-//
-//					cPlayer.SetDefaultAccuracy(cGameSmith [nLevel].fResultValue);
-//
-//					cPlayer.SetAccuracyRate(cPlayer.GetAccuracyRate() + cGameSmith [nLevel].fResultValue);
-//
-//					cPlayer.SetAccuracyRateLevel(nLevel);
-//
-//					EnhanceText.text = strEnhanceName + nLevel;
-//				}
-//				else
-//				{
-//					GameManager.Instance.Window_notice ("강화의 실패했습니다.", srt => { if (srt == "0") print("notice");  });
-//				}
-//			}
-//
-//		});
+			m_CharacterData.fRepairPower += GameManager.Instance.GetArbaitData(nIndex).fRepairPower *  (float)(0.01 * ArbaitEnhanceData [m_CharacterData.level - 1].nPercentPlusRepair); 
+			m_CharacterData.fCritical += GameManager.Instance.GetArbaitData(nIndex).fCritical *  (float)(0.01 * ArbaitEnhanceData [m_CharacterData.level - 1].nPercentPlusCritical); 
+			m_CharacterData.fAccuracyRate += GameManager.Instance.GetArbaitData(nIndex).fAccuracyRate *  (float)(0.01 * ArbaitEnhanceData [m_CharacterData.level - 1].nPercentPlusAccuracy); 
+
+			if (ArbaitEnhanceData [m_CharacterData.level - 1].nPercentPlusSkill != 0) 
+			{
+				
+			}
+
+			m_CharacterData.level++;
+
+			ChangeArbaitText ();
+		}
+	}
+
+	void ChangeArbaitText()
+	{
+		LevelText.text 			= m_CharacterData.level.ToString();
+		NameText.text 			= m_CharacterData.name;
+		SkillExplainText.text 	= m_CharacterData.strExplains;
+		RepairPowerText.text 	= m_CharacterData.fRepairPower.ToString("F1");
+		AttackSpeedText.text 	= m_CharacterData.fAttackSpeed.ToString("F1");
+		CriticalText.text 		= m_CharacterData.fCritical.ToString("F1");
+		AccuracyText.text 		= m_CharacterData.fAccuracyRate.ToString("F1");
+
+		if (ArbaitEnhanceData [m_CharacterData.level - 1].nHonorCost == 0) {
+			GoldText.text = ArbaitEnhanceData [m_CharacterData.level - 1].nGoldCost.ToString ();
+			m_EnhanceButtonEvent.GetComponent<Image> ().sprite = m_GoldSprite;
+		} else {
+			GoldText.text = ArbaitEnhanceData [m_CharacterData.level - 1].nHonorCost.ToString ();
+			m_EnhanceButtonEvent.GetComponent<Image> ().sprite = m_HonorSprite;
+		}
 	}
 }

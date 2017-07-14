@@ -36,6 +36,14 @@ namespace ReadOnlys
         E_WALK,
     }
 
+	public enum E_ArbaitGrade
+	{
+		E_Cgrade = 0,
+		E_Bgrade,
+		E_Agrade,
+		E_Sgrade,
+
+	}
 
 	public enum E_ArbaitState
     {

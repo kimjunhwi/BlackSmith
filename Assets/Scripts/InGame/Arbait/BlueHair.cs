@@ -149,6 +149,8 @@ public class BlueHair : ArbaitBatch {
 			//수리 시간이 되면 0으로 초기화 하고 수리해줌
 			if(fTime >= m_fRepairTime)
 			{
+				Debug.Log( m_CharacterChangeData.fRepairPower);
+
                 fTime = 0.0f;
 
 				animator.SetTrigger("bIsRepair");

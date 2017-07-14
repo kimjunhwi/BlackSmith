@@ -34,7 +34,7 @@ public class Cleo : ArbaitBatch {
 
 		CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
 	}
 
 	protected override void OnDisable()
