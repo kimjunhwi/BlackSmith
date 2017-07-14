@@ -166,11 +166,29 @@ public class NormalCharacter : Character {
 
 			if ((transform.position.x == m_VecMoveDistance.x)) {
 
+				if (m_bIsFirst == false) {
+					m_bIsFirst = true;
+
+					WeaponBackground.SetActive (true);
+				}
+
 				if (m_bIsArrival == false) 
 				{
+					
 					m_bIsArrival = true;
 
 					if (!m_bIsRepair) {
+
+						//만약 현재 수리중인 오브젝트가 없을 경우  
+						if (RepairShowObject.AfootObject == null) 
+						{
+							m_bIsRepair = true;
+
+							RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
+
+							SpeechSelect ((int)E_SPEECH.E_PLAYER);
+							yield break;
+						}
 
 						m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
 
@@ -184,11 +202,7 @@ public class NormalCharacter : Character {
 					}
 				}
 
-				if (m_bIsFirst == false) {
-					m_bIsFirst = true;
 
-					WeaponBackground.SetActive (true);
-				}
 			}
 			break;
 
@@ -333,7 +347,7 @@ public class NormalCharacter : Character {
 
 	void OnMouseDown()
 	{
-		if(Input.GetMouseButtonDown(0) && E_STATE == ENORMAL_STATE.WAIT)
+		if(Input.GetMouseButtonDown(0) && (E_STATE == ENORMAL_STATE.WAIT || WeaponBackground.activeSelf))
 		{
 			//onPointerDown 보다 먼저 호출
 			if (!EventSystem.current.IsPointerOverGameObject ()) {

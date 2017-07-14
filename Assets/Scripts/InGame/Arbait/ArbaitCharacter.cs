@@ -18,6 +18,8 @@ public class ArbaitCharacter : MonoBehaviour {
     protected Sprite m_NoneImage;
     protected Sprite m_CharacterImage;
 
+	public Sprite m_NoneActiveSprite;
+	public Sprite m_ActiveSprite;
 	public Sprite m_GoldSprite;
 	public Sprite m_HonorSprite;
     
@@ -117,6 +119,8 @@ public class ArbaitCharacter : MonoBehaviour {
             m_BuyButton.SetActive(true);
             m_SettingPanel.SetActive(false);
 			TextPanel.SetActive (false);
+
+			gameObject.GetComponent<Image> ().sprite = m_NoneActiveSprite;
             //m_CharacterImageObject.sprite = m_CharacterNoneSprite;
         }
 
@@ -126,6 +130,8 @@ public class ArbaitCharacter : MonoBehaviour {
             m_BuyButton.SetActive(false);
             m_SettingPanel.SetActive(true);
 			TextPanel.SetActive (true);
+
+			gameObject.GetComponent<Image> ().sprite = m_ActiveSprite;
 
 			ChangeArbaitText ();
             

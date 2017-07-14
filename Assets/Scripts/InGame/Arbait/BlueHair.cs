@@ -22,12 +22,10 @@ public class BlueHair : ArbaitBatch {
 
 	}
 
-	// Update is called once per frame
-	void Update () 
+	protected override void Update()
 	{
 		StartCoroutine(this.CharacterAction());
 	}
-
 
 	protected override void OnEnable()
 	{
@@ -155,8 +153,13 @@ public class BlueHair : ArbaitBatch {
 
 				animator.SetTrigger("bIsRepair");
 
-				m_fComplate += m_CharacterChangeData.fRepairPower;
 
+				//크리티컬 확률 
+				if (Random.Range (1, 100) <= Mathf.Round (m_CharacterChangeData.fAccuracyRate)) 
+					m_fComplate += m_CharacterChangeData.fRepairPower * 1.5f;
+				else 
+					m_fComplate += m_CharacterChangeData.fRepairPower;
+				
 				//완성 됐을 경우
 				if (m_fComplate >= weaponData.fComplate)
 				{
