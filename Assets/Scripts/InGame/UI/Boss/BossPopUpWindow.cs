@@ -68,7 +68,6 @@ public class BossPopUpWindow : MonoBehaviour
 		PopUpWindow_YesNo_YesButton.onClick.AddListener (() => bossCreator.BossCreateInit (nBossIndex));
 		PopUpWindow_Reward_YesButton.onClick.AddListener (PopUpWindowReward_Switch);
 
-
 		cam = Camera.main;
 		PopUpWindow_Yes.SetActive (false);
 		PopUpWindow_YesNo.SetActive (false);
@@ -138,11 +137,9 @@ public class BossPopUpWindow : MonoBehaviour
 	{
 		nBossIndex = _index;
 	}
-
-	public void GetBossInfo(BossCharacter _bossSasin)
+	public void GetBossInfo(BossCharacter _bossCharacter)
 	{
-		//if(_bossSasin
-		bossInfo = _bossSasin;
+		bossInfo = _bossCharacter;
 	}
 
 	public void SetBossRewardBackGroundImage(bool _isFailed)

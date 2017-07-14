@@ -21,6 +21,7 @@ public class BossCreator : MonoBehaviour
 	public BossPopUpWindow bossPopUpWindow;
 	public GameObject bossUIDisable;
 	public GameObject bossTimer_Obj;
+	public GameObject bossPanel;
 
 	private BossTimer bossTimer;
 
@@ -43,16 +44,9 @@ public class BossCreator : MonoBehaviour
 		uiManager = FindObjectOfType<UIManager> ();
 		bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
 		bossUIDisable.SetActive (false);
+
 	}
 
-	void Update()
-	{
-		if (bossBackGround.isBossBackGround == true)
-		{
-			StartBossCreate ();
-			bossBackGround.isBossBackGround = false;
-		}
-	}
 	private void OnEnable()
 	{
 		bossElementList[0].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossIceLeftCount, nBossMaxLeftCount);
@@ -69,19 +63,36 @@ public class BossCreator : MonoBehaviour
 		//캐릭들을 전부 되돌림 
 		SpawnManager.Instance.AllCharacterComplate ();
 		//배경화면 전환
-		bossBackGround.StartChangeBackGroundToBossBackGround ();
-		bossBackGround.isBossBackGround = true;
 		bossUIDisable.SetActive (true);
 		nBossIndex = _index;
+		bossBackGround.StartChangeBackGroundToBossBackGround ();
+	
+		//보스 선택 창
+		bossPanel.SetActive (false);
+	
+		StartCoroutine (StartBossCreate ());
 	}
-	public void StartBossCreate()
+	public IEnumerator StartBossCreate()
 	{
-		StartCoroutine(BossCreate(nBossIndex));
+
+		while (true) 
+		{
+			if (bossBackGround.isBossBackGround == true)
+			{
+				StartCoroutine (BossCreate (nBossIndex));
+				yield break;
+			}
+
+			yield return null;
+
+		}
+		yield return null;
 	}
 
 	public IEnumerator BossCreate(int _index) 
 	{
 		
+
 
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
@@ -137,12 +148,6 @@ public class BossCreator : MonoBehaviour
 
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 		{
-			//GameObject bossInstance = (GameObject)Instantiate (Resources.Load ("Prefabs/BossCharacterPrefab/BossMusic"));
-			//bossInstance.transform.SetParent (bossRespawnPoint.transform);
-			//bossInstance.transform.position = bossRespawnPoint.gameObject.transform.position;
-			//bossInstance.AddComponent<BossSasin> ();
-
-
 			BossMusic bossMusic = bossList[3].GetComponent<BossMusic> ();
 
 			bossMusic.nIndex = _index;
@@ -156,7 +161,7 @@ public class BossCreator : MonoBehaviour
 			bossList [3].SetActive (true);
 			nBossMusicLeftCount--;
 		}
-
+		bossPanel.SetActive (true);
 		uiManager.AllDisable ();
 
 		yield break;

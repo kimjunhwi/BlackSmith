@@ -500,7 +500,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	{
 		
 		list_FreeazeCharacter.Clear ();
-
+		nRandomIndex = -1;
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
 		{
 			if (m_BatchArbait [nIndex].activeSelf && array_ArbaitData[nIndex].E_STATE != E_ArbaitState.E_FREEZE) {

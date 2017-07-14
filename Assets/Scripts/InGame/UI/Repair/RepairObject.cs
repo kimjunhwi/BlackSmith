@@ -512,8 +512,9 @@ public class RepairObject : MonoBehaviour {
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			} 
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
-				fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
+			{
+				//fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 				fWeaponDownDamage = 40;
@@ -591,7 +592,7 @@ public class RepairObject : MonoBehaviour {
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
-				fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
+				//fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 				fWeaponDownDamage = 40;

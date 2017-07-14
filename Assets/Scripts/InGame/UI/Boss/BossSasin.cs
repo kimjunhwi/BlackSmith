@@ -54,11 +54,6 @@ public class BossSasin : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
-			animator.SetBool ("isAppear", false);
-			animator.SetBool ("isDisappear", false);
-			animator.SetBool ("isBackGroundChanged", false);	
-			animator.Play ("BossIdle");
-
 			if(isStandardPhaseFailed == false)
 				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 
@@ -68,9 +63,13 @@ public class BossSasin : BossCharacter
 			StopCoroutine (BossSKill_02 ());
 			StopCoroutine (BossDie ());
 			StopCoroutine (BossResult ());
+
+
 			Debug.Log ("Finish Boss");
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 			repairObj.SetFinishBoss ();									//수리 패널 초기화
+
+
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
 			isStandardPhaseFailed = false;
@@ -100,7 +99,6 @@ public class BossSasin : BossCharacter
 
 		while (true)
 		{
-			
 			//무기 이미지 추가
 			if (this.bossBackGround.isBossBackGround == true) 
 			{
@@ -263,12 +261,9 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		//bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
-
+		
 		while (true)
 		{
-
-
 			animator.SetBool ("isDisappear", true);
 
 			yield return new WaitForSeconds (0.1f);
@@ -300,8 +295,20 @@ public class BossSasin : BossCharacter
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
 			animator.Play ("BossIdle");
-			bossPopUpWindow.PopUpWindowReward_Switch();
-			bossPopUpWindow.GetBossInfo (this);
+			ActiveTimer ();
+			//실패가 아닐시
+			if (isFailed == false)
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch ();
+				bossPopUpWindow.GetBossInfo (this);
+			} 
+			//실패시
+			else 
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch ();
+			}
 			eCureentBossState = EBOSS_STATE.FINISH;
 			if (eCureentBossState == EBOSS_STATE.FINISH)
 				break;
@@ -318,23 +325,28 @@ public class BossSasin : BossCharacter
 		if (bossTimer_Obj.activeSelf == true)
 		{
 			bossTimer_Obj.SetActive (false);
+			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
+			bossTimer.StopTimer(0f,0f,(int)E_BOSSNAME.E_BOSSNAME_SASIN);
 		}
 		else 
 		{
 			bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
-			bossTimer.StartTimer (0f, 10f , (int)E_BOSSNAME.E_BOSSNAME_SASIN);
+			bossTimer.StartTimer (1f, 30f , (int)E_BOSSNAME.E_BOSSNAME_SASIN);
 			bossTimer.bossSasin = this;
 		}
 	}
 
 	public void FailState()
 	{
-		ActiveTimer ();
 		isFailed = true;
-		bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-		bossPopUpWindow.PopUpWindowReward_Switch ();
 
-		eCureentBossState = EBOSS_STATE.FINISH;
+		StopCoroutine (BossSkillStandard ());
+		StopCoroutine (BossSkill_01 ());
+		StopCoroutine (BossSKill_02 ());
+
+		StartCoroutine (BossDie ());
+
+		//eCureentBossState = EBOSS_STATE.FINISH;
 	}
 }

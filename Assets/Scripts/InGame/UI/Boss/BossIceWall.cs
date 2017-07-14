@@ -72,7 +72,6 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 				
 				SpawnManager.Instance.DeFreezeArbait (0);
 				bossIce.isIceWall_ArbaitOn [0] = false;
-
 				DeFreezeArbait ();
 			}
 		}
@@ -80,24 +79,40 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		if (getInfoGameObject.gameObject.name == "bossIceWall_Arbait2") 
 		{
 			nCountBreakWall--;
-			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
+			if (nCountBreakWall == 7) {
+				animator.SetBool ("isBreak01", true);
+			}
+
+			if (nCountBreakWall == 4) {
+				animator.SetBool ("isBreak02", true);
+			}
+
 			if (nCountBreakWall == 0) {
-				gameObject.SetActive (false);
-				SpawnManager.Instance.DeFreezeArbait (1);
-				bossIce.isIceWall_ArbaitOn [1] = false;
-				//StartCoroutine (DeFreezeArbait ());
+
+				SpawnManager.Instance.DeFreezeArbait (0);
+				bossIce.isIceWall_ArbaitOn [0] = false;
+
+				DeFreezeArbait ();
 			}
 		}
 
 		if (getInfoGameObject.gameObject.name == "bossIceWall_Arbait3") 
 		{
 			nCountBreakWall--;
-			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
+			if (nCountBreakWall == 7) {
+				animator.SetBool ("isBreak01", true);
+			}
+
+			if (nCountBreakWall == 4) {
+				animator.SetBool ("isBreak02", true);
+			}
+
 			if (nCountBreakWall == 0) {
-				gameObject.SetActive (false);
-				SpawnManager.Instance.DeFreezeArbait (2);
-				bossIce.isIceWall_ArbaitOn [2] = false;
-				//StartCoroutine (DeFreezeArbait ());
+
+				SpawnManager.Instance.DeFreezeArbait (0);
+				bossIce.isIceWall_ArbaitOn [0] = false;
+
+				DeFreezeArbait ();
 			}
 		}
 	}
