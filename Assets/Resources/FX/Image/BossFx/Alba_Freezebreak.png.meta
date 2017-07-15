@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: 949c5c37005cf4407bef6a8c4067d8dd
-timeCreated: 1499844355
+guid: 0181adecaadcd46e1a255816267de591
+timeCreated: 1500030500
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: Alba_Freezebreak_0
-    21300002: Alba_Freezebreak_1
-    21300004: Alba_Freezebreak_2
-    21300006: Alba_Freezebreak_3
-    21300008: Alba_Freezebreak_4
-    21300010: Alba_Freezebreak_5
+    21300000: Alba_Freezebreak4_0
+    21300002: Alba_Freezebreak4_1
+    21300004: Alba_Freezebreak4_2
+    21300006: Alba_Freezebreak4_3
+    21300008: Alba_Freezebreak4_4
+    21300010: Alba_Freezebreak4_5
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -48,7 +48,7 @@ TextureImporter:
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
   alphaUsage: 1
-  alphaIsTransparency: 1
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
@@ -72,11 +72,19 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Alba_Freezebreak_0
+      name: Alba_Freezebreak4_0
       rect:
         serializedVersion: 2
         x: 0
@@ -89,7 +97,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Alba_Freezebreak_1
+      name: Alba_Freezebreak4_1
       rect:
         serializedVersion: 2
         x: 512
@@ -102,10 +110,10 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Alba_Freezebreak_2
+      name: Alba_Freezebreak4_2
       rect:
         serializedVersion: 2
-        x: 1024
+        x: 1005
         y: 1536
         width: 512
         height: 512
@@ -115,7 +123,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Alba_Freezebreak_3
+      name: Alba_Freezebreak4_3
       rect:
         serializedVersion: 2
         x: 1536
@@ -128,11 +136,11 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Alba_Freezebreak_4
+      name: Alba_Freezebreak4_4
       rect:
         serializedVersion: 2
         x: 0
-        y: 1024
+        y: 1014
         width: 512
         height: 512
       alignment: 0
@@ -141,7 +149,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: Alba_Freezebreak_5
+      name: Alba_Freezebreak4_5
       rect:
         serializedVersion: 2
         x: 512

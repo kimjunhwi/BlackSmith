@@ -32,6 +32,8 @@ public class BossCharacter : Character
 	public BossPopUpWindow bossPopUpWindow;		//보스 보상창
 	public string sBossWeaponSprite;			//보스 무기 이미지
 	public GameObject bossUIDisable;			//UIBlockArea
+	public BossTalkPanel bossTalkPanel;			//보스 말풍선 
+
 
 	protected bool isFailed = false;								//실패시 띄우는 창에 대한 변수
 	protected bool isStandardPhaseFailed = false;					//만약 1페이즈도 못가고 죽을 때
