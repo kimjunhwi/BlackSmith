@@ -13,7 +13,7 @@ public class RepairObject : MonoBehaviour {
     public Text ComplateText;
 
     //진행중인 오브젝트
-    GameObject AfootObject;
+	public GameObject AfootObject;
 	GameObject WeaponObject;
 
 	float fWaterSlideTime = 0.0f;
@@ -326,7 +326,7 @@ public class RepairObject : MonoBehaviour {
 
 				ComplateSlider.value = Mathf.Lerp (ComplateSlider.value, fCurrentComplate, fComplateSlideTime);
 
-				ComplateText.text = string.Format("{0:F1} / {1}", ComplateSlider.value, ComplateSlider.maxValue);
+				ComplateText.text = string.Format("{0:####} / {1}", ComplateSlider.value, ComplateSlider.maxValue);
 			}
 		}
 	}
@@ -388,10 +388,10 @@ public class RepairObject : MonoBehaviour {
 		WeaponSprite.sprite = weaponData.WeaponSprite;
 
 		if(_fComplate != 0)
-			ComplateText.text = string.Format("{0:F1} / {1}", _fComplate, weaponData.fComplate);
+			ComplateText.text = string.Format("{0:####} / {1}", _fComplate, weaponData.fComplate);
 
 		else
-			ComplateText.text = string.Format("{0:F1} / {1}", _fComplate, weaponData.fComplate);
+			ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fComplate);
     }
 
 	public void GetBossWeapon(Sprite _sprite, float _fMaxBossComplete ,float _fComplate,
@@ -454,14 +454,15 @@ public class RepairObject : MonoBehaviour {
 
 		fComplateSlideTime = 0.0f;
 
-		fCurrentComplate = fCurrentComplate + player.GetRepairPower();
+
 
         //크리티컬 확률 
-        if( Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
-        {
-            SpawnManager.Instance.PlayerCritical();
-            fCurrentComplate *= 1.5f;
-        }
+		if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
+			SpawnManager.Instance.PlayerCritical ();
+			fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
+		} else {
+			fCurrentComplate = fCurrentComplate + player.GetRepairPower();
+		}
 
         fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
@@ -469,7 +470,7 @@ public class RepairObject : MonoBehaviour {
 			ComplateSlider.value = 0;
 			TemperatureSlider.value = 0;
 
-			ComplateText.text = string.Format("{0:####} / {1}", (int)ComplateSlider.value, 0);
+			ComplateText.text = string.Format("{0:#### / {1}", (int)ComplateSlider.value, 0);
 
 			return;
 		}
