@@ -125,9 +125,6 @@ public class RepairObject : MonoBehaviour {
 		bossWeaponObject = transform.FindChild ("BossWeaponButton").gameObject;
 		bossWaterObject = transform.FindChild ("BossWaterButton").gameObject;
 
-		bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
-			transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
-
         WeaponAlphaSpirte = WeaponObject.transform.GetChild(0).GetComponent<Image>();
         WeaponSprite = WeaponObject.transform.GetChild(1).GetComponent<Image>();
 
@@ -424,6 +421,8 @@ public class RepairObject : MonoBehaviour {
 		else
 			return;
 
+
+
 		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
 		{
 			isMoveWeapon = false;
@@ -670,45 +669,38 @@ public class RepairObject : MonoBehaviour {
 		if (bossCharacter == null)
 			return;
 
-		if (fCurrentWater >= fUseWater) {
-			
+		if (fCurrentWater >= fUseWater) 
+		{
 			//물 터치시 노트 한단계씩 떨어진다.
-
-		
-
-			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
-			{
-				bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
-					transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
+			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
+				
 				int nChildCount = bossNoteRectTransform.childCount;
 				Debug.Log ("CurCount = " + nChildCount);
+				for (int i = 0; i < nChildCount; i++) {
+					Transform noteGameObject = null;		
 
-
-				for(int i=0; i< nChildCount; i++)
-				{
-					Transform noteGameObject =null;		
-
-					if(bossNoteRectTransform.transform.GetChild (0).name == "Note")
-					{
+					if (bossNoteRectTransform.transform.GetChild (0).name == "Note") {
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
 						noteObj.CreateNote ();
-					}
-					else if(bossNoteRectTransform.transform.GetChild (0).name == "Note2")
-					{
+					} else if (bossNoteRectTransform.transform.GetChild (0).name == "Note2") {
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
 						note2Obj.CreateNote ();
-					}
-
-					else if(bossNoteRectTransform.transform.GetChild (0).name == "Note3")
-					{
+					} else if (bossNoteRectTransform.transform.GetChild (0).name == "Note3") {
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
-							note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
+						note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
 						note3Obj.EraseObj ();
 					}
 				}
 			}
+			//얼음 보스시. 물을 사용하면 화면을 얼게 한다
+			else if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE) {
+				BossIce bossIce = (BossIce)bossCharacter;
+				bossIce.ActiveIceWall ();
+			}
+
+
 			//useWater
 
 			Debug.Log ("TouchBossWater!!");
@@ -827,8 +819,7 @@ public class RepairObject : MonoBehaviour {
 
 		//물 터치시 노트 한단계씩 떨어진다.
 		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
-			bossNoteRectTransform = transform.FindChild ("BossEffectRange").transform.FindChild ("BossMusicNote").
-				transform.FindChild ("BossNoteCreateArea").GetComponent<RectTransform> ();
+			
 			int nChildCount = bossNoteRectTransform.childCount;
 
 			while (nChildCount != 0) {

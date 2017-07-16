@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossMusic : BossCharacter 
 {
-	private RectTransform bossNoteRespawnPoint;
+	public RectTransform bossNoteRespawnPoint;
 	private float fXPos;
 	private float fYPos;
 	private float fRandomXPos;
@@ -67,6 +67,11 @@ public class BossMusic : BossCharacter
 			if(isStandardPhaseFailed == false)
 				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 		
+
+			//말풍선 off
+			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+				bossTalkPanel.bossTalkPanel.SetActive (false);
+			
 			
 			StopCoroutine (repairObj.BossMusicWeaponMove ());
 			StopCoroutine (BossSkillStandard ());
@@ -77,30 +82,27 @@ public class BossMusic : BossCharacter
 			Debug.Log ("Finish Boss");
 
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-			repairObj.SetFinishBoss ();		//수리 패널 초기화
+			repairObj.SetFinishBoss ();									//수리 패널 초기화
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 
 			isStandardPhaseFailed = false;
+			isFailed = false;
 	
-
 			if (bossBackGround.isBossBackGround == true) 
-			{
 				SpawnManager.Instance.bIsBossCreate = false;
-				bossBackGround.isBossBackGround = false;
-				bossBackGround.isOriginBackGround = true;
-			}
+			
 
 			bossUIDisable.SetActive (false);	
 
 			SpawnManager.Instance.ReliveArbaitBossRepair ();
 
-			gameObject.SetActive (false);
+
 			while (bossNoteRespawnPoint.childCount != 0) 
 			{
 				GameObject go = bossNoteRespawnPoint.GetChild (0).gameObject;
 				noteObjectPool.ReturnObject(go);
 			}
-
+			gameObject.SetActive (false);
 		}		
 	}
 
@@ -143,6 +145,7 @@ public class BossMusic : BossCharacter
 	protected override IEnumerator BossSkillStandard ()
 	{
 		isStandardPhaseFailed = true;
+		bossTalkPanel.StartShowBossTalkWindow (2f, "Hey Yo! 내 무기 고쳐줘!");
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
@@ -183,7 +186,7 @@ public class BossMusic : BossCharacter
 	protected override IEnumerator BossSkill_01 ()
 	{
 		
-
+		bossTalkPanel.StartShowBossTalkWindow (2f, "허리 업 ~~~!");
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 
 		isStandardPhaseFailed = false;
@@ -224,7 +227,7 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
-		
+		bossTalkPanel.StartShowBossTalkWindow (2f, "Drop the Beat!!");
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
@@ -262,7 +265,7 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		//bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+		bossTalkPanel.StartShowBossTalkWindow (2f, "Bye~!");
 		while (true)
 		{
 			animator.SetBool ("isDisappear", true);

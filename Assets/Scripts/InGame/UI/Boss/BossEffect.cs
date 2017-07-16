@@ -6,7 +6,7 @@ public enum BOSSEFFECT
 {
 	BOSSEFFECT_SASINANGRY = 0,
 	BOSSEFFECT_RUCIOVOLUMEUP = 1,
-
+	BOSSEFFECT_ICEBLLIZARD = 2,
 }
 
 public class BossEffect : MonoBehaviour

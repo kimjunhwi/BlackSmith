@@ -54,8 +54,18 @@ public class BossIce : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
+
+			//Effect Off
 			if(isStandardPhaseFailed == false)
-				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
+
+			//RepairPanel IceWall Off
+			if (iceWall.activeSelf == true)
+				ActiveIceWall ();
+
+			//말풍선 off
+			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+				bossTalkPanel.bossTalkPanel.SetActive (false);
 
 
 			StopCoroutine (repairObj.BossMusicWeaponMove ());
@@ -97,7 +107,7 @@ public class BossIce : BossCharacter
 
 				animator.SetBool ("isBackGroundChanged", true);
 
-				if (animator.GetCurrentAnimatorStateInfo (0).IsName("RucioAppear")) 
+				if (animator.GetCurrentAnimatorStateInfo (0).IsName("Ice_Appear")) 
 				{
 					//yield return new WaitForSeconds (0.1f);
 					animator.SetBool ("isAppear", true);
@@ -125,6 +135,7 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		bossTalkPanel.StartShowBossTalkWindow (2f, "저... 무기좀... 고쳐주세요");
 		isStandardPhaseFailed = true;
 		while (true)
 		{
@@ -168,9 +179,9 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
+		bossTalkPanel.StartShowBossTalkWindow (2f, "흐으음~~~");
 
-
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
 		isStandardPhaseFailed = false;
 
 		while (true)
@@ -221,6 +232,7 @@ public class BossIce : BossCharacter
 	protected override IEnumerator BossSKill_02 ()
 	{
 
+		bossTalkPanel.StartShowBossTalkWindow (2f, "눈보라 ~~~!");
 		while (true)
 		{
 			//GetCompletion
@@ -264,6 +276,8 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
+
+		bossTalkPanel.StartShowBossTalkWindow (2f, "그럼 이만!");
 		while (true)
 		{
 
