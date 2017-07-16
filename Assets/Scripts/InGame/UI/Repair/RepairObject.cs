@@ -89,7 +89,7 @@ public class RepairObject : MonoBehaviour {
 	private Vector2 bossWeaponObjOriginSize;					//원래 수리 패널에 터치 인식 범위의 크기
 	private Vector2 bossWeaponSize;								//무기 이미지 만큼의 크기
 	private bool isMoveWeapon = false;
-
+	private float translateValue;
 
 	//WaterFx
 	public GameObject waterFxObj;
@@ -174,7 +174,6 @@ public class RepairObject : MonoBehaviour {
 	{
 		while (true)
 		{
-			
 			if (bossCharacter != null) 
 			{
 				//BossWepaonWater
@@ -187,7 +186,7 @@ public class RepairObject : MonoBehaviour {
 
 					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread")) {
 						yield return new WaitForSeconds (0.5f);
-						Debug.Log ("BossWeaponWaterFinish !!");
+						//Debug.Log ("BossWeaponWaterFinish !!");
 						waterFxObj.transform.SetAsFirstSibling ();
 						bossWaterCat_animator.SetBool ("isTouchWater", false);
 						CatWater_animator.SetBool ("isTouchWater", false);
@@ -204,11 +203,9 @@ public class RepairObject : MonoBehaviour {
 				if (isTouchWater == true)
 				{
 					waterFxObj.transform.SetAsLastSibling ();
-					Debug.Log("NormalWeaponWater !!");
-					//weaponWaterCat_animator.Play ("WaterCat_spread");
-					weaponWaterCat_animator.SetBool ("isTouchWater", true);
-					//yield return new WaitForSeconds(0.2f);
-					CatWater_animator.SetBool ("isTouchWater", true);
+					//Debug.Log("NormalWeaponWater !!");
+					weaponWaterCat_animator.SetBool ("isTouchWater", true);		//CatAnimation go
+					CatWater_animator.SetBool ("isTouchWater", true);			//WaterAnmation go
 
 					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread"))
 					{
@@ -249,48 +246,46 @@ public class RepairObject : MonoBehaviour {
 	{
 		bossWeaponRectTransform.sizeDelta = bossWeaponSize;
 		//무기 초기 스피드
-		fMoveSpeed = 5f;		
+		fMoveSpeed = 10f;		
 		
-		fRandomX = Random.Range (-2.0f, 2.0f);
-		fRandomY = Random.Range (-2.0f, 2.0f);
+		fRandomX = Random.Range (-0.5f, 0.5f);
+		fRandomY = Random.Range (-0.5f, 0.5f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
-
+		randomDir = randomDir.normalized;
+		translateValue = (randomDir.x + randomDir.y + randomDir.z) * fMoveSpeed;
 		while (isMoveWeapon == false)
 		{
-
-			
-			//Debug.Log ("MoveBOssWeapon");
 			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed);
-
 			//4면 충돌 확인
-			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 91f ) {
-
+			//방향은 달라도 속도는 일정해야한다
+			//Right Collision
+			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 120f)
+			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.left);
-				randomDir = new Vector3 (getReflectDir.x, Random.Range (-2.0f, 2.0f), getReflectDir.z);
-				//Debug.Log ("Right Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
-			}
-
-			if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth  - bossWeaponRectTransform.sizeDelta.x) -65f)) {
-				
+				randomDir = new Vector3 (getReflectDir.x, Random.Range (-0.5f, 0.5f), getReflectDir.z);
+				randomDir = randomDir.normalized;
+			} 
+			//left
+			else if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth - bossWeaponRectTransform.sizeDelta.x) - 55f)) 
+			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.right);
-				randomDir = new Vector3 (getReflectDir.x, Random.Range (-2.0f, 2.0f), getReflectDir.z);
-				//Debug.Log ("Left Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
-			}
-
-			if (bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 60f) {
-
+				randomDir = new Vector3 (getReflectDir.x, Random.Range (-0.5f, 0.5f), getReflectDir.z);
+				randomDir = randomDir.normalized;
+			} 
+			//top
+			else if(bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 50f)
+			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.down);
-				randomDir = new Vector3 (Random.Range(-1.0f,1.0f), getReflectDir.y, getReflectDir.z);
-				//Debug.Log ("Top Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
+				randomDir = new Vector3 (Random.Range (-0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
+				randomDir = randomDir.normalized;
 			}
-
-			if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 190f))) {
-		
+			//bottom
+			else if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 180f)))
+			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.up);
-				randomDir = new Vector3 (Random.Range(-1.0f,1.0f), getReflectDir.y, getReflectDir.z);
-
-				//Debug.Log ("Bottom Collision , Dir = " + randomDir.x + "," + randomDir.y + "," + randomDir.z );
+				randomDir = new Vector3 (Random.Range (-0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
+				randomDir = randomDir.normalized;
 			}
 		
 

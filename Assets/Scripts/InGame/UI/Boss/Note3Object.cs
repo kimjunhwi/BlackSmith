@@ -19,7 +19,7 @@ public class Note3Object : MonoBehaviour  ,IPointerDownHandler
 
 	private float fRandomX;
 	private float fRandomY;
-	private float fMoveSpeed = 200.0f;
+	private float fMoveSpeed = 10.0f;
 	private float fBossSpeed = 5.0f;
 	private float fDecreaseWeaponSpeedRate = 0.1f;
 
@@ -33,52 +33,52 @@ public class Note3Object : MonoBehaviour  ,IPointerDownHandler
 	private float noteSizeHeight = 64f;
 
 
-	Vector2 vec2;
 	void Start()
 	{
 		myRectTransform = GetComponent<RectTransform> ();
-		fRandomX = Random.Range (-2.0f, 2.0f);
-		fRandomY = Random.Range (-2.0f, 2.0f);
+		fRandomX = Random.Range (-1.0f, 1.0f);
+		fRandomY = Random.Range (-1.0f, 1.0f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
+		randomDir.Normalize ();
 	}
 
 
 
 	void Update()
 	{
-		
-		vec2 = new Vector2 (myRectTransform.anchoredPosition.x, myRectTransform.anchoredPosition.y);
-
-
-		//지속 시간
-		//if (fTime <= 0f)
-		//	note3ObjPull.ReturnObject (gameObject);
-
-		transform.Translate ( randomDir * fMoveSpeed * Time.deltaTime);
+		transform.Translate (randomDir * fMoveSpeed );
 
 		//4면 충돌 확인
-		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 8f ))
+		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 15f ))
 		{
 			//Debug.Log ("Right Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.left);
+			randomDir.Normalize ();
+			//fMoveSpeed = Random.Range (5f, 10f);
 		}
 
-		if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 18f )) 
+		else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 18f )) 
 		{
 			//Debug.Log ("Left Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.right);
+			randomDir.Normalize ();
+			//fMoveSpeed = Random.Range (5f, 10f);
 		}
 
-		if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 17f )) 
+		else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 5f )) 
 		{
 			//Debug.Log ("Top Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.down);
+			randomDir.Normalize ();
+			//fMoveSpeed = Random.Range (5f, 10f);
 		}
 
-		if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) -16f )) {
+		else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) -16f )) {
 			//Debug.Log ("Down Collision");
 			randomDir = Vector3.Reflect (randomDir, Vector3.up);
+			randomDir.Normalize ();
+			//fMoveSpeed = Random.Range (5f, 10f);
 		}
 
 	}

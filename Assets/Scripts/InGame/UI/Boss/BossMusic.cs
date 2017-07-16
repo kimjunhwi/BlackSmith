@@ -24,28 +24,22 @@ public class BossMusic : BossCharacter
 
 	private void Start()
 	{
-		
 		noteObjectPool = GameObject.Find ("NotePool").GetComponent<SimpleObjectPool> ();
 
-		bossNoteRespawnPoint = GameObject.Find ("BossNoteCreateArea").GetComponent<RectTransform>();
-		fXPos = bossNoteRespawnPoint.position.x + 60;
-		fYPos = bossNoteRespawnPoint.position.y + 60;
-
-		gameObject.SetActive (false);
+		//bossNoteRespawnPoint = GameObject.Find ("BossNoteCreateArea").GetComponent<RectTransform>();
+		fXPos = bossNoteRespawnPoint.position.x;
+		fYPos = bossNoteRespawnPoint.position.y;
 		animator = gameObject.GetComponent<Animator> ();
-
-
+		gameObject.SetActive (false);
 	}
 	private void OnEnable()
 	{
 		if (isFirstActive == false) {
 			isFirstActive = true;
 		} 
-		else {
-
-
+		else 
+		{
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
-
 			StartCoroutine (BossWait ());
 		}
 
@@ -64,45 +58,51 @@ public class BossMusic : BossCharacter
 	{
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
+			//BossFx off
 			if(isStandardPhaseFailed == false)
 				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 		
-
 			//말풍선 off
 			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 				bossTalkPanel.bossTalkPanel.SetActive (false);
 			
-			
+			//예외 코루틴 모두 종료
 			StopCoroutine (repairObj.BossMusicWeaponMove ());
 			StopCoroutine (BossSkillStandard ());
 			StopCoroutine (BossSkill_01 ());
 			StopCoroutine (BossSKill_02 ());
 			StopCoroutine (BossDie ());
 			StopCoroutine (BossResult ());
-			Debug.Log ("Finish Boss");
-
+		
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 			repairObj.SetFinishBoss ();									//수리 패널 초기화
-			eCureentBossState = EBOSS_STATE.CREATEBOSS;
+			eCureentBossState = EBOSS_STATE.CREATEBOSS;					//현재 보스 상태 초기화
 
+			//변수 초기화  
 			isStandardPhaseFailed = false;
 			isFailed = false;
-	
+
+			//배경이 원래대로 돌아가면 다시 손님들이 나오게 한다.
 			if (bossBackGround.isBossBackGround == true) 
 				SpawnManager.Instance.bIsBossCreate = false;
 			
-
+			//UiBlock Disable
 			bossUIDisable.SetActive (false);	
 
+			//아르바이트들 대기상태로 전환
 			SpawnManager.Instance.ReliveArbaitBossRepair ();
 
-
+			//노트 개수 초기화 
+			nNoteCount = 0;
+			//게임화면에 있는 모든 음악 노트 제거
 			while (bossNoteRespawnPoint.childCount != 0) 
 			{
 				GameObject go = bossNoteRespawnPoint.GetChild (0).gameObject;
 				noteObjectPool.ReturnObject(go);
 			}
 			gameObject.SetActive (false);
+			Debug.Log ("Finish Boss");
+
 		}		
 	}
 
@@ -148,8 +148,10 @@ public class BossMusic : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "Hey Yo! 내 무기 고쳐줘!");
 		while (true)
 		{
-			fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
+			//fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
+			//fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
+			fRandomXPos = bossWeapon.transform.position.x;
+			fRandomYPos = bossWeapon.transform.position.y;
 
 			fTime += Time.deltaTime;
 
@@ -193,9 +195,10 @@ public class BossMusic : BossCharacter
 		while (true)
 		{
 			
-			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
-
+			//fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
+			//fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
+			fRandomXPos = bossWeapon.transform.position.x;
+			fRandomYPos = bossWeapon.transform.position.y;
 			fTime += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();
@@ -230,9 +233,10 @@ public class BossMusic : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "Drop the Beat!!");
 		while (true)
 		{
-			fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
-
+			//fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
+			//fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
+			fRandomXPos = bossWeapon.transform.position.x;
+			fRandomYPos = bossWeapon.transform.position.y;
 			fTime += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();

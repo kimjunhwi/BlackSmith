@@ -23,6 +23,7 @@ public class BossCreator : MonoBehaviour
 	public GameObject bossTimer_Obj;
 	public GameObject bossPanel;
 	public BossTalkPanel bossTalkPanel;
+	public GameObject bossWeapon_Obj;
 
 	private BossTimer bossTimer;
 
@@ -118,6 +119,7 @@ public class BossCreator : MonoBehaviour
 			bossIce.bossTimer_Obj = bossTimer_Obj;
 			bossIce.bossUIDisable = bossUIDisable;
 			bossIce.bossTalkPanel = bossTalkPanel;
+			bossIce.bossWeapon = bossWeapon_Obj;
 			bossList [0].SetActive (true);
 			nBossSasinLeftCount--;
 		}
@@ -137,6 +139,7 @@ public class BossCreator : MonoBehaviour
 			bossSasin.bossTimer = bossTimer;
 			bossSasin.bossUIDisable = bossUIDisable;
 			bossSasin.bossTalkPanel = bossTalkPanel;
+			bossSasin.bossWeapon = bossWeapon_Obj;
 
 			bossList [1].SetActive (true);
 
@@ -163,6 +166,8 @@ public class BossCreator : MonoBehaviour
 			bossMusic.bossTimer_Obj = bossTimer_Obj;
 			bossMusic.bossUIDisable = bossUIDisable;
 			bossMusic.bossTalkPanel = bossTalkPanel;
+			bossMusic.bossWeapon = bossWeapon_Obj;
+
 			bossList [3].SetActive (true);
 			nBossMusicLeftCount--;
 		}

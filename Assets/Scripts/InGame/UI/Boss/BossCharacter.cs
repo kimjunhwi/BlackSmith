@@ -33,6 +33,7 @@ public class BossCharacter : Character
 	public string sBossWeaponSprite;			//보스 무기 이미지
 	public GameObject bossUIDisable;			//UIBlockArea
 	public BossTalkPanel bossTalkPanel;			//보스 말풍선 
+	public GameObject bossWeapon;				//보스 무기 obj
 
 
 	protected bool isFailed = false;								//실패시 띄우는 창에 대한 변수
