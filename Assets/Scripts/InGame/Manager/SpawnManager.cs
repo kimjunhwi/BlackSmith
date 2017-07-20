@@ -41,7 +41,9 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public bool bIsBossCreate = false;
 
-    private float m_fCreateTime;            //몬스터 생성시간에 도달하면 몬스터 생성되는시간
+    
+    private float m_fCreateTime = 4.5f;
+    private float m_fCreatePlusTime;            //몬스터 생성시간에 도달하면 몬스터 생성되는시간
     private float m_fLevelTime;             //다음 레벨 시간에 도달하게 하는 시간
 
     private float m_nNextLevelTime = 10;    //다음 레벨로 진행되는시간
@@ -49,6 +51,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	private int m_nCreateArbaitAmount;
 
     private CGameWeaponInfo cLevelData;         //Level에 따른 데이터를 받아오기 위함
+
+    private float fSpeed = 1.0f;
 
     private void Awake()
     {
@@ -58,18 +62,38 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
         //몬스터 풀을 만듬
         CreateMonsterPool();
+
+        //터치 오브젝트들을 초기화 밑 할당 해줌 (추후 텍스트 추가)
+        NormalRepairPool.Instance.Init();
+
+        CriticalRepairPool.Instance.Init();
     }
 
     private void Update()
     {
-        m_fCreateTime += Time.deltaTime;
+        m_fCreatePlusTime += Time.deltaTime;
         m_fLevelTime += Time.deltaTime;
 
-        if (m_fCreateTime >= 4.5f && list_Character.Count < m_nMaxPollAmount &&
-			bIsBossCreate == false)
+        //만들 수 있는 시간이 지났거나, 현재 손님이 없을경우,
+        //캐릭터 카운트가 최대미만일 경우, 보스가 활성화 중이지 않을경우 캐릭터를 생성한다.
+        if ((m_fCreatePlusTime >= m_fCreateTime || list_Character.Count ==0) && 
+            list_Character.Count < m_nMaxPollAmount && bIsBossCreate == false)
         {
             CreateCharacter();
         }
+    }
+
+
+    //피버 설정
+    //손님 생성 시간과, 손님 속도를 조절한다.
+    public void SettingFever(float _fCreateTime, float _fSpeed)
+    {
+        fSpeed = _fSpeed;
+        m_fCreateTime = _fCreateTime;
+        
+        for (int nIndex = 0; nIndex < m_CharicPool.Length; nIndex++)
+            m_CharicPool[nIndex].GetComponent<NormalCharacter>().fSpeed = _fSpeed;
+       
     }
 
 	public ArbaitBatch OverlapArbaitData(GameObject obj)
@@ -206,8 +230,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			if (nIndex >= list_Character.Count)
 				break;
 		}
-
-
 	}
 
     //이동
@@ -225,6 +247,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         list_Character.Add(_obj);
 
 		_obj.GetComponent<NormalCharacter>().Move(list_Character.Count-1);
+        _obj.GetComponent<NormalCharacter>().fSpeed = fSpeed;
     }
 
     private void CreateCharacter()
@@ -252,7 +275,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
       
 
         //몬스터가 생성됐을 경우에 m_fCreateTime을 0으로 해줌
-        m_fCreateTime = 0;
+        m_fCreatePlusTime = 0;
 
     }
 

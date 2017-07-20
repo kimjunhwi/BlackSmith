@@ -12,7 +12,7 @@
     "fMaxWaterPlus" : 30,
     "fCriticalChance" : 0,
     "fCriticalDamage" : 0,
-    "fBigSuccessed" : 0,
+    "fBigSuccessed" : 80,
     "fAccuracyRate" : 100,
     "nBlackSmithLevel" : 1,
     "nEnhanceRepaireLevel" : 0,

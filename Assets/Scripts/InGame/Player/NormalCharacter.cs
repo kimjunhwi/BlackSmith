@@ -268,7 +268,7 @@ public class NormalCharacter : Character {
 	{
 		fSpeed = _fSpeed;
 
-		m_bIsBack = true;
+        m_bIsBack = _bIsBack;
 	}
 
 	public void Move(int _nIndex)

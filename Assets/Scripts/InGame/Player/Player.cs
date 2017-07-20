@@ -52,6 +52,10 @@ public class Player
 	public float GetAccuracyRate() { return changeStats.fAccuracyRate; }
 	public void SetAccuracyRate(float _fValue) { changeStats.fAccuracyRate = _fValue; }
 
+    public float GetBigSuccessedPercent() { return changeStats.fBigSuccessed; }
+
+    public void SetBigSuccessedPercent(float _fValue) { changeStats.fBigSuccessed = _fValue; }
+
     public float GetCriticalChance() { return changeStats.fCriticalChance; }
 	public void SetCriticalChance(float _fValue) { changeStats.fCriticalChance = _fValue; }
 

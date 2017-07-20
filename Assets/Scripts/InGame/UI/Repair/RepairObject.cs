@@ -97,7 +97,20 @@ public class RepairObject : MonoBehaviour {
 	public Animator weaponWaterCat_animator;					//그냥무기일때의 고양이
 	public Animator CatWater_animator;							//물 이펙트
 
+    public PlayerController m_PlayerAnimationController; 
+
 	public bool isTouchWater;
+
+    // 07.20 피버
+    private bool m_bIsFever = false;
+    private const float m_fFeverTime = 10.0f;
+    private float m_fFeverPlusTime = 0.0f;
+
+    private const float m_fNormalCretaeTime = 4.5f;
+    private const float m_fFeverCreateTime = 1.5f;
+
+    private const float m_fNormalSpeed = 1.0f;
+    private const float m_fFeverSpeed = 3.0f;
 
 	void Start()
 	{
@@ -347,6 +360,16 @@ public class RepairObject : MonoBehaviour {
 		}
 	}
 
+
+    IEnumerator StartFever(float _fTime)
+    {
+        yield return new WaitForSeconds(_fTime);
+
+        m_bIsFever = false;
+
+        SpawnManager.Instance.SettingFever(m_fNormalCretaeTime, m_fNormalSpeed);
+    }
+
     public void GetWeapon(GameObject obj, CGameWeaponInfo data, float _fComplate, float _fTemperator)
     {
 		bossWeaponObject.SetActive (false);
@@ -444,24 +467,67 @@ public class RepairObject : MonoBehaviour {
     {
         if (weaponData == null)
 			return;
+
+
 		Debug.Log ("Touch");
 		Debug.Log (player.GetRepairPower());
 
 		fComplateSlideTime = 0.0f;
 
+        //피버일경우 크리 데미지로 완성도를 증가시킴
+        if (m_bIsFever)
+        {
+            fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
 
+            m_PlayerAnimationController.UserCriticalRepair();
 
+            //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
+            if (SpawnManager.Instance.CheckComplateWeapon(AfootObject, fCurrentComplate, fCurrentTemperature))
+            {
+                ComplateSlider.value = 0;
+                TemperatureSlider.value = 0;
+
+                ComplateText.text = string.Format("{0:#### / {1}", (int)ComplateSlider.value, 0);
+
+                return;
+            }
+
+            return;
+        }
+        
         //크리티컬 확률 
-		if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
-			SpawnManager.Instance.PlayerCritical ();
-			fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
-		} else {
-			fCurrentComplate = fCurrentComplate + player.GetRepairPower();
-		}
+        if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
+        {
+            Debug.Log("Cri!!!");
+            SpawnManager.Instance.PlayerCritical();
+            fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
+            m_PlayerAnimationController.UserCriticalRepair();
+        }
+        else
+        {
+            Debug.Log("Nor!!!!");
+            m_PlayerAnimationController.UserNormalRepair();
+            fCurrentComplate = fCurrentComplate + player.GetRepairPower();
 
+        } 
+        //공식에 따른 온도 증가
         fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
+        //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
 		if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate,fCurrentTemperature)) {
+
+            //만약 완성됐을때 빅 성공인지를 체크
+            if (Random.Range(0.0f, 100.0f) <= Mathf.Round(player.GetBigSuccessedPercent()) && m_bIsFever == false)
+            {
+                Debug.Log("Fever!!");
+
+                m_bIsFever = true;
+
+                SpawnManager.Instance.SettingFever(m_fFeverCreateTime, m_fFeverSpeed);
+
+                this.StartCoroutine(StartFever(m_fFeverTime));
+            }
+
 			ComplateSlider.value = 0;
 			TemperatureSlider.value = 0;
 

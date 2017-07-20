@@ -4,10 +4,34 @@ using System.Collections.Generic;
 // A very simple object pooling class
 public class SimpleObjectPool : MonoBehaviour
 {
+
+    // 미리 생성해서 넣어줄 이름
+    public string strPrefabName;
+
+    //미리 만들어 둘 사이즈(파티클 밑,개수가 정해져 있지 않는 것들
+    public int nPoolSize = 20;
+
     // the prefab that this object pool returns instances of
     public GameObject prefab;
     // collection of currently inactive instances of the prefab
     public Stack<GameObject> inactiveInstances = new Stack<GameObject>();
+
+    public void PreloadPool()
+    {
+        for(int nIndex = 0; nIndex <nPoolSize; nIndex++)
+        {
+            GameObject obj = Instantiate(prefab);
+
+            PooledObject pooledObject = obj.AddComponent<PooledObject>();
+            pooledObject.pool = this;
+
+            obj.transform.SetParent(transform, false);
+
+            obj.SetActive(false);
+
+            inactiveInstances.Push(obj);
+        }
+    }
 
     // Returns an instance of the prefab
     public GameObject GetObject()
