@@ -35,7 +35,7 @@ public class Nurse : ArbaitBatch {
 
         ApplySkill();
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
     }
 
     protected override void OnDisable()
@@ -136,7 +136,7 @@ public class Nurse : ArbaitBatch {
 					m_fComplate += m_CharacterChangeData.fRepairPower;
 
                     //완성 됐을 경우
-                    if (m_fComplate >= weaponData.fComplate)
+				if (m_fComplate >= weaponData.fMaxComplate)
                     {
                         ScoreManager.ScoreInstance.GoldPlus(100);
 

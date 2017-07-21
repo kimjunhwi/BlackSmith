@@ -94,8 +94,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     private string strWeaponPath;
 
-    int[] ArrGradeCount = new int[5];
-
     public Player player;
 
     public CGamePlayerData playerData;
@@ -108,7 +106,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public IEnumerator DataLoad()
     {
-		
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
 
 		string ArbaitFilePath = Path.Combine(Application.persistentDataPath, strArbaitPath);
@@ -405,13 +402,19 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
             kInfo[i - 1] = new CGameWeaponInfo();
             kInfo[i - 1].nIndex = int.Parse(Cells[0]);
-            kInfo[i - 1].nGrade = int.Parse(Cells[1]);
-            kInfo[i - 1].strName = Cells[2];
-            kInfo[i - 1].strPath = Cells[3];
-            kInfo[i - 1].fComplate = float.Parse(Cells[4]);
-            kInfo[i - 1].fPlusTemperature = float.Parse(Cells[5]);
-            kInfo[i - 1].fLimitedTime = float.Parse(Cells[6]);
-            kInfo[i - 1].fGold = float.Parse(Cells[7]);
+			kInfo[i - 1].strPath = Cells[1];
+			kInfo[i - 1].strName = Cells[2];
+			kInfo [i - 1].fMaxComplate = float.Parse (Cells [3]);
+			kInfo [i - 1].fMinusRepair= float.Parse(Cells[4]);
+			kInfo [i - 1].fPlusTemperature= float.Parse(Cells[5]);
+			kInfo [i - 1].fMinusTemperature= float.Parse(Cells[6]);
+			kInfo [i - 1].fMinusUseWater= float.Parse(Cells[7]);
+			kInfo [i - 1].fMinusCritical= float.Parse(Cells[8]);
+			kInfo [i - 1].fMinusAccuracy= float.Parse(Cells[9]);
+            kInfo[i - 1].fGold = float.Parse(Cells[10]);
+			kInfo[i - 1].fHonor = float.Parse(Cells[11]);
+			kInfo[i - 1].fLimitedTime = float.Parse(Cells[12]);
+			kInfo[i - 1].nGrade = int.Parse(Cells[13]);
             kInfo[i - 1].WeaponSprite = ObjectCashing.Instance.LoadSpriteFromCache(kInfo[i - 1].strPath);
         }
 
@@ -1406,13 +1409,20 @@ public class ArbaitData
 public class CGameWeaponInfo
 {
     public int nIndex = 0;
-    public int nGrade = 0;
-    public string strName = string.Empty;
     public string strPath = string.Empty;
-    public float fComplate = 0.0f;
-    public float fPlusTemperature = 0.0f;
-    public float fLimitedTime = 0.0f;
+	public string strName = string.Empty;
+	public float fMaxComplate = 0;
+	public float fMinusRepair = 0;
+	public float fPlusTemperature = 0;
+	public float fMinusTemperature = 0;
+	public float fMinusUseWater = 0f;
+	public float fMinusCritical = 0f;
+	public float fMinusAccuracy = 0f;
+    
     public float fGold = 0.0f;
+	public float fHonor = 0.0f;
+	public float fLimitedTime = 0.0f;
+	public int nGrade = 0;
     public Sprite WeaponSprite = null;
 
 	public CGameWeaponInfo()
@@ -1422,13 +1432,19 @@ public class CGameWeaponInfo
 	public CGameWeaponInfo(CGameWeaponInfo weaponData)
 	{
 		nIndex = weaponData.nIndex;
-		nGrade = weaponData.nGrade;
 		strName = weaponData.strName;
 		strPath = weaponData.strPath;
-		fComplate = weaponData.fComplate;
+		fMaxComplate = weaponData.fMaxComplate;
+		fMinusRepair = weaponData.fMinusRepair;
 		fPlusTemperature = weaponData.fPlusTemperature;
-		fLimitedTime = weaponData.fLimitedTime;
+		fMinusTemperature = weaponData.fMinusTemperature;
+		fMinusUseWater = weaponData.fMinusUseWater;
+		fMinusCritical = weaponData.fMinusCritical;
+		fMinusAccuracy = weaponData.fMinusAccuracy;
 		fGold = weaponData.fGold;
+		fHonor = weaponData.fHonor;
+		fLimitedTime = weaponData.fLimitedTime;
+		nGrade = weaponData.nGrade;
 		WeaponSprite = weaponData.WeaponSprite;
 	}
 }

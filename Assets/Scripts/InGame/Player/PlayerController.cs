@@ -8,9 +8,15 @@ public class PlayerController : MonoBehaviour {
 
     public Transform particlePosition;
 
+	public GameObject BigSuccesdObject;
+	public BasicParticle BigSuccessed;
+
+
     void Start()
     {
         m_Animator = GetComponent<Animator>();
+
+		BigSuccesdObject.SetActive (false);
     }
 
 
@@ -25,6 +31,12 @@ public class PlayerController : MonoBehaviour {
         m_Animator.SetTrigger("bIsCriticalRepair");
 
     }
+
+	public void UserBigSuccessedRepair()
+	{
+		m_Animator.SetTrigger ("bIsSuccessedRepair");
+
+	}
 
     public void CreateNormalEffect()
     {
@@ -53,10 +65,13 @@ public class PlayerController : MonoBehaviour {
     }
 
 
-    public void UserBigSuccessed()
+	public void CreateBigSuccessedEffect()
     {
-        
+		BigSuccesdObject.SetActive (true);
 
+		BigSuccessed.Play ();
+
+		m_Animator.SetTrigger ("bIsSuccessedRepair");
     }
 
 }
