@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,6 @@ public enum E_BOSSNAME
 public class BossCreator : MonoBehaviour
 {
 	private UIManager uiManager;
-	private SpawnManager spawnManager;
 	public GameObject bossRespawnPoint;
 	public BossConsumeItemInfo bossConsumeItemInfo;
 	public BossBackGround bossBackGround;
@@ -42,7 +42,6 @@ public class BossCreator : MonoBehaviour
 
 	void Awake()
 	{
-		spawnManager = FindObjectOfType<SpawnManager> ();
 		uiManager = FindObjectOfType<UIManager> ();
 		bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
 		bossUIDisable.SetActive (false);
@@ -63,6 +62,9 @@ public class BossCreator : MonoBehaviour
 		//if (bossRespawnPoint.transform.childCount > 0)
 		//	return;
 		//캐릭들을 전부 되돌림 
+
+		SpawnManager.Instance.cameraShake.Shake (0.1f, 1.0f);
+
 		SpawnManager.Instance.AllCharacterComplate ();
 		//배경화면 전환
 		bossUIDisable.SetActive (true);

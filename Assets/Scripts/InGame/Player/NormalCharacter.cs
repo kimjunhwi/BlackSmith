@@ -172,37 +172,35 @@ public class NormalCharacter : Character {
 					WeaponBackground.SetActive (true);
 				}
 
-				if (m_bIsArrival == false) 
-				{
+				if (m_bIsRepair) {
+					m_bIsArrival = true;
+					yield break;
+				}
+				//만약 현재 수리중인 오브젝트가 없을 경우  
+				if (RepairShowObject.AfootObject == null) {
+					m_bIsRepair = true;
+					m_bIsArrival = true;
+
+					RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
+
+					SpeechSelect ((int)E_SPEECH.E_PLAYER);
+					yield break;
+				}
+
+				if (m_bIsArrival == false) {
 					
 					m_bIsArrival = true;
 
-					if (!m_bIsRepair) {
+					m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
 
-						//만약 현재 수리중인 오브젝트가 없을 경우  
-						if (RepairShowObject.AfootObject == null) 
-						{
-							m_bIsRepair = true;
+					if (m_nCheck != (int)E_CHECK.E_FAIL) {
+						m_bIsRepair = true;
 
-							RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
+						SpeechSelect (m_nCheck);
 
-							SpeechSelect ((int)E_SPEECH.E_PLAYER);
-							yield break;
-						}
-
-						m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
-
-						if (m_nCheck != (int)E_CHECK.E_FAIL) {
-							m_bIsRepair = true;
-
-							SpeechSelect (m_nCheck);
-
-							SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
-						}
+						SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
 					}
 				}
-
-
 			}
 			break;
 
@@ -227,6 +225,9 @@ public class NormalCharacter : Character {
 
 				RepairShowObject.CheckMyObject (gameObject);
 
+				if(RepairShowObject.AfootObject == null)
+					SpawnManager.Instance.AutoInputWeaponData ();
+
 				SpawnManager.Instance.DeleteObject(gameObject);
 
 				Complate (m_fComplate);
@@ -245,8 +246,6 @@ public class NormalCharacter : Character {
 
 			if (Vector3.Distance (transform.position, m_VecStartPos) < 0.5f) 
 			{
-				
-
 				gameObject.SetActive (false);
 			}
 			break;
@@ -374,7 +373,7 @@ public class NormalCharacter : Character {
 		m_fComplate = _fComplate;
 		m_fTemperator = _fTemperator;
 
-		fCurCompletY = m_fComplate / weaponData.fComplate;
+		fCurCompletY = m_fComplate / weaponData.fMaxComplate;
 
 		if (fCurCompletY >= 1.0f) {
 			m_bIsBack = true;
@@ -392,8 +391,8 @@ public class NormalCharacter : Character {
 	public override void Complate(float _fComplate = 0.0f)
 	{
 		//50%이상
-		if ((weaponData.fComplate * 0.5) < _fComplate) {
-			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fComplate);
+		if ((weaponData.fMaxComplate * 0.5) < _fComplate) {
+			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fMaxComplate);
 
 			ScoreManager.ScoreInstance.GoldPlus (fGold);
 		}
@@ -411,5 +410,15 @@ public class NormalCharacter : Character {
 		mySprite.sortingOrder = (int)E_SortingSprite.E_BACK;
 
 		WeaponBackground.SetActive(false);
+	}
+
+	public void RepairObjectInputWeapon()
+	{
+		m_bIsRepair = true;
+		m_bIsArrival = true;
+
+		RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
+
+		SpeechSelect ((int)E_SPEECH.E_PLAYER);
 	}
 }

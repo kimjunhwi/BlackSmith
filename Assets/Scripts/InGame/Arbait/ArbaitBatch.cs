@@ -188,7 +188,7 @@ public class ArbaitBatch : MonoBehaviour {
 
         m_fTemperator = _fTemperator;
 
-        m_fMaxComplate = _data.fComplate;
+		m_fMaxComplate = _data.fMaxComplate;
 
         E_STATE = E_ArbaitState.E_REPAIR;
     }
@@ -502,7 +502,7 @@ public class ArbaitBatch : MonoBehaviour {
 		m_fTemperator = 0.0f;
 
         //수리중인 무기가없을것이므로 무기를 찾아 넣어준다.
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
     }
 
     //현재 수리중인 무기를 되돌려준다.
@@ -527,7 +527,7 @@ public class ArbaitBatch : MonoBehaviour {
 		AfootOjbect = null;
 
         //AfootOjbect = _obj;
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex, nGrade);
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
     }
 
 	public void Init()

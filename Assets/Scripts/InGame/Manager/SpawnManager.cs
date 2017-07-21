@@ -54,6 +54,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     private float fSpeed = 1.0f;
 
+	public CameraShake cameraShake;
+
     private void Awake()
     {
         m_nMaxArbaitAmount = GameManager.Instance.ArbaitLength();
@@ -213,6 +215,21 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		return false;
 	}
 
+	public void AutoInputWeaponData()
+	{
+		if (list_Character.Count == 0)
+			return;
+
+		for (int nIndex = 0; nIndex < list_Character.Count; nIndex++) 
+		{
+			if (list_Character [nIndex].GetComponent<NormalCharacter> ().m_bIsRepair == false &&
+				list_Character [nIndex].GetComponent<NormalCharacter> ().E_STATE == Character.ENORMAL_STATE.WAIT) 
+			{
+				list_Character [nIndex].GetComponent<NormalCharacter> ().RepairObjectInputWeapon ();
+				break;
+			}
+		}
+	}
 
     //보스 소환시 호출 캐릭터를 이동속도를 3으로 한후 전부 되돌림
 	public void AllCharacterComplate()
@@ -350,8 +367,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			
 			if (m_BatchArbait [nIndex].activeSelf) {
 
-				if ((array_ArbaitData [nIndex].nGrade <= _nGrade)
-				     && (array_ArbaitData [nIndex].bIsRepair == false)) {
+				if ((array_ArbaitData [nIndex].bIsRepair == false)) {
 
 					if (array_ArbaitData [nIndex].nBatchIndex < nMinValue)
 						nMinValue = array_ArbaitData [nIndex].nBatchIndex;
@@ -381,7 +397,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     }
     ////////////////////////////////////////////////////////////////
 
-	public void InsertWeaponArbait(int _nIndex,int _nBatchIndex, int _nGrade)
+	public void InsertWeaponArbait(int _nIndex,int _nBatchIndex)
     {
 		NormalCharacter charData;
 
@@ -389,7 +405,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         {
 			charData = _obj.GetComponent<NormalCharacter>();
 
-			if (charData.weaponData.nGrade <= _nGrade && charData.m_bIsRepair == false && charData.E_STATE == Character.ENORMAL_STATE.WAIT)
+			if (charData.m_bIsRepair == false && charData.E_STATE == Character.ENORMAL_STATE.WAIT)
             {
                 charData.m_bIsRepair = true;
 
