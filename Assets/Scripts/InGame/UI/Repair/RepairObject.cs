@@ -39,7 +39,7 @@ public class RepairObject : MonoBehaviour {
 	public Image WeaponSprite;
     public Image WeaponAlphaSpirte;
 
-	public SpriteRenderer main_Touch_Sprite;
+	public Sprite main_Touch_Sprite;
 
     CGameWeaponInfo weaponData;
 
@@ -112,6 +112,7 @@ public class RepairObject : MonoBehaviour {
     private const float m_fNormalSpeed = 1.0f;
     private const float m_fFeverSpeed = 3.0f;
 
+	private float m_fMinusTemperature = 0.0f;
 	private const float m_fMinusDefault = 0.1f;
 	void Start()
 	{
