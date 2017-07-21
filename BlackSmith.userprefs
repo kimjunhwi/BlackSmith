@@ -1,18 +1,19 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossMusic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Repair/RepairObject.cs">
     <Files>
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIceWall.cs" Line="193" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIce.cs" Line="280" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIceWall.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIce.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="381" Column="15" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/NoteObject.cs" Line="114" Column="5" />
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="242" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/Note2Object.cs" Line="111" Column="5" />
-      <File FileName="Assets/Scripts/InGame/Player/Character.cs" Line="17" Column="2" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/Note3Object.cs" Line="103" Column="5" />
-      <File FileName="Assets/Scripts/InGame/UI/UIDisable.cs" Line="23" Column="39" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/NoteObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="825" Column="2" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/Note2Object.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Player/Character.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/Note3Object.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/UIDisable.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/UIManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/ArbaitBatch.cs" Line="539" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

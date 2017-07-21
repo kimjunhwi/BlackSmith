@@ -60,9 +60,9 @@
      <None Include="Assets\Resources\Data\AgradeArbait.txt" />
      <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
      <None Include="Assets\Resources\Data\ThreeGradeEnhance.txt" />
-     <None Include="Assets\Resources\Data\Weapon.txt" />
      <None Include="Assets\Resources\Data\BossWeapon.txt" />
      <None Include="Assets\Resources\Data\Character.txt" />
+     <None Include="Assets\Resources\Data\Weapon.txt" />
      <None Include="Assets\Resources\Data\OneGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\CriticalEnhance.txt" />

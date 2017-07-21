@@ -68,6 +68,7 @@
      <Compile Include="Assets\Scripts\InGame\Arbait\Knight.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Nurse.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
+     <Compile Include="Assets\Scripts\InGame\Camera\CameraShake.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\CharacterFactory.cs" />
      <Compile Include="Assets\Scripts\InGame\Factory\ICharacter.cs" />
@@ -86,6 +87,7 @@
      <Compile Include="Assets\Scripts\InGame\Manager\SimpleObjectPool.cs" />
      <Compile Include="Assets\Scripts\InGame\Manager\SpawnManager.cs" />
      <Compile Include="Assets\Scripts\InGame\Manager\UIManager.cs" />
+     <Compile Include="Assets\Scripts\InGame\Particle\BasicParticle.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairParticle.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairPool.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\NormalRepairParticle.cs" />
@@ -161,9 +163,9 @@
      <None Include="Assets\Resources\Data\AgradeArbait.txt" />
      <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
      <None Include="Assets\Resources\Data\ThreeGradeEnhance.txt" />
-     <None Include="Assets\Resources\Data\Weapon.txt" />
      <None Include="Assets\Resources\Data\BossWeapon.txt" />
      <None Include="Assets\Resources\Data\Character.txt" />
+     <None Include="Assets\Resources\Data\Weapon.txt" />
      <None Include="Assets\Resources\Data\OneGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\CriticalEnhance.txt" />

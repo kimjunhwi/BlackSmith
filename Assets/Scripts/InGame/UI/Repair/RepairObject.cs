@@ -39,7 +39,7 @@ public class RepairObject : MonoBehaviour {
 	public Image WeaponSprite;
     public Image WeaponAlphaSpirte;
 
-	public SpriteRenderer main_Touch_Sprite;
+	public Sprite main_Touch_Sprite;
 
     CGameWeaponInfo weaponData;
 
@@ -382,21 +382,21 @@ public class RepairObject : MonoBehaviour {
             weaponData = data;
         }
 
-        fMaxTemperature = weaponData.fComplate * 0.3f;
+        fMaxTemperature = weaponData.fMaxComplate * 0.3f;
         TemperatureSlider.maxValue = fMaxTemperature;
 
 		fCurrentComplate = _fComplate;
-        ComplateSlider.maxValue = weaponData.fComplate;
+        ComplateSlider.maxValue = weaponData.fMaxComplate;
 		ComplateSlider.value = fCurrentComplate;
 
         fCurrentTemperature = _fTemperator;
 		WeaponSprite.sprite = weaponData.WeaponSprite;
 
 		if(_fComplate != 0)
-			ComplateText.text = string.Format("{0:####} / {1}", _fComplate, weaponData.fComplate);
+			ComplateText.text = string.Format("{0:####} / {1}", _fComplate, weaponData.fMaxComplate);
 
 		else
-			ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fComplate);
+			ComplateText.text = string.Format("{0} / {1}", _fComplate, weaponData.fMaxComplate);
     }
 
 	public void GetBossWeapon(Sprite _sprite, float _fMaxBossComplete ,float _fComplate,
@@ -493,7 +493,7 @@ public class RepairObject : MonoBehaviour {
 
         } 
         //공식에 따른 온도 증가
-        fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
+        fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
         //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
 		if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate,fCurrentTemperature)) {
@@ -521,7 +521,7 @@ public class RepairObject : MonoBehaviour {
         if(fCurrentTemperature >= fMaxTemperature)
         {
 			fCurrentTemperature = 0.0f;
-			fCurrentComplate = (fCurrentComplate) - weaponData.fComplate * 0.3f;
+			fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
 
 			if (fCurrentComplate > 0)
 				SpawnManager.Instance.CheckComplateWeapon (AfootObject,fCurrentComplate,fCurrentTemperature);
@@ -671,7 +671,7 @@ public class RepairObject : MonoBehaviour {
 		//온도
 		if(fCurrentTemperature >= fMaxTemperature)
 		{
-			//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fComplate);
+			//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
 			//무기 실패취급으로 리턴
 			fCurrentComplate -= (fMaxTemperature * 0.3f);  
 			fCurrentTemperature = 0;
@@ -717,8 +717,8 @@ public class RepairObject : MonoBehaviour {
 
 			fCurrentTemperature -= fMinusTemperature;
 
-			if (fCurrentComplate > weaponData.fComplate)
-				fCurrentComplate = weaponData.fComplate;
+			if (fCurrentComplate > weaponData.fMaxComplate)
+				fCurrentComplate = weaponData.fMaxComplate;
 
 			if (fCurrentWater < 0)
 				fCurrentWater = 0;
@@ -728,8 +728,8 @@ public class RepairObject : MonoBehaviour {
 
 			TemperatureSlider.value = fCurrentTemperature;
 
-			if(fCurrentComplate >= weaponData.fComplate)
-                SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fComplate);
+			if(fCurrentComplate >= weaponData.fMaxComplate)
+                SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
         }
     }
 
@@ -829,7 +829,7 @@ public class RepairObject : MonoBehaviour {
         weaponData = null;
         AfootObject = null;
 
-        WeaponSprite.sprite = null;
+        WeaponSprite.sprite =  main_Touch_Sprite;
         //WeaponAlphaSpirte.sprite = null;
         
 		fCurrentComplate = 0;
@@ -888,7 +888,7 @@ public class RepairObject : MonoBehaviour {
 		WaterSlider.maxValue = fMaxWater;
 		WaterSlider.value = 0;
 
-		WeaponSprite.sprite = null;
+		WeaponSprite.sprite =  main_Touch_Sprite;
 		ComplateText.text = string.Format ("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 
 
