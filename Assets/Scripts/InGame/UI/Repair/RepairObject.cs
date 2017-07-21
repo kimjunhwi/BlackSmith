@@ -112,6 +112,8 @@ public class RepairObject : MonoBehaviour {
     private const float m_fNormalSpeed = 1.0f;
     private const float m_fFeverSpeed = 3.0f;
 
+	private float m_fMinusTemperature = 0.0f;
+	private const float m_fMinusDefault = 0.1f;
 	void Start()
 	{
 		isTouchWater = false;
@@ -305,6 +307,47 @@ public class RepairObject : MonoBehaviour {
 				fTemperatureSlideTime += Time.deltaTime;
 
 				TemperatureSlider.value = Mathf.Lerp (TemperatureSlider.value, fCurrentTemperature, fTemperatureSlideTime);
+
+				if(TemperatureSlider.value >= fMaxTemperature)
+				{
+					fCurrentTemperature = 0.0f;
+					TemperatureSlider.value = fCurrentTemperature;
+
+					if (fBossMaxComplete == 0.0f)
+						fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
+					else {
+						
+						//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
+						//무기 실패취급으로 리턴
+						fCurrentComplate -= (fMaxTemperature * 0.3f);  
+
+						if (fCurrentComplate <= 0) {
+							SpawnManager.Instance.bIsBossCreate = false;
+							continue;
+						}
+					}
+
+					if (fCurrentComplate > 0)
+						SpawnManager.Instance.CheckComplateWeapon (AfootObject,fCurrentComplate,fCurrentTemperature);
+
+					else
+						SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
+				}
+			}
+
+			if (TemperatureSlider.value != 0) 
+			{
+				m_fMinusTemperature += Time.deltaTime;
+
+				if (m_fMinusTemperature >= m_fMinusDefault) 
+				{
+					m_fMinusTemperature = 0.0f;
+
+					fCurrentTemperature -= fMaxTemperature * 0.02f;
+
+					if (fCurrentTemperature < 0)
+						fCurrentTemperature = 0;
+				}
 			}
 
 			if (fMaxWater > fCurrentWater) {
@@ -464,16 +507,13 @@ public class RepairObject : MonoBehaviour {
             m_PlayerAnimationController.UserCriticalRepair();
 
             //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
-            if (SpawnManager.Instance.CheckComplateWeapon(AfootObject, fCurrentComplate, fCurrentTemperature))
-            {
-                ComplateSlider.value = 0;
-                TemperatureSlider.value = 0;
+			if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate, fCurrentTemperature)) {
+				ComplateSlider.value = 0;
+				TemperatureSlider.value = 0;
 
-                ComplateText.text = string.Format("{0:#### / {1}", (int)ComplateSlider.value, 0);
-
-                return;
-            }
-
+				ComplateText.text = string.Format ("{0:#### / {1}", (int)ComplateSlider.value, 0);
+				return;
+			}
             return;
         }
         
@@ -490,10 +530,16 @@ public class RepairObject : MonoBehaviour {
             Debug.Log("Nor!!!!");
             m_PlayerAnimationController.UserNormalRepair();
             fCurrentComplate = fCurrentComplate + player.GetRepairPower();
-
         } 
         //공식에 따른 온도 증가
+<<<<<<< HEAD
         fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
+=======
+        //fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
+
+		fCurrentTemperature += fMaxTemperature * 0.08f;
+
+>>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
 
         //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
 		if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate,fCurrentTemperature)) {
@@ -504,6 +550,10 @@ public class RepairObject : MonoBehaviour {
                 Debug.Log("Fever!!");
 
                 m_bIsFever = true;
+
+				SpawnManager.Instance.cameraShake.Shake (0.05f, 0.5f);
+
+				m_PlayerAnimationController.UserBigSuccessedRepair ();
 
                 SpawnManager.Instance.SettingFever(m_fFeverCreateTime, m_fFeverSpeed);
 
@@ -518,6 +568,7 @@ public class RepairObject : MonoBehaviour {
 			return;
 		}
 
+<<<<<<< HEAD
         if(fCurrentTemperature >= fMaxTemperature)
         {
 			fCurrentTemperature = 0.0f;
@@ -529,6 +580,9 @@ public class RepairObject : MonoBehaviour {
 			else
 				SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
         }
+=======
+        
+>>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
     }
 
 	public void TouchBossWeapon()
@@ -549,21 +603,46 @@ public class RepairObject : MonoBehaviour {
 		{ 
 			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
 				Debug.Log ("IcePhase00");
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-			}
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
 
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-			} 
+				//크리티컬 확률 감소o
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
+					Debug.Log ("Cri!!!");
+					SpawnManager.Instance.PlayerCritical ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 1.5f;
+					m_PlayerAnimationController.UserCriticalRepair ();
+				} else {
+					Debug.Log ("Nor!!!!");
+					m_PlayerAnimationController.UserNormalRepair ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+				}
+
+				fCurrentTemperature += fMaxTemperature * 0.08f;
+
+				return;
+			} else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
+
+			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
 			{
-				//fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-				fWeaponDownDamage = 40;
+				
 			}
+
+			//크리티컬 확률 
+			if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
+			{
+				Debug.Log("Cri!!!");
+				SpawnManager.Instance.PlayerCritical();
+				fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
+				m_PlayerAnimationController.UserCriticalRepair();
+			}
+			else
+			{
+				Debug.Log("Nor!!!!");
+				m_PlayerAnimationController.UserNormalRepair();
+				fCurrentComplate = fCurrentComplate + player.GetRepairPower();
+			}
+
+			fCurrentTemperature += fMaxTemperature * 0.08f;
 		}
 
 		//Sasin
@@ -571,16 +650,13 @@ public class RepairObject : MonoBehaviour {
 		{ 
 			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
 				Debug.Log ("SasinPhase00");
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-
 			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
 				Debug.Log ("SasinPhase01");
 				if (nRandom <= nChancePercent) {
 					Debug.Log ("SasinPhase01");
-					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+
+				
 				} else {
 					Debug.Log ("Miss");
 
@@ -602,10 +678,24 @@ public class RepairObject : MonoBehaviour {
 
 				if (nRandom <= nChancePercent) {
 					//Debug.Log ("SasinPhase02");
-					fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
-					fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-					fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-					fWeaponDownDamage = 40;
+					//크리티컬 확률 
+					if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
+					{
+						Debug.Log("Cri!!!");
+						SpawnManager.Instance.PlayerCritical();
+						fCurrentComplate = fCurrentComplate + (player.GetRepairPower() * 1.5f) * 0.7f;
+						m_PlayerAnimationController.UserCriticalRepair();
+					}
+					else
+					{
+						Debug.Log("Nor!!!!");
+						m_PlayerAnimationController.UserNormalRepair();
+						fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 0.7f;
+					}
+
+					fCurrentTemperature += fMaxTemperature * 0.08f;
+
+					return;
 				} else {
 					Debug.Log ("Miss");
 					textObj = textObjectPool.GetObject ();
@@ -618,53 +708,40 @@ public class RepairObject : MonoBehaviour {
 					bossMissText.textObjPool = textObjectPool;
 					bossMissText.leftSecond = 2.0f;
 					bossMissText.parentTransform = textRectTrasnform;
+					return;
 				}
 			}
-		}
 
-		//Fire
-		if (bossCharacter.nIndex == 2 ) 
-		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
-				Debug.Log ("FirePhase00");
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-			}
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
-
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-			} 
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
+			if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
 			{
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-
+				Debug.Log("Cri!!!");
+				SpawnManager.Instance.PlayerCritical();
+				fCurrentComplate = fCurrentComplate + (player.GetRepairPower() * 1.5f) * 0.7f;
+				m_PlayerAnimationController.UserCriticalRepair();
 			}
+			else
+			{
+				Debug.Log("Nor!!!!");
+				m_PlayerAnimationController.UserNormalRepair();
+				fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 0.7f;
+			}
+
+			fCurrentTemperature += fMaxTemperature * 0.08f;
 		}
 
 		//MusicMan
 		if (bossCharacter.nIndex == 3 ) 
 		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
-			{
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
 				Debug.Log ("MusicPhase00");
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
 
-				isMoveWeapon = false;
-				StartCoroutine (BossMusicWeaponMove ());
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
-				//fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
-				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
-				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-			
+				
 			}
+<<<<<<< HEAD
 		}
 
 
@@ -677,17 +754,25 @@ public class RepairObject : MonoBehaviour {
 			fCurrentTemperature = 0;
 
 			TemperatureSlider.value = fCurrentTemperature;
+=======
+>>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
 
-			if (fCurrentComplate <= 0)
+			if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
 			{
-				SpawnManager.Instance.bIsBossCreate = false;
-				return;
+				Debug.Log("Cri!!!");
+				SpawnManager.Instance.PlayerCritical();
+				fCurrentComplate = fCurrentComplate + (player.GetRepairPower() * 1.5f) * 0.7f;
+				m_PlayerAnimationController.UserCriticalRepair();
 			}
-							
+			else
+			{
+				Debug.Log("Nor!!!!");
+				m_PlayerAnimationController.UserNormalRepair();
+				fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 0.7f;
+			}
+
+			fCurrentTemperature += fMaxTemperature * 0.08f;
 		}
-
-
-		TemperatureSlider.value = fCurrentTemperature;
 	}
 
     public void TouchWater()
@@ -829,7 +914,11 @@ public class RepairObject : MonoBehaviour {
         weaponData = null;
         AfootObject = null;
 
+<<<<<<< HEAD
         WeaponSprite.sprite =  main_Touch_Sprite;
+=======
+		WeaponSprite.sprite = main_Touch_Sprite;
+>>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
         //WeaponAlphaSpirte.sprite = null;
         
 		fCurrentComplate = 0;
@@ -888,7 +977,11 @@ public class RepairObject : MonoBehaviour {
 		WaterSlider.maxValue = fMaxWater;
 		WaterSlider.value = 0;
 
+<<<<<<< HEAD
 		WeaponSprite.sprite =  main_Touch_Sprite;
+=======
+		WeaponSprite.sprite = main_Touch_Sprite;
+>>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
 		ComplateText.text = string.Format ("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 
 

@@ -33,7 +33,6 @@ public class Druid : ArbaitBatch
 
         bIsComplate = false;
 
-
         nGrade = m_CharacterChangeData.grade;
 
         E_STATE = E_ArbaitState.E_WAIT;
@@ -165,6 +164,9 @@ public class Druid : ArbaitBatch
 
                 //수리
                 fTime += Time.deltaTime;
+
+				if(AfootOjbect == null || bIsRepair == false)
+					CheckCharacterState(E_ArbaitState.E_WAIT);
 
                 //수리 시간이 되면 0으로 초기화 하고 수리해줌
                 if (fTime >= m_fRepairTime)
