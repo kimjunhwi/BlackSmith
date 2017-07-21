@@ -10,12 +10,14 @@ using ReadOnlys;
 
 public class SpawnManager : GenericMonoSingleton<SpawnManager>
 {
-    int m_nMaxArbaitAmount;                  //아르바이트 수
+    int m_nMaxArbaitAmount;                 //아르바이트 수
 
     const int m_nMaxBatchArbaitAmount = 3;  //배치될 아르바이트 최대 개수
 
     const int m_nMaxPollAmount = 5;         //오브젝트풀로 만들어둘 최대 개수
    
+	public int m_nBatchArbaitCount = -1;
+
 	public Transform contentsPanel;
 
 	public GameObject ArbaitPanel;
@@ -30,7 +32,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     public List<GameObject> list_Character = new List<GameObject>();
 
-	public List<GameObject> list_FreeazeCharacter = new List<GameObject> ();
+	public List<int> list_FreeazeCharacter = new List<int> ();
 	public int nRandomIndex;
 
     public Transform[] m_BatchPosition;
@@ -328,6 +330,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			array_ArbaitData[_nCharacterIndex].GetArbaitData(_nIndex, _obj, _data);
             m_BatchArbait[_nCharacterIndex].transform.position = m_BatchPosition[_nIndex].position;
             m_BatchArbait[_nCharacterIndex].SetActive(true);
+
+			m_nBatchArbaitCount++;
             return true;
         }
 
@@ -337,7 +341,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //배치된 아르바이트의 인덱스를 가져옴
     public int GetArbaitBatchIndex(int _nIndex)
     {
-        return array_ArbaitData[_nIndex].nIndex;
+		return array_ArbaitData[_nIndex].nBatchIndex;
     }
 
     ///////// 무기에서 아르바이트 를 넣을 수 있는지 판별 하는 함수 부분
@@ -409,6 +413,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 			{
 				if (array_ArbaitData [nIndex].ArbaitPanelObject == _obj) {
 					m_BatchArbait[nIndex].SetActive(false);
+					m_nBatchArbaitCount--;
 					break;
 				}
 			}
@@ -521,28 +526,54 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public int FreezeArbait()
 	{
-		
 		list_FreeazeCharacter.Clear ();
 		nRandomIndex = -1;
+
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) 
 		{
 			if (m_BatchArbait [nIndex].activeSelf && array_ArbaitData[nIndex].E_STATE != E_ArbaitState.E_FREEZE) {
-				list_FreeazeCharacter.Add (m_BatchArbait [nIndex]);
+				list_FreeazeCharacter.Add (nIndex);
 			}
 		}
 
 		if (list_FreeazeCharacter.Count != 0) 
 		{
-			nRandomIndex = Random.Range (0, list_FreeazeCharacter.Count);
+			nRandomIndex = list_FreeazeCharacter [Random.Range (0, list_FreeazeCharacter.Count)];
+
 			array_ArbaitData[nRandomIndex].CheckCharacterState (E_ArbaitState.E_FREEZE);
 
+			return array_ArbaitData[nRandomIndex].nBatchIndex;
 		}
+
+		//Debug.Log ("List FreezeCharacter : " + list_FreeazeCharacter.Count + "RandomIndex = " + nRandomIndex);
+
 		return nRandomIndex;
 	}
+	public bool FreezeArbaitCheck()
+	{
+		bool checkTrue = false;
+
+		for (int i = 0; i < 10; i++)
+		{
+			if (array_ArbaitData [i].E_STATE != E_ArbaitState.E_FREEZE && m_BatchArbait [i].activeSelf)
+				checkTrue = true;
+			if (i == 9 && checkTrue == true)
+				return true;		
+		}
+		return false;
+	}
+
 
 	public void DeFreezeArbait(int _nIndex)
 	{
-		array_ArbaitData[_nIndex].CheckCharacterState (E_ArbaitState.E_WAIT);
+		for (int i = 0; i < 10; i++) {
+			if (array_ArbaitData [i].nBatchIndex == _nIndex) 
+			{
+				array_ArbaitData[i].CheckCharacterState (E_ArbaitState.E_BOSSREPAIR);
+				return;
+			}
+		}
+		
 	}
 
     #endregion

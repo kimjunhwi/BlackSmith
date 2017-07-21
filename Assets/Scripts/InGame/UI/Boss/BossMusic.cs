@@ -10,11 +10,11 @@ public class BossMusic : BossCharacter
 	private float fRandomXPos;
 	private float fRandomYPos;
 	public SimpleObjectPool noteObjectPool;
-	public int nNoteCount = 0;
+	public int nNoteCount = 0;					  //현재 노트 개수
 
-	private int nNoteMaxCount = 7;
-	private float nBossGenerateTime = 2.0f;
-	private float nContinueTime = 10f;
+	private int nNoteMaxCount = 4;				  //노트 최대 개수
+	private float nBossGenerateTime = 2.0f;		  //노트 생성 주기(X초마다)
+	private float nContinueTime = 10f;			  //노트 지속 시간
 	private float nBossSpeedIncreaseValue =0f;    //보스 무기 속도 증가량
 	private float nBossSpeedIncreaseRate = 0.1f;  //보스 무기 속도 증가비율
 	//임시 변수
@@ -22,11 +22,18 @@ public class BossMusic : BossCharacter
 	GameObject Note;							  //노트 변수
 
 
+	//Reflect 관련
+	private bool isReflect 	= false;			  //루시우 반사 여부 
+	private bool isSwitch 	= false;
+
+	private float fCurReflectTime = 0f;			  //현재 시간
+	private float fReflectRoutineTime = 5f;	  	  //반사 주기 시간 (5초마다 바뀐다)
+	private float fReflectMaxTime = 10f;
+
 	private void Start()
 	{
 		noteObjectPool = GameObject.Find ("NotePool").GetComponent<SimpleObjectPool> ();
 
-		//bossNoteRespawnPoint = GameObject.Find ("BossNoteCreateArea").GetComponent<RectTransform>();
 		fXPos = bossNoteRespawnPoint.position.x;
 		fYPos = bossNoteRespawnPoint.position.y;
 		animator = gameObject.GetComponent<Animator> ();
@@ -56,6 +63,7 @@ public class BossMusic : BossCharacter
 
 	private void Update()
 	{
+		
 		if (eCureentBossState == EBOSS_STATE.FINISH) 
 		{
 			//BossFx off
@@ -108,10 +116,8 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossWait ()
 	{
-
 		while (true)
 		{
-
 			//무기 이미지 추가
 			if (bossBackGround.isBossBackGround == true) {
 
@@ -148,29 +154,43 @@ public class BossMusic : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "Hey Yo! 내 무기 고쳐줘!");
 		while (true)
 		{
-			//fRandomXPos = Random.Range (fXPos  - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			//fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
+			//노트가 보스무기 위치에서 생성
 			fRandomXPos = bossWeapon.transform.position.x;
 			fRandomYPos = bossWeapon.transform.position.y;
-
-			fTime += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
+			//노트 타이머
+			//fTime += Time.deltaTime;
+			//if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
+			//	CreateNote ();
 
+			//반사 타이머
+			fCurReflectTime += Time.deltaTime;
 
-			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
+			//Reflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false) 
 			{
-				
-				CreateNote ();
+				isReflect = true;
+				isSwitch = true;
+				fCurReflectTime = 0f;
+				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+			}
+			//NonReflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true) 
+			{
+				isReflect = false;
+				isSwitch = false;
+				fCurReflectTime = 0f;
+				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
 			}
 
-			if (fCurComplete < 0) {
 
+			//현재 완성도 (실패조건)
+			if (fCurComplete < 0)
 				FailState ();
-			}
-
+		
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
 				eCureentBossState = EBOSS_STATE.PHASE_01;
 
@@ -187,34 +207,47 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
-		
+		nNoteMaxCount = 4;
 		bossTalkPanel.StartShowBossTalkWindow (2f, "허리 업 ~~~!");
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 
 		isStandardPhaseFailed = false;
 		while (true)
 		{
-			
-			//fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			//fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
 			fRandomXPos = bossWeapon.transform.position.x;
 			fRandomYPos = bossWeapon.transform.position.y;
-			fTime += Time.deltaTime;
-
+		
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
+			fTime += Time.deltaTime;
 			//Note 생성 
 			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
-			{
 				CreateNote ();
+
+			//반사 타이머
+			fCurReflectTime += Time.deltaTime;
+
+			//Reflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false) 
+			{
+				isReflect = true;
+				isSwitch = true;
+				fCurReflectTime = 0f;
+				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+			}
+			//NonReflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true) 
+			{
+				isReflect = false;
+				isSwitch = false;
+				fCurReflectTime = 0f;
+				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
 			}
 		
-
-			if (fCurComplete < 0) {
+			if (fCurComplete < 0) 
 				FailState ();
-			}
-
+			
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
 				eCureentBossState = EBOSS_STATE.PHASE_02;
 
@@ -225,26 +258,45 @@ public class BossMusic : BossCharacter
 		}
 		StartCoroutine (BossSKill_02 ());
 		yield break;
-
 	}
 
 	protected override IEnumerator BossSKill_02 ()
 	{
+		nNoteMaxCount = 8;
 		bossTalkPanel.StartShowBossTalkWindow (2f, "Drop the Beat!!");
 		while (true)
 		{
-			//fRandomXPos = Random.Range (fXPos - (bossNoteRespawnPoint.sizeDelta.x/2), fXPos + (bossNoteRespawnPoint.sizeDelta.x/2));
-			//fRandomYPos = Random.Range (fYPos - (bossNoteRespawnPoint.sizeDelta.y/2), fYPos + (bossNoteRespawnPoint.sizeDelta.y/2));
 			fRandomXPos = bossWeapon.transform.position.x;
 			fRandomYPos = bossWeapon.transform.position.y;
-			fTime += Time.deltaTime;
+
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
+
+			fTime += Time.deltaTime;
 			//Note 생성 
 			if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
-			{
 				CreateNote ();
+			
+
+			//반사 타이머
+			fCurReflectTime += Time.deltaTime;
+
+			//Reflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false) 
+			{
+				isReflect = true;
+				isSwitch = true;
+				fCurReflectTime = 0f;
+				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+			}
+			//NonReflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true) 
+			{
+				isReflect = false;
+				isSwitch = false;
+				fCurReflectTime = 0f;
+				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
 			}
 
 
@@ -342,8 +394,8 @@ public class BossMusic : BossCharacter
 		noteObj.parentTransform = bossNoteRespawnPoint;
 		noteObj.fTime = nContinueTime;
 		noteObj.repairObj = repairObj;
-		nBossSpeedIncreaseValue = 5.0f;
-		repairObj.AddBossWeaponSpeed (nBossSpeedIncreaseValue * nBossSpeedIncreaseRate);
+		//nBossSpeedIncreaseValue = 5.0f;
+		//repairObj.AddBossWeaponSpeed (nBossSpeedIncreaseValue * nBossSpeedIncreaseRate);
 		nBossSpeedIncreaseValue = 0f;
 		fTime = 0f;
 

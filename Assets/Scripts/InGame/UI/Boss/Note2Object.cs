@@ -58,7 +58,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	void Update()
 	{
 
-		transform.Translate ( randomDir * fMoveSpeed);
+		transform.Translate ( randomDir * fMoveSpeed );
 
 		//4면 충돌 확인
 		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 11f )) {
@@ -97,10 +97,9 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	{
 		getInfoGameObject = eventData.pointerEnter;
 
-		if (getInfoGameObject.gameObject.name == "Note2") 
-		{
-			CreateNote ();
-		} else
+		if (getInfoGameObject.gameObject.name == "Note2")
+			note2ObjPull.ReturnObject (getInfoGameObject);
+		else
 			return;
 	}
 
@@ -109,7 +108,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		note3ObjectPool = GameObject.Find ("Note3Pool").GetComponent<SimpleObjectPool>();
 
 		note2ObjPull.ReturnObject (gameObject);
-		repairObj.MinusWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate/2));
+		//repairObj.MinusWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate/2));
 
 		note3_Left = note3ObjectPool.GetObject ();
 		note3_Left.name = "Note3";
@@ -139,7 +138,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		note3Obj.note3ObjPull = note3ObjectPool;
 		note3Obj.parentTransform = parentTransform;
 		note3Obj.repairObj = repairObj;
-		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 4));
+	//	repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 4));
 
 		note3_Right = note3ObjectPool.GetObject ();
 		note3_Right.name = "Note3";
@@ -168,7 +167,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		note3Obj.note3ObjPull = note3ObjectPool;
 		note3Obj.parentTransform = parentTransform;
 		note3Obj.repairObj = repairObj;
-		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 4));
+	
 	}
 
 	public void EraseObj()

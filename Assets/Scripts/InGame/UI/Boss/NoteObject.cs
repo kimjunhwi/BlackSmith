@@ -54,13 +54,8 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		bossMusic = GameObject.Find ("BossMusic").GetComponent<BossMusic> ();
 	}
 
-
-
 	void Update()
 	{
-		
-	
-
 		transform.Translate ( randomDir * fMoveSpeed);
 
 		//4면 충돌 확인
@@ -116,7 +111,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 	{
 
 		noteObjPull.ReturnObject (gameObject);
-		repairObj.MinusWeaponSpeed (fBossSpeed * fDecreaseWeaponSpeedRate);
+		//repairObj.MinusWeaponSpeed (fBossSpeed * fDecreaseWeaponSpeedRate);
 
 		note2ObjectPool = GameObject.Find ("Note2Pool").GetComponent<SimpleObjectPool>();
 
@@ -146,7 +141,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.note2ObjPull = note2ObjectPool;
 		note2Obj.parentTransform = parentTransform;
 		note2Obj.repairObj = repairObj;
-		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
+		//repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
 
 		note2_Right = note2ObjectPool.GetObject ();
 		note2_Right.name = "Note2";
@@ -174,7 +169,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.note2ObjPull = note2ObjectPool;
 		note2Obj.parentTransform = parentTransform;
 		note2Obj.repairObj = repairObj;
-		repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
+		//repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
 
 		bossMusic.nNoteCount--;
 	}

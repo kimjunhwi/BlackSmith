@@ -69,10 +69,8 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			}
 
 			if (nCountBreakWall == 0) {
-				
-				SpawnManager.Instance.DeFreezeArbait (0);
 				bossIce.isIceWall_ArbaitOn [0] = false;
-				DeFreezeArbait ();
+				DeFreezeArbait (0);
 			}
 		}
 
@@ -88,11 +86,8 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			}
 
 			if (nCountBreakWall == 0) {
-
-				SpawnManager.Instance.DeFreezeArbait (0);
-				bossIce.isIceWall_ArbaitOn [0] = false;
-
-				DeFreezeArbait ();
+				bossIce.isIceWall_ArbaitOn [1] = false;
+				DeFreezeArbait (1);
 			}
 		}
 
@@ -108,11 +103,8 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			}
 
 			if (nCountBreakWall == 0) {
-
-				SpawnManager.Instance.DeFreezeArbait (0);
-				bossIce.isIceWall_ArbaitOn [0] = false;
-
-				DeFreezeArbait ();
+				bossIce.isIceWall_ArbaitOn [2] = false;
+				DeFreezeArbait (2);
 			}
 		}
 	}
@@ -141,39 +133,6 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		yield break;
 	}
 
-	public IEnumerator FreezeArbait()
-	{
-		animator.SetBool ("isFreeze", true); //Start Freeze Animation
-		while (true) 
-		{
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName("Arbait_Freeze")) 
-			{
-				//yield return new WaitForSeconds (0.1f);
-				animator.SetBool ("isIced", true);
-			} 
-			yield return null;
-		}
-		yield break;
-	}
-
-
-	public void DeFreezeArbait()
-	{
-		//FreezeAnimation Init
-		animator.SetBool ("isFreeze", false);
-		animator.SetBool ("isIced", false);
-		animator.SetBool ("isBreak01", false);
-		animator.SetBool ("isBreak02", false);
-		animator.Play ("Arbait_Ice_Idle");
-
-		BossIceWallDeFreeze bossDefreeze = null;
-
-		bossIce.iceWall_Arbait_Defreeze [nCurrentArbaitIndex].SetActive (true);
-		bossDefreeze = bossIce.iceWall_Arbait_Defreeze [nCurrentArbaitIndex].GetComponent<BossIceWallDeFreeze> ();
-		bossDefreeze.StartDeFreeze ();
-		gameObject.SetActive (false);
-	}
-
 	public IEnumerator DeFreezeRepair()
 	{
 		animator.SetBool ("isDefreeze", true); //Start Freeze Animation
@@ -190,10 +149,48 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 
 				animator.Play ("Arbait_Ice_Idle");
 
+
 				bossIce.ActiveIceWall ();
 			} 
 			yield return null;
 		}
 	}
+
+
+	public IEnumerator FreezeArbait()
+	{
+		animator.SetBool ("isFreeze", true); //Start Freeze Animation
+		while (true) 
+		{
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName("Arbait_Freeze")) 
+			{
+				//yield return new WaitForSeconds (0.1f);
+				animator.SetBool ("isIced", true);
+			} 
+			yield return null;
+		}
+		yield break;
+	}
+
+
+	public void DeFreezeArbait(int _nIndex)
+	{
+		//FreezeAnimation Init
+		animator.SetBool ("isFreeze", false);
+		animator.SetBool ("isIced", false);
+		animator.SetBool ("isBreak01", false);
+		animator.SetBool ("isBreak02", false);
+		animator.Play ("Arbait_Ice_Idle");
+
+		BossArbaitDeFreeze bossDefreeze = null;
+
+		bossIce.iceWall_Arbait_Defreeze [nCurrentArbaitIndex].SetActive (true);
+		bossIce.isIceWall_ArbaitOn [nCurrentArbaitIndex] = false;
+		bossDefreeze = bossIce.iceWall_Arbait_Defreeze [nCurrentArbaitIndex].GetComponent<BossArbaitDeFreeze> ();
+		bossDefreeze.nIndex = _nIndex;
+		bossDefreeze.StartDeFreeze ();
+		gameObject.SetActive (false);
+	}
+
 
 }

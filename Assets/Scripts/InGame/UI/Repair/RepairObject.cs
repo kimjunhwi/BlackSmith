@@ -68,7 +68,7 @@ public class RepairObject : MonoBehaviour {
 	private float fXPos;
 	private float fYPos;
 
-	int nChancePercent = 50;			//미스 확률
+	int nChancePercent = 50;									//미스 확률
 
 	//BossMusic
 	private Vector3 randomDir;									//루시오 보스무기가 갈 랜덤 방향
@@ -240,20 +240,6 @@ public class RepairObject : MonoBehaviour {
 			
 	}
 
-	public void AddBossWeaponSpeed(float _speed)
-	{
-		if (fMoveSpeed <= 8.5f)
-			fMoveSpeed += _speed;
-		else
-			fMoveSpeed = fMoveSpeed;
-		
-		//Debug.Log("Plus Cur Speed = " + fMoveSpeed);
-	}
-	public void MinusWeaponSpeed(float _speed)
-	{
-		fMoveSpeed -= _speed;
-		//Debug.Log("Minus Cur Speed = " + fMoveSpeed);
-	}
 
 	public IEnumerator BossMusicWeaponMove()
 	{
@@ -270,6 +256,7 @@ public class RepairObject : MonoBehaviour {
 		while (isMoveWeapon == false)
 		{
 			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed);
+			Debug.Log (randomDir * fMoveSpeed);
 			//4면 충돌 확인
 			//방향은 달라도 속도는 일정해야한다
 			//Right Collision
@@ -438,14 +425,7 @@ public class RepairObject : MonoBehaviour {
 			bossCharacter = _bossData;
 		else
 			return;
-
-
-
-		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
-		{
-			isMoveWeapon = false;
-			StartCoroutine (BossMusicWeaponMove ());
-		}
+		
 		//input Image
 		BossWeaponSprite.sprite = _sprite;
 		//weaponData = data;
@@ -459,7 +439,9 @@ public class RepairObject : MonoBehaviour {
 		ComplateSlider.value = fCurrentComplate;
 
 		fCurrentTemperature = _fTemperator;
-		ComplateText.text = string.Format("{0:####} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
+		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
+
+
 	}
 
     //무기터치
@@ -560,6 +542,8 @@ public class RepairObject : MonoBehaviour {
 		if (bossCharacter == null)
 			return;
 
+
+
 		//Ice
 		if (bossCharacter.nIndex == 0 ) 
 		{ 
@@ -635,15 +619,14 @@ public class RepairObject : MonoBehaviour {
 					bossMissText.leftSecond = 2.0f;
 					bossMissText.parentTransform = textRectTrasnform;
 				}
-					
 			}
 		}
 
-		//MusicMan
-		if (bossCharacter.nIndex == 3 ) 
+		//Fire
+		if (bossCharacter.nIndex == 2 ) 
 		{ 
 			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
-				Debug.Log ("MusicPhase00");
+				Debug.Log ("FirePhase00");
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			}
@@ -652,11 +635,35 @@ public class RepairObject : MonoBehaviour {
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
 			} 
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
+			{
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+
+			}
+		}
+
+		//MusicMan
+		if (bossCharacter.nIndex == 3 ) 
+		{ 
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
+			{
+				Debug.Log ("MusicPhase00");
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+			}
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
+
+				isMoveWeapon = false;
+				StartCoroutine (BossMusicWeaponMove ());
+				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
+				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
+			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
 				//fWeaponDownDamage -= (fWeaponDownDamage * 0.3f);
 				fCurrentComplate = fCurrentComplate + fWeaponDownDamage;
 				fCurrentTemperature += (((fWeaponDownDamage * fMaxTemperature) / bossCharacter.bossInfo.fComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f)) + (bossCharacter.bossInfo.fComplate * 0.01f);
-				fWeaponDownDamage = 40;
+			
 			}
 		}
 
@@ -738,22 +745,28 @@ public class RepairObject : MonoBehaviour {
 				
 				int nChildCount = bossNoteRectTransform.childCount;
 				Debug.Log ("CurCount = " + nChildCount);
-				for (int i = 0; i < nChildCount; i++) {
+				for (int i = 0; i < nChildCount; i++)
+				{
 					Transform noteGameObject = null;		
 
 					if (bossNoteRectTransform.transform.GetChild (0).name == "Note") {
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
 						noteObj.CreateNote ();
-					} else if (bossNoteRectTransform.transform.GetChild (0).name == "Note2") {
+					} 
+					else if
+						(bossNoteRectTransform.transform.GetChild (0).name == "Note2") {
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
-						note2Obj.CreateNote ();
-					} else if (bossNoteRectTransform.transform.GetChild (0).name == "Note3") {
+						note2Obj.EraseObj ();
+
+					} 
+					/*else if (bossNoteRectTransform.transform.GetChild (0).name == "Note3") {
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
 						note3Obj.EraseObj ();
 					}
+					*/
 				}
 			}
 			//얼음 보스시. 물을 사용하면 화면을 얼게 한다
@@ -884,10 +897,12 @@ public class RepairObject : MonoBehaviour {
 			
 			int nChildCount = bossNoteRectTransform.childCount;
 
-			while (nChildCount != 0) {
+			while (nChildCount != 0) 
+			{
 				Transform noteGameObject =null;	
 				Debug.Log ("CurCount = " + nChildCount);
-				if (bossNoteRectTransform.FindChild ("Note")) {
+				if (bossNoteRectTransform.FindChild ("Note"))
+				{
 
 					noteGameObject = bossNoteRectTransform.FindChild ("Note");
 					noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
@@ -897,12 +912,15 @@ public class RepairObject : MonoBehaviour {
 					noteGameObject = bossNoteRectTransform.FindChild ("Note2");
 					note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
 					note2Obj.EraseObj ();
-				} else if (bossNoteRectTransform.FindChild ("Note3")) {
+				}
+				/*
+				else if (bossNoteRectTransform.FindChild ("Note3")) {
 					
 					noteGameObject = bossNoteRectTransform.FindChild ("Note3");
 					note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
 					note3Obj.EraseObj ();
 				} 
+				*/
 				nChildCount--;
 			}
 			isMoveWeapon = true;
