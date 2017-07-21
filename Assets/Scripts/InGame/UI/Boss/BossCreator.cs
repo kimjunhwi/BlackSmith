@@ -95,9 +95,6 @@ public class BossCreator : MonoBehaviour
 
 	public IEnumerator BossCreate(int _index) 
 	{
-		
-
-
 		if(bossConsumeItemInfo.nInviteMentCurCount != 0)
 			bossConsumeItemInfo.nInviteMentCurCount--;
 
@@ -152,6 +149,24 @@ public class BossCreator : MonoBehaviour
 		else if (_index == (int)E_BOSSNAME.E_BOSSNAME_FIRE) 
 		{
 			Debug.Log ("Fire Created!!!");	
+
+			BossFire bossFire = bossList[2].GetComponent<BossFire> ();
+
+			bossFire.nIndex = _index;
+			bossFire.bossInfo = GameManager.Instance.bossInfo [_index];
+			bossFire.bossEffect = bossEffect;
+			bossFire.bossBackGround = bossBackGround;
+			bossFire.bossPopUpWindow = bossPopUpWindow;
+			bossFire.sBossWeaponSprite = "Weapons/Boss/deathnote";
+			bossFire.bossTimer_Obj = bossTimer_Obj;
+			bossFire.bossTimer = bossTimer;
+			bossFire.bossUIDisable = bossUIDisable;
+			bossFire.bossTalkPanel = bossTalkPanel;
+			bossFire.bossWeapon = bossWeapon_Obj;
+
+			bossList [2].SetActive (true);
+
+
 			nBossFireLeftCount--;
 		}
 

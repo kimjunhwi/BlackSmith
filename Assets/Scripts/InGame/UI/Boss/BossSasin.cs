@@ -16,8 +16,9 @@ public class BossSasin : BossCharacter
 	public SimpleObjectPool skullObjectPool;					//1,2페이즈 시에 등장 하는 해골들
 	public int nSkullCount = 0;									//현재 나와있는 해골들의 개수
 
-
-
+	//임시 해골 변수 
+	private GameObject Skull;
+	private float fTime = 0f;
 
 	private void Start()
 	{
@@ -143,13 +144,20 @@ public class BossSasin : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "내가 사신이지롱");
 		while (true)
 		{
-			
+			fTime += Time.deltaTime;
+
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
 			if (fCurComplete < 0) {
 				FailState ();
 			}
+
+		
+			//해골 생성 
+			if (fTime >= 2.0f && bossSkullRespawnPoint.childCount != 4) 
+				CreateSkull ();
+			
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
 				eCureentBossState = EBOSS_STATE.PHASE_01;
@@ -170,8 +178,7 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
-		float fTime = 0f;
-		GameObject Skull;
+
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		isStandardPhaseFailed = false;
 		bossTalkPanel.StartShowBossTalkWindow (2f, "나 화났어 ㅡ,ㅡ");
@@ -183,21 +190,8 @@ public class BossSasin : BossCharacter
 			fTime += Time.deltaTime;
 			//해골 생성 
 			if (fTime >= 2.0f && bossSkullRespawnPoint.childCount != 4) 
-			{
-					
-				Skull = skullObjectPool.GetObject ();
-				Skull.transform.SetParent (bossSkullRespawnPoint.transform, false);
-				Skull.transform.localScale = Vector3.one;
-				Skull.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Skull.transform.position.z);
-				Skull.name = "Skull";
-
-				SkullObject skullObj = Skull.GetComponent<SkullObject> ();
-				skullObj.skullObjPull = skullObjectPool;
-				skullObj.parentTransform = bossSkullRespawnPoint;
-				skullObj.fTime = 7f;
-				skullObj.repairObj = repairObj;
-				fTime = 0f;
-			}
+				CreateSkull ();
+			
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = GameManager.Instance.bossInfo[1].fComplate;
 
@@ -220,8 +214,6 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
-		float fTime = 0f;
-		GameObject Skull;
 		bossTalkPanel.StartShowBossTalkWindow (2f, "뿌우우우우우!!!");
 		while (true)
 		{
@@ -231,21 +223,8 @@ public class BossSasin : BossCharacter
 			fTime += Time.deltaTime;
 			//해골 생성 
 			if (fTime >= 2.0f && bossSkullRespawnPoint.childCount != 4) 
-			{
-
-				Skull = skullObjectPool.GetObject ();
-				Skull.transform.SetParent (bossSkullRespawnPoint.transform,false);
-				Skull.transform.localScale = Vector3.one;
-				Skull.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Skull.transform.position.z);
-				Skull.name = "Skull";
-
-				SkullObject skullObj = Skull.GetComponent<SkullObject> ();
-				skullObj.skullObjPull = skullObjectPool;
-				skullObj.parentTransform = bossSkullRespawnPoint;
-				skullObj.fTime = 7f;
-				skullObj.repairObj = repairObj;
-				fTime = 0f;
-			}
+				CreateSkull ();
+			
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
@@ -357,5 +336,21 @@ public class BossSasin : BossCharacter
 		StartCoroutine (BossDie ());
 
 		//eCureentBossState = EBOSS_STATE.FINISH;
+	}
+
+	public void CreateSkull()
+	{
+		Skull = skullObjectPool.GetObject ();
+		Skull.transform.SetParent (bossSkullRespawnPoint.transform,false);
+		Skull.transform.localScale = Vector3.one;
+		Skull.transform.position = new Vector3 (fRandomXPos, fRandomYPos, Skull.transform.position.z);
+		Skull.name = "Skull";
+
+		SkullObject skullObj = Skull.GetComponent<SkullObject> ();
+		skullObj.skullObjPull = skullObjectPool;
+		skullObj.parentTransform = bossSkullRespawnPoint;
+		skullObj.fTime = 7f;
+		skullObj.repairObj = repairObj;
+		fTime = 0f;
 	}
 }

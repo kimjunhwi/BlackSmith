@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith", "Assembly-CSha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlackSmith", "Assembly-CSharp-Editor.csproj", "{167900F2-362F-9918-22BF-D1C34583BF57}"
 EndProject
+Project("{BCBE7074-BD5B-BC0A-F3B7-C786DF049B88}") = "BlackSmith", "Assembly-UnityScript.unityproj", "{1BBF2E8C-4B53-2A2C-9D72-A816A26B1E47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{167900F2-362F-9918-22BF-D1C34583BF57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{167900F2-362F-9918-22BF-D1C34583BF57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{167900F2-362F-9918-22BF-D1C34583BF57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BBF2E8C-4B53-2A2C-9D72-A816A26B1E47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BBF2E8C-4B53-2A2C-9D72-A816A26B1E47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BBF2E8C-4B53-2A2C-9D72-A816A26B1E47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BBF2E8C-4B53-2A2C-9D72-A816A26B1E47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

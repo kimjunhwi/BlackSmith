@@ -14,6 +14,7 @@ public class BossTimer : MonoBehaviour {
 	public BossSasin bossSasin;
 	public BossMusic bossMusic;
 	public BossIce bossIce;
+	public BossFire bossFire;
 
 	void Start () 
 	{
@@ -56,6 +57,8 @@ public class BossTimer : MonoBehaviour {
 					bossMusic.FailState ();
 				if (fBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE)
 					bossIce.FailState ();
+				if (fBossIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE)
+					bossFire.FailState ();
 
 				break;
 			}

@@ -19,7 +19,8 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 		
 		if (getInfoGameObject.gameObject.name == "BossBackGround") 
 		{
-			getInfoGameObject.transform.FindChild ("BossWidget").gameObject.SetActive (false);
+			//getInfoGameObject.transform.FindChild ("BossWidget").gameObject.SetActive (false);
+			getInfoGameObject.SetActive(false);
 		}
 		
 

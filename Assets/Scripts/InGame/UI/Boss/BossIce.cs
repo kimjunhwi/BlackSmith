@@ -12,8 +12,8 @@ public class BossIce : BossCharacter
 	private float nBossIceWallGenerateTime = 5.0f;
 	//IceWall Arbait
 	int iceWallIndex = 0;
-	private float fIceWallArbaitTimer =0f;
-	private float fIceWallArbaitGenerateTime = 10.0f;
+	public float fIceWallArbaitTimer =0f;
+	private float fIceWallArbaitGenerateTime = 5.0f;
 	public GameObject[] iceWall_Arbait_Freeze;
 	public GameObject[] iceWall_Arbait_Defreeze;
 	public bool[] isIceWall_ArbaitOn;
@@ -78,6 +78,7 @@ public class BossIce : BossCharacter
 			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 			repairObj.SetFinishBoss ();		//수리 패널 초기화
 
+			SpawnManager.Instance.m_nBatchArbaitCount = 0;
 			eCureentBossState = EBOSS_STATE.CREATEBOSS;
 			isFailed = false;
 			isStandardPhaseFailed = false;
@@ -139,21 +140,16 @@ public class BossIce : BossCharacter
 		isStandardPhaseFailed = true;
 		while (true)
 		{
-
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
-
 
 			//Boss Ice Wall Timer
 			if(isIceWallOn == false)
 				fIceWallGenerateTimer += Time.deltaTime;
-		
-		
+			
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
-			{
 				ActiveIceWall ();
-			}
-
+			
 			if (fCurComplete < 0) {
 				isFailed = true;
 
@@ -186,6 +182,7 @@ public class BossIce : BossCharacter
 
 		while (true)
 		{
+
 			//BossWeapon info
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
@@ -195,15 +192,15 @@ public class BossIce : BossCharacter
 				fIceWallGenerateTimer += Time.deltaTime;
 
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
-			{
 				ActiveIceWall ();
-			}
-
+			
+		
 
 			//Arbait Ice Wall Timer
-			if (isIceWall_ArbaitOn [0] == false || isIceWall_ArbaitOn [1] == false || isIceWall_ArbaitOn [2] == false)
+			if (SpawnManager.Instance.FreezeArbaitCheck() == true) {
+				Debug.Log (fIceWallArbaitTimer);
 				fIceWallArbaitTimer += Time.deltaTime;
-			
+			}
 
 			if (fIceWallArbaitTimer >= fIceWallArbaitGenerateTime) 
 				FreezeArbait ();
@@ -235,20 +232,24 @@ public class BossIce : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "눈보라 ~~~!");
 		while (true)
 		{
+			iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+
 			//GetCompletion
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 	
 			if(isIceWallOn == false)
 				fIceWallGenerateTimer += Time.deltaTime;
+
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 				ActiveIceWall ();
 			
 			//Arbait Ice Wall Timer
-			if (isIceWall_ArbaitOn [0] == false || isIceWall_ArbaitOn [1] == false || isIceWall_ArbaitOn [2] == false)
+			if (SpawnManager.Instance.FreezeArbaitCheck() == true) {
+				Debug.Log (fIceWallArbaitTimer);
 				fIceWallArbaitTimer += Time.deltaTime;
+			}
 
-			//Active Arbait Freeze 해당 시간을 넘으면 
 			if (fIceWallArbaitTimer >= fIceWallArbaitGenerateTime) 
 				FreezeArbait ();
 			
@@ -360,10 +361,11 @@ public class BossIce : BossCharacter
 
 	public void FreezeArbait()
 	{
-
 		iceWallIndex = SpawnManager.Instance.FreezeArbait ();
+
 		if (iceWallIndex == -1)
 			return;
+		
 		Debug.Log ("Create Arbait Ice Wall");
 		if (isIceWall_ArbaitOn [iceWallIndex] != true)
 		{

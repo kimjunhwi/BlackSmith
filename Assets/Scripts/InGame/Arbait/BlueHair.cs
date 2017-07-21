@@ -93,7 +93,7 @@ public class BlueHair : ArbaitBatch {
 
         //액션 변경
         E_STATE = _E_STATE;
-
+		animator.speed = 1.0f;
         //추후 사용 될 수 있을 부분이 있기에 만들어둠
         switch(E_STATE)
         {
@@ -105,7 +105,7 @@ public class BlueHair : ArbaitBatch {
 
 		case E_ArbaitState.E_REPAIR:
 			{
-
+				animator.speed = 1.0f;
 			}
 				
             break;
@@ -118,6 +118,7 @@ public class BlueHair : ArbaitBatch {
 		case E_ArbaitState.E_BOSSREPAIR:
 			{
 				fTime = 0.0F;
+			
 			}
 			break;
         }

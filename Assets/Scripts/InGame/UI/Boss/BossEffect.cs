@@ -11,8 +11,6 @@ public enum BOSSEFFECT
 
 public class BossEffect : MonoBehaviour
 {
-	
-
 	public GameObject[] bossEffectArray;
 	public int bossEffectCount;
 
