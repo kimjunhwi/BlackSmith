@@ -80,7 +80,6 @@ public class RepairObject : MonoBehaviour {
 	private float fMoveSpeed;
 	private RectTransform bossWeaponRectTransform;
 	public RectTransform bossNoteRectTransform;
-	public BossMusic bossMusic;
 	private NoteObject noteObj;
 	private Note2Object note2Obj;
 	private Note3Object note3Obj;
@@ -88,7 +87,7 @@ public class RepairObject : MonoBehaviour {
 	private Vector3 bossWeaponObjOriginPosition;				//원래 수리 패널에 있을때의 무기 위치
 	private Vector2 bossWeaponObjOriginSize;					//원래 수리 패널에 터치 인식 범위의 크기
 	private Vector2 bossWeaponSize;								//무기 이미지 만큼의 크기
-	private bool isMoveWeapon = false;
+	public bool isMoveWeapon = false;
 	private float translateValue;
 
 	//WaterFx
@@ -114,6 +113,7 @@ public class RepairObject : MonoBehaviour {
 
 	private float m_fMinusTemperature = 0.0f;
 	private const float m_fMinusDefault = 0.1f;
+
 	void Start()
 	{
 		isTouchWater = false;
@@ -245,55 +245,53 @@ public class RepairObject : MonoBehaviour {
 
 	public IEnumerator BossMusicWeaponMove()
 	{
+		isMoveWeapon = true;
 		bossWeaponRectTransform.sizeDelta = bossWeaponSize;
 		//무기 초기 스피드
-		fMoveSpeed = 10f;		
+		fMoveSpeed = 600f;		
 		
-		fRandomX = Random.Range (-0.5f, 0.5f);
-		fRandomY = Random.Range (-0.5f, 0.5f);
+		fRandomX = Random.Range ( -0.5f, 0.5f);
+		fRandomY = Random.Range ( -0.5f, 0.5f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 		randomDir = randomDir.normalized;
-		translateValue = (randomDir.x + randomDir.y + randomDir.z) * fMoveSpeed;
-		while (isMoveWeapon == false)
+		while (true)
 		{
-			bossWeaponObject.transform.Translate (randomDir * fMoveSpeed);
-			Debug.Log (randomDir * fMoveSpeed);
+			yield return null;
 			//4면 충돌 확인
 			//방향은 달라도 속도는 일정해야한다
 			//Right Collision
 			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 120f)
 			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.left);
-				randomDir = new Vector3 (getReflectDir.x, Random.Range (-0.5f, 0.5f), getReflectDir.z);
-				randomDir = randomDir.normalized;
+				randomDir = new Vector3 (getReflectDir.x, Random.Range ( -0.5f, 0.5f), getReflectDir.z);
 			} 
 			//left
-			else if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth - bossWeaponRectTransform.sizeDelta.x) - 55f)) 
+			else if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth - bossWeaponRectTransform.sizeDelta.x) - 65f)) 
 			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.right);
-				randomDir = new Vector3 (getReflectDir.x, Random.Range (-0.5f, 0.5f), getReflectDir.z);
-				randomDir = randomDir.normalized;
+				randomDir = new Vector3 (getReflectDir.x, Random.Range ( -0.5f, 0.5f), getReflectDir.z);
 			} 
 			//top
 			else if(bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 50f)
 			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.down);
-				randomDir = new Vector3 (Random.Range (-0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
-				randomDir = randomDir.normalized;
+				randomDir = new Vector3 (Random.Range ( -0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
 			}
 			//bottom
-			else if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 180f)))
+			else if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 190f)))
 			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.up);
-				randomDir = new Vector3 (Random.Range (-0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
-				randomDir = randomDir.normalized;
+				randomDir = new Vector3 (Random.Range ( -0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
 			}
-		
+			randomDir = randomDir.normalized;
+			bossWeaponObject.transform.Translate (fMoveSpeed * randomDir * Time.deltaTime);
 
-			yield return null;
+			if (isMoveWeapon == false)
+				yield break;
+
 		}
-		yield break;
+
 	}
 
 	IEnumerator ChangeSlider()
@@ -315,8 +313,8 @@ public class RepairObject : MonoBehaviour {
 
 					if (fBossMaxComplete == 0.0f)
 						fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
-					else {
-						
+					else 
+					{
 						//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
 						//무기 실패취급으로 리턴
 						fCurrentComplate -= (fMaxTemperature * 0.3f);  
@@ -455,13 +453,10 @@ public class RepairObject : MonoBehaviour {
 		WeaponObject.SetActive (false);
 		waterObject.SetActive (false);
 
-
 		if (_bossData.nIndex == 0)
 			bossCharacter = _bossData;
 		else if (_bossData.nIndex == 1)
 			bossCharacter = _bossData;
-		
-			
 		else if (_bossData.nIndex == 2)
 			bossCharacter = _bossData;
 		else if (_bossData.nIndex == 3)
@@ -483,8 +478,6 @@ public class RepairObject : MonoBehaviour {
 
 		fCurrentTemperature = _fTemperator;
 		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
-
-
 	}
 
     //무기터치
@@ -532,14 +525,11 @@ public class RepairObject : MonoBehaviour {
             fCurrentComplate = fCurrentComplate + player.GetRepairPower();
         } 
         //공식에 따른 온도 증가
-<<<<<<< HEAD
-        fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
-=======
+
         //fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
 		fCurrentTemperature += fMaxTemperature * 0.08f;
 
->>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
 
         //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
 		if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate,fCurrentTemperature)) {
@@ -568,141 +558,126 @@ public class RepairObject : MonoBehaviour {
 			return;
 		}
 
-<<<<<<< HEAD
-        if(fCurrentTemperature >= fMaxTemperature)
-        {
-			fCurrentTemperature = 0.0f;
-			fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
 
-			if (fCurrentComplate > 0)
-				SpawnManager.Instance.CheckComplateWeapon (AfootObject,fCurrentComplate,fCurrentTemperature);
-			
-			else
-				SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
-        }
-=======
-        
->>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
+   
     }
 
 	public void TouchBossWeapon()
 	{
-		
-		int nRandom = Random.Range (0, 100);
-
-		fRandomXPos = Random.Range (fXPos - (textRectTrasnform.sizeDelta.x/2), fXPos + (textRectTrasnform.sizeDelta.x/2));
-		fRandomYPos = Random.Range (fYPos - (textRectTrasnform.sizeDelta.y/2), fYPos + (textRectTrasnform.sizeDelta.y/2));
-
 		if (bossCharacter == null)
 			return;
-
-
-
 		//Ice
-		if (bossCharacter.nIndex == 0 ) 
-		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
+		if (bossCharacter.nIndex == 0) { 
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) 
 				Debug.Log ("IcePhase00");
-
+			
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) 
+			{
+				Debug.Log ("IcePhase01");
 				//크리티컬 확률 감소o
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
-					Debug.Log ("Cri!!!");
+					//Debug.Log ("Cri!!!");
 					SpawnManager.Instance.PlayerCritical ();
 					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 1.5f;
 					m_PlayerAnimationController.UserCriticalRepair ();
-				} else {
-					Debug.Log ("Nor!!!!");
+				} 
+				else
+				{
+					//Debug.Log ("Nor!!!!");
 					m_PlayerAnimationController.UserNormalRepair ();
 					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
 				}
 
 				fCurrentTemperature += fMaxTemperature * 0.08f;
-
 				return;
-			} else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
 
 			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
 			{
-				
-			}
+				Debug.Log ("IcePhase02");
+				//크리티컬 확률 감소o
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
+					//Debug.Log ("Cri!!!");
+					SpawnManager.Instance.PlayerCritical ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 1.5f;
+					m_PlayerAnimationController.UserCriticalRepair ();
+				} 
+				else
+				{
+					//Debug.Log ("Nor!!!!");
+					m_PlayerAnimationController.UserNormalRepair ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+				}
 
-			//크리티컬 확률 
-			if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
-			{
-				Debug.Log("Cri!!!");
-				SpawnManager.Instance.PlayerCritical();
-				fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
-				m_PlayerAnimationController.UserCriticalRepair();
+				fCurrentTemperature += fMaxTemperature * 0.08f;
+				return;
+				//아르바이트 공속 감소 들어가야함
 			}
-			else
-			{
-				Debug.Log("Nor!!!!");
-				m_PlayerAnimationController.UserNormalRepair();
-				fCurrentComplate = fCurrentComplate + player.GetRepairPower();
-			}
-
-			fCurrentTemperature += fMaxTemperature * 0.08f;
 		}
 
 		//Sasin
-		if (bossCharacter.nIndex == 1 ) 
-		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
-				Debug.Log ("SasinPhase00");
-			}
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
-				Debug.Log ("SasinPhase01");
-				if (nRandom <= nChancePercent) {
-					Debug.Log ("SasinPhase01");
+		int nRandom = Random.Range (0, 100);	
+		fRandomXPos = Random.Range (fXPos - (textRectTrasnform.sizeDelta.x / 2), fXPos + (textRectTrasnform.sizeDelta.x / 2));
+		fRandomYPos = Random.Range (fYPos - (textRectTrasnform.sizeDelta.y / 2), fYPos + (textRectTrasnform.sizeDelta.y / 2));
 
-				
-				} else {
-					Debug.Log ("Miss");
+		if (bossCharacter.nIndex == 1) { 
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
+				Debug.Log ("SasinPhase00");
+			 
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02)
+			{
+				Debug.Log ("SasinPhase01");
+				//명중률 50% 감소
+				if (nRandom <= nChancePercent) 
+					Debug.Log ("Attack To Sasin Success");
+				else
+				{
+					Debug.Log ("Attack To Sasin Miss");
 
 					textObj = textObjectPool.GetObject ();
 					textObj.transform.SetParent (textRectTrasnform.transform, false);
 					textObj.transform.localScale = Vector3.one;
 					textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, textObj.transform.position.z);
-					textObj.name ="Miss";
+					textObj.name = "Miss";
 
 					bossMissText = textObj.GetComponent<BossMissText> ();
 					bossMissText.textObjPool = textObjectPool;
 					bossMissText.leftSecond = 2.0f;
 					bossMissText.parentTransform = textRectTrasnform;
+					return;
 				}
 			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
 			{
 				Debug.Log ("SasinPhase02");
-
-				if (nRandom <= nChancePercent) {
-					//Debug.Log ("SasinPhase02");
+				//수리력 30% 감소
+				if (nRandom <= nChancePercent) 
+				{
 					//크리티컬 확률 
-					if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
-					{
-						Debug.Log("Cri!!!");
-						SpawnManager.Instance.PlayerCritical();
-						fCurrentComplate = fCurrentComplate + (player.GetRepairPower() * 1.5f) * 0.7f;
-						m_PlayerAnimationController.UserCriticalRepair();
+					if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
+						Debug.Log ("Cri!!!");
+						SpawnManager.Instance.PlayerCritical ();
+						fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+						m_PlayerAnimationController.UserCriticalRepair ();
 					}
 					else
 					{
-						Debug.Log("Nor!!!!");
-						m_PlayerAnimationController.UserNormalRepair();
-						fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 0.7f;
+						Debug.Log ("Nor!!!!");
+						m_PlayerAnimationController.UserNormalRepair ();
+						fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 					}
-
 					fCurrentTemperature += fMaxTemperature * 0.08f;
 
 					return;
-				} else {
+				} 
+				else 
+				{
 					Debug.Log ("Miss");
 					textObj = textObjectPool.GetObject ();
 					textObj.transform.SetParent (textRectTrasnform.transform, false);
 					textObj.transform.localScale = Vector3.one;
 					textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, 0);
-					textObj.name ="Miss";
+					textObj.name = "Miss";
 
 					bossMissText = textObj.GetComponent<BossMissText> ();
 					bossMissText.textObjPool = textObjectPool;
@@ -711,68 +686,59 @@ public class RepairObject : MonoBehaviour {
 					return;
 				}
 			}
+		}
 
-			if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
+		//Fire
+		if (bossCharacter.nIndex == 2) 
+		{
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
+				Debug.Log ("FirePhase00");
+			
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) 
 			{
-				Debug.Log("Cri!!!");
-				SpawnManager.Instance.PlayerCritical();
-				fCurrentComplate = fCurrentComplate + (player.GetRepairPower() * 1.5f) * 0.7f;
-				m_PlayerAnimationController.UserCriticalRepair();
-			}
-			else
+				//물 충전량 50% 감소
+			} 
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
 			{
-				Debug.Log("Nor!!!!");
-				m_PlayerAnimationController.UserNormalRepair();
-				fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 0.7f;
+				//물 수치 50% 감소
 			}
-
-			fCurrentTemperature += fMaxTemperature * 0.08f;
 		}
 
 		//MusicMan
-		if (bossCharacter.nIndex == 3 ) 
+		if (bossCharacter.nIndex == 3)
 		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) {
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
 				Debug.Log ("MusicPhase00");
-			}
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) {
+			
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02)
+			{
+				Debug.Log ("MusicPhase01");
+				//아르바이트의 수리력이 50% 감소, 무기 움직임 시작
 
-			} 
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) {
-				
+				if(isMoveWeapon == false)
+					StartCoroutine( BossMusicWeaponMove());
 			}
-<<<<<<< HEAD
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
+			{
+				Debug.Log ("MusicPhase02");
+				//물충전량 50% 감소 
+			}
 		}
 
 
-		//온도
-		if(fCurrentTemperature >= fMaxTemperature)
-		{
-			//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
-			//무기 실패취급으로 리턴
-			fCurrentComplate -= (fMaxTemperature * 0.3f);  
-			fCurrentTemperature = 0;
-
-			TemperatureSlider.value = fCurrentTemperature;
-=======
->>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
-
-			if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
-			{
-				Debug.Log("Cri!!!");
-				SpawnManager.Instance.PlayerCritical();
-				fCurrentComplate = fCurrentComplate + (player.GetRepairPower() * 1.5f) * 0.7f;
-				m_PlayerAnimationController.UserCriticalRepair();
-			}
-			else
-			{
-				Debug.Log("Nor!!!!");
-				m_PlayerAnimationController.UserNormalRepair();
-				fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 0.7f;
-			}
-
-			fCurrentTemperature += fMaxTemperature * 0.08f;
+		//Player의 기본 능력치에 따른 크리 and 노말 평타
+		if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
+			//Debug.Log ("Cri!!!");
+			SpawnManager.Instance.PlayerCritical ();
+			fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+			m_PlayerAnimationController.UserCriticalRepair ();
+		} else {
+			//Debug.Log ("Nor!!!!");
+			m_PlayerAnimationController.UserNormalRepair ();
+			fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 		}
+
+		fCurrentTemperature += fMaxTemperature * 0.08f;
 	}
 
     public void TouchWater()
@@ -914,12 +880,8 @@ public class RepairObject : MonoBehaviour {
         weaponData = null;
         AfootObject = null;
 
-<<<<<<< HEAD
-        WeaponSprite.sprite =  main_Touch_Sprite;
-=======
-		WeaponSprite.sprite = main_Touch_Sprite;
->>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
-        //WeaponAlphaSpirte.sprite = null;
+		WeaponSprite.sprite =  main_Touch_Sprite;
+
         
 		fCurrentComplate = 0;
 
@@ -936,15 +898,20 @@ public class RepairObject : MonoBehaviour {
 	{
 		return fCurrentComplate;
 	}
-
-
 	public void SetCurCompletion(float _value)
 	{
 		fCurrentComplate += _value;
 	}
+	public bool isCurTemperatureOver()
+	{
+		if (fCurrentTemperature >= fMaxTemperature)
+			return true;
+		else
+			return false;
+	}
+
 	public void SetFinishBoss()
 	{
-		StopCoroutine (BossMusicWeaponMove ());
 		bossWeaponObject.transform.position = bossWeaponObjOriginPosition;
 		bossWeaponRectTransform.sizeDelta = bossWeaponObjOriginSize;
 
@@ -977,17 +944,14 @@ public class RepairObject : MonoBehaviour {
 		WaterSlider.maxValue = fMaxWater;
 		WaterSlider.value = 0;
 
-<<<<<<< HEAD
-		WeaponSprite.sprite =  main_Touch_Sprite;
-=======
 		WeaponSprite.sprite = main_Touch_Sprite;
->>>>>>> 323a29f0ab0b2f6f57b825ea033b543f3444c813
+
 		ComplateText.text = string.Format ("{0} / {1}", fCurrentComplate, ComplateSlider.maxValue);
 
 
-		//물 터치시 노트 한단계씩 떨어진다.
-		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
-			
+		//음악 노트 모두 제거 
+		if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) 
+		{
 			int nChildCount = bossNoteRectTransform.childCount;
 
 			while (nChildCount != 0) 
@@ -1016,7 +980,7 @@ public class RepairObject : MonoBehaviour {
 				*/
 				nChildCount--;
 			}
-			isMoveWeapon = true;
+			isMoveWeapon = false;
 		}
 	}
 }

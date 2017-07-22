@@ -70,7 +70,7 @@ public class Bell : ArbaitBatch {
 
 		case E_ArbaitState.E_REPAIR:
 			{
-
+				animator.speed = 1.0f;
 			}
 
 			break;
@@ -82,6 +82,7 @@ public class Bell : ArbaitBatch {
 		case E_ArbaitState.E_BOSSREPAIR:
 			{
 				fTime = 0.0F;
+				animator.speed = 1.0f;
 			}
 			break;
 		}

@@ -394,6 +394,7 @@ public class BossMusic : BossCharacter
 		noteObj.parentTransform = bossNoteRespawnPoint;
 		noteObj.fTime = nContinueTime;
 		noteObj.repairObj = repairObj;
+		noteObj.StartNoteObjMove ();
 		//nBossSpeedIncreaseValue = 5.0f;
 		//repairObj.AddBossWeaponSpeed (nBossSpeedIncreaseValue * nBossSpeedIncreaseRate);
 		nBossSpeedIncreaseValue = 0f;
@@ -419,6 +420,7 @@ public class BossMusic : BossCharacter
 			bossTimer.bossMusic = this;
 		}
 	}
+
 
 	public void FailState()
 	{

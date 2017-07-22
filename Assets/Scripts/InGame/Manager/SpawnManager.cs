@@ -33,6 +33,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     public List<GameObject> list_Character = new List<GameObject>();
 
 	public List<int> list_FreeazeCharacter = new List<int> ();
+	public List<int> checkList = new List<int> ();
 	public int nRandomIndex;
 
     public Transform[] m_BatchPosition;
@@ -565,6 +566,17 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 		return nRandomIndex;
 	}
+	public void GetFreezeArbait()
+	{
+		checkList.Clear ();
+
+		for (int i = 0; i < 10; i++)
+		{
+			if (array_ArbaitData [i].E_STATE == E_ArbaitState.E_FREEZE && m_BatchArbait [i].activeSelf)
+				checkList.Add (array_ArbaitData[i].nBatchIndex);
+		}
+	}
+
 	public bool FreezeArbaitCheck()
 	{
 		bool checkTrue = false;
@@ -582,10 +594,13 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public void DeFreezeArbait(int _nIndex)
 	{
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++)
+		{
+			Debug.Log ("ChangeState");
 			if (array_ArbaitData [i].nBatchIndex == _nIndex) 
 			{
 				array_ArbaitData[i].CheckCharacterState (E_ArbaitState.E_BOSSREPAIR);
+				Debug.Log (array_ArbaitData [i].name + " curState = " + array_ArbaitData [i].E_STATE);
 				return;
 			}
 		}

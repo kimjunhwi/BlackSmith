@@ -18,16 +18,18 @@ public class BossArbaitDeFreeze : MonoBehaviour {
 		StartCoroutine (ArbaitIceWallDefreeze());
 	}
 
+	public void StartAllDeFreeze()
+	{
+		StartCoroutine (ArbaitIceWallAllDefreeze ());
+	}
 
 	public IEnumerator ArbaitIceWallDefreeze()
 	{
 		Debug.Log ("Active Defreeze");
 		animator.SetBool ("isDefreeze", true);
-		while (true) 
-		{
+		while (true) {
 			yield return new WaitForSeconds (0.5f);
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Arbait_Ice_Defreeze")) 
-			{
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Arbait_Ice_Defreeze")) {
 				animator.SetBool ("isDefreeze", false);
 				animator.Play ("Arbait_Ice_Defreeze_Idle");
 				SpawnManager.Instance.DeFreezeArbait (nIndex);
@@ -37,6 +39,23 @@ public class BossArbaitDeFreeze : MonoBehaviour {
 			}
 			yield return null;
 		}
-			
+	}
+
+	public IEnumerator ArbaitIceWallAllDefreeze()
+	{
+		Debug.Log ("Active Defreeze");
+		animator.SetBool ("isDefreeze", true);
+		while (true) {
+			//yield return new WaitForSeconds (0.5f);
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Arbait_Ice_Defreeze")) {
+				animator.SetBool ("isDefreeze", false);
+				animator.Play ("Arbait_Ice_Defreeze_Idle");
+				SpawnManager.Instance.DeFreezeArbait (nIndex);
+				gameObject.SetActive (false);
+				break;
+
+			}
+			yield return null;
+		}
 	}
 }

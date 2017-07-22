@@ -41,58 +41,57 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	//tmp value
 	Note3Object note3Obj;
 
-	void Start()
+
+
+	public void StartNoteObjMove()
 	{
 		myRectTransform = GetComponent<RectTransform> ();
-		fRandomX = Random.Range (-1.0f, 1.0f);
-		fRandomY = Random.Range (-1.0f, 1.0f);
+		fRandomX = Random.Range (-0.5f, 0.5f);
+		fRandomY = Random.Range (-0.5f, 0.5f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 		randomDir.Normalize ();
 		note3ObjectPool = GameObject.Find ("Note3Pool").GetComponent<SimpleObjectPool>();
 
+		StartCoroutine (NoteObjMove ());
 	}
 
-
-
-	void Update()
+	IEnumerator NoteObjMove()
 	{
-
-		transform.Translate ( randomDir * fMoveSpeed );
-
-		//4면 충돌 확인
-		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 11f )) {
-			//Debug.Log ("Right Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.left);
-			randomDir.Normalize ();
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
-
-		else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 20f )) 
+		while (true) 
 		{
-			//Debug.Log ("Left Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.right);
-			randomDir.Normalize ();
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			transform.Translate (fMoveSpeed * randomDir);
 
-		else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 16f )) 
-		{
-			//Debug.Log ("Top Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.down);
-			randomDir.Normalize ();
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			//4면 충돌 확인
+			if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 11f )) {
+				//Debug.Log ("Right Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.left);
+			}
 
-		else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 17f )) 
-		{
-			//Debug.Log ("Down Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.up);
-			randomDir.Normalize ();
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 20f )) 
+			{
+				//Debug.Log ("Left Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.right);
+			}
 
+			else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 16f )) 
+			{
+				//Debug.Log ("Top Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.down);
+			}
+
+			else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 7f )) 
+			{
+				//Debug.Log ("Down Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.up);
+			}
+
+			//randomDir.Normalize ();
+			yield return null;
+		}
+		yield break;
 	}
+
 	public void OnPointerDown (PointerEventData eventData)
 	{
 		getInfoGameObject = eventData.pointerEnter;
@@ -172,6 +171,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 
 	public void EraseObj()
 	{
+		//StopCoroutine (NoteObjMove ());
 		note2ObjPull.ReturnObject (gameObject);
 	}
 }

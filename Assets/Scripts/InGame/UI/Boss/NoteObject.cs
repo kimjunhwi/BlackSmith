@@ -41,67 +41,66 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 	//tmp value
 	Note2Object note2Obj;
 
-	void Start()
+
+	public void StartNoteObjMove()
 	{
 		myRectTransform = GetComponent<RectTransform> ();
-		fRandomX = Random.Range (-1.0f, 1.0f);
-		fRandomY = Random.Range (-1.0f, 1.0f);
+		fRandomX = Random.Range ( -0.5f, 0.5f);
+		fRandomY = Random.Range ( -0.5f, 0.5f);;
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 		randomDir = randomDir.normalized;
 
 		note2ObjectPool = GameObject.Find ("Note2Pool").GetComponent<SimpleObjectPool>();
 		bossMusic = GameObject.Find ("BossMusic").GetComponent<BossMusic> ();
+
+		StartCoroutine (NoteObjMove ());
 	}
 
-	void Update()
+	IEnumerator NoteObjMove()
 	{
-		transform.Translate ( randomDir * fMoveSpeed);
-
-		//4면 충돌 확인
-		if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 42f))
+		while (true) 
 		{
-			//Debug.Log ("Right Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.left);
-			randomDir = randomDir.normalized;
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			transform.Translate (fMoveSpeed * randomDir);
 
-		else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 29f))
-		{
-			//Debug.Log ("Left Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.right);
-			randomDir = randomDir.normalized;
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			//4면 충돌 확인
+			if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 42f))
+			{
+				//Debug.Log ("Right Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.left);
+			}
 
-		else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2))))
-		{
-			//Debug.Log ("Top Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.down);
-			randomDir = randomDir.normalized;
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 29f))
+			{
+				//Debug.Log ("Left Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.right);
+			}
 
-		else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 15f)) 
-		{
-			//Debug.Log ("Down Collision");
-			randomDir = Vector3.Reflect (randomDir, Vector3.up);
-			randomDir = randomDir.normalized;
-			//fMoveSpeed = Random.Range (5f, 10f);
-		}
+			else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2))))
+			{
+				//Debug.Log ("Top Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.down);
+			}
 
+			else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 5f)) 
+			{
+				//Debug.Log ("Down Collision");
+				randomDir = Vector3.Reflect (randomDir, Vector3.up);
+			}
+
+			//randomDir = randomDir.normalized;
+			yield return null;
+		}
+		yield break;
 	}
+		
 	public void OnPointerDown (PointerEventData eventData)
 	{
 		getInfoGameObject = eventData.pointerEnter;
-
 	
-
 		if (getInfoGameObject.gameObject.name == "Note") 
-		{
 			CreateNote ();
-		} 
+		 
 		else
 			return;
 
@@ -141,7 +140,9 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.note2ObjPull = note2ObjectPool;
 		note2Obj.parentTransform = parentTransform;
 		note2Obj.repairObj = repairObj;
-		//repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
+		note2Obj.StartNoteObjMove ();
+
+
 
 		note2_Right = note2ObjectPool.GetObject ();
 		note2_Right.name = "Note2";
@@ -169,6 +170,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.note2ObjPull = note2ObjectPool;
 		note2Obj.parentTransform = parentTransform;
 		note2Obj.repairObj = repairObj;
+		note2Obj.StartNoteObjMove ();
 		//repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
 
 		bossMusic.nNoteCount--;
@@ -176,6 +178,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 	public void EraseObj()
 	{
+		//StopCoroutine (NoteObjMove ());
 		noteObjPull.ReturnObject (gameObject);
 	}
 }
