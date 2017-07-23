@@ -53,7 +53,7 @@ public class ShopButton : MonoBehaviour {
 
         EquitName.text = equitMent.strName;
 
-        EquitImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache("Characters/" + equitMent.strResource);
+        EquitImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(equitMent.strResource);
     }
 
     public void ClickButton()

@@ -165,7 +165,6 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 		{
 			rewardText.text = _gold.ToString () + " 획득!!";
 			ScoreManager.ScoreInstance.GoldPlus (_gold);
-			GameManager.Instance.player.SetGold (_gold);
 			questPopUpWindow_Yes.SetActive (true);
 		}
 	}

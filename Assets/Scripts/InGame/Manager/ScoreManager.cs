@@ -59,8 +59,6 @@ public class ScoreManager : MonoBehaviour
         m_fGetGold += _fValue;
 
         goldText.text = GetCurrentcyIntoString(m_fGetGold);
-
-		GameManager.Instance.player.SetGold (m_fGetGold);
     }
 
 }

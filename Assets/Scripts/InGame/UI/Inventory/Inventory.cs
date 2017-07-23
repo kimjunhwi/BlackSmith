@@ -14,6 +14,7 @@ public class Inventory : MonoBehaviour {
     {
 		if (GameManager.Instance.player == null)
 			return;
+
         GameManager.Instance.player.SetInventroy(this);
     }
 
@@ -59,7 +60,7 @@ public class Inventory : MonoBehaviour {
 
         for (int nIndex = 0; nIndex < List_Equiments.Count; nIndex++)
             if (List_Equiments[nIndex].nSlotIndex == _nIndex)
-                list.Add(List_Equiments[_nIndex]);
+                list.Add(List_Equiments[nIndex]);
 
         return list;
     }

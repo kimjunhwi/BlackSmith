@@ -77,13 +77,13 @@ public class InventoryShowPanel : MonoBehaviour {
 	{
 		ItemData = _equiment;
 
-		NameText.text = ItemData.strName;
+		NameText.text = ItemData.strName + ItemData.n;
 
 		GradeText.text = ItemData.nGrade.ToString ();
 
 		enhanceData = GameManager.Instance.GetEnhanceArbaitData (ItemData.nGrade);
 
-		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache("Characters/" +ItemData.strResource);
+		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(ItemData.strResource);
 	
 		ResetItemText ();
 

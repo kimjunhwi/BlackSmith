@@ -1170,11 +1170,16 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public int EquimentShopLength()
     {
+        
+
         return equimnetData.Count;
     }
 
     public List<CGameEquiment> GetEquimentShopData()
     {
+        if (equimnetData == null)
+            return null;
+
         return equimnetData;
     }
 
