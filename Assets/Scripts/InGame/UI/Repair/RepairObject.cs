@@ -250,8 +250,8 @@ public class RepairObject : MonoBehaviour {
 		//무기 초기 스피드
 		fMoveSpeed = 600f;		
 		
-		fRandomX = Random.Range ( -0.5f, 0.5f);
-		fRandomY = Random.Range ( -0.5f, 0.5f);
+		fRandomX = Random.Range ( -0.2f, 1.0f);
+		fRandomY = Random.Range ( -0.2f, 1.0f);
 
 		randomDir = new Vector3 (fRandomX, fRandomY, 0);
 		randomDir = randomDir.normalized;
@@ -267,7 +267,7 @@ public class RepairObject : MonoBehaviour {
 				randomDir = new Vector3 (getReflectDir.x, Random.Range ( -0.5f, 0.5f), getReflectDir.z);
 			} 
 			//left
-			else if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth - bossWeaponRectTransform.sizeDelta.x) - 65f)) 
+			else if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth - bossWeaponRectTransform.sizeDelta.x) - 75f)) 
 			{
 				getReflectDir = Vector3.Reflect (randomDir, Vector3.right);
 				randomDir = new Vector3 (getReflectDir.x, Random.Range ( -0.5f, 0.5f), getReflectDir.z);
@@ -568,12 +568,12 @@ public class RepairObject : MonoBehaviour {
 			return;
 		//Ice
 		if (bossCharacter.nIndex == 0) { 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) 
-				Debug.Log ("IcePhase00");
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) ;
+				//Debug.Log ("IcePhase00");
 			
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) 
 			{
-				Debug.Log ("IcePhase01");
+				//Debug.Log ("IcePhase01");
 				//크리티컬 확률 감소o
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
 					//Debug.Log ("Cri!!!");
@@ -594,7 +594,7 @@ public class RepairObject : MonoBehaviour {
 			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
 			{
-				Debug.Log ("IcePhase02");
+				//Debug.Log ("IcePhase02");
 				//크리티컬 확률 감소o
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
 					//Debug.Log ("Cri!!!");

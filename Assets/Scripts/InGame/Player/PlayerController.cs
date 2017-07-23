@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour {
 
     public void CreateNormalEffect()
     {
-        Debug.Log("NormalHit");
+        //Debug.Log("NormalHit");
 
         GameObject obj = NormalRepairPool.Instance.GetObject();
 

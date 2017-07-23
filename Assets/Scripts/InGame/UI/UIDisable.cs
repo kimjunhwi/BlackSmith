@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class UIDisable : MonoBehaviour, IPointerDownHandler
 {
 	GameObject getInfoGameObject;
+	public bool isBossSummon = false;				//보스 소환중
 
 	public void OnPointerDown (PointerEventData eventData)
 	{
@@ -17,9 +18,8 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 		if (getInfoGameObject.gameObject.name == "BackGroundPanel")
 			getInfoGameObject.transform.parent.gameObject.SetActive (false);
 		
-		if (getInfoGameObject.gameObject.name == "BossBackGround") 
+		if (getInfoGameObject.gameObject.name == "BossBackGround" && isBossSummon == false) 
 		{
-			//getInfoGameObject.transform.FindChild ("BossWidget").gameObject.SetActive (false);
 			getInfoGameObject.SetActive(false);
 		}
 		

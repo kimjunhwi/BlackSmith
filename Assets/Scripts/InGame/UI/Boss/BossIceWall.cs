@@ -192,7 +192,7 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		gameObject.SetActive (false);
 	}
 
-	public void DeFreezeArbaitAll(int _index)
+	public void DeFreezeArbaitAll()
 	{
 		//FreezeAnimation Init
 		animator.SetBool ("isFreeze", false);
@@ -201,14 +201,8 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		animator.SetBool ("isBreak02", false);
 		animator.Play ("Arbait_Ice_Idle");
 
-		BossArbaitDeFreeze bossDefreeze = null;
-
-		bossIce.iceWall_Arbait_Defreeze [_index].SetActive (true);
-		bossIce.isIceWall_ArbaitOn [_index] = false;
-		bossDefreeze = bossIce.iceWall_Arbait_Defreeze [_index].GetComponent<BossArbaitDeFreeze> ();
-		bossDefreeze.nIndex = _index;
-		bossDefreeze.StartAllDeFreeze ();
 		nCurrentArbaitIndex = -1;
+		nCountBreakWall = 0;
 		gameObject.SetActive (false);
 
 	}

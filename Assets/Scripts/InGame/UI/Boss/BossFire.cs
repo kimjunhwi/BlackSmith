@@ -52,50 +52,7 @@ public class BossFire : BossCharacter
 		StopCoroutine (BossDie ());
 		StopCoroutine (BossResult ());
 	} 
-
-	private void Update()
-	{
-		if (eCureentBossState == EBOSS_STATE.FINISH) 
-		{
-
-			//Effect Off
-			if(isStandardPhaseFailed == false)
-				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
-
-			//말풍선 off
-			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-				bossTalkPanel.bossTalkPanel.SetActive (false);
-
-
-			StopCoroutine (repairObj.BossMusicWeaponMove ());
-			StopCoroutine (BossSkillStandard ());
-			StopCoroutine (BossSkill_01 ());
-			StopCoroutine (BossSKill_02 ());
-			StopCoroutine (BossDie ());
-			StopCoroutine (BossResult ());
-			Debug.Log ("Finish Boss");
-			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-			repairObj.SetFinishBoss ();		//수리 패널 초기화
-
-			eCureentBossState = EBOSS_STATE.CREATEBOSS;
-			isFailed = false;
-			isStandardPhaseFailed = false;
-			nSmallFireMaxCount = 5;
-
-			if (bossBackGround.isBossBackGround == true) {
-				SpawnManager.Instance.bIsBossCreate = false;
-				bossBackGround.isBossBackGround = false;
-				bossBackGround.isOriginBackGround = true;
-			}
-			bossUIDisable.SetActive (false);
-
-			SpawnManager.Instance.ReliveArbaitBossRepair ();
-
-			gameObject.SetActive (false);
-
-		}		
-	}
-
+		
 	protected override IEnumerator BossWait ()
 	{
 
@@ -121,6 +78,7 @@ public class BossFire : BossCharacter
 
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
 					ActiveTimer ();
+					uiDisable.isBossSummon = false;
 					break;
 				}
 			}
@@ -324,10 +282,60 @@ public class BossFire : BossCharacter
 				yield return null;
 
 		}
-		//Destroy (gameObject);
+		StartCoroutine (BossFinish ());
 		yield break;
 	}	
 
+
+	protected override IEnumerator BossFinish ()
+	{
+		yield return null;
+
+		//Effect Off
+		if(isStandardPhaseFailed == false)
+			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+
+		//말풍선 off
+		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+			bossTalkPanel.bossTalkPanel.SetActive (false);
+
+
+		StopCoroutine (repairObj.BossMusicWeaponMove ());
+		StopCoroutine (BossSkillStandard ());
+		StopCoroutine (BossSkill_01 ());
+		StopCoroutine (BossSKill_02 ());
+		StopCoroutine (BossDie ());
+		StopCoroutine (BossResult ());
+		Debug.Log ("Finish Boss");
+		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+		repairObj.SetFinishBoss ();									//수리 패널 초기화
+
+
+		isFailed = false;
+		isStandardPhaseFailed = false;
+		nSmallFireMaxCount = 5;
+
+		if (bossBackGround.isBossBackGround == true) {
+			SpawnManager.Instance.bIsBossCreate = false;
+			bossBackGround.isBossBackGround = false;
+			bossBackGround.isOriginBackGround = true;
+		}
+		bossUIDisable.SetActive (false);
+
+		SpawnManager.Instance.ReliveArbaitBossRepair ();
+
+		while (smallFireRespawnPoint.childCount != 0) 
+		{
+			GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;
+			smallFirePool.ReturnObject(go);
+		}
+
+		eCureentBossState = EBOSS_STATE.CREATEBOSS;
+
+		gameObject.SetActive (false);
+
+
+	}
 
 	public void ActiveTimer()
 	{
