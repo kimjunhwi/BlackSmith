@@ -14,23 +14,28 @@ public enum E_BOSSNAME
 
 public class BossCreator : MonoBehaviour
 {
-	private UIManager uiManager;
-	public GameObject bossRespawnPoint;
-	public BossConsumeItemInfo bossConsumeItemInfo;
-	public BossBackGround bossBackGround;
-	public BossPopUpWindow bossPopUpWindow;
-	public GameObject bossUIDisable;
-	public GameObject bossTimer_Obj;
-	public GameObject bossPanel;
-	public BossTalkPanel bossTalkPanel;
-	public GameObject bossWeapon_Obj;
+	
+	private UIManager uiManager;					//보스 소환시 모든 UIDisalbe시 사용
+	public GameObject bossRespawnPoint;				//보스 리스폰 지점
+	public BossConsumeItemInfo bossConsumeItemInfo; //보스가 소비하는 아이템 정보
+	public BossBackGround bossBackGround;			//보스등장시 바뀌는 배경
+	public BossPopUpWindow bossPopUpWindow;			//보스 결과창
+	public GameObject bossUIDisable;				//보스 등장시 아래 UI를 못쓰게 하는 패널
+	public GameObject bossTimer_Obj;				//보스 시간 Obj
+	public GameObject bossPanel;					//보스 리스트
+	public BossTalkPanel bossTalkPanel;				//보스 말풍선
+	public GameObject bossWeapon_Obj;				//보스 무기 Obj
+	public UIDisable uiDisable;
 
 	private BossTimer bossTimer;
 
-	public GameObject[] bossList;
-	public BossElement[] bossElementList;
-	public BossEffect bossEffect;
+	public GameObject[] bossList;					//보스 리스트
+	public BossElement[] bossElementList;			//보스 리스트 원소
+	public BossEffect bossEffect;					//보스 이펙트
 
+
+
+	//각각의 보스 남은 도전 횟수
 	public int nBossSasinLeftCount = 3;
 	public int nBossIceLeftCount = 3;
 	public int nBossFireLeftCount = 3;
@@ -45,7 +50,6 @@ public class BossCreator : MonoBehaviour
 		uiManager = FindObjectOfType<UIManager> ();
 		bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
 		bossUIDisable.SetActive (false);
-
 	}
 
 	private void OnEnable()
@@ -58,11 +62,8 @@ public class BossCreator : MonoBehaviour
 
 	public void BossCreateInit(int _index)
 	{
-		//만약 보스가 이미 생성 됐다면 리턴
-		//if (bossRespawnPoint.transform.childCount > 0)
-		//	return;
-		//캐릭들을 전부 되돌림 
-
+		uiDisable.isBossSummon = true;
+		//bossWeaponBlock_Obj.SetActive (true);
 		SpawnManager.Instance.cameraShake.Shake (0.1f, 1.0f);
 
 		SpawnManager.Instance.AllCharacterComplate ();
@@ -86,9 +87,7 @@ public class BossCreator : MonoBehaviour
 				StartCoroutine (BossCreate (nBossIndex));
 				yield break;
 			}
-
 			yield return null;
-
 		}
 		yield return null;
 	}
@@ -102,11 +101,9 @@ public class BossCreator : MonoBehaviour
 
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
-				
 			nBossIceLeftCount--;	//해당보스의 횟수 차감
 
 			//보스 리스트에서 해당 보스의 정보와 보스를 셋팅 한다.
-				
 			BossIce bossIce = bossList[0].GetComponent<BossIce> ();
 
 			bossIce.nIndex = _index;
@@ -119,6 +116,7 @@ public class BossCreator : MonoBehaviour
 			bossIce.bossUIDisable = bossUIDisable;
 			bossIce.bossTalkPanel = bossTalkPanel;
 			bossIce.bossWeapon = bossWeapon_Obj;
+			bossIce.uiDisable = uiDisable;
 			bossList [0].SetActive (true);
 			nBossSasinLeftCount--;
 		}
@@ -139,7 +137,7 @@ public class BossCreator : MonoBehaviour
 			bossSasin.bossUIDisable = bossUIDisable;
 			bossSasin.bossTalkPanel = bossTalkPanel;
 			bossSasin.bossWeapon = bossWeapon_Obj;
-
+			bossSasin.uiDisable = uiDisable;
 			bossList [1].SetActive (true);
 
 
@@ -163,7 +161,7 @@ public class BossCreator : MonoBehaviour
 			bossFire.bossUIDisable = bossUIDisable;
 			bossFire.bossTalkPanel = bossTalkPanel;
 			bossFire.bossWeapon = bossWeapon_Obj;
-
+			bossFire.uiDisable = uiDisable;
 			bossList [2].SetActive (true);
 
 
@@ -184,7 +182,7 @@ public class BossCreator : MonoBehaviour
 			bossMusic.bossUIDisable = bossUIDisable;
 			bossMusic.bossTalkPanel = bossTalkPanel;
 			bossMusic.bossWeapon = bossWeapon_Obj;
-
+			bossMusic.uiDisable = uiDisable;
 			bossList [3].SetActive (true);
 			nBossMusicLeftCount--;
 		}

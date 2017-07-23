@@ -34,6 +34,7 @@ public class BossCharacter : Character
 	public GameObject bossUIDisable;			//UIBlockArea
 	public BossTalkPanel bossTalkPanel;			//보스 말풍선 
 	public GameObject bossWeapon;				//보스 무기 obj
+	public UIDisable uiDisable;
 
 
 	protected bool isFailed = false;								//실패시 띄우는 창에 대한 변수
@@ -42,18 +43,18 @@ public class BossCharacter : Character
 
 	protected Animator animator;
 
-	protected virtual IEnumerator BossWait() 	{ yield return null;}		//보스 대기(연출)
+	protected virtual IEnumerator BossWait() 			{ yield return null;}		//보스 대기(연출)
 
-	protected virtual IEnumerator BossSkillStandard() { yield return null;}	//기본스킬(Phase 00)
-	protected virtual IEnumerator BossSkill_01() { yield return null;}		//스킬1
-	protected virtual IEnumerator BossSKill_02() { yield return null;}		//스킬2
+	protected virtual IEnumerator BossSkillStandard() 	{ yield return null;}	//기본스킬(Phase 00)
+	protected virtual IEnumerator BossSkill_01() 		{ yield return null;}		//스킬1
+	protected virtual IEnumerator BossSKill_02() 		{ yield return null;}		//스킬2
 	 
-	protected virtual IEnumerator BossDie() 	{ yield return null;}		//보스 격퇴
-	protected virtual IEnumerator BossResult() {yield return null;}			//보스 결과
+	protected virtual IEnumerator BossDie() 			{ yield return null;}		//보스 격퇴
+	protected virtual IEnumerator BossResult() 			{yield return null;}			//보스 결과
+	protected virtual IEnumerator BossFinish() 			{yield return null;}			//보스 끝
 
 	void Awake()
 	{
 		repairObj = FindObjectOfType<RepairObject> ();
-		//bossAppearAndDisappearPos = GameObject.Find ("BossEffect").GetComponent<RectTransform> ();
 	}
 }

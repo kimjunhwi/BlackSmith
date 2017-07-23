@@ -107,7 +107,6 @@ public class BlueHair : ArbaitBatch {
 			{
 				
 			}
-				
             break;
 		case E_ArbaitState.E_FREEZE:
 			{
@@ -118,7 +117,6 @@ public class BlueHair : ArbaitBatch {
 		case E_ArbaitState.E_BOSSREPAIR:
 			{
 				fTime = 0.0F;
-				animator.speed = 1.0f;
 			}
 			break;
         }

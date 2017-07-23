@@ -9,7 +9,7 @@ public class BossIce : BossCharacter
 	public GameObject iceWall;
 	public bool isIceWallOn;					  //IceWall이 켜졌는지 아닌지
 	public float fIceWallGenerateTimer = 0f;
-	private float nBossIceWallGenerateTime = 5.0f;
+	private float nBossIceWallGenerateTime = 60.0f;
 	//IceWall Arbait
 	int iceWallIndex = 0;
 	public float fIceWallArbaitTimer =0f;
@@ -50,53 +50,6 @@ public class BossIce : BossCharacter
 		StopCoroutine (BossResult ());
 	} 
 
-	private void Update()
-	{
-		if (eCureentBossState == EBOSS_STATE.FINISH) 
-		{
-
-			//Effect Off
-			if(isStandardPhaseFailed == false)
-				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
-
-			//RepairPanel IceWall Off
-			if (iceWall.activeSelf == true)
-				ActiveIceWall ();
-
-			//말풍선 off
-			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-				bossTalkPanel.bossTalkPanel.SetActive (false);
-
-
-			StopCoroutine (repairObj.BossMusicWeaponMove ());
-			StopCoroutine (BossSkillStandard ());
-			StopCoroutine (BossSkill_01 ());
-			StopCoroutine (BossSKill_02 ());
-			StopCoroutine (BossDie ());
-			StopCoroutine (BossResult ());
-			Debug.Log ("Finish Boss");
-			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-			repairObj.SetFinishBoss ();		//수리 패널 초기화
-
-			SpawnManager.Instance.m_nBatchArbaitCount = 0;
-			eCureentBossState = EBOSS_STATE.CREATEBOSS;
-			isFailed = false;
-			isStandardPhaseFailed = false;
-
-			if (bossBackGround.isBossBackGround == true) {
-				SpawnManager.Instance.bIsBossCreate = false;
-				bossBackGround.isBossBackGround = false;
-				bossBackGround.isOriginBackGround = true;
-			}
-			bossUIDisable.SetActive (false);
-
-			SpawnManager.Instance.ReliveArbaitBossRepair ();
-
-			gameObject.SetActive (false);
-
-		}		
-	}
-
 	protected override IEnumerator BossWait ()
 	{
 
@@ -118,10 +71,11 @@ public class BossIce : BossCharacter
 					yield return null;
 
 
-				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-
+				if (eCureentBossState == EBOSS_STATE.PHASE_00) 
+				{
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
 					ActiveTimer ();
+					uiDisable.isBossSummon = false;
 					break;
 				}
 			}
@@ -196,7 +150,9 @@ public class BossIce : BossCharacter
 
 			//모든 알바 빙결 해제(현재온도가 맥스 온도를 넘을 시에)
 			if (repairObj.isCurTemperatureOver () == true) {
-				//DefreezeAllArbait ();
+				DefreezeAllArbait ();
+				fIceWallArbaitTimer = 0;
+				yield return null;
 			}
 
 			//Arbait Ice Wall Timer
@@ -234,8 +190,6 @@ public class BossIce : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "눈보라 ~~~!");
 		while (true)
 		{
-			iceWallIndex = SpawnManager.Instance.FreezeArbait ();
-
 			//GetCompletion
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
@@ -245,10 +199,12 @@ public class BossIce : BossCharacter
 
 			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
 				ActiveIceWall ();
-
+			
 			//모든 알바 빙결 해제(현재온도가 맥스 온도를 넘을 시에)
 			if (repairObj.isCurTemperatureOver () == true) {
-				//DefreezeAllArbait ();
+				DefreezeAllArbait ();
+				fIceWallArbaitTimer = 0;
+				yield return null;
 			}
 
 			//Arbait Ice Wall Timer
@@ -308,9 +264,6 @@ public class BossIce : BossCharacter
 			else
 				yield return null;
 		}
-
-
-
 		StartCoroutine (BossResult ());
 
 		yield break;
@@ -344,9 +297,60 @@ public class BossIce : BossCharacter
 				yield return null;
 
 		}
-		//Destroy (gameObject);
+		StartCoroutine (BossFinish ());
+
 		yield break;
 	}	
+
+	protected override IEnumerator BossFinish ()
+	{
+		yield return null;
+
+		//Effect Off
+		if(isStandardPhaseFailed == false)
+			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
+
+		//RepairPanel IceWall Off
+		if (iceWall.activeSelf == true)
+			ActiveIceWall ();
+
+		//Arbait IceWall off
+		DefreezeAllArbait();
+
+		//말풍선 off
+		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+			bossTalkPanel.bossTalkPanel.SetActive (false);
+
+		//예외 코루틴 모두 종료
+		StopCoroutine (BossSkillStandard ());
+		StopCoroutine (BossSkill_01 ());
+		StopCoroutine (BossSKill_02 ());
+		StopCoroutine (BossDie ());
+		StopCoroutine (BossResult ());
+
+		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+		repairObj.SetFinishBoss ();		//수리 패널 초기화
+
+		SpawnManager.Instance.m_nBatchArbaitCount = 0;
+
+		isFailed = false;
+		isStandardPhaseFailed = false;
+
+		if (bossBackGround.isBossBackGround == true) {
+			SpawnManager.Instance.bIsBossCreate = false;
+			bossBackGround.isBossBackGround = false;
+			bossBackGround.isOriginBackGround = true;
+		}
+		bossUIDisable.SetActive (false);
+
+		SpawnManager.Instance.ReliveArbaitBossRepair ();
+
+		gameObject.SetActive (false);
+		eCureentBossState = EBOSS_STATE.CREATEBOSS;
+		Debug.Log ("Finish Boss");
+
+
+	}
 
 	public void ActiveIceWall()
 	{
@@ -393,19 +397,29 @@ public class BossIce : BossCharacter
 	public void DefreezeAllArbait()
 	{
 		SpawnManager.Instance.GetFreezeArbait ();
-		for (int i = 0; i <SpawnManager.Instance.checkList.Count ; i++) 
+		//얼어있는 아르바이트가 없다면 그냥 return;
+		if (SpawnManager.Instance.checkList.Count == 0) 
 		{
-			BossIceWall iceWall_instance00 = iceWall_Arbait_Freeze [SpawnManager.Instance.checkList[i]].GetComponent<BossIceWall> ();
-			if (iceWall_instance00.nCurrentArbaitIndex != -1) 
-			{
-				iceWall_instance00.nCountBreakWall -= 10;
-				isIceWall_ArbaitOn [iceWall_instance00.nCurrentArbaitIndex] = false;
-				iceWall_instance00.DeFreezeArbaitAll (iceWall_instance00.nCurrentArbaitIndex);
-				//iceWall_Arbait_Freeze [SpawnManager.Instance.checkList[i]].SetActive (false);
-			}
+			Debug.Log ("No Freeze Arbait");
+			return;
 		}
-		Debug.Log ("DefreezeAll Arbait");
 
+		for (int i = 0; i < SpawnManager.Instance.checkList.Count ; i++) 
+		{
+			Debug.Log ("Max Temp DefreezeAll Arbait");
+			BossIceWall iceWall_Freeze = iceWall_Arbait_Freeze [SpawnManager.Instance.checkList[i]].GetComponent<BossIceWall> ();
+
+			iceWall_Freeze.DeFreezeArbaitAll ();
+		
+			iceWall_Arbait_Defreeze [SpawnManager.Instance.checkList[i]].SetActive (true);
+			isIceWall_ArbaitOn [SpawnManager.Instance.checkList[i]] = false;
+
+			BossArbaitDeFreeze bossDefreeze = null;
+			bossDefreeze = iceWall_Arbait_Defreeze [SpawnManager.Instance.checkList[i]].GetComponent<BossArbaitDeFreeze> ();
+			bossDefreeze.nIndex = SpawnManager.Instance.checkList[i];
+			bossDefreeze.StartDeFreeze ();
+			//SpawnManager.Instance.DeFreezeArbait (SpawnManager.Instance.checkList[i]);
+		}
 	}
 
 	public void ActiveTimer()

@@ -51,56 +51,6 @@ public class BossSasin : BossCharacter
 		StopCoroutine (BossResult ());
 	} 
 
-	private void Update()
-	{
-		if (eCureentBossState == EBOSS_STATE.FINISH) 
-		{
-			//효과 off
-			if(isStandardPhaseFailed == false)
-				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
-			//말풍선 off
-			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-				bossTalkPanel.bossTalkPanel.SetActive (false);
-
-			//혹시나 도는 코루틴들 종료
-			StopCoroutine (BossSkillStandard ());
-			StopCoroutine (BossSkill_01 ());
-			StopCoroutine (BossSKill_02 ());
-			StopCoroutine (BossDie ());
-			StopCoroutine (BossResult ());
-
-			Debug.Log ("Finish Boss");
-
-			repairObj.SetFinishBoss ();									//수리 패널 초기화
-
-			//상태 변수 초기화ㅏ
-			eCureentBossState = EBOSS_STATE.CREATEBOSS;
-			isFailed = false;
-			isStandardPhaseFailed = false;
-
-			//배경 초기화 
-			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-			if (bossBackGround.isBossBackGround == true) {
-				SpawnManager.Instance.bIsBossCreate = false;			//손님들 재등장
-			}
-			//UIBloack off
-			bossUIDisable.SetActive (false);						
-
-
-			SpawnManager.Instance.ReliveArbaitBossRepair ();
-
-			//남아 있는 해골 제거
-			while (bossSkullRespawnPoint.childCount != 0) 
-			{
-				GameObject go = bossSkullRespawnPoint.GetChild (0).gameObject;
-				skullObjectPool.ReturnObject(go);
-			}
-			gameObject.SetActive (false);
-			
-
-		}		
-	}
-
 	protected override IEnumerator BossWait ()
 	{
 
@@ -124,7 +74,7 @@ public class BossSasin : BossCharacter
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
 					ActiveTimer ();
-
+					uiDisable.isBossSummon = false;
 					break;
 				}
 			}
@@ -304,9 +254,55 @@ public class BossSasin : BossCharacter
 				yield return null;
 			
 		}
-		//Destroy (gameObject);
+		StartCoroutine (BossFinish ());
 		yield break;
 	}
+
+	protected override IEnumerator BossFinish ()
+	{
+		yield return null;
+
+		//효과 off
+		if(isStandardPhaseFailed == false)
+			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+		//말풍선 off
+		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+			bossTalkPanel.bossTalkPanel.SetActive (false);
+
+		//혹시나 도는 코루틴들 종료
+		StopCoroutine (BossSkillStandard ());
+		StopCoroutine (BossSkill_01 ());
+		StopCoroutine (BossSKill_02 ());
+		StopCoroutine (BossDie ());
+		StopCoroutine (BossResult ());
+
+		repairObj.SetFinishBoss ();									//수리 패널 초기화
+
+		//상태 변수 초기화
+		isFailed = false;
+		isStandardPhaseFailed = false;
+
+		//배경 초기화 
+		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+		if (bossBackGround.isBossBackGround == true) {
+			SpawnManager.Instance.bIsBossCreate = false;			//손님들 재등장
+		}
+		//UIBloack off
+		bossUIDisable.SetActive (false);						
+
+		SpawnManager.Instance.ReliveArbaitBossRepair ();
+
+		//남아 있는 해골 제거
+		while (bossSkullRespawnPoint.childCount != 0) 
+		{
+			GameObject go = bossSkullRespawnPoint.GetChild (0).gameObject;
+			skullObjectPool.ReturnObject(go);
+		}
+		eCureentBossState = EBOSS_STATE.CREATEBOSS;
+		gameObject.SetActive (false);
+		Debug.Log ("Finish Boss");
+	}
+
 
 	public void ActiveTimer()
 	{
@@ -335,7 +331,6 @@ public class BossSasin : BossCharacter
 
 		StartCoroutine (BossDie ());
 
-		//eCureentBossState = EBOSS_STATE.FINISH;
 	}
 
 	public void CreateSkull()

@@ -13,14 +13,14 @@ public class BossConsumeItemInfo : MonoBehaviour
 
 	private string strTime ="";
 
-	System.DateTime StartedTime = new System.DateTime();	//시작일 
-	System.DateTime EndData;							//게임을 끌 때의 데이터
+	System.DateTime StartedTime = new System.DateTime();				//시작일 
+	System.DateTime EndData;											//게임을 끌 때의 데이터
 	System.TimeSpan timeCal;
 
-	private int nInviteMentMaxCount = 5;				//초대장 최대 개수
-	public int nInviteMentCurCount = 5;				//초대장 현재 개수
+	private int nInviteMentMaxCount = 5;								//초대장 최대 개수
+	public int nInviteMentCurCount = 5;									//초대장 현재 개수
 
-	private int curMin;						//현재 분
+	private int curMin;													//현재 분
 	private int nInitTime_Min = 19;
 	private int nInitTime_sec = 59;
 
