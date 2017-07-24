@@ -105,12 +105,7 @@ public class BossIce : BossCharacter
 				ActiveIceWall ();
 			
 			if (fCurComplete < 0) {
-				isFailed = true;
-
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
@@ -164,10 +159,7 @@ public class BossIce : BossCharacter
 	
 			//Fail Condition
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
@@ -218,10 +210,7 @@ public class BossIce : BossCharacter
 
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >= fMaxComplete)

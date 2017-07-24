@@ -1,5 +1,6 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+<<<<<<< .merge_file_bs81Rl
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Enhance/MaxWaterPanelUI.cs">
     <Files>
       <File FileName="Assets/Scripts/InGame/Arbait/BrownHair.cs" Line="1" Column="1" />
@@ -32,6 +33,20 @@
       <File FileName="Assets/Scripts/InGame/UI/Enhance/RepairPanelUI.cs" Line="19" Column="2" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/SmithPanelUI.cs" Line="26" Column="4" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" Line="11" Column="17" />
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossFire.cs">
+    <Files>
+      <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="41" Column="38" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="308" Column="2" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="707" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="268" Column="42" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="344" Column="56" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/SkullObject.cs" Line="91" Column="52" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIce.cs" Line="108" Column="18" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossSmallFireObject.cs" Line="35" Column="59" />
+      <File FileName="Assets/Unity-Logs-Viewer/Reporter/Reporter.cs" Line="1789" Column="1" />
+>>>>>>> .merge_file_qW3BLB
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
@@ -48,8 +63,19 @@
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Manager/SpawnManager.cs" line="462" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Player/NormalCharacter.cs" line="228" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Player/NormalCharacter.cs" line="169" column="1" />
+<<<<<<< .merge_file_bs81Rl
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" line="22" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/UI/Enhance/RepairPanelUI.cs" line="22" column="1" />
+=======
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/Manager/SpawnManager.cs" line="603" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossIce.cs" line="397" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/Manager/SpawnManager.cs" line="572" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="771" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossMusic.cs" line="208" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossSmallFireObject.cs" line="30" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossFire.cs" line="328" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossMusic.cs" line="336" column="1" />
+>>>>>>> .merge_file_qW3BLB
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

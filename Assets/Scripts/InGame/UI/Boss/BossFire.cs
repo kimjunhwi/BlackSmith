@@ -11,23 +11,31 @@ public class BossFire : BossCharacter
 	private float fRandomXPos;							//불 등장 포인트의 랜덤 x좌표
 	private float fRandomYPos;							//불 등장 포인트의 랜덤 y좌표
 
-	private SimpleObjectPool smallFirePool;
-	public RectTransform smallFireRespawnPoint;
+	private SimpleObjectPool smallFirePool;				//불시 ObjPool
+	public RectTransform smallFireRespawnPoint;			//불씨 생성지점
 
 	private int nSmallFireMaxCount;						//작은 불 개수(최대)
 	private int nCurFireCount;							//작은 불 개수(현재)
+
+	public GameObject FireBoom;							//불씨 터질때의 Obj
+	private Animator FireBoomAnimator;					//불씨 Animator
+
 
 	//tmpValue
 	private GameObject smallFire;
 	private float fTime = 0f;
 
+
+
 	private void Start()
 	{
-		nSmallFireMaxCount = 5;
+		nSmallFireMaxCount = 12;
 		animator = gameObject.GetComponent<Animator> ();
 		smallFirePool = GameObject.Find ("SmallFirePool").GetComponent<SimpleObjectPool> ();
 		fXPos = smallFireRespawnPoint.position.x;
 		fYPos = smallFireRespawnPoint.position.y;
+		FireBoomAnimator = FireBoom.GetComponent<Animator> ();
+		FireBoom.SetActive (false);
 
 		gameObject.SetActive (false);
 	}
@@ -55,10 +63,8 @@ public class BossFire : BossCharacter
 		
 	protected override IEnumerator BossWait ()
 	{
-
 		while (true)
 		{
-
 			//무기 이미지 추가
 			if (bossBackGround.isBossBackGround == true) {
 
@@ -74,8 +80,8 @@ public class BossFire : BossCharacter
 					yield return null;
 
 
-				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-
+				if (eCureentBossState == EBOSS_STATE.PHASE_00) 
+				{
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
 					ActiveTimer ();
 					uiDisable.isBossSummon = false;
@@ -110,17 +116,12 @@ public class BossFire : BossCharacter
 				CreateSmallFire ();
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
+				
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30) {
 				eCureentBossState = EBOSS_STATE.PHASE_01;
-				animator.SetBool ("isPhase00", true);
 			}
 			if (eCureentBossState == EBOSS_STATE.PHASE_01)
 				break;
@@ -138,7 +139,7 @@ public class BossFire : BossCharacter
 		nSmallFireMaxCount = 10;
 		bossTalkPanel.StartShowBossTalkWindow (2f, "흐으음~~~");
 
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_FIREANGRY);
 		isStandardPhaseFailed = false;
 
 		while (true)
@@ -157,16 +158,11 @@ public class BossFire : BossCharacter
 				CreateSmallFire ();
 
 			if (fCurComplete < 0) {
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60) {
 				eCureentBossState = EBOSS_STATE.PHASE_02;
-				animator.SetBool ("isPhase01", true);
 			}
 			if (eCureentBossState == EBOSS_STATE.PHASE_02)
 				break;
@@ -180,15 +176,12 @@ public class BossFire : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
-		
 		nSmallFireMaxCount = 20;
-
 		bossTalkPanel.StartShowBossTalkWindow (2f,"파이어 ~~~!");
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (smallFireRespawnPoint.sizeDelta.x/2), fXPos + (smallFireRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (smallFireRespawnPoint.sizeDelta.y/2), fYPos + (smallFireRespawnPoint.sizeDelta.y/2));
-
 
 			fTime += Time.deltaTime;
 
@@ -198,14 +191,50 @@ public class BossFire : BossCharacter
 
 			if (fTime >= 2.0f  && nCurFireCount < 20 )
 				CreateSmallFire ();
-			
 
+			//불씨 개수 10개 일시 터진다
+			if (nCurFireCount >= 10)
+			{
+				FireBoom.SetActive (true);
+				FireBoomAnimator.SetBool ("isBoom", true);
+				int nRemoveCount = 0;
+
+				//물 현재량 0
+				repairObj.fCurrentWater = 0f;
+				//온도 최대로
+				repairObj.SetMaxTempuratrue();
+
+				if (smallFireRespawnPoint.childCount >= 10) 
+				{
+					nRemoveCount = 10;
+					nCurFireCount -= 10;
+				} 
+				else
+				{
+					nRemoveCount = smallFireRespawnPoint.childCount;
+					nCurFireCount -= nRemoveCount;
+				}
+				while (nRemoveCount != 0) 
+				{
+					GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;
+					smallFirePool.ReturnObject (go);
+					nRemoveCount--;
+
+					//불씨 하나당 물 충전량 -3%
+					repairObj.fSmallFireMinusWater -= (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
+					//불씨 하나당 온도 증가량 10%
+					repairObj.fSmallFirePlusTemperatrue -= 0.1f;
+				}
+				yield return new WaitForSeconds (0.45f);
+				FireBoomAnimator.SetBool ("isBoom", false);
+				FireBoomAnimator.Play ("BossIdle");
+				FireBoom.SetActive (false);
+			}
+				
+		
 			if (fCurComplete < 0) 
 			{
-				isFailed = true;
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-				eCureentBossState = EBOSS_STATE.FINISH;
+				FailState ();
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -225,20 +254,27 @@ public class BossFire : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
+		Debug.Log ("Boss Die");
+	
+		
+		while (smallFireRespawnPoint.childCount != 0) 
+		{
+			GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;
+			smallFirePool.ReturnObject(go);
+		}
 
 		bossTalkPanel.StartShowBossTalkWindow (2f, "Bye~~~!");
+
+		animator.SetBool ("isDisappear", true);
+
 		while (true)
 		{
-			animator.SetBool ("isDisappear", true);
-
-			yield return new WaitForSeconds (0.1f);
+			yield return new WaitForSeconds (0.8f);
 
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
 			{
 				animator.SetBool ("isAppear", false);
-				animator.SetBool ("isPhase00", false);
-				animator.SetBool ("isPhase01", false);
 				animator.SetBool ("isDisappear", false);
 				animator.SetBool ("isBackGroundChanged", false);	
 				break;
@@ -290,11 +326,10 @@ public class BossFire : BossCharacter
 	protected override IEnumerator BossFinish ()
 	{
 		yield return null;
-
 		//Effect Off
 		if(isStandardPhaseFailed == false)
-			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
-
+			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_FIREANGRY);
+		
 		//말풍선 off
 		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 			bossTalkPanel.bossTalkPanel.SetActive (false);
@@ -324,11 +359,7 @@ public class BossFire : BossCharacter
 
 		SpawnManager.Instance.ReliveArbaitBossRepair ();
 
-		while (smallFireRespawnPoint.childCount != 0) 
-		{
-			GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;
-			smallFirePool.ReturnObject(go);
-		}
+	
 
 		eCureentBossState = EBOSS_STATE.CREATEBOSS;
 
@@ -361,9 +392,9 @@ public class BossFire : BossCharacter
 	{
 		isFailed = true;
 
-		StopCoroutine (BossSkillStandard ());
-		StopCoroutine (BossSkill_01 ());
-		StopCoroutine (BossSKill_02 ());
+		//StopCoroutine (BossSkillStandard ());
+		//StopCoroutine (BossSkill_01 ());
+		//StopCoroutine (BossSKill_02 ());
 
 		StartCoroutine (BossDie ());
 	}
@@ -374,8 +405,12 @@ public class BossFire : BossCharacter
 		smallFire.transform.SetParent (smallFireRespawnPoint.transform,false);
 		smallFire.transform.localScale = Vector3.one;
 		smallFire.transform.position = new Vector3 (fRandomXPos, fRandomYPos, smallFire.transform.position.z);
-		smallFire.name = "SmallFire";
+		smallFire.name = "SmallFireTouch";
 
+		//불씨 하나당 물 충전량 -3%
+		repairObj.fSmallFireMinusWater += (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
+		//불씨 하나당 온도 증가량 10%
+		repairObj.fSmallFirePlusTemperatrue += 0.1f;
 
 		BossSmallFireObject smallFireObj = smallFire.GetComponent<BossSmallFireObject> ();
 		smallFireObj.smallFireObjPull = smallFirePool;

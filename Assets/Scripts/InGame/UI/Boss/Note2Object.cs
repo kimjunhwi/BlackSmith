@@ -60,34 +60,47 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	{
 		while (true) 
 		{
-			transform.Translate (fMoveSpeed * randomDir);
+			yield return null;
+
 
 			//4면 충돌 확인
-			if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 11f )) {
+			if (myRectTransform.anchoredPosition.x >= (((canvasWidth / 2) - (noteSizeWidth / 2)) + 10f))
+			{
 				//Debug.Log ("Right Collision");
 				randomDir = Vector3.Reflect (randomDir, Vector3.left);
+				randomDir = new Vector3 (-1.0f, randomDir.y, 0f);
 			}
 
-			else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 20f )) 
+			else if (myRectTransform.anchoredPosition.x <= -(((canvasWidth / 2) - (noteSizeWidth / 2)) + 29f))
 			{
 				//Debug.Log ("Left Collision");
 				randomDir = Vector3.Reflect (randomDir, Vector3.right);
+				randomDir = new Vector3 (1.0f, randomDir.y, 0f);
 			}
 
-			else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2)) + 16f )) 
+			else if (myRectTransform.anchoredPosition.y >= (((canvasHeight/2) - (noteSizeHeight / 2))))
 			{
 				//Debug.Log ("Top Collision");
 				randomDir = Vector3.Reflect (randomDir, Vector3.down);
+				randomDir = new Vector3 (randomDir.x, -1.0f, 0f);
 			}
 
-			else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 7f )) 
+			else if (myRectTransform.anchoredPosition.y <= -(((canvasHeight / 2) - (noteSizeHeight / 2)) - 5f)) 
 			{
 				//Debug.Log ("Down Collision");
 				randomDir = Vector3.Reflect (randomDir, Vector3.up);
+				randomDir = new Vector3 (randomDir.x, 1.0f, 0f);
 			}
+			randomDir = randomDir.normalized;
 
-			//randomDir.Normalize ();
-			yield return null;
+			#if UNITY_EDITOR
+			transform.Translate (fMoveSpeed * randomDir);
+
+			#elif UNITY_ANDROID
+			transform.Translate (fMoveSpeed * randomDir * 1.5f);
+
+			#endif
+
 		}
 		yield break;
 	}

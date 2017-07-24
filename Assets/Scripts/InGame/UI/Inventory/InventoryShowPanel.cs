@@ -124,7 +124,11 @@ public class InventoryShowPanel : MonoBehaviour {
 	{
 		ItemData = _equiment;
 
+<<<<<<< .merge_file_HQImLR
 		NameText.text = string.Format("{0} +{1}", ItemData.strName , ItemData.nStrenthCount);
+=======
+		NameText.text = ItemData.strName;
+>>>>>>> .merge_file_KQCywM
 
 		GradeText.text = ItemData.nGrade.ToString ();
 

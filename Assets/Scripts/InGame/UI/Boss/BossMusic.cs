@@ -23,8 +23,8 @@ public class BossMusic : BossCharacter
 
 
 	//Reflect 관련
-	private bool isReflect 	= false;			  //루시우 반사 여부 
-	private bool isSwitch 	= false;
+	public bool isReflect 	= false;			  //루시우 반사 여부 
+	public bool isSwitch 	= false;
 
 	private float fCurReflectTime = 0f;			  //현재 시간
 	private float fReflectRoutineTime = 5f;	  	  //반사 주기 시간 (5초마다 바뀐다)
@@ -90,8 +90,6 @@ public class BossMusic : BossCharacter
 			}
 			else
 				yield return null;
-
-
 		}
 		StartCoroutine (BossSkillStandard ());
 		yield break;
@@ -120,28 +118,26 @@ public class BossMusic : BossCharacter
 				isSwitch = false;
 				isReflect = false;
 				fCurReflectTime = 0f;
-				Debug.Log ("상태 변환 : 반사 -> 노말");
+				//Debug.Log ("상태 변환 : 반사 -> 노말");
 			}
 				
 			//NonReflect
 			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
 			{
-				Debug.Log ("노말 상태!");
+				//Debug.Log ("노말 상태!");
 			}
 
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				Debug.Log ("상태 변환 : 노말 -> 반사");
+				//Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
 
 			//Reflect
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
-				isReflect = false;
-				isSwitch = false;
-				Debug.Log ("반사 상태!");
+				//Debug.Log ("반사 상태!");
 			}
 				
 
@@ -200,28 +196,26 @@ public class BossMusic : BossCharacter
 				isSwitch = false;
 				isReflect = false;
 				fCurReflectTime = 0f;
-				Debug.Log ("상태 변환 : 반사 -> 노말");
+				//Debug.Log ("상태 변환 : 반사 -> 노말");
 			}
 
 			//NonReflect
 			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
 			{
-				Debug.Log ("노말 상태!");
+				//Debug.Log ("노말 상태!");
 			}
 
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				Debug.Log ("상태 변환 : 노말 -> 반사");
+				//Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
 
 			//Reflect
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
-				isReflect = false;
-				isSwitch = false;
-				Debug.Log ("반사 상태!");
+				//Debug.Log ("반사 상태!");
 			}
 
 		
@@ -268,28 +262,26 @@ public class BossMusic : BossCharacter
 				isSwitch = false;
 				isReflect = false;
 				fCurReflectTime = 0f;
-				Debug.Log ("상태 변환 : 반사 -> 노말");
+				//Debug.Log ("상태 변환 : 반사 -> 노말");
 			}
 
 			//NonReflect
 			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
 			{
-				Debug.Log ("노말 상태!");
+				//Debug.Log ("노말 상태!");
 			}
 
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				Debug.Log ("상태 변환 : 노말 -> 반사");
+				//Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
 
 			//Reflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
+			if (fCurReflectTime <= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
-				isReflect = false;
-				isSwitch = false;
-				Debug.Log ("반사 상태!");
+				//Debug.Log ("반사 상태!");
 			}
 
 
@@ -393,6 +385,7 @@ public class BossMusic : BossCharacter
 		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 		repairObj.SetFinishBoss ();									//수리 패널 초기화
 	
+	
 
 		//변수 초기화  
 		isStandardPhaseFailed = false;
@@ -416,6 +409,13 @@ public class BossMusic : BossCharacter
 			GameObject go = bossNoteRespawnPoint.GetChild (0).gameObject;
 			noteObjectPool.ReturnObject(go);
 		}
+
+		//반사 상태 초기화
+		isReflect = false;
+		isSwitch = false;
+		fCurReflectTime = 0f;
+		fReflectRoutineTime = 5f;
+
 		eCureentBossState = EBOSS_STATE.CREATEBOSS;					//현재 보스 상태 초기화
 		gameObject.SetActive (false);
 		Debug.Log ("Finish Boss");

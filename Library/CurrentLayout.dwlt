@@ -13,6 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: -0
     y: 23
     width: 874
@@ -20,6 +21,15 @@ MonoBehaviour:
   m_ShowMode: 0
   m_Title: 
   m_RootView: {fileID: 4}
+=======
+    x: 207.5
+    y: 137
+    width: 749
+    height: 346
+  m_ShowMode: 0
+  m_Title: 
+  m_RootView: {fileID: 5}
+>>>>>>> .merge_file_ZDZaw0
   m_MinSize: {x: 100, y: 122}
   m_MaxSize: {x: 4000, y: 4022}
 --- !u!114 &2
@@ -35,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PixelRect:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 0
     y: 45
     width: 1280
@@ -45,6 +56,40 @@ MonoBehaviour:
   m_MinSize: {x: 950, y: 545}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &3
+=======
+    x: 207.5
+    y: 137
+    width: 749
+    height: 346
+  m_ShowMode: 0
+  m_Title: 
+  m_RootView: {fileID: 7}
+  m_MinSize: {x: 100, y: 122}
+  m_MaxSize: {x: 4000, y: 4022}
+--- !u!114 &3
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12004, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PixelRect:
+    serializedVersion: 2
+    x: 0
+    y: 44
+    width: 1280
+    height: 707
+  m_ShowMode: 4
+  m_Title: 
+  m_RootView: {fileID: 8}
+  m_MinSize: {x: 950, y: 492}
+  m_MaxSize: {x: 10000, y: 10000}
+--- !u!114 &4
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -60,6 +105,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< .merge_file_al3s2L
     width: 874
     height: 712
   m_MinSize: {x: 100, y: 122}
@@ -70,6 +116,18 @@ MonoBehaviour:
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &4
+=======
+    width: 749
+    height: 346
+  m_MinSize: {x: 100, y: 122}
+  m_MaxSize: {x: 4000, y: 4022}
+  m_ActualView: {fileID: 19}
+  m_Panes:
+  - {fileID: 19}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &5
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -81,11 +139,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
+<<<<<<< .merge_file_al3s2L
   - {fileID: 3}
+=======
+  - {fileID: 4}
+>>>>>>> .merge_file_ZDZaw0
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< .merge_file_al3s2L
     width: 874
     height: 712
   m_MinSize: {x: 100, y: 122}
@@ -93,6 +156,71 @@ MonoBehaviour:
   vertical: 0
   controlID: 16554
 --- !u!114 &5
+=======
+    width: 749
+    height: 346
+  m_MinSize: {x: 100, y: 122}
+  m_MaxSize: {x: 4000, y: 4022}
+  vertical: 0
+  controlID: 38527
+--- !u!114 &6
+>>>>>>> .merge_file_ZDZaw0
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+<<<<<<< .merge_file_al3s2L
+  m_Script: {fileID: 12008, guid: 0000000000000000e000000000000000, type: 0}
+=======
+  m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children: []
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 749
+    height: 346
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 20}
+  m_Panes:
+  - {fileID: 20}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &7
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12010, guid: 0000000000000000e000000000000000, type: 0}
+>>>>>>> .merge_file_ZDZaw0
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Children:
+  - {fileID: 6}
+<<<<<<< .merge_file_al3s2L
+  - {fileID: 8}
+  - {fileID: 7}
+=======
+  m_Position:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 749
+    height: 346
+  m_MinSize: {x: 100, y: 122}
+  m_MaxSize: {x: 4000, y: 4022}
+  vertical: 0
+  controlID: 23211
+--- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -104,18 +232,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
-  - {fileID: 6}
-  - {fileID: 8}
-  - {fileID: 7}
+  - {fileID: 9}
+  - {fileID: 11}
+  - {fileID: 10}
+>>>>>>> .merge_file_ZDZaw0
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
     width: 1280
+<<<<<<< .merge_file_al3s2L
     height: 687
   m_MinSize: {x: 950, y: 545}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &6
+=======
+    height: 707
+  m_MinSize: {x: 950, y: 300}
+  m_MaxSize: {x: 10000, y: 10000}
+--- !u!114 &9
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -136,7 +272,11 @@ MonoBehaviour:
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
   m_LastLoadedLayoutName: 
+<<<<<<< .merge_file_al3s2L
 --- !u!114 &7
+=======
+--- !u!114 &10
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -151,12 +291,20 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+<<<<<<< .merge_file_al3s2L
     y: 667
+=======
+    y: 687
+>>>>>>> .merge_file_ZDZaw0
     width: 1280
     height: 20
   m_MinSize: {x: 0, y: 0}
   m_MaxSize: {x: 0, y: 0}
+<<<<<<< .merge_file_al3s2L
 --- !u!114 &8
+=======
+--- !u!114 &11
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -168,20 +316,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
+<<<<<<< .merge_file_al3s2L
   - {fileID: 9}
   - {fileID: 12}
   - {fileID: 15}
+=======
+  - {fileID: 12}
+  - {fileID: 15}
+  - {fileID: 18}
+>>>>>>> .merge_file_ZDZaw0
   m_Position:
     serializedVersion: 2
     x: 0
     y: 30
     width: 1280
+<<<<<<< .merge_file_al3s2L
     height: 637
   m_MinSize: {x: 713, y: 495}
   m_MaxSize: {x: 18008, y: 14045}
   vertical: 0
   controlID: 17152
 --- !u!114 &9
+=======
+    height: 657
+  m_MinSize: {x: 679, y: 442}
+  m_MaxSize: {x: 12008, y: 8042}
+  vertical: 0
+  controlID: 44306
+--- !u!114 &12
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -193,12 +356,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
+<<<<<<< .merge_file_al3s2L
   - {fileID: 10}
   - {fileID: 11}
+=======
+  - {fileID: 13}
+  - {fileID: 14}
+>>>>>>> .merge_file_ZDZaw0
   m_Position:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< .merge_file_al3s2L
     width: 473
     height: 637
   m_MinSize: {x: 202, y: 342}
@@ -206,6 +375,15 @@ MonoBehaviour:
   vertical: 1
   controlID: 17153
 --- !u!114 &10
+=======
+    width: 566
+    height: 657
+  m_MinSize: {x: 202, y: 442}
+  m_MaxSize: {x: 4002, y: 8042}
+  vertical: 1
+  controlID: 44307
+--- !u!114 &13
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -221,6 +399,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< .merge_file_al3s2L
     width: 473
     height: 327
   m_MinSize: {x: 102, y: 121}
@@ -232,6 +411,20 @@ MonoBehaviour:
   m_Selected: 1
   m_LastSelected: 0
 --- !u!114 &11
+=======
+    width: 566
+    height: 337
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 22}
+  m_Panes:
+  - {fileID: 22}
+  - {fileID: 23}
+  - {fileID: 24}
+  m_Selected: 0
+  m_LastSelected: 2
+--- !u!114 &14
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -246,6 +439,7 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+<<<<<<< .merge_file_al3s2L
     y: 327
     width: 473
     height: 310
@@ -257,6 +451,19 @@ MonoBehaviour:
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &12
+=======
+    y: 337
+    width: 566
+    height: 320
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 21}
+  m_Panes:
+  - {fileID: 21}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &15
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -268,6 +475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Children:
+<<<<<<< .merge_file_al3s2L
   - {fileID: 13}
   - {fileID: 14}
   m_Position:
@@ -281,6 +489,21 @@ MonoBehaviour:
   vertical: 1
   controlID: 17130
 --- !u!114 &13
+=======
+  - {fileID: 16}
+  - {fileID: 17}
+  m_Position:
+    serializedVersion: 2
+    x: 566
+    y: 0
+    width: 437
+    height: 657
+  m_MinSize: {x: 200, y: 321}
+  m_MaxSize: {x: 4004, y: 8021}
+  vertical: 1
+  controlID: 44363
+--- !u!114 &16
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -296,6 +519,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
+<<<<<<< .merge_file_al3s2L
     width: 490
     height: 322
   m_MinSize: {x: 202, y: 224}
@@ -306,6 +530,18 @@ MonoBehaviour:
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &14
+=======
+    width: 437
+    height: 332
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 25}
+  m_Panes:
+  - {fileID: 25}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &17
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -320,6 +556,7 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
+<<<<<<< .merge_file_al3s2L
     y: 322
     width: 490
     height: 315
@@ -332,6 +569,20 @@ MonoBehaviour:
   m_Selected: 0
   m_LastSelected: 1
 --- !u!114 &15
+=======
+    y: 332
+    width: 437
+    height: 325
+  m_MinSize: {x: 104, y: 121}
+  m_MaxSize: {x: 4004, y: 4021}
+  m_ActualView: {fileID: 27}
+  m_Panes:
+  - {fileID: 26}
+  - {fileID: 27}
+  m_Selected: 1
+  m_LastSelected: 0
+--- !u!114 &18
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -345,6 +596,7 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 963
     y: 0
     width: 317
@@ -357,6 +609,20 @@ MonoBehaviour:
   m_Selected: 0
   m_LastSelected: 0
 --- !u!114 &16
+=======
+    x: 1003
+    y: 0
+    width: 277
+    height: 657
+  m_MinSize: {x: 277, y: 71}
+  m_MaxSize: {x: 4002, y: 4021}
+  m_ActualView: {fileID: 28}
+  m_Panes:
+  - {fileID: 28}
+  m_Selected: 0
+  m_LastSelected: 0
+--- !u!114 &19
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -364,20 +630,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 1
+<<<<<<< .merge_file_al3s2L
   m_Script: {fileID: 12071, guid: 0000000000000000e000000000000000, type: 0}
+=======
+  m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
+>>>>>>> .merge_file_ZDZaw0
   m_Name: 
   m_EditorClassIdentifier: 
   m_AutoRepaintOnSceneChange: 0
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 4000, y: 4000}
   m_TitleContent:
+<<<<<<< .merge_file_al3s2L
     m_Text: Animation
     m_Image: {fileID: 1561878555887300916, guid: 0000000000000000d000000000000000,
+=======
+    m_Text: Console
+    m_Image: {fileID: 111653112392082826, guid: 0000000000000000d000000000000000,
+>>>>>>> .merge_file_ZDZaw0
       type: 0}
     m_Tooltip: 
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 0
     y: 22
     width: 874
@@ -385,6 +661,39 @@ MonoBehaviour:
   m_AnimEditor: {fileID: 0}
   m_Locked: 0
 --- !u!114 &17
+=======
+    x: 208
+    y: 159
+    width: 749
+    height: 324
+--- !u!114 &20
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12003, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AutoRepaintOnSceneChange: 0
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Console
+    m_Image: {fileID: 111653112392082826, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_DepthBufferBits: 0
+  m_Pos:
+    serializedVersion: 2
+    x: 208
+    y: 159
+    width: 749
+    height: 324
+--- !u!114 &21
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -407,10 +716,17 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
+<<<<<<< .merge_file_al3s2L
     y: 19
     width: 471
     height: 289
   m_MaximizeOnPlay: 1
+=======
+    y: 431
+    width: 564
+    height: 299
+  m_MaximizeOnPlay: 0
+>>>>>>> .merge_file_ZDZaw0
   m_Gizmos: 0
   m_Stats: 0
   m_SelectedSizes: 00000000000000000000000013000000000000000000000000000000000000000000000000000000
@@ -438,16 +754,24 @@ MonoBehaviour:
       serializedVersion: 2
       x: 0
       y: 17
+<<<<<<< .merge_file_al3s2L
       width: 471
       height: 272
     m_Scale: {x: 0.425, y: 0.425}
     m_Translation: {x: 235.5, y: 136}
+=======
+      width: 564
+      height: 282
+    m_Scale: {x: 0.2203125, y: 0.2203125}
+    m_Translation: {x: 282, y: 141}
+>>>>>>> .merge_file_ZDZaw0
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
     m_MarginBottom: 0
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
       x: -554.1176
       y: -320
       width: 1108.2352
@@ -461,6 +785,21 @@ MonoBehaviour:
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000001000100000100
 --- !u!114 &18
+=======
+      x: -1280
+      y: -640
+      width: 2560
+      height: 1280
+    m_MinimalGUI: 1
+  m_defaultScale: 0.2203125
+  m_TargetTexture: {fileID: 0}
+  m_CurrentColorSpace: 0
+  m_LastWindowPixelSize: {x: 564, y: 299}
+  m_ClearInEditMode: 1
+  m_NoCameraWarning: 1
+  m_LowResolutionForAspectRatios: 01000001000100000100
+--- !u!114 &22
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -483,18 +822,32 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
+<<<<<<< .merge_file_al3s2L
     y: 19
     width: 471
     height: 306
   m_SceneLighting: 1
   lastFramingTime: 12516.67781496048
+=======
+    y: 94
+    width: 564
+    height: 316
+  m_SceneLighting: 1
+  lastFramingTime: 20609.65754801035
+>>>>>>> .merge_file_ZDZaw0
   m_2DMode: 1
   m_isRotationLocked: 0
   m_AudioPlay: 0
   m_Position:
+<<<<<<< .merge_file_al3s2L
     m_Target: {x: 147.48798, y: 1072.2549, z: 0}
     speed: 2
     m_Value: {x: 147.48798, y: 1072.2549, z: 0}
+=======
+    m_Target: {x: 311.39233, y: 910.0422, z: 0}
+    speed: 2
+    m_Value: {x: 311.39233, y: 910.0422, z: 0}
+>>>>>>> .merge_file_ZDZaw0
   m_RenderMode: 0
   m_ValidateTrueMetals: 0
   m_SceneViewState:
@@ -521,9 +874,15 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
+<<<<<<< .merge_file_al3s2L
     m_Target: 503.3325
     speed: 2
     m_Value: 503.3325
+=======
+    m_Target: 704.83496
+    speed: 2
+    m_Value: 704.83496
+>>>>>>> .merge_file_ZDZaw0
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -534,7 +893,39 @@ MonoBehaviour:
   m_ReplacementString: 
   m_LastLockedObject: {fileID: 0}
   m_ViewIsLockedToObject: 0
+<<<<<<< .merge_file_al3s2L
 --- !u!114 &19
+=======
+--- !u!114 &23
+MonoBehaviour:
+  m_ObjectHideFlags: 52
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 1
+  m_Script: {fileID: 12071, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AutoRepaintOnSceneChange: 0
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_TitleContent:
+    m_Text: Animation
+    m_Image: {fileID: 1561878555887300916, guid: 0000000000000000d000000000000000,
+      type: 0}
+    m_Tooltip: 
+  m_DepthBufferBits: 0
+  m_Pos:
+    serializedVersion: 2
+    x: 0
+    y: 94
+    width: 564
+    height: 316
+  m_AnimEditor: {fileID: 0}
+  m_Locked: 0
+--- !u!114 &24
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -557,6 +948,7 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
+<<<<<<< .merge_file_al3s2L
     y: 19
     width: 471
     height: 306
@@ -570,6 +962,39 @@ MonoBehaviour:
     type: 2}
   m_BreadCrumbs:
   - m_Target: {fileID: 1107445618083812836, guid: e55741ebdc5908843af229ee4b5ce55c,
+=======
+    y: 94
+    width: 564
+    height: 316
+  m_ViewPositions:
+    m_KeySerializationHelper:
+    - {fileID: 1107203672384889502, guid: 5b5bb0529c1ea48f886af4745e2a165b, type: 2}
+    - {fileID: 1107294593144637212, guid: c880d62084b934a6284842a46cc8097c, type: 2}
+    - {fileID: 1107956262348443446, guid: adef0d9058e974be49d3b216e97da07e, type: 2}
+    - {fileID: 1107295425310513568, guid: 7e08b5d64f25844049650a23386437f0, type: 2}
+    - {fileID: 1107782922010621976, guid: fe5a5de6a15aa448db647955fd0e7231, type: 2}
+    - {fileID: 1107467869805978190, guid: d0bdfa98f0fea4d25af79c4fd56e9de8, type: 2}
+    - {fileID: 1107327260417875798, guid: a4268ad2ffb28453a910383ed375b873, type: 2}
+    - {fileID: 1107956262348443446, guid: f5250294a14825c40a979ae64ca49cf9, type: 2}
+    - {fileID: 1107131303884216000, guid: 5253b092af9524ebe9036cf7c414d627, type: 2}
+    - {fileID: 1107445618083812836, guid: e55741ebdc5908843af229ee4b5ce55c, type: 2}
+    m_ValueSerializationHelper:
+    - {x: 288.40002, y: 169.6}
+    - {x: 288.40002, y: 297.6}
+    - {x: 302.40002, y: 249.6}
+    - {x: 366.6, y: 100.600006}
+    - {x: 288.40002, y: 169.6}
+    - {x: 290.40002, y: 177.6}
+    - {x: 288.40002, y: 169.6}
+    - {x: 302.40002, y: 261.6}
+    - {x: 290.40002, y: 297.6}
+    - {x: 288.40002, y: 169.6}
+  m_PreviewAnimator: {fileID: 0}
+  m_AnimatorController: {fileID: 9100000, guid: c880d62084b934a6284842a46cc8097c,
+    type: 2}
+  m_BreadCrumbs:
+  - m_Target: {fileID: 1107294593144637212, guid: c880d62084b934a6284842a46cc8097c,
+>>>>>>> .merge_file_ZDZaw0
       type: 2}
     m_ScrollPosition: {x: 0, y: 0}
   stateMachineGraph: {fileID: 0}
@@ -580,10 +1005,17 @@ MonoBehaviour:
   m_LiveLinkFollowTransitions: 0
   m_MiniTool: 0
   m_SerializedLocked: 0
+<<<<<<< .merge_file_al3s2L
   m_CurrentEditor: 0
   m_LayerEditor:
     m_SelectedLayerIndex: 0
 --- !u!114 &20
+=======
+  m_CurrentEditor: 1
+  m_LayerEditor:
+    m_SelectedLayerIndex: 0
+--- !u!114 &25
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -605,15 +1037,26 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 2
     y: 19
     width: 486
     height: 301
+=======
+    x: 568
+    y: 94
+    width: 433
+    height: 311
+>>>>>>> .merge_file_ZDZaw0
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< .merge_file_al3s2L
     m_ExpandedIDs: 887bfcffd2c2fcffbad6fcffa0defcff32dffcff78e1fcff7ce1fcff80e1fcff44d6fdff7018ffff3c19ffff841bffff8a1bffff901bffffe227ffff5a28ffffa02affffa42affffa82affff8ab6ffff80d5ffff80f6ffffdcfbffff00000000583700003865000066670000d06700000e690000d66d0000346e000006440100724601008e460100b44c0100
+=======
+    m_ExpandedIDs: 8265f1ff5e0ff2ff0c7af2ffc27af2ff147df2ff1c7df2ff247df2ff1687f2ffa487f2fff889f2ff088af2ff188af2ffee03f3ff1422f3ff4665f3ff9c8af3ff828ff3ff84adf3ffc8aef3ff5ab2f3ff38c8f3fff0f0f3ffe432f4ff605ff4ffe869f4ff1e8af4ffd69bf4ffb4bdf4fffac2f4ffa2e2f4ff86edf4ff58eef4ff02f0f4ff5e11f5ff9c1ff5ff523ff5ff1e43f5ffe862f5ff3070f5ff94d5f5ff541ff6fff231f6ff4c56f6ffb898f6ff2ad1f6ff6212f7ff525af7ff3e7ef7ffc880f7fff2a9f7fff2acf7ff18cff7ff40d0f7ff28f3f7ffd6f3f7ff462bf8ff149bf8ff0aa0f8ffd8c9f8ff36eef8ff50eff8ffaa13f9ffe832f9ff92def9ff9cfdf9ff4249faffd2fcfaff8609fbffb80afbff2e0efbffb80ffbffea18fbff7419fbffb81bfbffbc1bfbffc01bfbff2c90fbffdc90fbff2093fbff2493fbff2893fbff721dfcff822bfcff002cfcff442efcff482efcff4c2efcffb635fcff2e36fcff7238fcff7638fcff7a38fcffec7efcff927ffcffda81fcffe281fcffea81fcff5cc0feffcac1feff5822ffffdaf8ffff98fbfffff4ffffff00000000ce360000708b0000de8c0000248e0000e48f0000a691000068e00100ccfb0100960002005801020004020200da0202004a03020070060200c6060200082c02002e2d0200762d0200f22e02004830020078360200705c02008a5f0200246002007e7f020098820200de8402004e8502008e9602000e9a0200549c0200dea20200a4ae0200fab802004ced0200bcee02007ef302003e010300580403000e0703003e0a0300940a0300be18030090190300d81b0300481d03008e1e030014220300a0270300562a0300dc2d0300403f030072540300746f03002a720300b07503005c870300128a0300988d03001690030030930300e69503006c9903004ca70300ccaa030008b10300a2bd030074c20300e4c303002ac50300b0c803007cda030032dd030036fb0300a62a0400782b0400484d0400ae4d0400804e0400c85004000e530400d0ab0400f2d10400faf4040040f7040036fb0400a80705009c1505009e300500943105000e3205005433050098340500583f05007c4f05004e54050044550500be5505000457050048580500788405006e850500e88505002e87050072880500348a05005e8a0500b48a0500ba2b0600
+>>>>>>> .merge_file_ZDZaw0
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -629,14 +1072,22 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 0
+<<<<<<< .merge_file_al3s2L
       m_ClientGUIView: {fileID: 13}
+=======
+      m_ClientGUIView: {fileID: 16}
+>>>>>>> .merge_file_ZDZaw0
     m_SearchString: 
   m_ExpandedScenes:
   - StartScene
   m_CurrenRootInstanceID: 0
   m_Locked: 0
   m_CurrentSortingName: TransformSorting
+<<<<<<< .merge_file_al3s2L
 --- !u!114 &21
+=======
+--- !u!114 &26
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -658,10 +1109,17 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 2
     y: 19
     width: 486
     height: 294
+=======
+    x: 568
+    y: 426
+    width: 433
+    height: 304
+>>>>>>> .merge_file_ZDZaw0
   m_SearchFilter:
     m_NameFilter: 
     m_ClassNames: []
@@ -673,6 +1131,7 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
+<<<<<<< .merge_file_al3s2L
     - Assets/Resources/Prefabs/Player
   m_ViewMode: 1
   m_StartGridSize: 16
@@ -686,6 +1145,21 @@ MonoBehaviour:
     m_SelectedIDs: a22c0000
     m_LastClickedID: 11426
     m_ExpandedIDs: 00000000e4250000ea25000010260000a8260000c8270000d2270000fa2700008a28000090280000a8280000d42800000a2900006c2900008a290000a4290000082a00003e2a0000742a0000e02a00006c2b0000a62c0000de2c0000dc2d0000ae2f0000503000005630000074300000b0300000da30000064310000b23100002632000028320000b4470000b6470000b8470000ba470000bc470000be470000c0470000c2470000c4470000c6470000c8470000ca470000cc47000000ca9a3bffffff7f
+=======
+    - Assets/StreamingAssets
+  m_ViewMode: 1
+  m_StartGridSize: 16
+  m_LastFolders:
+  - Assets/StreamingAssets
+  m_LastFoldersGridSize: 16
+  m_LastProjectPath: /Users/cheolgeungi/BlackSmith
+  m_IsLocked: 0
+  m_FolderTreeState:
+    scrollPos: {x: 0, y: 757}
+    m_SelectedIDs: 16300000
+    m_LastClickedID: 12310
+    m_ExpandedIDs: 00000000b0250000482600004e26000072260000082700002628000052280000de280000e4280000fc2800002829000058290000b8290000d2290000ec2900004c2a0000802a0000b22a00000c2b00001c2b0000a82b0000e42c00001c2d0000162e0000e02f0000703000007630000094300000d0300000f830000080310000ce3100004232000044320000ac430000ae430000b0430000b2430000b4430000b6430000b8430000ba430000bc430000be430000c0430000c2430000c443000000ca9a3bffffff7f
+>>>>>>> .merge_file_ZDZaw0
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -701,7 +1175,11 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
+<<<<<<< .merge_file_al3s2L
       m_ClientGUIView: {fileID: 14}
+=======
+      m_ClientGUIView: {fileID: 17}
+>>>>>>> .merge_file_ZDZaw0
     m_SearchString: 
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
@@ -713,7 +1191,11 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
+<<<<<<< .merge_file_al3s2L
     m_ExpandedIDs: 00000000e4250000ea25000010260000a8260000c8270000d2270000fa2700008a28000090280000a8280000d42800000a2900006c2900008a290000a4290000082a00003e2a0000742a0000e02a00006c2b0000a62c0000de2c0000dc2d0000ae2f0000503000005630000074300000b0300000da30000064310000b23100002632000028320000b4470000b6470000b8470000ba470000bc470000be470000c0470000c2470000c4470000c6470000c8470000ca470000cc47000000ca9a3bffffff7f
+=======
+    m_ExpandedIDs: 00000000b0250000482600004e26000072260000082700002628000052280000de280000e4280000fc2800002829000058290000b8290000d2290000ec2900004c2a0000802a0000b22a00000c2b00001c2b0000a82b0000e42c00001c2d0000162e0000e02f0000703000007630000094300000d0300000f830000080310000ce3100004232000044320000ac430000ae430000b0430000b2430000b4430000b6430000b8430000ba430000bc430000be430000c0430000c2430000c443000000ca9a3bffffff7f
+>>>>>>> .merge_file_ZDZaw0
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -741,7 +1223,11 @@ MonoBehaviour:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 0
+<<<<<<< .merge_file_al3s2L
     m_ExpandedInstanceIDs: 32290000
+=======
+    m_ExpandedInstanceIDs: 32290000eab10300e4b103004cb5f3ff
+>>>>>>> .merge_file_ZDZaw0
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -757,7 +1243,11 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
+<<<<<<< .merge_file_al3s2L
       m_ClientGUIView: {fileID: 0}
+=======
+      m_ClientGUIView: {fileID: 17}
+>>>>>>> .merge_file_ZDZaw0
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -767,8 +1257,13 @@ MonoBehaviour:
     m_NewAssetIndexInList: -1
     m_ScrollPosition: {x: 0, y: 0}
     m_GridSize: 16
+<<<<<<< .merge_file_al3s2L
   m_DirectoriesAreaWidth: 172
 --- !u!114 &22
+=======
+  m_DirectoriesAreaWidth: 209
+--- !u!114 &27
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -790,11 +1285,19 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 582
     y: 416
     width: 379
     height: 294
 --- !u!114 &23
+=======
+    x: 568
+    y: 426
+    width: 433
+    height: 304
+--- !u!114 &28
+>>>>>>> .merge_file_ZDZaw0
 MonoBehaviour:
   m_ObjectHideFlags: 52
   m_PrefabParentObject: {fileID: 0}
@@ -816,10 +1319,17 @@ MonoBehaviour:
   m_DepthBufferBits: 0
   m_Pos:
     serializedVersion: 2
+<<<<<<< .merge_file_al3s2L
     x: 2
     y: 19
     width: 315
     height: 616
+=======
+    x: 1005
+    y: 94
+    width: 275
+    height: 636
+>>>>>>> .merge_file_ZDZaw0
   m_ScrollPosition: {x: 0, y: 0}
   m_InspectorMode: 0
   m_PreviewResizer:
