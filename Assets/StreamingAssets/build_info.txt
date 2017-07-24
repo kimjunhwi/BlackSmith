@@ -1,5 +1,1 @@
-<<<<<<< .merge_file_8Q8pXD
-Build from 김준휘의 MacBook Pro at 07/24/2017 22:18:42
-=======
-Build from 철승의 MacBook Pro at 07/24/2017 22:08:46
->>>>>>> .merge_file_7EOfoh
+Build from 김준휘의 MacBook Pro at 07/24/2017 23:39:59
