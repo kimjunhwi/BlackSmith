@@ -32,8 +32,9 @@ public class BossSmallFireObject : MonoBehaviour, IPointerDownHandler
 		if (getInfoGameObject.gameObject == null)
 			return;
 
-		if (getInfoGameObject.gameObject.name == "SmallFire") 
+		if (getInfoGameObject.gameObject.name == "SmallFireTouch") 
 		{
+			
 			if (nTouchCount > 0)
 				nTouchCount--;
 		}

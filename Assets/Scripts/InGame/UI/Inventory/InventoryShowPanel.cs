@@ -77,7 +77,7 @@ public class InventoryShowPanel : MonoBehaviour {
 	{
 		ItemData = _equiment;
 
-		NameText.text = ItemData.strName + ItemData.n;
+		NameText.text = ItemData.strName;
 
 		GradeText.text = ItemData.nGrade.ToString ();
 

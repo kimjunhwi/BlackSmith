@@ -71,6 +71,7 @@ public class RepairObject : MonoBehaviour {
 	int nChancePercent = 50;									//미스 확률
 
 	//BossMusic
+	private BossMusic bossMusic;
 	private Vector3 randomDir;									//루시오 보스무기가 갈 랜덤 방향
 	private Vector3 getReflectDir;
 	private float fRandomX;										//랜덤 방향 X
@@ -89,6 +90,10 @@ public class RepairObject : MonoBehaviour {
 	private Vector2 bossWeaponSize;								//무기 이미지 만큼의 크기
 	public bool isMoveWeapon = false;
 	private float translateValue;
+
+	//BossFire
+	public float fSmallFireMinusWater = 0f;
+	public float fSmallFirePlusTemperatrue = 0f;
 
 	//WaterFx
 	public GameObject waterFxObj;
@@ -263,29 +268,32 @@ public class RepairObject : MonoBehaviour {
 			//Right Collision
 			if (bossWeaponRectTransform.anchoredPosition.x >= ((canvasWidth) - bossWeaponRectTransform.sizeDelta.x) - 120f)
 			{
-				getReflectDir = Vector3.Reflect (randomDir, Vector3.left);
-				randomDir = new Vector3 (getReflectDir.x, Random.Range ( -0.5f, 0.5f), getReflectDir.z);
+				randomDir = new Vector3 (-1.0f, Random.Range ( -0.5f, 0.5f), 0f);
 			} 
 			//left
 			else if (bossWeaponRectTransform.anchoredPosition.x <= -((canvasWidth - bossWeaponRectTransform.sizeDelta.x) - 75f)) 
 			{
-				getReflectDir = Vector3.Reflect (randomDir, Vector3.right);
-				randomDir = new Vector3 (getReflectDir.x, Random.Range ( -0.5f, 0.5f), getReflectDir.z);
+				randomDir = new Vector3 (1.0f, Random.Range ( -0.5f, 0.5f), 0f);
 			} 
 			//top
 			else if(bossWeaponRectTransform.anchoredPosition.y >= (canvasHeight) - (bossWeaponRectTransform.sizeDelta.y) - 50f)
 			{
-				getReflectDir = Vector3.Reflect (randomDir, Vector3.down);
-				randomDir = new Vector3 (Random.Range ( -0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
+				randomDir = new Vector3 (Random.Range ( -0.5f, 0.5f), -1.0f, 0f);
 			}
 			//bottom
 			else if (bossWeaponRectTransform.anchoredPosition.y <= -((canvasHeight) - ((bossWeaponRectTransform.sizeDelta.y * 3f) + 190f)))
 			{
-				getReflectDir = Vector3.Reflect (randomDir, Vector3.up);
-				randomDir = new Vector3 (Random.Range ( -0.5f, 0.5f), getReflectDir.y, getReflectDir.z);
+				randomDir = new Vector3 (Random.Range ( -0.5f, 0.5f), 1.0f, 0f);
 			}
 			randomDir = randomDir.normalized;
+
+			#if UNITY_EDITOR
 			bossWeaponObject.transform.Translate (fMoveSpeed * randomDir * Time.deltaTime);
+
+			#elif UNITY_ANDROID
+			bossWeaponObject.transform.Translate (fMoveSpeed * randomDir * Time.deltaTime * 2.5f);
+
+			#endif
 
 			if (isMoveWeapon == false)
 				yield break;
@@ -313,11 +321,12 @@ public class RepairObject : MonoBehaviour {
 
 					if (fBossMaxComplete == 0.0f)
 						fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
+					
 					else 
 					{
 						//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
 						//무기 실패취급으로 리턴
-						fCurrentComplate -= (fMaxTemperature * 0.3f);  
+						fCurrentComplate -= (fBossMaxComplete * 0.3f);  
 
 						if (fCurrentComplate <= 0) {
 							SpawnManager.Instance.bIsBossCreate = false;
@@ -348,12 +357,12 @@ public class RepairObject : MonoBehaviour {
 				}
 			}
 
-			if (fMaxWater > fCurrentWater) {
-
+			if (fMaxWater > fCurrentWater) 
+			{
 				fWaterSlideTime += Time.deltaTime;
-
 				WaterSlider.value = Mathf.Lerp (WaterSlider.value, fCurrentWater, fWaterSlideTime);
-			} else
+			} 
+			else
 				fCurrentWater = fMaxWater;
 
 			if (ComplateSlider.value != fCurrentComplate) 
@@ -375,7 +384,7 @@ public class RepairObject : MonoBehaviour {
 			fWaterSlideTime = 0.0f;
 			fTemperatureSlideTime = 0.0f;
 
-			fCurrentWater += fPlusWater;
+			fCurrentWater += (fPlusWater - fSmallFireMinusWater);
 
 			if (fCurrentTemperature > 0) {
 				fDownTemperature = (fMaxTemperature - fCurrentTemperature) * 0.05f;
@@ -460,7 +469,10 @@ public class RepairObject : MonoBehaviour {
 		else if (_bossData.nIndex == 2)
 			bossCharacter = _bossData;
 		else if (_bossData.nIndex == 3)
+		{
+			bossMusic = (BossMusic)_bossData;
 			bossCharacter = _bossData;
+		}
 		else
 			return;
 		
@@ -468,7 +480,7 @@ public class RepairObject : MonoBehaviour {
 		BossWeaponSprite.sprite = _sprite;
 		//weaponData = data;
 
-		fMaxTemperature = bossCharacter.bossInfo.fComplate * 0.3f;
+		fMaxTemperature = bossCharacter.bossInfo.fComplate * 0.03f;
 		TemperatureSlider.maxValue = fMaxTemperature;
 
 		fCurrentComplate = _fComplate;
@@ -697,19 +709,50 @@ public class RepairObject : MonoBehaviour {
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) 
 			{
 				//물 충전량 50% 감소
+				//Player의 기본 능력치에 따른 크리 and 노말 평타
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
+					//Debug.Log ("Cri!!!");
+					SpawnManager.Instance.PlayerCritical ();
+					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+					m_PlayerAnimationController.UserCriticalRepair ();
+				} else {
+					//Debug.Log ("Nor!!!!");
+					m_PlayerAnimationController.UserNormalRepair ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
+				}
+
+				fCurrentTemperature += fMaxTemperature * 0.08f;
+				return;
 			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
 			{
 				//물 수치 50% 감소
+				//Player의 기본 능력치에 따른 크리 and 노말 평타
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
+					//Debug.Log ("Cri!!!");
+					SpawnManager.Instance.PlayerCritical ();
+					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+					m_PlayerAnimationController.UserCriticalRepair ();
+				} else {
+					//Debug.Log ("Nor!!!!");
+					m_PlayerAnimationController.UserNormalRepair ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
+				}
+
+				fCurrentTemperature += (fMaxTemperature * 0.08f) + ((fMaxTemperature * 0.08f) * fSmallFirePlusTemperatrue);
+				return;
 			}
 		}
 
 		//MusicMan
 		if (bossCharacter.nIndex == 3)
 		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) 
+			{
 				Debug.Log ("MusicPhase00");
-			
+				//Player의 기본 능력치에 따른 크리 and 노말 평타
+
+			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02)
 			{
 				Debug.Log ("MusicPhase01");
@@ -723,11 +766,47 @@ public class RepairObject : MonoBehaviour {
 				Debug.Log ("MusicPhase02");
 				//물충전량 50% 감소 
 			}
+
+			//반사 상태
+			if (bossMusic.isReflect == true && bossMusic.isSwitch == true)
+			{
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ()))
+				{
+					//Debug.Log ("Cri!!!");
+					SpawnManager.Instance.PlayerCritical ();
+					fCurrentComplate = fCurrentComplate - (player.GetRepairPower () * 1.5f) * 0.7f;
+					m_PlayerAnimationController.UserCriticalRepair ();
+				} else {
+					//Debug.Log ("Nor!!!!");
+					m_PlayerAnimationController.UserNormalRepair ();
+					fCurrentComplate = fCurrentComplate - player.GetRepairPower () * 0.7f;
+				}
+			}
+
+			//반사 상태x
+			if (bossMusic.isReflect == false && bossMusic.isSwitch == false)
+			{
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ()))
+				{
+					//Debug.Log ("Cri!!!");
+					SpawnManager.Instance.PlayerCritical ();
+					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+					m_PlayerAnimationController.UserCriticalRepair ();
+				} else {
+					//Debug.Log ("Nor!!!!");
+					m_PlayerAnimationController.UserNormalRepair ();
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
+				}
+			}
+				
+			fCurrentTemperature += fMaxTemperature * 0.08f;
+			return;
 		}
 
 
 		//Player의 기본 능력치에 따른 크리 and 노말 평타
-		if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
+		if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) 
+		{
 			//Debug.Log ("Cri!!!");
 			SpawnManager.Instance.PlayerCritical ();
 			fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
@@ -909,6 +988,11 @@ public class RepairObject : MonoBehaviour {
 		else
 			return false;
 	}
+	public void SetMaxTempuratrue()
+	{
+		fCurrentTemperature = fMaxTemperature;
+		fCurrentComplate = (fCurrentComplate) - (fBossMaxComplete * 0.3f);
+	}
 
 	public void SetFinishBoss()
 	{
@@ -935,6 +1019,10 @@ public class RepairObject : MonoBehaviour {
 		fPlusWater = player.GetWaterPlus ();
 		fMaxWater = player.GetMaxWaterPlus ();
 		fWeaponDownDamage = player.GetRepairPower ();
+
+		//FireBoss
+		fSmallFireMinusWater = 0f;				
+		fSmallFirePlusTemperatrue = 0f;
 
 		fMinusTemperature = player.GetTemperatureMinus ();
 

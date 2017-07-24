@@ -2,7 +2,7 @@
 "list": [
 	{
 	"strName" : "player",
-	"fRepairPower" : 50,
+	"fRepairPower" : 30,
     "fTemperatureMinus" : 0,
     "fArbaitsPower" : 0,
     "fHornorPlusPercent" : 0,
@@ -12,7 +12,7 @@
     "fMaxWaterPlus" : 30,
     "fCriticalChance" : 0,
     "fCriticalDamage" : 0,
-    "fBigSuccessed" : 50,
+    "fBigSuccessed" : 0,
     "fAccuracyRate" : 100,
     "nBlackSmithLevel" : 1,
     "nEnhanceRepaireLevel" : 0,
