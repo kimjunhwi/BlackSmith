@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RepairPanelUI : EnhanceUI {
 
-	CGameRepairEnhance[] cGameSmith;
+	CGamePlayerEnhance[] cGameSmith;
 
 	protected override void Awake ()
 	{
@@ -19,14 +19,14 @@ public class RepairPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-        if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nCost)
+		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nGoldCost)
         {
 
-            ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nCost);
+			ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nGoldCost);
 
             nLevel++;
 
-            cPlayer.SetRepairPower(cPlayer.GetRepairPower() + cGameSmith[nLevel].nResultValue);
+			cPlayer.SetRepairPower(cPlayer.GetRepairPower() + cGameSmith[nLevel].fPlusPercentValue);
 
             cPlayer.SetRepairLevel(nLevel);
 

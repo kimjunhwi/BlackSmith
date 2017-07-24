@@ -52,7 +52,7 @@ public class ShopShowPanel : MonoBehaviour {
     {
         ItemData = _ItemData;
 
-        nameText.text = ItemData.strName;
+		nameText.text = string.Format("{0} +{1}", ItemData.strName , ItemData.nStrenthCount);
 
 		NoneActiveImage.SetAsFirstSibling ();
 
@@ -63,26 +63,26 @@ public class ShopShowPanel : MonoBehaviour {
         //골드 얼마 사용할지
         //goldText.text = ItemData.nGold;
 
-        if (ItemData.nReapirPower       != 0) CreateText("수리력 : ", ItemData.nReapirPower);
-        if (ItemData.nTemperaPlus       != 0) CreateText("온도증가량 : ", ItemData.nTemperaPlus);
-        if (ItemData.nTemperaDown       != 0) CreateText("온도감소량 : ", ItemData.nTemperaDown);
-        if (ItemData.nArbaitRepair      != 0) CreateText("알바수리력증가 : ", ItemData.nArbaitRepair);
-        if (ItemData.nHonorPlus         != 0) CreateText("명예증가량 : ", ItemData.nHonorPlus);
-        if (ItemData.nGoldPlus          != 0) CreateText("골드증가량 : ", ItemData.nGoldPlus);
-        if (ItemData.nWaterMaxPlus      != 0) CreateText("물최대치증가 : ", ItemData.nWaterMaxPlus);
-        if (ItemData.nWaterChargePlus   != 0) CreateText("물확률 : ", ItemData.nWaterChargePlus);
-        if (ItemData.nCritical          != 0) CreateText("크리티컬확률 : ", ItemData.nCritical);
-        if (ItemData.nCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.nCriticalDamage);
-        if (ItemData.nBigCritical       != 0) CreateText("대성공 : ", ItemData.nBigCritical);
-        if (ItemData.nAccuracyRate      != 0) CreateText("명중률 : ", ItemData.nAccuracyRate);
+        if (ItemData.fReapirPower       != 0) CreateText("수리력 : ", ItemData.fReapirPower);
+        if (ItemData.fTemperaPlus       != 0) CreateText("온도증가량 : ", ItemData.fTemperaPlus);
+        if (ItemData.fTemperaDown       != 0) CreateText("온도감소량 : ", ItemData.fTemperaDown);
+        if (ItemData.fArbaitRepair      != 0) CreateText("알바수리력증가 : ", ItemData.fArbaitRepair);
+        if (ItemData.fHonorPlus         != 0) CreateText("명예증가량 : ", ItemData.fHonorPlus);
+        if (ItemData.fGoldPlus          != 0) CreateText("골드증가량 : ", ItemData.fGoldPlus);
+        if (ItemData.fWaterMaxPlus      != 0) CreateText("물최대치증가 : ", ItemData.fWaterMaxPlus);
+        if (ItemData.fWaterChargePlus   != 0) CreateText("물확률 : ", ItemData.fWaterChargePlus);
+        if (ItemData.fCritical          != 0) CreateText("크리티컬확률 : ", ItemData.fCritical);
+        if (ItemData.fCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.fCriticalDamage);
+        if (ItemData.fBigCritical       != 0) CreateText("대성공 : ", ItemData.fBigCritical);
+        if (ItemData.fAccuracyRate      != 0) CreateText("명중률 : ", ItemData.fAccuracyRate);
     }
-    public void CreateText(string strName, int nValue)
+    public void CreateText(string strName, float fValue)
     {
         GameObject textObject = simpleTextPool.GetObject();
 		textObject.transform.SetParent(parentObject,false);
 		textObject.transform.localScale = Vector3.one;
 
         Text newText = textObject.GetComponent<Text>();
-        newText.text = strName + nValue.ToString();
-    }
+		newText.text = string.Format("{0} {1}", strName , fValue);
+	}
 }

@@ -21,7 +21,8 @@ public class RepairObject : MonoBehaviour {
 	float fTemperatureSlideTime = 0.0f;
 
 	private float fCurrentComplate = 0;				//현재완성도
-    private float fWeaponDownDamage = 70.0f;		//현재무기 데미지
+	private float fMaxComplate = 0f;				//최대 완성
+	private float fWeaponDownDamage = 70.0f;		//현재무기 데미지
     private float fWeaponDownTemperature = 0;		//무기 수리시 올라가는 온도
     private float fMaxTemperature;					//최대 온도
     private float fCurrentTemperature= 0;			//현재 온도
@@ -427,7 +428,7 @@ public class RepairObject : MonoBehaviour {
         TemperatureSlider.maxValue = fMaxTemperature;
 
 		fCurrentComplate = _fComplate;
-        ComplateSlider.maxValue = weaponData.fMaxComplate;
+		ComplateSlider.maxValue = weaponData.fMaxComplate;
 		ComplateSlider.value = fCurrentComplate;
 
         fCurrentTemperature = _fTemperator;
@@ -495,7 +496,7 @@ public class RepairObject : MonoBehaviour {
         //피버일경우 크리 데미지로 완성도를 증가시킴
         if (m_bIsFever)
         {
-            fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
+			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() - (player.GetRepairPower() * weaponData.fMinusRepair *0.01f)) * 1.5f;
 
             m_PlayerAnimationController.UserCriticalRepair();
 
@@ -509,30 +510,46 @@ public class RepairObject : MonoBehaviour {
 			}
             return;
         }
-        
+
+		if (Random.Range (0, 100) >= Mathf.Round (player.GetAccuracyRate () - player.GetAccuracyRate () * weaponData.fMinusAccuracy * 0.01f)) {
+
+			textObj = textObjectPool.GetObject ();
+			textObj.transform.SetParent (textRectTrasnform.transform, false);
+			textObj.transform.localScale = Vector3.one;
+			textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, textObj.transform.position.z);
+			textObj.name = "Miss";
+
+			bossMissText = textObj.GetComponent<BossMissText> ();
+			bossMissText.textObjPool = textObjectPool;
+			bossMissText.leftSecond = 2.0f;
+			bossMissText.parentTransform = textRectTrasnform;
+
+			return;
+		}
         //크리티컬 확률 
-        if (Random.Range(1, 100) <= Mathf.Round(player.GetCriticalChance()))
+		if (Random.Range(0, 100) <= Mathf.Round(player.GetCriticalChance() - (player.GetCriticalChance() * weaponData.fMinusCritical *0.01f)))
         {
             Debug.Log("Cri!!!");
             SpawnManager.Instance.PlayerCritical();
-            fCurrentComplate = fCurrentComplate + player.GetRepairPower() * 1.5f;
+			fCurrentComplate = fCurrentComplate +(player.GetRepairPower() - weaponData.fMinusRepair) * 1.5f;
             m_PlayerAnimationController.UserCriticalRepair();
         }
         else
         {
             Debug.Log("Nor!!!!");
             m_PlayerAnimationController.UserNormalRepair();
-            fCurrentComplate = fCurrentComplate + player.GetRepairPower();
+			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() - weaponData.fMinusRepair);
         } 
         //공식에 따른 온도 증가
 
         //fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
-		fCurrentTemperature += fMaxTemperature * 0.08f;
+		fCurrentTemperature += fMaxTemperature * 0.08f - weaponData.fMinusTemperature;
 
 
         //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
 		if (SpawnManager.Instance.CheckComplateWeapon (AfootObject, fCurrentComplate,fCurrentTemperature)) {
+
 
             //만약 완성됐을때 빅 성공인지를 체크
             if (Random.Range(0.0f, 100.0f) <= Mathf.Round(player.GetBigSuccessedPercent()) && m_bIsFever == false)

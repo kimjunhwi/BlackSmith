@@ -71,7 +71,7 @@ public class Shop : MonoBehaviour {
 		int nCheck = Mathf.Abs(nEndTime - nStartTime);
 
         //1시간이 지났거나 하루차이가 있을 경우
-		if(timeCal.Days != 0 || nCheck >= 3600)
+		if(timeCal.Days != 0 || nCheck >= 1)
         {
             PlayerPrefs.SetString("NowTime", EndData.ToString());
 
@@ -118,7 +118,7 @@ public class Shop : MonoBehaviour {
         CGameEquiment resultEquiment = new CGameEquiment();
 
 
-        CGameEquiment getEquiment = GameManager.Instance.GetEquimentData(Random.Range(0, nEquimentLength));
+        CGameEquiment getEquiment = GameManager.Instance.GetEquimentData(Random.Range(0, nEquimentLength-1));
 
         resultEquiment.nIndex = getEquiment.nIndex;
         resultEquiment.nGrade = getEquiment.nGrade;
@@ -146,94 +146,94 @@ public class Shop : MonoBehaviour {
         switch(nIndex)
         {
             case (int)E_Equiment.E_REPAIR:
-                if (_equiment.nReapirPower == 0)
+                if (_equiment.fReapirPower == 0)
                 {
-                    _equiment.nReapirPower = 1;
+                    _equiment.fReapirPower = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_TEMPPLUS:
-                if (_equiment.nTemperaPlus == 0)
+                if (_equiment.fTemperaPlus == 0)
                 {
-                    _equiment.nTemperaPlus = 1;
+                    _equiment.fTemperaPlus = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_TEMPDOWN:
-                if (_equiment.nTemperaDown == 0)
+                if (_equiment.fTemperaDown == 0)
                 {
-                    _equiment.nTemperaDown = 1;
+                    _equiment.fTemperaDown = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_ARBAIT:
-                if (_equiment.nArbaitRepair == 0)
+                if (_equiment.fArbaitRepair == 0)
                 {
-                    _equiment.nArbaitRepair = 1;
+                    _equiment.fArbaitRepair = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_HONOR:
-                if (_equiment.nHonorPlus == 0)
+                if (_equiment.fHonorPlus == 0)
                 {
-                    _equiment.nHonorPlus = 1;
+                    _equiment.fHonorPlus = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_GOLD:
-                if (_equiment.nGoldPlus == 0)
+                if (_equiment.fGoldPlus == 0)
                 {
-                    _equiment.nGoldPlus = 1;
+                    _equiment.fGoldPlus = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_WATERMAX:
-                if (_equiment.nWaterMaxPlus == 0)
+                if (_equiment.fWaterMaxPlus == 0)
                 {
-                    _equiment.nWaterMaxPlus = 1;
+                    _equiment.fWaterMaxPlus = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_WATERCHARGE:
-                if (_equiment.nWaterChargePlus == 0)
+                if (_equiment.fWaterChargePlus == 0)
                 {
-                    _equiment.nWaterChargePlus = 1;
+                    _equiment.fWaterChargePlus = 1;
                     return true;
                 }
                 break;
 
             case (int)E_Equiment.E_WATERUSE:
-                if (_equiment.nWaterUse == 0)
+                if (_equiment.fWaterUse == 0)
                 {
-                    _equiment.nWaterUse = 1;
+                    _equiment.fWaterUse = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_CRITICAL:
-                if (_equiment.nCritical == 0)
+                if (_equiment.fCritical == 0)
                 {
-                    _equiment.nCritical = 1;
+                    _equiment.fCritical = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_CRITICALD:
-                if (_equiment.nCriticalDamage == 0)
+                if (_equiment.fCriticalDamage == 0)
                 {
-                    _equiment.nCriticalDamage = 1;
+                    _equiment.fCriticalDamage = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_BIGCRITICAL:
-                if (_equiment.nBigCritical == 0)
+                if (_equiment.fBigCritical == 0)
                 {
-                    _equiment.nBigCritical = 1;
+                    _equiment.fBigCritical = 1;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_ACCURACY:
-                if (_equiment.nAccuracyRate == 0)
+                if (_equiment.fAccuracyRate == 0)
                 {
-                    _equiment.nAccuracyRate = 1;
+                    _equiment.fAccuracyRate = 1;
                     return true;
                 }
                 break;
