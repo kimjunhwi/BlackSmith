@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CriticalPanelUI : EnhanceUI {
 
-	CGameCriticalEnhance[] cGameSmith;
+	CGamePlayerEnhance[] cGameSmith;
 
 	protected override void Awake ()
 	{
@@ -19,15 +19,15 @@ public class CriticalPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-        if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nCost)
+		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nGoldCost)
         {
 
-            ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nCost);
+			ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nGoldCost);
 
 
             nLevel++;
 
-            cPlayer.SetCriticalChance(cPlayer.GetCriticalChance() + cGameSmith[nLevel].fResultValue);
+			cPlayer.SetCriticalChance(cPlayer.GetCriticalChance() + cGameSmith[nLevel].fPlusPercentValue);
 
             cPlayer.SetCriticalLevel(nLevel);
 

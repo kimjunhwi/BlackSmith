@@ -31,15 +31,19 @@ public class ScoreManager : MonoBehaviour
     }
 
     public Text goldText;
+	public Text honorText;
 
     public float m_fGetGold = 0;
+	private float m_fGetHonor = 0;
 
     private void Awake()
     {
         scireInstance = this;
-        goldText.text = "0";
+		goldText.text = "0";
+		honorText.text = "0";
     }
 
+	public float GetHonor() { return m_fGetHonor; }
 
 
     private string GetCurrentcyIntoString(float _fValueToConvert)
@@ -60,5 +64,12 @@ public class ScoreManager : MonoBehaviour
 
         goldText.text = GetCurrentcyIntoString(m_fGetGold);
     }
+
+	private void HonorPlus(float _fValue)
+	{
+		m_fGetHonor += _fValue;
+
+		honorText.text = GetCurrentcyIntoString (m_fGetHonor);
+	}
 
 }

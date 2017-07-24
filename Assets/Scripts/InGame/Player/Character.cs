@@ -85,6 +85,8 @@ public class Character : MonoBehaviour
 
 	public Sprite PlayerRepairSpeech;
 
+	public Player cPlayerData;
+
 	public virtual void Awake()
 	{
 		E_GRADE = CHARACTER_GRADE.NORMAL;
@@ -92,6 +94,8 @@ public class Character : MonoBehaviour
 		mySprite = GetComponent<SpriteRenderer> ();
 
 		m_anim = gameObject.GetComponent<Animator> ();
+
+		cPlayerData = GameManager.Instance.player;
 	}
 
 	public virtual bool CheckComplate(float _fComplate,float _fTemperator) {return false; }

@@ -5,7 +5,7 @@ using ReadOnlys;
 
 public class SmithPanelUI : EnhanceUI {
 
-	CGameSmithEnhace[] cGameSmith;
+	CGamePlayerEnhance[] cGameSmith;
 
 	protected override void Awake ()
 	{
@@ -20,30 +20,15 @@ public class SmithPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-		string strExplain = cGameSmith [nLevel].nGoldCost.ToString () +  "의 강화비용이 듭니다";;
+		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith [nLevel].nGoldCost) {
 
-		GameManager.Instance.Window_yesno ("강 화 창", strExplain, rt => { 
+			ScoreManager.ScoreInstance.GoldPlus (-cGameSmith [nLevel].nGoldCost);
 
-			//Yes
-			if (rt == "0") {
-				if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith [nLevel].nGoldCost) {
-					
-					ScoreManager.ScoreInstance.GoldPlus (-cGameSmith [nLevel].nGoldCost);
+			nLevel++;
 
-					GameManager.Instance.Window_notice ("강화의 성공했습니다.", srt => { if (srt == "0") print("notice");  });
+			cPlayer.SetSmithLevel(nLevel);
 
-					nLevel++;
-
-					cPlayer.SetSmithLevel(nLevel);
-
-					EnhanceText.text = strEnhanceName + nLevel;
-				}
-				else
-				{
-					GameManager.Instance.Window_notice ("강화의 실패했습니다.", srt => { if (srt == "0") print("notice");  });
-				}
-			}
-
-		});
+			EnhanceText.text = strEnhanceName + nLevel;
+		}
 	}
 }

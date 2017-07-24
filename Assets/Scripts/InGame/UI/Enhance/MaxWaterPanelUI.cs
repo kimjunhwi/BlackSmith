@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class MaxWaterPanelUI : EnhanceUI {
 
-	CGameMaxWaterEnhance[] cGameSmith;
+	CGamePlayerEnhance[] cGameSmith;
 
 	protected override void Awake ()
 	{
 		base.Awake ();
+
+		if (cPlayer == null)
+			return;
 
 		cGameSmith = GameManager.Instance.cMaxWaterEnhanceInfo;
 
@@ -19,14 +22,19 @@ public class MaxWaterPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-        ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nCost);
 
-        nLevel++;
+		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith [nLevel].nGoldCost) {
+			
+			ScoreManager.ScoreInstance.GoldPlus (-cGameSmith [nLevel].nGoldCost);
 
-        cPlayer.SetMaxWaterPlus(cPlayer.GetMaxWaterPlus() + cGameSmith[nLevel].nResultValue);
+			nLevel++;
 
-        cPlayer.SetMaxWaterLevel(nLevel);
+			cPlayer.SetMaxWaterPlus (cPlayer.GetMaxWaterPlus () + cGameSmith [nLevel].fPlusPercentValue);
 
-        EnhanceText.text = strEnhanceName + nLevel;
+			cPlayer.SetMaxWaterLevel (nLevel);
+
+			EnhanceText.text = strEnhanceName + nLevel;
+
+		}
 	}
 }

@@ -48,7 +48,7 @@ public class PlayerController : MonoBehaviour {
 
         obj.GetComponent<NormalRepairParticle>().Play();
 
-        m_Animator.SetTrigger("bIsNormalRepair");
+        
     }
 
     public void CreateCriticalEffect()
@@ -73,5 +73,10 @@ public class PlayerController : MonoBehaviour {
 
 		m_Animator.SetTrigger ("bIsSuccessedRepair");
     }
+
+	public void ResetNormal()
+	{
+		m_Animator.SetTrigger("bIsNormalRepair");
+	}
 
 }

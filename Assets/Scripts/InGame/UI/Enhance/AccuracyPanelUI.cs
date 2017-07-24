@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AccuracyPanelUI : EnhanceUI {
 
-	CGameAccuracyRate[] cGameSmith;
+	CGamePlayerEnhance[] cGameSmith;
 
 	protected override void Awake ()
 	{
@@ -19,14 +19,14 @@ public class AccuracyPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-        if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nCost)
+		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nGoldCost)
         {
 
-            ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nCost);
+			ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nGoldCost);
 
             nLevel++;
 
-            cPlayer.SetAccuracyRate(cPlayer.GetAccuracyRate() + cGameSmith[nLevel].fResultValue);
+			cPlayer.SetAccuracyRate(cPlayer.GetAccuracyRate() + cGameSmith[nLevel].fPlusPercentValue);
 
             cPlayer.SetAccuracyRateLevel(nLevel);
 

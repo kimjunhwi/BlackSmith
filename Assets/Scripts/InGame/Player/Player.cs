@@ -37,11 +37,17 @@ public class Player
 	public int GetCriticalLevel() {return changeStats.nEnhanceCriticalLevel; }
 	public void SetCriticalLevel(int _nValue){changeStats.nEnhanceCriticalLevel = _nValue;}
 
+	public int GetArbaitEnhanceLevel() {return changeStats.nEnhanceArbaitLevel; }
+	public void SetArbaitEnhancLevel(int _nValue){changeStats.nEnhanceArbaitLevel = _nValue;}
+
 	public float GetWaterPlus() { return changeStats.fWaterPlus; }
 	public void SetWaterPlus(float _fValue) { changeStats.fWaterPlus = _fValue; }
 
 	public float GetRepairPower(){ return changeStats.fRepairPower; }
 	public void SetRepairPower(float _fValue) { changeStats.fRepairPower = _fValue; }
+
+	public float GetArbaitRepairPower() {return changeStats.fArbaitsPower;}
+	public void SetArbaitRepairPower(float _fValue){ changeStats.fArbaitsPower = _fValue;}
 
 	public float GetMaxWaterPlus() { return changeStats.fMaxWaterPlus; }
 	public void SetMaxWaterPlus(float _fValue) { changeStats.fMaxWaterPlus = _fValue; }
@@ -50,7 +56,6 @@ public class Player
 	public void SetAccuracyRate(float _fValue) { changeStats.fAccuracyRate = _fValue; }
 
     public float GetBigSuccessedPercent() { return changeStats.fBigSuccessed; }
-
     public void SetBigSuccessedPercent(float _fValue) { changeStats.fBigSuccessed = _fValue; }
 
     public float GetCriticalChance() { return changeStats.fCriticalChance; }
@@ -72,7 +77,7 @@ public class Player
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
     {
         List_items = _itemList;
-		changeStats = new CGamePlayerData( _defaultStats);
+		changeStats = new CGamePlayerData(_defaultStats);
     }
 
     public void SetInventroy(Inventory _inventory)
@@ -84,6 +89,9 @@ public class Player
 
 	public int GetItemListCount()
 	{
+		if (inventory == null)
+			return 0;
+
 		List_items = inventory.GetItemList ();
 
 		if (List_items == null)

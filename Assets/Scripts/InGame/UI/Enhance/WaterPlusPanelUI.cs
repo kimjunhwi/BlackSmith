@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WaterPlusPanelUI : EnhanceUI {
 
-	CGameWaterPlusEnhance[] cGameSmith;
+	CGamePlayerEnhance[] cGameSmith;
 
 	protected override void Awake ()
 	{
@@ -19,14 +19,14 @@ public class WaterPlusPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-        if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nCost)
+		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nGoldCost)
         {
 
-            ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nCost);
+			ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nGoldCost);
 
             nLevel++;
 
-            cPlayer.SetWaterPlus(cPlayer.GetWaterPlus() + cGameSmith[nLevel].fResultValue);
+			cPlayer.SetWaterPlus(cPlayer.GetWaterPlus() + cGameSmith[nLevel].fPlusPercentValue);
 
             cPlayer.SetWaterPlusLevel(nLevel);
 

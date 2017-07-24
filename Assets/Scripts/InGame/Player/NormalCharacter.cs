@@ -92,6 +92,16 @@ public class NormalCharacter : Character {
 
         weaponData = GameManager.Instance.GetWeaponData((int)E_GRADE);
 
+		weaponData.fMaxComplate += weaponData.fMaxComplate * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fMinusRepair += weaponData.fMinusRepair * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fPlusTemperature += weaponData.fPlusTemperature * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fMinusTemperature += weaponData.fMinusTemperature * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fMinusUseWater += weaponData.fMinusUseWater * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fMinusCritical += weaponData.fMinusCritical * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fMinusAccuracy += weaponData.fMinusAccuracy * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fGold += weaponData.fGold * (cPlayerData.GetSmithLevel () * 0.05f);
+		weaponData.fHonor += weaponData.fHonor * (cPlayerData.GetSmithLevel () * 0.05f);
+
         m_fComplate = 0;
 
         m_fTemperator = 0;
