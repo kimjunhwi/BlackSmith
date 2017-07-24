@@ -209,9 +209,7 @@ public class BossSasin : BossCharacter
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
 			{
-				animator.SetBool ("isAppear", false);
-				animator.SetBool ("isDisappear", false);
-				animator.SetBool ("isBackGroundChanged", false);	
+				
 			
 				break;
 			}
@@ -232,7 +230,6 @@ public class BossSasin : BossCharacter
 		{
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
-			animator.Play ("BossIdle");
 			ActiveTimer ();
 			//실패가 아닐시
 			if (isFailed == false)
@@ -268,6 +265,12 @@ public class BossSasin : BossCharacter
 		//말풍선 off
 		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 			bossTalkPanel.bossTalkPanel.SetActive (false);
+
+
+		animator.SetBool ("isAppear", false);
+		animator.SetBool ("isDisappear", false);
+		animator.SetBool ("isBackGroundChanged", false);	
+		animator.Play ("BossIdle");
 
 		//혹시나 도는 코루틴들 종료
 		StopCoroutine (BossSkillStandard ());

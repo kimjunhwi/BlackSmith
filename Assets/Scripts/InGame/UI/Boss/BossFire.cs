@@ -11,7 +11,7 @@ public class BossFire : BossCharacter
 	private float fRandomXPos;							//불 등장 포인트의 랜덤 x좌표
 	private float fRandomYPos;							//불 등장 포인트의 랜덤 y좌표
 
-	private SimpleObjectPool smallFirePool;				//불시 ObjPool
+	public SimpleObjectPool smallFirePool;				//불시 ObjPool
 	public RectTransform smallFireRespawnPoint;			//불씨 생성지점
 
 	private int nSmallFireMaxCount;						//작은 불 개수(최대)
@@ -31,7 +31,6 @@ public class BossFire : BossCharacter
 	{
 		nSmallFireMaxCount = 12;
 		animator = gameObject.GetComponent<Animator> ();
-		smallFirePool = GameObject.Find ("SmallFirePool").GetComponent<SimpleObjectPool> ();
 		fXPos = smallFireRespawnPoint.position.x;
 		fYPos = smallFireRespawnPoint.position.y;
 		FireBoomAnimator = FireBoom.GetComponent<Animator> ();
@@ -66,7 +65,8 @@ public class BossFire : BossCharacter
 		while (true)
 		{
 			//무기 이미지 추가
-			if (bossBackGround.isBossBackGround == true) {
+			if (bossBackGround.isBossBackGround == true) 
+			{
 
 				animator.SetBool ("isBackGroundChanged", true);
 
@@ -117,7 +117,6 @@ public class BossFire : BossCharacter
 
 			if (fCurComplete < 0) {
 				FailState ();
-				
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30) {
@@ -254,6 +253,7 @@ public class BossFire : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
+		yield return null;
 		Debug.Log ("Boss Die");
 	
 		
@@ -266,60 +266,34 @@ public class BossFire : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, "Bye~~~!");
 
 		animator.SetBool ("isDisappear", true);
-
-		while (true)
-		{
-			yield return new WaitForSeconds (0.8f);
-
-			eCureentBossState = EBOSS_STATE.RESULT;
-			if (eCureentBossState == EBOSS_STATE.RESULT)
-			{
-				animator.SetBool ("isAppear", false);
-				animator.SetBool ("isDisappear", false);
-				animator.SetBool ("isBackGroundChanged", false);	
-				break;
-			}
-			else
-				yield return null;
-		}
-
-
+	
+		yield return new WaitForSeconds (0.8f);
 
 		StartCoroutine (BossResult ());
 
-		yield break;
+
 	}
 
 	protected override IEnumerator BossResult ()
 	{
-		while (true)
-		{
-			Debug.Log ("BossResult Active!!");
-			yield return new WaitForSeconds (1.0f);
-			animator.Play ("BossIdle");
-			ActiveTimer ();
-			//실패가 아닐시
-			if (isFailed == false)
-			{
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-				bossPopUpWindow.GetBossInfo (this);							//보상 정보 
-			} 
-			//실패시
-			else 
-			{
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-			}
-			eCureentBossState = EBOSS_STATE.FINISH;
-			if (eCureentBossState == EBOSS_STATE.FINISH)
-				break;
-			else
-				yield return null;
+		yield return null;
 
+		ActiveTimer ();
+		//실패가 아닐시
+		if (isFailed == false) {
+			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+			bossPopUpWindow.PopUpWindowReward_Switch ();
+			bossPopUpWindow.GetBossInfo (this);							//보상 정보 
+		} 
+		//실패시
+		else {
+			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+			bossPopUpWindow.PopUpWindowReward_Switch ();
 		}
+		eCureentBossState = EBOSS_STATE.FINISH;
+
+
 		StartCoroutine (BossFinish ());
-		yield break;
 	}	
 
 
@@ -333,6 +307,11 @@ public class BossFire : BossCharacter
 		//말풍선 off
 		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 			bossTalkPanel.bossTalkPanel.SetActive (false);
+		
+		animator.SetBool ("isAppear", false);
+		animator.SetBool ("isDisappear", false);
+		animator.SetBool ("isBackGroundChanged", false);	
+		animator.Play ("BossIdle");
 
 
 		StopCoroutine (repairObj.BossMusicWeaponMove ());
@@ -341,6 +320,7 @@ public class BossFire : BossCharacter
 		StopCoroutine (BossSKill_02 ());
 		StopCoroutine (BossDie ());
 		StopCoroutine (BossResult ());
+
 		Debug.Log ("Finish Boss");
 		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 		repairObj.SetFinishBoss ();									//수리 패널 초기화
@@ -348,9 +328,11 @@ public class BossFire : BossCharacter
 
 		isFailed = false;
 		isStandardPhaseFailed = false;
-		nSmallFireMaxCount = 5;
+		nSmallFireMaxCount = 12;
+		nCurFireCount = 0;
 
-		if (bossBackGround.isBossBackGround == true) {
+		if (bossBackGround.isBossBackGround == true)
+		{
 			SpawnManager.Instance.bIsBossCreate = false;
 			bossBackGround.isBossBackGround = false;
 			bossBackGround.isOriginBackGround = true;

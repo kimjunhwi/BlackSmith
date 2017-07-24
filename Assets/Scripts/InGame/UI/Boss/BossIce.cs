@@ -243,9 +243,7 @@ public class BossIce : BossCharacter
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
 			{
-				animator.SetBool ("isAppear", false);
-				animator.SetBool ("isDisappear", false);
-				animator.SetBool ("isBackGroundChanged", false);	
+
 
 				break;
 			}
@@ -263,7 +261,7 @@ public class BossIce : BossCharacter
 		{
 			Debug.Log ("BossResult Active!!");
 			yield return new WaitForSeconds (1.0f);
-			animator.Play ("BossIdle");
+
 			ActiveTimer ();
 			//실패가 아닐시
 			if (isFailed == false)
@@ -295,8 +293,7 @@ public class BossIce : BossCharacter
 		yield return null;
 
 		//Effect Off
-		if(isStandardPhaseFailed == false)
-			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
 
 		//RepairPanel IceWall Off
 		if (iceWall.activeSelf == true)
@@ -308,6 +305,11 @@ public class BossIce : BossCharacter
 		//말풍선 off
 		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 			bossTalkPanel.bossTalkPanel.SetActive (false);
+
+		animator.SetBool ("isAppear", false);
+		animator.SetBool ("isDisappear", false);
+		animator.SetBool ("isBackGroundChanged", false);	
+		animator.Play ("BossIdle");
 
 		//예외 코루틴 모두 종료
 		StopCoroutine (BossSkillStandard ());

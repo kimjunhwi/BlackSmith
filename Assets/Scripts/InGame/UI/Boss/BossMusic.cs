@@ -317,9 +317,7 @@ public class BossMusic : BossCharacter
 				eCureentBossState = EBOSS_STATE.RESULT;
 				if (eCureentBossState == EBOSS_STATE.RESULT)
 				{
-					animator.SetBool ("isAppear", false);
-					animator.SetBool ("isDisappear", false);
-					animator.SetBool ("isBackGroundChanged", false);	
+					
 					break;
 				}
 			}
@@ -333,33 +331,26 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossResult ()
 	{
-		while (true)
-		{
-			Debug.Log ("BossResult Active!!");
-			yield return new WaitForSeconds (1.0f);
-			animator.Play ("BossIdle");
-			ActiveTimer ();
+
+		Debug.Log ("BossResult Active!!");
+		yield return new WaitForSeconds (1.0f);
+		ActiveTimer ();
 			//실패가 아닐시
-			if (isFailed == false)
-			{
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-				bossPopUpWindow.GetBossInfo (this);
-			} 
-			//실패시
-			else 
-			{
-				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-			}
-			eCureentBossState = EBOSS_STATE.FINISH;
-			if (eCureentBossState == EBOSS_STATE.FINISH)
-				break;
-			else
-				yield return null;
+		if (isFailed == false)
+		{
+			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+			bossPopUpWindow.PopUpWindowReward_Switch ();
+			bossPopUpWindow.GetBossInfo (this);
+		} 
+		//실패시
+		else
+		{
+			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+			bossPopUpWindow.PopUpWindowReward_Switch ();
 		}
+		eCureentBossState = EBOSS_STATE.FINISH;
 		StartCoroutine (BossFinish ());
-		yield break;
+
 	}	
 
 
@@ -374,6 +365,12 @@ public class BossMusic : BossCharacter
 		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 			bossTalkPanel.bossTalkPanel.SetActive (false);
 
+
+		animator.SetBool ("isAppear", false);
+		animator.SetBool ("isDisappear", false);
+		animator.SetBool ("isBackGroundChanged", false);	
+		animator.Play ("BossIdle");
+
 		//예외 코루틴 모두 종료
 		StopCoroutine (repairObj.BossMusicWeaponMove ());
 		StopCoroutine (BossSkillStandard ());
@@ -385,8 +382,6 @@ public class BossMusic : BossCharacter
 		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 		repairObj.SetFinishBoss ();									//수리 패널 초기화
 	
-	
-
 		//변수 초기화  
 		isStandardPhaseFailed = false;
 		isFailed = false;
@@ -465,10 +460,6 @@ public class BossMusic : BossCharacter
 	public void FailState()
 	{
 		isFailed = true;
-
-		StopCoroutine (BossSkillStandard ());
-		StopCoroutine (BossSkill_01 ());
-		StopCoroutine (BossSKill_02 ());
 
 		StartCoroutine (BossDie ());
 	}

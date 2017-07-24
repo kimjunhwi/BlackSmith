@@ -624,6 +624,7 @@ public class RepairObject : MonoBehaviour {
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
 			{
 				//Debug.Log ("IcePhase02");
+				//아르바이트 공속 감소 들어가야함
 				//크리티컬 확률 감소o
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
 					//Debug.Log ("Cri!!!");
@@ -640,7 +641,7 @@ public class RepairObject : MonoBehaviour {
 
 				fCurrentTemperature += fMaxTemperature * 0.08f;
 				return;
-				//아르바이트 공속 감소 들어가야함
+
 			}
 		}
 
@@ -1075,14 +1076,6 @@ public class RepairObject : MonoBehaviour {
 					note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
 					note2Obj.EraseObj ();
 				}
-				/*
-				else if (bossNoteRectTransform.FindChild ("Note3")) {
-					
-					noteGameObject = bossNoteRectTransform.FindChild ("Note3");
-					note3Obj = noteGameObject.gameObject.GetComponent<Note3Object> ();
-					note3Obj.EraseObj ();
-				} 
-				*/
 				nChildCount--;
 			}
 			isMoveWeapon = false;
