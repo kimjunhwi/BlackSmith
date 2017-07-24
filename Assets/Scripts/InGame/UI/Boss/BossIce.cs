@@ -55,7 +55,6 @@ public class BossIce : BossCharacter
 
 		while (true)
 		{
-
 			//무기 이미지 추가
 			if (bossBackGround.isBossBackGround == true) {
 
@@ -63,7 +62,7 @@ public class BossIce : BossCharacter
 
 				if (animator.GetCurrentAnimatorStateInfo (0).IsName("Ice_Appear")) 
 				{
-					//yield return new WaitForSeconds (0.1f);
+					yield return new WaitForSeconds (0.8f);
 					animator.SetBool ("isAppear", true);
 					eCureentBossState = EBOSS_STATE.PHASE_00;
 				} 
@@ -91,6 +90,7 @@ public class BossIce : BossCharacter
 	protected override IEnumerator BossSkillStandard ()
 	{
 		bossTalkPanel.StartShowBossTalkWindow (2f, "저... 무기좀... 고쳐주세요");
+		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
 		isStandardPhaseFailed = true;
 		while (true)
 		{
@@ -131,7 +131,6 @@ public class BossIce : BossCharacter
 	{
 		bossTalkPanel.StartShowBossTalkWindow (2f, "흐으음~~~");
 
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
 		isStandardPhaseFailed = false;
 
 		while (true)

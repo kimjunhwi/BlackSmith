@@ -110,31 +110,40 @@ public class BossMusic : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			//노트 타이머
-			//fTime += Time.deltaTime;
-			//if (fTime >= nBossGenerateTime && nNoteCount < nNoteMaxCount) 
-			//	CreateNote ();
-
 			//반사 타이머
 			fCurReflectTime += Time.deltaTime;
+			//Debug.Log ("fCurReflectTime = " + fCurReflectTime); 
 
-			//Reflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false) 
+			//최대 시간에 도달하면 초기화
+			if (fCurReflectTime >= fReflectMaxTime) 
+			{
+				isSwitch = false;
+				isReflect = false;
+				fCurReflectTime = 0f;
+				Debug.Log ("상태 변환 : 반사 -> 노말");
+			}
+				
+			//NonReflect
+			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
+			{
+				Debug.Log ("노말 상태!");
+			}
+
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				fCurReflectTime = 0f;
-				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+				Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
-			//NonReflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true) 
+
+			//Reflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
 				isReflect = false;
 				isSwitch = false;
-				fCurReflectTime = 0f;
-				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+				Debug.Log ("반사 상태!");
 			}
-
+				
 
 			//현재 완성도 (실패조건)
 			if (fCurComplete < 0)
@@ -177,22 +186,44 @@ public class BossMusic : BossCharacter
 			//반사 타이머
 			fCurReflectTime += Time.deltaTime;
 
-			//Reflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false) 
+			//최대 시간에 도달하면 초기화
+			if (fCurReflectTime >= fReflectMaxTime) 
+			{
+				isSwitch = false;
+				isReflect = false;
+				fCurReflectTime = 0f;
+			}
+
+			//최대 시간에 도달하면 초기화
+			if (fCurReflectTime >= fReflectMaxTime) 
+			{
+				isSwitch = false;
+				isReflect = false;
+				fCurReflectTime = 0f;
+				Debug.Log ("상태 변환 : 반사 -> 노말");
+			}
+
+			//NonReflect
+			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
+			{
+				Debug.Log ("노말 상태!");
+			}
+
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				fCurReflectTime = 0f;
-				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+				Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
-			//NonReflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true) 
+
+			//Reflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
 				isReflect = false;
 				isSwitch = false;
-				fCurReflectTime = 0f;
-				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+				Debug.Log ("반사 상태!");
 			}
+
 		
 			if (fCurComplete < 0) 
 				FailState ();
@@ -231,22 +262,36 @@ public class BossMusic : BossCharacter
 			//반사 타이머
 			fCurReflectTime += Time.deltaTime;
 
-			//Reflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false) 
+			//최대 시간에 도달하면 초기화
+			if (fCurReflectTime >= fReflectMaxTime) 
+			{
+				isSwitch = false;
+				isReflect = false;
+				fCurReflectTime = 0f;
+				Debug.Log ("상태 변환 : 반사 -> 노말");
+			}
+
+			//NonReflect
+			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
+			{
+				Debug.Log ("노말 상태!");
+			}
+
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				fCurReflectTime = 0f;
-				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+				Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
-			//NonReflect
-			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true) 
+
+			//Reflect
+			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
 				isReflect = false;
 				isSwitch = false;
-				fCurReflectTime = 0f;
-				Debug.Log ("isReflect = " + isReflect + " isNonReflect = " + isSwitch);
+				Debug.Log ("반사 상태!");
 			}
+
 
 
 			if (fCurComplete < 0) {
@@ -286,13 +331,9 @@ public class BossMusic : BossCharacter
 					break;
 				}
 			}
-				
 			else
 				yield return null;
 		}
-
-
-
 		StartCoroutine (BossResult ());
 
 		yield break;
@@ -324,10 +365,8 @@ public class BossMusic : BossCharacter
 				break;
 			else
 				yield return null;
-
 		}
 		StartCoroutine (BossFinish ());
-
 		yield break;
 	}	
 
@@ -397,10 +436,9 @@ public class BossMusic : BossCharacter
 		noteObj.fTime = nContinueTime;
 		noteObj.repairObj = repairObj;
 		noteObj.StartNoteObjMove ();
-		//nBossSpeedIncreaseValue = 5.0f;
-		//repairObj.AddBossWeaponSpeed (nBossSpeedIncreaseValue * nBossSpeedIncreaseRate);
-		nBossSpeedIncreaseValue = 0f;
 		fTime = 0f;
+
+		IncreaseRefectionTime (0.5f);
 
 		nNoteCount++;
 
@@ -433,5 +471,16 @@ public class BossMusic : BossCharacter
 		StopCoroutine (BossSKill_02 ());
 
 		StartCoroutine (BossDie ());
+	}
+
+
+	public void IncreaseRefectionTime(float _time)
+	{
+		fReflectRoutineTime -= _time;
+	}
+
+	public void DecreaseRefectionTime(float _time)
+	{
+		fReflectRoutineTime += _time;
 	}
 }

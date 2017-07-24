@@ -110,8 +110,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 	{
 
 		noteObjPull.ReturnObject (gameObject);
-		//repairObj.MinusWeaponSpeed (fBossSpeed * fDecreaseWeaponSpeedRate);
-
+		bossMusic.DecreaseRefectionTime (0.5f);
 		note2ObjectPool = GameObject.Find ("Note2Pool").GetComponent<SimpleObjectPool>();
 
 
@@ -172,7 +171,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.repairObj = repairObj;
 		note2Obj.StartNoteObjMove ();
 		//repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
-
+		bossMusic.IncreaseRefectionTime (0.5f);
 		bossMusic.nNoteCount--;
 	}
 
