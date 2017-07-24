@@ -56,7 +56,7 @@ public class ShopShowPanel : MonoBehaviour {
 
 		NoneActiveImage.SetAsFirstSibling ();
 
-        itemImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache("Characters/" + ItemData.strResource);
+        itemImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(ItemData.strResource);
 
         RemoveText();
 

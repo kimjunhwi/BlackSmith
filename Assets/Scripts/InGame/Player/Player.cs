@@ -9,9 +9,6 @@ public class Player
 	//변화될 값 
 	public CGamePlayerData changeStats;
 
-	//기본 값 
-	public CGamePlayerData defaultStats;
-
 
     public List<CGameEquiment> List_items;
 
@@ -60,14 +57,7 @@ public class Player
 	public void SetCriticalChance(float _fValue) { changeStats.fCriticalChance = _fValue; }
 
 	public float GetTemperatureMinus() { return changeStats.fTemperatureMinus; }
-	public void SetTemperatureMinus(float _fValue) { changeStats.fTemperatureMinus = _fValue; }
-
-
-	public void SetDefaultRepair(float _fValue) {defaultStats.fRepairPower += _fValue;}
-	public void SetDefaultMaxWater(float _fValue) {defaultStats.fMaxWaterPlus += _fValue;}
-	public void SetDefaultWaterPlus(float _fValue) {defaultStats.fWaterPlus += _fValue;}
-	public void SetDefaultAccuracy(float _fValue) {defaultStats.fAccuracyRate += _fValue;}
-	public void SetDefaultCritical(float _fValue) {defaultStats.fCriticalChance += _fValue;}
+    public void SetTemperatureMinus(float _fValue) { changeStats.fTemperatureMinus = _fValue; }
 
 
     public void Awake()
@@ -82,7 +72,6 @@ public class Player
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
     {
         List_items = _itemList;
-		defaultStats = new CGamePlayerData( _defaultStats);
 		changeStats = new CGamePlayerData( _defaultStats);
     }
 
@@ -92,12 +81,6 @@ public class Player
 
         inventory.SetInventory(this, List_items);
     }
-
-	public void SetGold(float _gold)
-	{
-        defaultStats.fGold = _gold;
-		Debug.Log ("Player Gold :  " + _gold);
-	}
 
 	public int GetItemListCount()
 	{

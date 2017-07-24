@@ -31,7 +31,7 @@ public class InventoryButton : MonoBehaviour {
         
 		inventoryPanel = _inventoryPanel;
 
-		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache("Characters/" + equimentData.strResource);
+		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(equimentData.strResource);
 
 		WeaponObject.SetActive (true);
         //이미지 등록
