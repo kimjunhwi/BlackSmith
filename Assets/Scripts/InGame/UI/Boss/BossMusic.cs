@@ -98,7 +98,7 @@ public class BossMusic : BossCharacter
 	protected override IEnumerator BossSkillStandard ()
 	{
 		isStandardPhaseFailed = true;
-		bossTalkPanel.StartShowBossTalkWindow (2f, "Hey Yo! 내 무기 고쳐줘!");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		while (true)
 		{
 			//노트가 보스무기 위치에서 생성
@@ -162,7 +162,7 @@ public class BossMusic : BossCharacter
 	protected override IEnumerator BossSkill_01 ()
 	{
 		nNoteMaxCount = 4;
-		bossTalkPanel.StartShowBossTalkWindow (2f, "허리 업 ~~~!");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
 
 		isStandardPhaseFailed = false;
@@ -237,7 +237,7 @@ public class BossMusic : BossCharacter
 	protected override IEnumerator BossSKill_02 ()
 	{
 		nNoteMaxCount = 8;
-		bossTalkPanel.StartShowBossTalkWindow (2f, "Drop the Beat!!");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE02]);
 		while (true)
 		{
 			fRandomXPos = bossWeapon.transform.position.x;
@@ -307,11 +307,12 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		bossTalkPanel.StartShowBossTalkWindow (2f, "Bye~!");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
+		animator.SetBool ("isDisappear", true);
+
 		while (true)
 		{
-			animator.SetBool ("isDisappear", true);
-
+			
 			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("RucioDisappear")) 
 			{
 				eCureentBossState = EBOSS_STATE.RESULT;
@@ -460,7 +461,6 @@ public class BossMusic : BossCharacter
 	public void FailState()
 	{
 		isFailed = true;
-
 		StartCoroutine (BossDie ());
 	}
 
