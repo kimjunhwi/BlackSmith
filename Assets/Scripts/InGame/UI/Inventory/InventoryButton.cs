@@ -6,13 +6,12 @@ using UnityEngine.UI;
 
 public class InventoryButton : MonoBehaviour {
 
-
-
     private Button button;
 
-
 	public Image WeaponImage;
+
 	public GameObject WeaponObject;
+    public GameObject EquipWeapon;
 
 	private InventoryShowPanel inventoryPanel;
 
@@ -34,6 +33,12 @@ public class InventoryButton : MonoBehaviour {
 		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(equimentData.strResource);
 
 		WeaponObject.SetActive (true);
+
+        if (currentEquiment.bIsEquip)
+            EquipWeapon.SetActive(true);
+
+        else
+            EquipWeapon.SetActive(false);
         //이미지 등록
     }
 
@@ -44,6 +49,4 @@ public class InventoryButton : MonoBehaviour {
 			return;
 		inventoryPanel.SetUp (equimentData);
     }
-
-
 }

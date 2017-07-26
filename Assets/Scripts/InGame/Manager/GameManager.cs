@@ -34,7 +34,13 @@ public struct stArbait
     }
 }
 
+
+//모든 데이터 및 로드, 세이브를 관리하는 클래스 
+//어디서든 사용해야 하기 때문에 제네릭싱글톤을 통해 구현
 public class GameManager : GenericMonoSingleton<GameManager> {
+
+
+    //읽어들이기만 하면 되기 때문에 유니코드 텍스트 방식 저장 후 읽어들인다.
 
     public CGameWeaponInfo[] cWeaponInfo = null;                //무기 정보들
 
@@ -71,18 +77,19 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	public CGameArbaitGrade[] cArbaitAgrade = null;				//S등급 아르바이트
 	public CGameArbaitGrade[] cArbaitSgrade = null;				//A등급 아르바이트
 
-	public List<int> cQuestSaveIndex = new List<int>();			//남아 있는 퀘스트 저장 
-	
-    public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
+    public List<int> cQuestSaveIndex = new List<int>();			//남아 있는 퀘스트 저장 
 
 	public Boss[] bossInfo = null;
 
 	public BossWeapon[] bossWeaponInfo = null;
 
-    //private List<WeaponsData> weaponDataBase = new List<WeaponsData>();
+    //세이브가 필요한 부분들은 LitJson을 사용함
+    //
     private List<ArbaitData> ArbaitDataBase = new List<ArbaitData>();
 
     private List<CGameEquiment> equimnetData = new List<CGameEquiment>();
+
+    public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
 
     private JsonData itemData;
     private JsonData ArbaitData;
@@ -110,13 +117,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     {
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
 
-		string ArbaitFilePath = Path.Combine(Application.persistentDataPath, strArbaitPath);
-
-		string EquimentFilePath = Path.Combine(Application.persistentDataPath, strEquiementPath);
-
-		string InventoryFilePath = Path.Combine(Application.persistentDataPath, strInvetoryPath);
-
-		string PlayerFilePath = Path.Combine (Application.persistentDataPath, strPlayerPath);
+		
 
 		Load_TableInfo_Weapon();
 
@@ -179,6 +180,14 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 #elif UNITY_ANDROID
 
+        string ArbaitFilePath = Path.Combine(Application.persistentDataPath, strArbaitPath);
+
+		string EquimentFilePath = Path.Combine(Application.persistentDataPath, strEquiementPath);
+
+		string InventoryFilePath = Path.Combine(Application.persistentDataPath, strInvetoryPath);
+
+		string PlayerFilePath = Path.Combine (Application.persistentDataPath, strPlayerPath);
+
 		if(Directory.Exists(ArbaitFilePath)) 
 		yield return StartCoroutine (LinkedArbaitAccess (ArbaitFilePath));
 
@@ -223,7 +232,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 #endif
 
-		Debug.Log( playerData.strName);
+        Debug.Log( playerData.strName);
 
         player = new Player();
 
@@ -1355,6 +1364,7 @@ public class CGameEquiment
 	public float fBigCritical = 0;
 	public float fAccuracyRate = 0;
 	public int nStrenthCount = 0;
+    public bool bIsEquip = false;
 }
 
 

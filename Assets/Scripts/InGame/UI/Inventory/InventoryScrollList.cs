@@ -43,25 +43,68 @@ public class InventoryScrollList : MonoBehaviour {
         }
     }
 
+    //인벤토리 추가 정렬 방식이다
+    //1 순위는 장착된 장비이며
+    //2 순위는 등급이 높은것
+    //3 순위는 강화가 높은순으로 정렬할 예정이다.
+    //추후 수정 예정
     private void AddButtons()
     {
-		for (int i = 0; i < nMaxItemList; i++)
+        //장착된것을 정렬
+        for (int nIndex = 0; nIndex < itemList.Count; nIndex++)
         {
-			if (i < itemList.Count) {
-				CGameEquiment item = itemList [i];
+            if (itemList[nIndex].bIsEquip == true)
+            {
+                if (nIndex != 0)
+                {
+                    CGameEquiment temp = itemList[nIndex];
 
-				GameObject newButton = buttonObjectPool.GetObject ();
-				newButton.transform.SetParent (contentPanel,false);
-				newButton.transform.localScale = Vector3.one;
+                    itemList[nIndex] = itemList[0];
+
+                    itemList[0] = temp;
+                }
+
+                break;
+            }
+        }
+
+        //등급이 높은 것을 정렬
+        itemList.Sort(delegate(CGameEquiment A, CGameEquiment B)
+        {
+            if (A.nGrade < B.nGrade) return 1;
+            else if (A.nGrade > B.nGrade) return -1;
+            else return 0;
+        });
+
+        //강화가 높은것을 정렬
+        itemList.Sort(delegate(CGameEquiment A, CGameEquiment B)
+        {
+            if (A.nGrade == B.nGrade && A.nStrenthCount < B.nStrenthCount) return 1;
+            else if (A.nGrade != B.nGrade || A.nStrenthCount > B.nStrenthCount) return -1;
+            else return 0;
+        });
 
 
-				InventoryButton sampleButton = newButton.GetComponent<InventoryButton> ();
-				sampleButton.Setup (item,inventoryPanel);
-			} else {
-				GameObject newButton = buttonObjectPool.GetObject ();
-				newButton.transform.SetParent (contentPanel,false);
-				newButton.transform.localScale = Vector3.one;
-			}
+        for (int i = 0; i < nMaxItemList; i++)
+        {
+            if (i < itemList.Count)
+            {
+                CGameEquiment item = itemList[i];
+
+                GameObject newButton = buttonObjectPool.GetObject();
+                newButton.transform.SetParent(contentPanel, false);
+                newButton.transform.localScale = Vector3.one;
+
+
+                InventoryButton sampleButton = newButton.GetComponent<InventoryButton>();
+                sampleButton.Setup(item, inventoryPanel);
+            }
+            else
+            {
+                GameObject newButton = buttonObjectPool.GetObject();
+                newButton.transform.SetParent(contentPanel, false);
+                newButton.transform.localScale = Vector3.one;
+            }
         }
     }
 
@@ -86,6 +129,13 @@ public class InventoryScrollList : MonoBehaviour {
     public void AddItem(CGameEquiment itemToAdd)
     {
         itemList.Add(itemToAdd);
+
+        RefreshDisplay();
+    }
+
+    public void RemoveItem(CGameEquiment _item)
+    {
+        itemList.Remove(_item);
 
         RefreshDisplay();
     }
