@@ -584,7 +584,13 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		}
 	}
 
-
+	public void ReleliveArbait ()
+	{
+		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
+			if (m_BatchArbait [nIndex].activeSelf)
+				m_BatchArbait [nIndex].SetActive (false);
+		}
+	}
 
     #endregion
 

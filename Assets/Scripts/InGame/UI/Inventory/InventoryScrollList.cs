@@ -24,15 +24,18 @@ public class InventoryScrollList : MonoBehaviour {
     }
 
     public void SetInitList(List<CGameEquiment> list = null)
-    {
+	{
 		if (list != null)
 			itemList = list;
-		
 		else
 			itemList = new List<CGameEquiment> ();
 
-        RefreshDisplay();
-    }
+		for (int nIndex = 0; nIndex < itemList.Count; nIndex++)
+			if (itemList [nIndex].bIsEquip)
+				GameManager.Instance.GetPlayer ().EquipItem (itemList [nIndex]);
+
+		RefreshDisplay ();
+	}
 
     private void RemoveButtons()
     {

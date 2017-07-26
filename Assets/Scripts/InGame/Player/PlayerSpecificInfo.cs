@@ -26,6 +26,9 @@ public class PlayerSpecificInfo : MonoBehaviour {
         if(player == null)
             player = GameManager.Instance.player;
 
+		if (player == null)
+			return;
+
         RepairPowerText.text = string.Format("수리력 : {0}",player.GetRepairPower());
         ArbaitRepairIncreaseText.text = string.Format("아르바이트 수리력 : {0}", player.GetArbaitRepairPower());
         CriticalDamageText.text = string.Format("크리데미지 : {0}", player.GetRepairPower() * 1.5f);

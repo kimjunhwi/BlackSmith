@@ -1,14 +1,14 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossMusic.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossFire.cs">
     <Files>
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="931" Column="18" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIce.cs" Line="440" Column="19" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIce.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="461" Column="21" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="227" Column="41" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossMusic.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Player/PlayerController.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/UIDisable.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Shop/Shop.cs" Line="1" Column="1" />
