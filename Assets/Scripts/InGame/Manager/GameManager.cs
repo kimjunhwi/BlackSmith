@@ -77,8 +77,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	public CGameArbaitGrade[] cArbaitAgrade = null;				//S등급 아르바이트
 	public CGameArbaitGrade[] cArbaitSgrade = null;				//A등급 아르바이트
 
-    public List<int> cQuestSaveIndex = new List<int>();			//남아 있는 퀘스트 저장 
-
 	public Boss[] bossInfo = null;
 
 	public BossWeapon[] bossWeaponInfo = null;
@@ -91,6 +89,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
 
+	public List<CGameQuestInfo> cQuestSaveListInfo = null;				//퀘스트 저장
+
     private JsonData itemData;
     private JsonData ArbaitData;
 
@@ -100,6 +100,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     private const string strArbaitPath = "ArbaitData.json";
     private const string strEquiementPath = "Equiment.json";
     private const string strInvetoryPath = "Inventory.json";
+	private const string strQuestPath = "Quest.json";
 
     private string strWeaponPath;
 
@@ -167,6 +168,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         playerData = ConstructString<CGamePlayerData>(strPlayerPath)[0];
 
+		cQuestSaveListInfo = ConstructString<CGameQuestInfo>(strQuestPath);
+
         //ConstructEquimentDatabase();
 
         //ConstructWeaponDatabase();
@@ -185,6 +188,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		string InventoryFilePath = Path.Combine(Application.persistentDataPath, strInvetoryPath);
 
 		string PlayerFilePath = Path.Combine (Application.persistentDataPath, strPlayerPath);
+
+		string QuestFilePath = Path.Combine (Application.persistentDataPath, strQuestPath);
 
 		if(Directory.Exists(ArbaitFilePath)) 
 		yield return StartCoroutine (LinkedArbaitAccess (ArbaitFilePath));
@@ -226,6 +231,18 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		yield return StartCoroutine(LinkedPlayerAccess (PlayerFilePath));
 		}
 		Debug.Log("7");
+
+		if(Directory.Exists(QuestFilePath)) 
+		yield return StartCoroutine (LinkedPlayerAccess (QuestFilePath));
+
+		else 
+		{
+		QuestFilePath = Path.Combine(Application.streamingAssetsPath, strQuestPath);
+		yield return StartCoroutine(LinkedPlayerAccess (QuestFilePath));
+		}
+
+
+
 
 
 #endif
@@ -312,6 +329,23 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	}
 
 
+	IEnumerator LinkedQuestAccess(string filePath)
+	{
+		Debug.Log ("Quest Loaded");
+		
+		WWW www = new WWW(filePath);
+
+		yield return www;
+
+		string dataAsJson = www.text.ToString();
+
+		Debug.Log (dataAsJson);
+
+		cQuestSaveListInfo = JsonHelper.ListFromJson<CGameQuestInfo>(dataAsJson);
+	}
+
+
+
     private List<T> ConstructString<T>(string _strPath)
     {
         List<T> getList = new List<T>();
@@ -344,6 +378,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         SaveEquiment();
 
 		SavePlayerData ();
+
+		SaveQuestList ();
+
     }
 
 	public void SavePlayerData()
@@ -406,6 +443,30 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         File.WriteAllText(filePath, dataAsJson);
     }
+
+	public void SetQuestData(List<CGameQuestInfo> _QuestData)
+	{
+		cQuestSaveListInfo = _QuestData;
+	}
+
+	public void SaveQuestList()
+	{
+		if (cQuestSaveListInfo == null)
+			return;
+
+		#if UNITY_EDITOR
+		string filePath = Path.Combine(Application.streamingAssetsPath, strQuestPath);
+
+		#elif UNITY_ANDROID
+		string filePath = Path.Combine(Application.persistentDataPath, strQuestPath);
+
+		#endif
+
+
+		string dataAsJson = JsonHelper.ListToJson<CGameQuestInfo>(cQuestSaveListInfo);
+
+		File.WriteAllText(filePath, dataAsJson);
+	}
 
     public Player GetPlayer()
     {
@@ -527,6 +588,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].nRewardGold = int.Parse(Cells[4]);
 			kInfo[i - 1].nRewardHonor = int.Parse(Cells[5]);
 			kInfo[i - 1].nRewardBossPotion = int.Parse(Cells[6]);
+			kInfo [i - 1].bIsActive = bool.Parse (Cells [7]);
         }
 
         cQusetInfo = kInfo;
@@ -1569,6 +1631,7 @@ public class CGameQuestInfo
 	public int nRewardGold = 0;
 	public int nRewardHonor=0;
 	public int nRewardBossPotion =0;
+	public bool bIsActive = false;
     
 }
 
@@ -1631,6 +1694,8 @@ public class CGamePlayerData
 }
 
 
+
+
 [System.Serializable]
 public class CGameCharacterInfo
 {
@@ -1691,6 +1756,11 @@ public class BossWeapon
 	public int nSlot = 0;
 	public string strGrade;
 	public string explain;
+}
+
+
+public class BossPanelInfo
+{
 }
 
 #endregion

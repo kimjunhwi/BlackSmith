@@ -6,11 +6,13 @@ using UnityEngine.UI;
 
 public class QusetManager : MonoBehaviour, IPointerClickHandler
 {
-    private int nQuestCount = 0;
-    private int nQuestMaxCount = 0;
-	private int nQuestMaxHaveCount = 3;
+	
+	public int nQuestCount = 0;
+	public int nQuestMaxCount = 0;
+	public int nQuestMaxHaveCount = 3;
 	private int nQuestMileCount = 0;
 	private int nQeustMaxMileCount = 0;
+	private int nQuestTotalCount = 32;
 
 	public GameObject questPopUpWindow_YesNo;		//Yes or No
 	public Button questPopUpWindow_YesButton;
@@ -40,48 +42,53 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	private int nSecondReward = 5;
 	private int nThirdReward = 7;
 
+	public SimpleObjectPool questObjectPool;
+
 	Color CheckColor;
 
+	//Timer
 	public 	Text timerText;
-	private float nTimeMinute = 1;
-	private float nTimeSecond = 10;
-
-	public bool isTimeOn = false;
-
-	public bool isPanelOn = false;
+	public QuestTimer questTimer;
 
 	public void SetUp()
 	{
 		gameObject.SetActive (true);
+		questTimer.LoadTime ();
+		questObjectPool.PreloadPool ();
 		questDatas = GameManager.Instance.cQusetInfo;
 		nQuestMaxCount = questDatas.Length;
 		nQeustMaxMileCount = 7;
 
 		CheckColor = new Color (255.0f, 0, 0, 255.0f);
 
-		isTimeOn = true;
+		questTimer.isTimeOn = true;
 		isInitConfirm = true;
-		QuestInitStart ();
+	
+		if (GameManager.Instance.cQuestSaveListInfo.Count != 0) 
+			QuestSaveInitStart ();	
 
+		else
+			QuestInitStart ();
+		
 		completeButton.onClick.AddListener (() => CompleteQuest(0f));
-		nTimeMinute = 1;
-		nTimeSecond = 10;
+		questPopUpWindow_YesButton.onClick.AddListener (QuestInit);
+		questPopUpWindow_YesButton.onClick.AddListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
+		questPopUpWindow_YesButton.onClick.AddListener (CheckQuestDestroy);
+
 	}
 
 
 	void Update()
 	{
-		if(silder.value <= ((float)nQuestMileCount / (float)nQeustMaxMileCount) )
+		//마일리지 슬라이더
+		if (silder.value <= ((float)nQuestMileCount / (float)nQeustMaxMileCount))
 			silder.value += ((float)nQuestMileCount / (float)nQeustMaxMileCount) * sliderSpeed * Time.deltaTime;
-
-
 	}
 
 	public void OnPointerClick (PointerEventData eventData)
 	{
-		
 		getInfoGameObject = eventData.pointerEnter;
-		GameManager.Instance.cQuestSaveIndex.Clear ();
+		GameManager.Instance.cQuestSaveListInfo.Clear ();
 		if (getInfoGameObject.gameObject.name == "QuestPanel")
 		{
 			int curItemCount = questContents.transform.childCount;
@@ -89,12 +96,13 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			{
 				Transform child = questContents.transform.GetChild (i);
 				QuestPanel childQuestPanel = child.GetComponent<QuestPanel> ();
-				GameManager.Instance.cQuestSaveIndex.Add (childQuestPanel.nItemIndex);
+				GameManager.Instance.cQuestSaveListInfo.Add (childQuestPanel.questData);
 			}
-			GameManager.Instance.curLeftQuestTime_Minute = nTimeMinute;
-			GameManager.Instance.curLeftQuestTime_Second = nTimeSecond;
-			getInfoGameObject.SetActive (false);
+			questTimer.SaveTime ();
 
+
+
+			getInfoGameObject.SetActive (false);
 		}
 
 		//Test
@@ -126,14 +134,14 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			}
 		}
 	}
+
 	public void GiveUpQuest()
 	{
 		if (!questPopUpWindow_YesNo.activeSelf) 
 		{
 			questPopUpWindow_YesNo.SetActive (true);
 			questPopUpWindowYesNo_Text.text = "퀘스트를 포기 하시겠습니까?";
-			questPopUpWindow_YesButton.onClick.AddListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
-			questPopUpWindow_YesButton.onClick.AddListener (CheckQuestDestroy);
+		
 		}
 		else 
 		{
@@ -150,9 +158,8 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 		} else
 			_gameObject.SetActive (false);
 	}
-
-
-
+		
+	//퀘스트완료  
 	public void CompleteQuest(float _gold)
 	{
 		//Complete
@@ -168,6 +175,7 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			questPopUpWindow_Yes.SetActive (true);
 		}
 	}
+
 
 	public void CheckQuestDestroy()
 	{
@@ -185,85 +193,75 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 
 	public void AllDestroyQuest()
 	{
-		foreach (QuestPanel quest in questObjects)
+		while (questDay.transform.childCount != 0) 
 		{
-			
-			Destroy (quest.gameObject);
-
+			GameObject go = questDay.transform.GetChild (0).gameObject;
+			questObjectPool.ReturnObject(go);
 		}
 	}
-
-	public void QuestInitConfirm()
+		
+	//시간이 지나가지 않아도 초기화 버튼으로 초기화 할때
+	public void QuestInit_ShowWindow()
 	{
-		if (isTimeOn == true) {
-			isInitConfirm = true;
-			QuestInitStart ();
-			questPopUpWindow_YesNo.SetActive (false);
-		} else 
+		if (!questPopUpWindow_YesNo.activeSelf) 
 		{
-			questPopUpWindow_YesNo.SetActive (false);
-			isInitConfirm = false;
-		}
-			
-	}
-
-
-
-	public void QuestInit()
-	{
-		if (!questPopUpWindow_YesNo.activeSelf)
-		{
-			if (isTimeOn == true)
-			{
-				questPopUpWindow_YesNo.SetActive (true);
-				questPopUpWindowYesNo_Text.text = "퀘스트를 초기화 하시겠습니까?";
-				questPopUpWindow_YesButton.onClick.AddListener (QuestInitConfirm);
-			}
+			questPopUpWindow_YesNo.SetActive (true);
+			questPopUpWindowYesNo_Text.text = "퀘스트를 초기화 하시겠습니까?";
 		}
 		else
 		{
-			questPopUpWindow_YesNo.SetActive (false);
+			QuestInitStart ();
 		}
 	}
 
+	//시간이 지나면 호출되는 초기화
+	public void QuestInit()
+	{
+		isInitConfirm = true;
+		QuestInitStart ();
+
+	}
+
+	public void QuestSaveInitStart()
+	{
+		GameObject quest;
+		nQuestCount = 0;
+		AllDestroyQuest ();
+		questObjects.Clear ();
+		//Add
+		for (int i = 0; i < GameManager.Instance.cQuestSaveListInfo.Count; i++)
+		{
+			nQuestCount++;
+			quest = questObjectPool.GetObject ();
+			quest.transform.SetParent (questDay.transform,false);
+			quest.transform.localScale = Vector3.one;
+		
+			QuestPanel questPanel = quest.gameObject.GetComponent<QuestPanel> ();
+			questObjects.Add (questPanel);
+		}
+
+		QuestSaveDataDispatch ();	//Data Dispatch
+
+		questTimer.isTimeOn = false;
+		isInitConfirm = false;
+		
+	}
+
+	//초기화 버튼을 누를시
 	public void QuestInitStart()
 	{
+		GameObject quest;
 
-		if (isTimeOn == true && isInitConfirm == true && GameManager.Instance.cQuestSaveIndex.Count == 0) {
-			nQuestCount = 0;
-			questObjects.Clear ();
-			//All QuestDelete
-			int childs = questDay.transform.childCount;
-
-			for (int i = childs - 1; i >= 0; i--) {
-				Destroy (questDay.transform.GetChild (i).gameObject);
-			}
-			//Add
-			for (int i = 0; i < nQuestMaxHaveCount; i++)
-			{
-				nQuestCount++;
-				GameObject quest = (GameObject)Instantiate (Resources.Load ("Prefabs/Quest"));
-				quest.transform.SetParent (questDay.transform,false);
-				quest.transform.localScale = Vector3.one;
-
-				QuestPanel questPanel = quest.gameObject.GetComponent<QuestPanel> ();
-				questObjects.Add (questPanel);
-			}
-			Quest (true);	//Data Dispatch
-
-			TimerWarpper (nTimeMinute, nTimeSecond);
-			isTimeOn = false;
-			isInitConfirm = false;
-		}
-		if (isTimeOn == true && isInitConfirm == true && GameManager.Instance.cQuestSaveIndex.Count != 0) 
+		if (questTimer.isTimeOn == true)
 		{
 			nQuestCount = 0;
 			AllDestroyQuest ();
 			questObjects.Clear ();
-
-			for (int i = 0; i < GameManager.Instance.cQuestSaveIndex.Count; i++)
+			//Add
+			for (int i = 0; i < nQuestMaxHaveCount; i++)
 			{
-				GameObject quest = (GameObject)Instantiate (Resources.Load ("Prefabs/Quest"));
+				nQuestCount++;
+				quest = questObjectPool.GetObject ();
 				quest.transform.SetParent (questDay.transform,false);
 				quest.transform.localScale = Vector3.one;
 
@@ -271,80 +269,56 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 				questObjects.Add (questPanel);
 			}
 
-			Quest (false);	//Data Dispatch
+			QuestDataDispatch ();	//Data Dispatch
 
-			TimerWarpper (GameManager.Instance.curLeftQuestTime_Minute,GameManager.Instance.curLeftQuestTime_Second);
+			questTimer.isTimeOn = false;
+			isInitConfirm = false;
+		}
 
-			isTimeOn = false;
+		if(isInitConfirm == true)
+		{
+			nQuestCount = 0;
+			AllDestroyQuest ();
+			questObjects.Clear ();
+			//Add
+			for (int i = 0; i < nQuestMaxHaveCount; i++)
+			{
+				nQuestCount++;
+				quest = questObjectPool.GetObject ();
+				quest.transform.SetParent (questDay.transform,false);
+				quest.transform.localScale = Vector3.one;
+
+				QuestPanel questPanel = quest.gameObject.GetComponent<QuestPanel> ();
+				questObjects.Add (questPanel);
+			}
+
+			QuestDataDispatch ();	//Data Dispatch
+
+			questTimer.isTimeOn = false;
 			isInitConfirm = false;
 		}
 
 	}
 
-	public void Quest(bool _isInit)
-    {
-		if (_isInit == true)
+	public void QuestSaveDataDispatch()
+	{
+		for(int i = 0 ; i< questObjects.Count; i++)
 		{
-			foreach (QuestPanel quest in questObjects)
-			{
-				if (quest.textQuestContents.text == "") 
-				{
-					int random = Random.Range (0, nQuestMaxCount);
-					quest.GetQuest (questDatas [random], this);
-				}
-			}
+			QuestPanel questPanel = questObjects[i].gameObject.GetComponent<QuestPanel> ();
+			questPanel.GetQuest (GameManager.Instance.cQuestSaveListInfo[i] , this);
 		} 
-		else 
-		{
-			int index = 0;
-			
-			foreach (QuestPanel quest in questObjects)
-			{
-				if (quest.textQuestContents.text == "") 
-				{
-					
-					quest.GetQuest (questDatas [GameManager.Instance.cQuestSaveIndex[index]], this);
-					index++;
-				}
-			}
-		}
+	
+	}
 
-	  
+	//Data 할당
+	public void QuestDataDispatch()
+    {
+		for(int i = 0 ; i< questObjects.Count; i++)
+		{
+			QuestPanel questPanel = questObjects[i].gameObject.GetComponent<QuestPanel> ();
+				
+			int random = Random.Range (0, nQuestTotalCount);
+			questPanel.GetQuest (questDatas [random], this);
+		} 
     }
-
-	public void TimerWarpper(float _curM, float _curS)
-	{
-		StartCoroutine (Timer (_curM, _curS ));	//TimerInit
-	}
-
-	public IEnumerator Timer(float _curMin, float _curSec)
-	{
-		float curMin = _curMin;
-		float curSecond = _curSec;
-		int second = 0;
-		curMin--;
-		isTimeOn = false;
-		while (curMin >= 0f) 
-		{
-			curSecond -= Time.deltaTime;
-			second = (int)curSecond;
-			timerText.text = curMin.ToString () + ":" + second.ToString ();
-
-
-			if (curMin != 0 && second == 0f) 
-			{
-				curSecond = 60f;
-				curMin--;
-			}
-
-			if (curMin == 0 && second == 0f)
-			{
-				isTimeOn = true;
-				break;
-			}
-
-			yield return null;
-		}
-		yield  break;
-	}
 }

@@ -71,9 +71,10 @@ public class QuestPanel : MonoBehaviour
 	public void GetQuest(CGameQuestInfo _quest, QusetManager _questManager)
     {
         bIsQuest = true;
-		nItemIndex = _quest.nIndex;
-        questData = _quest;
-		questManager = _questManager;
+		_quest.bIsActive = true;
+		nItemIndex = _quest.nIndex;				//index
+        questData = _quest;						//퀘스트 정보
+		questManager = _questManager;			//퀘스트 매니저  
        
 		textQuestContents.text = questData.strExplain;
 
@@ -102,7 +103,6 @@ public class QuestPanel : MonoBehaviour
 	public void QuestComplete()
 	{
 		startButton.SetActive (true);
-
 		//ScoreManager.ScoreInstance.goldText.text = GameManager.Instance.player
 	}
 

@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BossConsumeItemInfo : MonoBehaviour 
+public class QuestTimer : MonoBehaviour 
 {
-	public Text positionCount_Text;
-	public Text inviteMentCount_Text;
-	public Text inviteMentTimer_Text;
-
-	private bool isTimeOn;
+	public Text QuestTimer_Text;
 
 	private string strTime ="";
 
@@ -17,41 +13,32 @@ public class BossConsumeItemInfo : MonoBehaviour
 	System.DateTime EndData;											//게임을 끌 때의 데이터
 	System.TimeSpan timeCal;
 
-	private int nInviteMentMaxCount = 5;								//초대장 최대 개수
-	public int nInviteMentCurCount = 5;									//초대장 현재 개수
-
+	private float fCurSec;
 	private int curMin;													//현재 분
-	private int nInitTime_Min = 19;
+	private int nInitTime_Min = 179;
 	private int nInitTime_sec = 59;
 
+	public bool isTimeOn = false;
 
-	void Awake()
-	{
-		inviteMentCount_Text.text = "";
-		curMin = 19;
-
-	}
+	public QusetManager questManager;
 
 	public void SaveTime()
 	{
-		EndData = System.DateTime.Now;
-		PlayerPrefs.SetString ("BossSaveTime", EndData.ToString ());
-
-		Debug.Log ("BossPanel Time Save : " + EndData.ToString ());
+		System.DateTime EndData = System.DateTime.Now;
+		PlayerPrefs.SetString ("EndSaveTime", EndData.ToString ());
+		PlayerPrefs.Save ();
+		Debug.Log ("EndTime :" + EndData.ToString ());
 	}
+
 	public void LoadTime()
 	{
-
-		if (PlayerPrefs.HasKey ("BossSaveTime"))
+		if (PlayerPrefs.HasKey ("EndSaveTime"))
 		{
-			strTime = PlayerPrefs.GetString ("BossSaveTime");
+			strTime = PlayerPrefs.GetString ("EndSaveTime");
 			EndData = System.Convert.ToDateTime (strTime);
 		}
-		Debug.Log ("BossPanel Time Load : " + EndData.ToString ());
-
-
 		StartedTime = System.DateTime.Now;
-
+		Debug.Log ("StartTime :"+ StartedTime + " / EndTime :" + EndData);
 		timeCal = StartedTime - EndData;
 
 		int nStartTime = StartedTime.Hour * 3600 + StartedTime.Minute * 60 + StartedTime.Second;
@@ -59,14 +46,12 @@ public class BossConsumeItemInfo : MonoBehaviour
 
 		int nCheck = Mathf.Abs(nEndTime - nStartTime);
 
-		//하루가 지나거나 100분이 지나거나 현재 초대장이 가득 찼으면
-		if (timeCal.Days != 0 || nCheck >= 6000 || nInviteMentCurCount == nInviteMentMaxCount) 
+		//하루가 지나거나 100분이 지나면 그냥 현재 퀘스트 개수만 띄워준다.
+		if (timeCal.Days != 0 || nCheck >= 6000 ) 
 		{
-			//초대장 갯수 풀로 할것
-			PlayerPrefs.SetString ("NowTime", EndData.ToString ());
-			nInviteMentCurCount = nInviteMentMaxCount;
-			inviteMentTimer_Text.enabled = false;
-			inviteMentCount_Text.text = nInviteMentCurCount.ToString () + " / " + nInviteMentMaxCount.ToString ();
+			
+			//QuestTimer_Text.text = questManager.nQuestCount.ToString () + " / " + questManager.nQuestMaxCount.ToString ();
+			QuestTimer_Text.enabled = false;
 		}
 		//
 		else 
@@ -84,45 +69,43 @@ public class BossConsumeItemInfo : MonoBehaviour
 			}
 			else if (nPassedTime_Min < 40)
 			{
-				nInviteMentCurCount += 1;
 				nPassedTime_Min = (int)nPassedTime_Min - 20;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 1200) % 60);
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			} 
 			else if (nPassedTime_Min < 60)
 			{
-				nInviteMentCurCount += 2;
 				nPassedTime_Min = (int)nPassedTime_Min - 40;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 2400) % 60);
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			}
 			else if (nPassedTime_Min < 80)
 			{
-				nInviteMentCurCount += 3;
 				nPassedTime_Min = (int)nPassedTime_Min - 60;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 3600) % 60);
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec -nPassedTime_Sec));
 			}
 			else if (nPassedTime_Min < 100)
 			{
-				nInviteMentCurCount += 4;
 				nPassedTime_Min = (int)nPassedTime_Min - 80;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 4800) % 60);
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			}
 
-
-			inviteMentTimer_Text.enabled = true;
+			QuestTimer_Text.enabled = true;
 		}
 	}
 
-
+	void OnEnable()
+	{
+		
+	}
 
 	public IEnumerator Timer(int _curMin, int _curSec)
 	{
 		int second = 0;
 
-		float fCurSec = (float)_curSec;
+		fCurSec = (float)_curSec;
 		curMin = _curMin;
 
 
@@ -132,11 +115,11 @@ public class BossConsumeItemInfo : MonoBehaviour
 			second = (int)fCurSec;
 
 			if(second < 10)
-				inviteMentTimer_Text.text = curMin.ToString () + ":" +"0"+second.ToString ();
+				QuestTimer_Text.text = curMin.ToString () + ":" +"0"+second.ToString ();
 			else
-				inviteMentTimer_Text.text = curMin.ToString () + ":" + second.ToString ();
-			
-			inviteMentCount_Text.text = nInviteMentCurCount.ToString () + " / " + nInviteMentMaxCount.ToString ();
+				QuestTimer_Text.text = curMin.ToString () + ":" + second.ToString ();
+
+			//inviteMentCount_Text.text = nInviteMentCurCount.ToString () + " / " + nInviteMentMaxCount.ToString ();
 
 
 			nInitTime_Min = curMin;
@@ -144,21 +127,12 @@ public class BossConsumeItemInfo : MonoBehaviour
 
 			if (curMin == 0 && second == 0f)
 			{
-				//isTimeOn = true;
+				isTimeOn = true;
 				//break;
-				nInviteMentCurCount++;
-				nInitTime_Min = 19;
-				nInitTime_sec = 59;
-
-				if (nInviteMentCurCount == nInviteMentMaxCount) 
-				{
-					nInitTime_Min = 19;
-					nInitTime_sec = 59;
-					inviteMentCount_Text.text = nInviteMentCurCount.ToString () + " / " + nInviteMentMaxCount.ToString ();
-					inviteMentTimer_Text.enabled = false;
-					yield break;
-
-				}
+				curMin = 0;
+				fCurSec = 10;
+				questManager.QuestInit ();
+				//QuestTimer_Text.enabled = false;
 			}
 
 			if (curMin != 0 && second == 0f) 
@@ -173,6 +147,8 @@ public class BossConsumeItemInfo : MonoBehaviour
 		}
 		yield  break;
 	}
+
+
 
 
 }

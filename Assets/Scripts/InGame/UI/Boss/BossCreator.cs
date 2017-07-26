@@ -67,6 +67,10 @@ public class BossCreator : MonoBehaviour
 		bossElementList[2].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossFireLeftCount, nBossMaxLeftCount);
 		bossElementList[3].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossMusicLeftCount, nBossMaxLeftCount);
 	}
+	public void LoadTime()
+	{
+		bossConsumeItemInfo.LoadTime ();
+	}
 
 	public void BossCreateInit(int _index)
 	{
