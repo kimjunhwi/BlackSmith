@@ -117,8 +117,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     {
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
 
-		
-
 		Load_TableInfo_Weapon();
 
 		Load_TableInfo_Quest();
@@ -310,7 +308,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		Debug.Log (dataAsJson);
 
-
 		playerData = JsonHelper.ListFromJson<CGamePlayerData>(dataAsJson)[0];
 	}
 
@@ -335,13 +332,41 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     void OnApplicationQuit()
     {
+		if (player == null)
+			return;
+
+		player.ReleliveAllItem ();
+
+		SpawnManager.Instance.ReleliveArbait ();
+
+		playerData = player.changeStats;
+
         SaveEquiment();
+
+		SavePlayerData ();
     }
+
+	public void SavePlayerData()
+	{
+		List<CGamePlayerData> playerSave = new List<CGamePlayerData>();
+
+		#if UNITY_EDITOR
+		string filePath = Path.Combine(Application.streamingAssetsPath, strPlayerPath);
+
+		#elif UNITY_ANDROID
+		string filePath = Path.Combine(Application.persistentDataPath, strPlayerPath);
+
+		#endif
+
+		playerSave.Add (playerData);
+
+		string dataAsJson = JsonHelper.ListToJson<CGamePlayerData>(playerSave);
+
+		File.WriteAllText(filePath, dataAsJson);
+	}
 
     public void SaveEquiment()
     {
-		if (player == null)
-			return;
 
 		#if UNITY_EDITOR
 		string filePath = Path.Combine(Application.streamingAssetsPath, strInvetoryPath);

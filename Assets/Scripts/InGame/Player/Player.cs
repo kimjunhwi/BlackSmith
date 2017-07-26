@@ -153,6 +153,14 @@ public class Player
         }
     }
 
+	//세이브를 위한 아이템 전부 해제
+	public void ReleliveAllItem()
+	{
+		if (WeaponEquipment != null) 	ApplyItemData (WeaponEquipment, false);
+		if (GearEquipmnet  != null)		ApplyItemData (GearEquipmnet, false);
+		if (AccessoryEquipmnet != null)	ApplyItemData (GearEquipmnet, false);
+	}
+
     public void ApplyItemData(CGameEquiment _item, bool bIsPlus)
     {
         if(bIsPlus)
