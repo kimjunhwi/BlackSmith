@@ -12,10 +12,9 @@ public class Player
 
     public List<CGameEquiment> List_items;
 
-	CGameEquiment BaseEquimnet = null;
-    //CGameEquiment WeaponEquimnet;
-    //CGameEquiment GearEquimnet;
-    //CGameEquiment AccessoryEquimnet;
+    CGameEquiment WeaponEquipment = null;
+    CGameEquiment GearEquipmnet = null;
+    CGameEquiment AccessoryEquipmnet = null;
 
     public Inventory inventory;
 
@@ -67,11 +66,7 @@ public class Player
 
     public void Awake()
     {
-        BaseEquimnet = new CGameEquiment();
 
-        //WeaponEquimnet = BaseEquimnet;
-        //GearEquimnet = BaseEquimnet;
-        //AccessoryEquimnet = BaseEquimnet;
     }
 
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
@@ -99,6 +94,94 @@ public class Player
 
 		return List_items.Count;
 	}
+
+    //아이템을 장착할 경우
+    public void EquipItem(CGameEquiment _item)
+    {
+        //아이템이 어디 부위인지 확인한다.
+        switch (_item.nSlotIndex)
+        {
+            case (int)E_EQUIMNET_INDEX.E_WEAPON:
+
+                //만약 무기가 있을 경우 그 무기가 현재 플레이어에 적용되는 값을 빼고 아이템을 넣어줌
+                //그 후 다시 아이템 효과를 플레이어에게 적용한다.
+                if (WeaponEquipment != null)
+                {
+                    WeaponEquipment.bIsEquip = false;
+
+                    ApplyItemData(WeaponEquipment, false);
+                }
+
+                WeaponEquipment = _item;
+
+                WeaponEquipment.bIsEquip = true;
+
+                ApplyItemData(WeaponEquipment, true);
+                break;
+            case (int)E_EQUIMNET_INDEX.E_WEAR:
+
+                if (GearEquipmnet != null)
+                {
+                    ApplyItemData(GearEquipmnet, false);
+
+                    GearEquipmnet.bIsEquip = false;
+                }
+
+                GearEquipmnet = _item;
+
+                GearEquipmnet.bIsEquip = true;
+
+                ApplyItemData(GearEquipmnet, true);
+
+                break;
+            case (int)E_EQUIMNET_INDEX.E_ACCESSORY:
+
+
+                if (AccessoryEquipmnet != null)
+                {
+                    ApplyItemData(AccessoryEquipmnet, false);
+
+                    AccessoryEquipmnet.bIsEquip = false;
+                }
+
+                AccessoryEquipmnet = _item;
+
+                AccessoryEquipmnet.bIsEquip = true;
+
+                ApplyItemData(AccessoryEquipmnet, true);
+                break;
+        }
+    }
+
+    public void ApplyItemData(CGameEquiment _item, bool bIsPlus)
+    {
+        if(bIsPlus)
+        {
+            if (_item.fReapirPower != 0) changeStats.fRepairPower += _item.fReapirPower;
+            if (_item.fArbaitRepair != 0) changeStats.fArbaitsPower += _item.fReapirPower;
+            if (_item.fHonorPlus != 0) changeStats.fHornorPlusPercent += _item.fReapirPower;
+            if (_item.fGoldPlus != 0) changeStats.fGoldPlusPercent += _item.fReapirPower;
+            if (_item.fWaterMaxPlus != 0) changeStats.fMaxWaterPlus += _item.fReapirPower;
+            if (_item.fWaterChargePlus != 0) changeStats.fWaterPlus += _item.fReapirPower;
+            if (_item.fCritical != 0) changeStats.fCriticalChance += _item.fReapirPower;
+            if (_item.fCriticalDamage != 0) changeStats.fCriticalDamage += _item.fReapirPower;
+            if (_item.fBigCritical != 0) changeStats.fBigSuccessed += _item.fReapirPower;
+            if (_item.fAccuracyRate != 0) changeStats.fAccuracyRate += _item.fReapirPower;
+        }
+        else 
+        {
+            if (_item.fReapirPower != 0) changeStats.fRepairPower -= _item.fReapirPower;
+            if (_item.fArbaitRepair != 0) changeStats.fArbaitsPower -= _item.fReapirPower;
+            if (_item.fHonorPlus != 0) changeStats.fHornorPlusPercent -= _item.fReapirPower;
+            if (_item.fGoldPlus != 0) changeStats.fGoldPlusPercent -= _item.fReapirPower;
+            if (_item.fWaterMaxPlus != 0) changeStats.fMaxWaterPlus -= _item.fReapirPower;
+            if (_item.fWaterChargePlus != 0) changeStats.fWaterPlus -= _item.fReapirPower;
+            if (_item.fCritical != 0) changeStats.fCriticalChance -= _item.fReapirPower;
+            if (_item.fCriticalDamage != 0) changeStats.fCriticalDamage -= _item.fReapirPower;
+            if (_item.fBigCritical != 0) changeStats.fBigSuccessed -= _item.fReapirPower;
+            if (_item.fAccuracyRate != 0) changeStats.fAccuracyRate -= _item.fReapirPower;
+        }
+    }
 }
 
 

@@ -11,8 +11,10 @@ public class ArbaitBatch : MonoBehaviour {
 
     string[] strBuffsIndex;
 
+    //수리중인지
     public bool bIsRepair = false;
 
+    //완료 됐는가
     public bool bIsComplate = false;
 
 	public string strPath;
@@ -51,6 +53,7 @@ public class ArbaitBatch : MonoBehaviour {
     //무기가 보일 말풍선(?) // 미정
 	protected RepairObject RepairShowObject;
 
+    //캐릭터 스프라이트
 	protected SpriteRenderer myCharacterSprite;
 
 	protected BoxCollider2D boxCollider;
@@ -65,9 +68,9 @@ public class ArbaitBatch : MonoBehaviour {
     private float m_fWaterRepairPowerValue = 0.0f;
     private float m_fWaterCriticalValue = 0.0f;
 
-    private float m_fWaterAttackSpeedTime = 0.0f;
-    private float m_fWaterRepairPowerTime = 0.0f;
-    private float m_fWaterCriticalTime = 0.0f;
+    //private float m_fWaterAttackSpeedTime = 0.0f;
+    //private float m_fWaterRepairPowerTime = 0.0f;
+    //private float m_fWaterCriticalTime = 0.0f;
 
     private float m_fWaterAttackSpeedPlusTime = 0.0f;
     private float m_fWaterRepairPowerPlusTime = 0.0f;
@@ -75,28 +78,6 @@ public class ArbaitBatch : MonoBehaviour {
 
     //무기 등급을 어디까지 받아올지를 정하기 위해 사용
     public int nGrade { get; set; }
-
-    //public float GetRepairPower(){ return m_CharacterChangeData.fRepairPower; }
-    //public void SetRepairPower(float _fValue) { m_CharacterChangeData.fRepairPower = _fValue; }
-
-    //public float GetAttackSpeed() { return m_CharacterChangeData.fAttackSpeed; }
-    //public void SetAttackSpeed(float _fValue) { m_CharacterChangeData.fAttackSpeed = _fValue; }
-
-    //public float GetCriticalChance() { return m_CharacterChangeData.fCritical; }
-    //public void SetCriticalChance(float _fValue) { m_CharacterChangeData.fCritical = _fValue; }
-
-    //public void SetDefaultRepair(float _fValue) {m_CharacterChangeData.fRepairPower += _fValue;}
-    //public void SetDefaultAccuracy(float _fValue) {m_CharacterChangeData.fAccuracyRate += _fValue;}
-    //public void SetDefaultCritical(float _fValue) {m_CharacterChangeData.fCritical += _fValue;}
-
-	public virtual void ApplyRepairBuff() { }
-	public virtual void ReliveRepairBuff(int nValue){ }
-
-	public virtual void ApplyAttackSpeedBuff() {}
-	public virtual void ReliveAttackSppedBuff(int nValue){}
-
-	public virtual void ApplyCriticalChaceBuff(){}
-	public virtual void ReliveCriticalChanceBuff(int nValue){}
 
 	// Use this for initialization
 	protected virtual void Awake()
@@ -193,8 +174,10 @@ public class ArbaitBatch : MonoBehaviour {
         E_STATE = E_ArbaitState.E_REPAIR;
     }
 
+    //캐릭터 스테이트가 바뀌었을때 초기화를 위함
 	public virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
 
+    //캐릭터 동작 부분
 	protected virtual IEnumerator CharacterAction() { yield return null; }
 
     //스킬 적용

@@ -29,12 +29,16 @@ public class InventoryShowPanel : MonoBehaviour {
 
 	CGameEnhanceData[] enhanceData;
 
+    Player player;
+
 	void Awake()
 	{
 		SellButton.onClick.AddListener (SellItem);
-		EquipButton.onClick.AddListener (EquiItem);
+        EquipButton.onClick.AddListener(EquipItem);
 		EnhanceButton.onClick.AddListener (EnhanceItem);
 		CloseButton.onClick.AddListener (ClosePanel);
+
+        player = GameManager.Instance.player;
 
 		gameObject.SetActive (false);
 	}
@@ -96,9 +100,9 @@ public class InventoryShowPanel : MonoBehaviour {
 
 	}
 
-	private void EquiItem()
+	private void EquipItem()
 	{
-
+        player.EquipItem(ItemData);
 	}
 
 	private void ClosePanel()

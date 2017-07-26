@@ -16,24 +16,22 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     const int m_nMaxPollAmount = 5;         //오브젝트풀로 만들어둘 최대 개수
    
-	public int m_nBatchArbaitCount = -1;
+	public int m_nBatchArbaitCount = -1;    //배치 된 아르바이트 개수를 위함
 
-	public Transform contentsPanel;
+	public Transform contentsPanel;         
 
-	public GameObject ArbaitPanel;
+	public GameObject ArbaitPanel;          //아르바이트 수 만큼 생성될 페널
 
-	public Sprite[] arbaitSprite;
+	public Sprite[] arbaitSprite;           //아르바이트 이미지들
 
-    public GameObject m_ArbaitData;
+    public GameObject[] m_CharicPool;       //아르바이트 게임오브젝트
 
-    public GameObject[] m_CharicPool;
-
-    public ArrayList m_GuestList = new ArrayList();
-
-    public List<GameObject> list_Character = new List<GameObject>();
+    public List<GameObject> list_Character = new List<GameObject>();    //손님 리스트를 저장하기 위함 중간 삭제 등이 있으므로 리스트로 구현
 
 	public List<int> list_FreeazeCharacter = new List<int> ();
+
 	public List<int> checkList = new List<int> ();
+
 	public int nRandomIndex;
 
     public Transform[] m_BatchPosition;
@@ -49,8 +47,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     private float m_fCreatePlusTime;            //몬스터 생성시간에 도달하면 몬스터 생성되는시간
     private float m_fLevelTime;             //다음 레벨 시간에 도달하게 하는 시간
 
-    private float m_nNextLevelTime = 10;    //다음 레벨로 진행되는시간
-
 	private int m_nCreateArbaitAmount;
 
     private CGameWeaponInfo cLevelData;         //Level에 따른 데이터를 받아오기 위함
@@ -61,8 +57,10 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     private void Awake()
     {
-        m_nMaxArbaitAmount = GameManager.Instance.ArbaitLength();
+        //게임매니저에서 아르바이트 수치를 받아옴
+        m_nMaxArbaitAmount = GameManager.Instance.ArbaitLength(); 
 
+        //받아온 수치만큼 할당
 		array_ArbaitData = new ArbaitBatch[m_nMaxArbaitAmount];
 
         //몬스터 풀을 만듬
@@ -101,6 +99,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
        
     }
 
+    //현재 아르바이트가 수리 중인지 확인을 위함
+    //만약 수리중일 경우 그 인덱스의 아르바이트를 반환
 	public ArbaitBatch OverlapArbaitData(GameObject obj)
     {
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
@@ -146,6 +146,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //WeaponData
     #region
 
+    //배치 된 손님이 있을 경우 지우기 위함 
     public void DeleteObject(GameObject _obj)
     {
         int nSearchIndex = 0;
@@ -159,6 +160,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         OrderMove(nSearchIndex);
     }
 
+    //게임오브젝트를 통해 배치된 손님을 찾음
     public GameObject SearchCharacter(GameObject _obj)
     {
         foreach(GameObject obj in list_Character)
@@ -175,25 +177,13 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     {
         GameObject tempObject = null;
 
+        //손님 중에 있는지 확인
         tempObject = SearchCharacter(obj);
 
+        //있을 경우 데이터를 넣어줌
         if (tempObject)
 			tempObject.GetComponent<NormalCharacter>().GetRepairData(bIsRepair,bIsResearch, _fComplate, _fTemperator);
     }
-
-	public float GetActiveArbaitRepair()
-	{
-		float fResultValue = 0.0f;
-
-		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
-
-			if (m_BatchArbait [nIndex].activeSelf) {
-				fResultValue += array_ArbaitData [nIndex].m_CharacterChangeData.fRepairPower;
-			}
-		}
-
-		return fResultValue;
-	}
 
     public void ComplateCharacter(GameObject _obj,float fComplate)
     {
@@ -206,6 +196,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     }
 
+    //무기가 완성이 됐는지 확인을 해주는 함수 이다.
 	public bool CheckComplateWeapon(GameObject _obj, float _fComplate,float _fTemperator)
 	{
 		GameObject tempObject = null;
@@ -218,6 +209,9 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		return false;
 	}
 
+    //만약 유저의 수리 페널에 아무것도 없을 경우 호출된다.
+    //배치된 손님이 없을 경우 반환하며
+    //수리중이지 않고, 대기상태인 손님의 무기를 가져온다.
 	public void AutoInputWeaponData()
 	{
 		if (list_Character.Count == 0)
@@ -356,11 +350,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         return false;
     }
     
-    //배치된 아르바이트의 인덱스를 가져옴
-    public int GetArbaitBatchIndex(int _nIndex)
-    {
-		return array_ArbaitData[_nIndex].nBatchIndex;
-    }
 
     ///////// 무기에서 아르바이트 를 넣을 수 있는지 판별 하는 함수 부분
     //인자로 넣은 값을 넣을 수 있는지 없는지를 확인한다.
@@ -402,6 +391,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     }
     ////////////////////////////////////////////////////////////////
 
+
+    //만약 아르바이트에서 무기를 가져갈때, 현재 캐릭터의 인덱스와, 배치된 인덱스를 통해 가져온다.
 	public void InsertWeaponArbait(int _nIndex,int _nBatchIndex)
     {
 		NormalCharacter charData;
@@ -435,21 +426,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 				}
 			}
 		}
-    }
-
-    public float ActtiveArbaitRepair()
-    {
-        float fResultValue = 0.0f;
-
-        for(int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
-        {
-            if(m_BatchArbait[nIndex].activeSelf)
-            {
-				fResultValue += array_ArbaitData[nIndex].m_CharacterChangeData.fRepairPower;
-            }
-        }
-
-        return fResultValue;
     }
 
 	//물 사용시 아르바이트중에 물 사용시 버프가 있을 경우 적용
@@ -493,6 +469,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         }
 	}
 
+    //플레이어가 크리티컬을 했을 경우 호출되며,
+    //해당 아르바이트가 있을 경우 버프를 적용하기 위함이다.
     public void PlayerCritical()
     {
 

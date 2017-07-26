@@ -142,16 +142,20 @@ public class ArbaitCharacter : MonoBehaviour {
         }
     }
 
+    //아르바이트 배치 및 해제 부분
 	public void OnBatchToggle(bool _bIsToggle)
     {
 		bool bIsToggle = _bIsToggle;
         
 		Debug.Log(m_SettingToggle.isOn);
 
+        //만약 배치를 해야하고 배치상태가 아니라면
         if(bIsToggle && m_bIsBatch == false)
         {
+            //배치 될 수 있는지를 확인
 			nGetBatchIndex = spawnManager.AddArbaitCheck();
 
+            //만약 배치 할 수 있다면 현재 인덱스, 배치 인덱스, 현재 페널, 캐릭터 데이터를 보낸후 배치
 			if (nGetBatchIndex != (int)E_CHECK.E_FAIL) {
 				spawnManager.AddArbait (m_CharacterData.index, nGetBatchIndex, gameObject, m_CharacterData);
 				m_bIsBatch = true;
@@ -160,8 +164,10 @@ public class ArbaitCharacter : MonoBehaviour {
 				m_SettingToggle.isOn = false;
 			}
         }
+            //해제를 원하고 배치상태라면
         else if((bIsToggle == false) && m_bIsBatch)
         {
+            //배치된 아르바이트를 지움
             spawnManager.DeleteArbait(gameObject);
 
             m_bIsBatch = false;

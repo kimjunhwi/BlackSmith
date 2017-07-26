@@ -4,6 +4,8 @@ using UnityEngine;
 using ReadOnlys;
 
 public class Nurse : ArbaitBatch {
+
+    //크리확률증가를 위함
     private float fChangeCritical = 0.0f;
 
     protected override void Awake()
@@ -14,7 +16,7 @@ public class Nurse : ArbaitBatch {
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
         StartCoroutine(this.CharacterAction());
     }

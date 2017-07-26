@@ -21,7 +21,6 @@ public class RepairObject : MonoBehaviour {
 	float fTemperatureSlideTime = 0.0f;
 
 	private float fCurrentComplate = 0;				//현재완성도
-	private float fMaxComplate = 0f;				//최대 완성
 	private float fWeaponDownDamage = 70.0f;		//현재무기 데미지
     private float fWeaponDownTemperature = 0;		//무기 수리시 올라가는 온도
     private float fMaxTemperature;					//최대 온도
@@ -109,7 +108,6 @@ public class RepairObject : MonoBehaviour {
     // 07.20 피버
     private bool m_bIsFever = false;
     private const float m_fFeverTime = 10.0f;
-    private float m_fFeverPlusTime = 0.0f;
 
     private const float m_fNormalCretaeTime = 4.5f;
     private const float m_fFeverCreateTime = 1.5f;
@@ -189,8 +187,6 @@ public class RepairObject : MonoBehaviour {
 		waterObject.SetActive (true);
 	}
 
-
-
 	public IEnumerator StartWaterFx()
 	{
 		while (true)
@@ -247,7 +243,6 @@ public class RepairObject : MonoBehaviour {
 		}
 			
 	}
-
 
 	public IEnumerator BossMusicWeaponMove()
 	{

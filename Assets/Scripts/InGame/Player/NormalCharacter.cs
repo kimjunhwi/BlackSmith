@@ -68,6 +68,7 @@ public class NormalCharacter : Character {
 		ComplateScale.localScale = new Vector3 (1.0f, 0, 1.0f);
     }
 
+    //활성화 됐을 때 초기화
 	void OnEnable()
     {
 		backGround.sprite = NoneSpeech;
@@ -92,6 +93,9 @@ public class NormalCharacter : Character {
 
         weaponData = GameManager.Instance.GetWeaponData((int)E_GRADE);
 
+        //현재 대장간 레벨에 따른 공식을 적용
+
+        //ex) 대장간 레벨의 5%를 적용될 수치와 곱하고 그것을 더해줌
 		weaponData.fMaxComplate += weaponData.fMaxComplate * (cPlayerData.GetSmithLevel () * 0.05f);
 		weaponData.fMinusRepair += weaponData.fMinusRepair * (cPlayerData.GetSmithLevel () * 0.05f);
 		weaponData.fPlusTemperature += weaponData.fPlusTemperature * (cPlayerData.GetSmithLevel () * 0.05f);
@@ -155,12 +159,15 @@ public class NormalCharacter : Character {
     {
         yield return new WaitForSeconds(0.3f);
 
+        //시간이 지났거나 m_bIsBack이 트루일경우 돌려보냄
 		if (m_fCharacterTime >= m_fCharacterWaitTime || m_bIsBack == true)
 			E_STATE = ENORMAL_STATE.BACK;
 		
+            //시간이 지나지 않았거나 도착하지 않았다면 Walk
 		else if(m_fCharacterTime < m_fCharacterWaitTime && m_bIsArrival == false)
 			E_STATE = ENORMAL_STATE.WALK;
 		
+            //그 외에는 대기
 		else
 			E_STATE = ENORMAL_STATE.WAIT;
     }
@@ -172,21 +179,27 @@ public class NormalCharacter : Character {
 
 			m_anim.SetBool ("bIsWalk", true);
 
+                //Move 함수를 통해 지정된 위치로 자연스럽게 이동하기 위해 MoveTowards 함수를 사용
 			transform.position = Vector3.MoveTowards (transform.position, m_VecMoveDistance, fSpeed * Time.deltaTime);
 
+                //만약 도착했다면
 			if ((transform.position.x == m_VecMoveDistance.x)) {
 
+                //처음일 경우 true로 바꿔주고 수리 할 수 있는 무기를 보여줌
 				if (m_bIsFirst == false) {
 					m_bIsFirst = true;
 
 					WeaponBackground.SetActive (true);
 				}
 
+                //만약 수리중이라면 도착했다는것으로 간주하고 리턴
 				if (m_bIsRepair) {
 					m_bIsArrival = true;
 					yield break;
 				}
+
 				//만약 현재 수리중인 오브젝트가 없을 경우  
+                //수리 중 및 도착한것으로 바꾸고 현재 무기를 넣어준다.
 				if (RepairShowObject.AfootObject == null) {
 					m_bIsRepair = true;
 					m_bIsArrival = true;
@@ -197,10 +210,12 @@ public class NormalCharacter : Character {
 					yield break;
 				}
 
+                //지정된 위치로 도착했다면
 				if (m_bIsArrival == false) {
 					
 					m_bIsArrival = true;
 
+                    //수리할 수 있는 아르바이트가 있는지 체크한다.
 					m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
 
 					if (m_nCheck != (int)E_CHECK.E_FAIL) {
@@ -220,6 +235,7 @@ public class NormalCharacter : Character {
 
 		case ENORMAL_STATE.BACK:
 
+                //딱 한번만 호출 되야 하는 부분
 			if (!m_bIsFirstBack) 
 			{
 				m_bIsFirstBack = true;
@@ -233,22 +249,25 @@ public class NormalCharacter : Character {
 
 				mySprite.sortingOrder = (int)E_SortingSprite.E_BACK;
 
+                //현재 오브젝트를 보내서 있는지 확인
 				RepairShowObject.CheckMyObject (gameObject);
 
 				if(RepairShowObject.AfootObject == null)
 					SpawnManager.Instance.AutoInputWeaponData ();
 
+                //현재 캐릭터를 지움
 				SpawnManager.Instance.DeleteObject(gameObject);
 
+                //결과값 호출
 				Complate (m_fComplate);
 
 				//현재 아르바이트가 수리중인지 확인 
 				ArbaitBatch arbait =  SpawnManager.Instance.OverlapArbaitData (gameObject);
-
+                
+                //수리 중 이였다면 아르바이트 초기화
 				if (arbait != null)
 					arbait.ResetWeaponData();
 				
-
 				WeaponBackground.SetActive (false);
 			}
 
@@ -267,12 +286,7 @@ public class NormalCharacter : Character {
         yield return null;
     }
 
-	public void ResetData()
-	{
-		m_bIsArrival = true;
-
-	}
-
+    //손님의 이동속도와 뒤로 가는지에 대한 선택을 위함
 	public void RetreatCharacter(float _fSpeed,bool _bIsBack)
 	{
 		fSpeed = _fSpeed;
@@ -280,6 +294,7 @@ public class NormalCharacter : Character {
         m_bIsBack = _bIsBack;
 	}
 
+    //지정한 인덱스로 손님을 이동시키기 위함
 	public void Move(int _nIndex)
 	{
 		m_nIndex = _nIndex;
@@ -317,32 +332,7 @@ public class NormalCharacter : Character {
 		SpeechSelect ((int)E_SPEECH.E_NONE);
 	}
 
-	public void GetResetData(bool _bIsRepair,bool _bIsResearch, float _fComplate, float _fTemperator)
-	{
-		m_bIsRepair = false;
-		m_bIsArrival = false;
-		m_fComplate = _fComplate;
-		m_fTemperator = m_fTemperator;
-
-		if (_bIsResearch) 
-		{
-			m_nCheck = SpawnManager.Instance.InsertArbatiWeaponCheck (weaponData.nGrade);
-
-			if (m_nCheck != (int)E_CHECK.E_FAIL) {
-				m_bIsRepair = true;
-
-				SpeechSelect (m_nCheck);
-
-				SpawnManager.Instance.InsertArbaitWeapon (m_nCheck, gameObject, weaponData, m_fComplate, m_fTemperator);
-
-				return;
-			}
-		}
-		SpeechSelect ((int)E_SPEECH.E_NONE);
-	}
-
-
-
+    //현재 무기가 누구에게 수리중인지를 지정하기 위함
 	public void SpeechSelect(int _nIndex)
 	{
 		switch (_nIndex) {
@@ -376,6 +366,7 @@ public class NormalCharacter : Character {
 		}
 	}
 
+    //완성도를 체크하고 온도를 저장하기 위한 함수이다.
 	public override bool CheckComplate (float _fComplate,float _fTemperator)
 	{
 		float fCurCompletY;
@@ -385,6 +376,8 @@ public class NormalCharacter : Character {
 
 		fCurCompletY = m_fComplate / weaponData.fMaxComplate;
 
+        //만약 완성도가100% 라면
+        //뒤로 이동 후 true 반환
 		if (fCurCompletY >= 1.0f) {
 			m_bIsBack = true;
 

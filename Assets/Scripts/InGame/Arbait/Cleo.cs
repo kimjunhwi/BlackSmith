@@ -5,8 +5,6 @@ using ReadOnlys;
 
 public class Cleo : ArbaitBatch {
 
-	private float fChangeCritical = 0.0f;
-
 	protected override void Awake()
 	{
 		base.Awake();
@@ -42,8 +40,6 @@ public class Cleo : ArbaitBatch {
 		ReliveSkill();
 
 		base.OnDisable();
-
-		fChangeCritical = 0.0f;
 	}
 
 	protected override void ReliveSkill()

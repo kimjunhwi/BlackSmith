@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour {
 
     private List<CGameEquiment> List_Equiments;
 
-    public InventoryScrollList[] inventory;
+    public InventoryScrollList[] inventorySlots;
 
     public void Awake()
     {
@@ -18,6 +18,8 @@ public class Inventory : MonoBehaviour {
         GameManager.Instance.player.SetInventroy(this);
     }
 
+
+    //인벤토리 세팅
     public void SetInventory(Player _player, List<CGameEquiment> _list)
     {
         player = _player;
@@ -28,13 +30,15 @@ public class Inventory : MonoBehaviour {
 		else
 			List_Equiments = new List<CGameEquiment> ();
 
-        for(int nIndex = 0; nIndex < inventory.Length; nIndex++)
+        
+        for(int nIndex = 0; nIndex < inventorySlots.Length; nIndex++)
         {
+            //만약 아이템이 있을경우 아이템을 넣어줌
             if (GetItemList(nIndex) != 0)
-                inventory[nIndex].SetInitList(GetEquimnetList(nIndex));
+                inventorySlots[nIndex].SetInitList(GetEquimnetList(nIndex));
 
             else
-                inventory[nIndex].SetInitList();
+                inventorySlots[nIndex].SetInitList();
         }
 
 		gameObject.SetActive (false);
@@ -69,8 +73,10 @@ public class Inventory : MonoBehaviour {
     {
         List_Equiments.Add(_getEquimnet);
 
-        inventory[_getEquimnet.nSlotIndex].AddItem(_getEquimnet);
+        inventorySlots[_getEquimnet.nSlotIndex].AddItem(_getEquimnet);
     }
+
+    
 
     public List<CGameEquiment> GetItemList()
     {
