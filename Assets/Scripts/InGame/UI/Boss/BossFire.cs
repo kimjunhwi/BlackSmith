@@ -224,7 +224,7 @@ public class BossFire : BossCharacter
 					//불씨 하나당 온도 증가량 10%
 					repairObj.fSmallFirePlusTemperatrue -= 0.1f;
 				}
-				yield return new WaitForSeconds (0.45f);
+				yield return new WaitForSeconds (0.6f);
 				FireBoomAnimator.SetBool ("isBoom", false);
 				FireBoomAnimator.Play ("BossIdle");
 				FireBoom.SetActive (false);
