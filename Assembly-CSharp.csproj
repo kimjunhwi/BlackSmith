@@ -69,12 +69,6 @@
      <Compile Include="Assets\Scripts\InGame\Arbait\Nurse.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\OrangeHair.cs" />
      <Compile Include="Assets\Scripts\InGame\Camera\CameraShake.cs" />
-     <Compile Include="Assets\Scripts\InGame\Factory\Barrack.cs" />
-     <Compile Include="Assets\Scripts\InGame\Factory\CharacterFactory.cs" />
-     <Compile Include="Assets\Scripts\InGame\Factory\ICharacter.cs" />
-     <Compile Include="Assets\Scripts\InGame\Factory\IFactory.cs" />
-     <Compile Include="Assets\Scripts\InGame\Factory\MonsterFactory.cs" />
-     <Compile Include="Assets\Scripts\InGame\Factory\ReadOnly.cs" />
      <Compile Include="Assets\Scripts\InGame\Manager\CoroutineChain.cs" />
      <Compile Include="Assets\Scripts\InGame\Manager\GameManager.cs" />
      <Compile Include="Assets\Scripts\InGame\Manager\GenericMonoSingleton.cs" />
@@ -96,6 +90,7 @@
      <Compile Include="Assets\Scripts\InGame\Player\NormalCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\Player.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\InGame\Player\PlayerSpecificInfo.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\Sasin.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
