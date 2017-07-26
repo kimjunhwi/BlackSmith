@@ -53,7 +53,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 
 		note2ObjectPool = GameObject.Find ("Note2Pool").GetComponent<SimpleObjectPool>();
 		bossMusic = GameObject.Find ("BossMusic").GetComponent<BossMusic> ();
-
+		note2ObjectPool.PreloadPool ();
 		StartCoroutine (NoteObjMove ());
 	}
 

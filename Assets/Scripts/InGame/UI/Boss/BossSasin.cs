@@ -29,6 +29,8 @@ public class BossSasin : BossCharacter
 
 		gameObject.SetActive (false);
 		animator = gameObject.GetComponent<Animator> ();
+
+		skullObjectPool.PreloadPool ();
 	}
 	private void OnEnable()
 	{

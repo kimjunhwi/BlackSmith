@@ -37,6 +37,7 @@ public class BossMusic : BossCharacter
 		fXPos = bossNoteRespawnPoint.position.x;
 		fYPos = bossNoteRespawnPoint.position.y;
 		animator = gameObject.GetComponent<Animator> ();
+		noteObjectPool.PreloadPool ();
 		gameObject.SetActive (false);
 	}
 	private void OnEnable()

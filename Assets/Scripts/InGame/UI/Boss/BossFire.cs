@@ -37,6 +37,7 @@ public class BossFire : BossCharacter
 		FireBoom.SetActive (false);
 
 		gameObject.SetActive (false);
+		smallFirePool.PreloadPool ();
 	}
 	private void OnEnable()
 	{
