@@ -100,7 +100,7 @@ public class BossFire : BossCharacter
 	protected override IEnumerator BossSkillStandard ()
 	{
 		
-		bossTalkPanel.StartShowBossTalkWindow (2f, "Fire~~~");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		isStandardPhaseFailed = true;
 		while (true)
 		{
@@ -136,7 +136,7 @@ public class BossFire : BossCharacter
 	protected override IEnumerator BossSkill_01 ()
 	{
 		nSmallFireMaxCount = 10;
-		bossTalkPanel.StartShowBossTalkWindow (2f, "흐으음~~~");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_FIREANGRY);
 		isStandardPhaseFailed = false;
@@ -176,7 +176,7 @@ public class BossFire : BossCharacter
 	protected override IEnumerator BossSKill_02 ()
 	{
 		nSmallFireMaxCount = 20;
-		bossTalkPanel.StartShowBossTalkWindow (2f,"파이어 ~~~!");
+		bossTalkPanel.StartShowBossTalkWindow (2f,bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE02]);
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (smallFireRespawnPoint.sizeDelta.x/2), fXPos + (smallFireRespawnPoint.sizeDelta.x/2));
@@ -255,20 +255,32 @@ public class BossFire : BossCharacter
 	{
 		yield return null;
 		Debug.Log ("Boss Die");
-	
-		
 		while (smallFireRespawnPoint.childCount != 0) 
 		{
 			GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;
 			smallFirePool.ReturnObject(go);
 		}
 
-		bossTalkPanel.StartShowBossTalkWindow (2f, "Bye~~~!");
+		//사라질때의 말풍선
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
 
+		//Animator Bool change
 		animator.SetBool ("isDisappear", true);
-	
-		yield return new WaitForSeconds (0.8f);
 
+		//사라지는 애니메이션이 끝날때 까지 기달인다.
+		while (true) 
+		{
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("FireDisappear"))
+			{
+				yield return new WaitForSeconds (0.8f);
+				eCureentBossState = EBOSS_STATE.RESULT;
+				if (eCureentBossState == EBOSS_STATE.RESULT) {
+
+					break;
+				}
+			} else
+				yield return null;
+		}
 		StartCoroutine (BossResult ());
 
 

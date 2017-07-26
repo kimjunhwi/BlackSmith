@@ -36,6 +36,7 @@ public class BossCharacter : Character
 	public GameObject bossWeapon;				//보스 무기 obj
 	public UIDisable uiDisable;
 
+	public string[] bossWord = new string[4];					//보스 말풍선(시작시 할당) 
 
 	protected bool isFailed = false;								//실패시 띄우는 창에 대한 변수
 	protected bool isStandardPhaseFailed = false;					//만약 1페이즈도 못가고 죽을 때

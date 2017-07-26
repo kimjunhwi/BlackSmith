@@ -4,6 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum E_BOSSWORD
+{
+	E_BOSSWORD_BEGIN = 0,
+	E_BOSSWORD_PHASE01,
+	E_BOSSWORD_PHASE02,
+	E_BOSSWORD_END,
+}
+
 public enum E_BOSSNAME 
 {
 	E_BOSSNAME_ICE = 0,
@@ -89,7 +97,6 @@ public class BossCreator : MonoBehaviour
 			}
 			yield return null;
 		}
-		yield return null;
 	}
 
 	public IEnumerator BossCreate(int _index) 
@@ -117,7 +124,15 @@ public class BossCreator : MonoBehaviour
 			bossIce.bossTalkPanel = bossTalkPanel;
 			bossIce.bossWeapon = bossWeapon_Obj;
 			bossIce.uiDisable = uiDisable;
+
+
+			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "저... 무기좀... 고쳐주세요";
+			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "흐으음~~~";
+			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE02] = "눈보라 ~~~!";
+			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_END] = "그럼 이만!";
+
 			bossList [0].SetActive (true);
+
 			nBossSasinLeftCount--;
 		}
 
@@ -138,7 +153,14 @@ public class BossCreator : MonoBehaviour
 			bossSasin.bossTalkPanel = bossTalkPanel;
 			bossSasin.bossWeapon = bossWeapon_Obj;
 			bossSasin.uiDisable = uiDisable;
+
+			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "내가 사신이지롱";
+			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "나 화났어 ㅡ,ㅡ";
+			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE02] = "뿌우우우우우!!!";
+			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_END] = "꾸앙 ㅇㅁㅇ...";
+
 			bossList [1].SetActive (true);
+
 
 
 			nBossSasinLeftCount--;
@@ -162,6 +184,12 @@ public class BossCreator : MonoBehaviour
 			bossFire.bossTalkPanel = bossTalkPanel;
 			bossFire.bossWeapon = bossWeapon_Obj;
 			bossFire.uiDisable = uiDisable;
+
+			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "Fire~~~";
+			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "흐으음~~~";
+			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE02] = "파이어 ~~~!";
+			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_END] = "Bye~~~!";
+
 			bossList [2].SetActive (true);
 
 
@@ -183,6 +211,12 @@ public class BossCreator : MonoBehaviour
 			bossMusic.bossTalkPanel = bossTalkPanel;
 			bossMusic.bossWeapon = bossWeapon_Obj;
 			bossMusic.uiDisable = uiDisable;
+
+			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "소리 질러~!";
+			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "Whoh~";
+			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE02] = "Drop the beat~!";
+			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_END] = "SeeYa!";
+
 			bossList [3].SetActive (true);
 			nBossMusicLeftCount--;
 		}

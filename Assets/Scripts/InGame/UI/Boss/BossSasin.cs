@@ -53,52 +53,59 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossWait ()
 	{
-
 		while (true)
 		{
-			//무기 이미지 추가
 			if (this.bossBackGround.isBossBackGround == true) 
 			{
+				//배경이 바뀌면 등장 애니메이션 시작
 				animator.SetBool ("isBackGroundChanged", true);
 
-				if (animator.GetCurrentAnimatorStateInfo (0).length > 1.0f) {
+				//애니메이션이 끝났는지 확인 끝났으면 다음애니메이션으로 넘긴다.
+				//SasinAppear Animation length = 1.0f
+				if (animator.GetCurrentAnimatorStateInfo (0).length > 1.0f) 
+				{
 					yield return new WaitForSeconds (0.5f);
 					animator.SetBool ("isAppear", true);
 					eCureentBossState = EBOSS_STATE.PHASE_00;
-
 				} 
 				else
 					yield return null;
 
-
-				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
+			
+				if (eCureentBossState == EBOSS_STATE.PHASE_00) 
+				{
+					//무기 이미지 추가
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					//타이머 시작
 					ActiveTimer ();
+					//보스가 소환되는 도중에 무기 패널을 터치하면 보스 creator가 꺼지므로 소환중일때는 막아놓는다. 
 					uiDisable.isBossSummon = false;
 					break;
 				}
 			}
 			else
 				yield return null;
-		
-
 		}
+
+		//Phase00 Start!
 		StartCoroutine (BossSkillStandard ());
-		yield break;
 	}
 
 	protected override IEnumerator BossSkillStandard ()
 	{
-
+		//기본페이즈에서 실패시 보스 화난 이펙트가 안뜨게 하기 위한 변수
 		isStandardPhaseFailed = true;
-		bossTalkPanel.StartShowBossTalkWindow (2f, "내가 사신이지롱");
+		//StandardPhase 말풍선
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		while (true)
 		{
+			//해골 생성을 위한 타이머
 			fTime += Time.deltaTime;
 
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
+			//Fail Condition
 			if (fCurComplete < 0) {
 				FailState ();
 			}
@@ -111,9 +118,6 @@ public class BossSasin : BossCharacter
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
 				eCureentBossState = EBOSS_STATE.PHASE_01;
-			
-			//yield return new WaitForSeconds (2.0f);
-			//Debug.Log ("BossPhase00 Active!!");
 
 			if (eCureentBossState == EBOSS_STATE.PHASE_01)
 				break;
@@ -128,10 +132,12 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
-
+		//Boss Effect On
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
 		isStandardPhaseFailed = false;
-		bossTalkPanel.StartShowBossTalkWindow (2f, "나 화났어 ㅡ,ㅡ");
+
+		//BossWord Start
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
@@ -164,7 +170,7 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
-		bossTalkPanel.StartShowBossTalkWindow (2f, "뿌우우우우우!!!");
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE02]);
 		while (true)
 		{
 			fRandomXPos = Random.Range (fXPos - (bossSkullRespawnPoint.sizeDelta.x/2), fXPos + (bossSkullRespawnPoint.sizeDelta.x/2));
@@ -199,33 +205,29 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossDie ()
 	{
-		bossTalkPanel.StartShowBossTalkWindow (2f, "꾸앙 ㅇㅁㅇ...");
+		yield return null;
+		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
+		animator.SetBool ("isDisappear", true);
+
 		while (true)
 		{
-			animator.SetBool ("isDisappear", true);
-
 			yield return new WaitForSeconds (0.1f);
 
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
 			{
-				
-			
 				break;
 			}
 			else
 				yield return null;
 		}
-
-
-
+			
 		StartCoroutine (BossResult ());
-
-		yield break;
 	}
 
 	protected override IEnumerator BossResult ()
 	{
+		yield return null;
 		while (true)
 		{
 			Debug.Log ("BossResult Active!!");
@@ -252,7 +254,6 @@ public class BossSasin : BossCharacter
 			
 		}
 		StartCoroutine (BossFinish ());
-		yield break;
 	}
 
 	protected override IEnumerator BossFinish ()
@@ -266,7 +267,7 @@ public class BossSasin : BossCharacter
 		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
 			bossTalkPanel.bossTalkPanel.SetActive (false);
 
-
+		//Animation 초기화
 		animator.SetBool ("isAppear", false);
 		animator.SetBool ("isDisappear", false);
 		animator.SetBool ("isBackGroundChanged", false);	
