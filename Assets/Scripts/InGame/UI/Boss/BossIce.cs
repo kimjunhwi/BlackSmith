@@ -439,10 +439,6 @@ public class BossIce : BossCharacter
 	{
 		isFailed = true;
 
-		StopCoroutine (BossSkillStandard ());
-		StopCoroutine (BossSkill_01 ());
-		StopCoroutine (BossSKill_02 ());
-
 		StartCoroutine (BossDie ());
 	}
 
