@@ -95,6 +95,7 @@
      <Compile Include="Assets\Scripts\InGame\Player\Sasin.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
+     <Compile Include="Assets\Scripts\InGame\Quest\QuestTimer.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QusetManager.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossAnimation.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossArbaitDeFreeze.cs" />

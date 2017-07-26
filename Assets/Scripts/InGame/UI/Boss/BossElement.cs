@@ -12,6 +12,4 @@ public class BossElement : MonoBehaviour
 	public Button bossLevelRight_Button;
 	public Button bossLevelLeft_Button;
 
-
-
 }
