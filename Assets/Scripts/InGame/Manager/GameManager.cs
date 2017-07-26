@@ -72,6 +72,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public CGameEnhanceData[] cFourGradeEnhance = null;          //4등급 강화 데이터 모음
 
+	public CGameSoundData[] cSoundsData = null;					//사운드 데이
+
+
 	public CGameArbaitGrade[] cArbaitCgrade = null;				//C등급 아르바이트
 	public CGameArbaitGrade[] cArbaitBgrade = null;				//B등급 아르바이트
 	public CGameArbaitGrade[] cArbaitAgrade = null;				//S등급 아르바이트
@@ -116,6 +119,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	public IEnumerator DataLoad()
     {
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
+
+		Load_TableInfo_Sound ();
 
 		Load_TableInfo_Weapon();
 
@@ -235,6 +240,10 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         player = new Player();
 
 		player.Init(cInvetoryInfo,playerData);
+
+		SoundManager.instance.LoadSource ();
+
+		SoundManager.instance.PlayBGM (eSound.bgm_main);
 
 		logoManager.bIsSuccessed = true;
 
@@ -1140,6 +1149,39 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		cArbaitSgrade = kInfo;
 	}
 
+	void Load_TableInfo_Sound()
+	{
+		if (cSoundsData.Length != 0) return;
+
+		string txtFilePath = "sound";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		CGameSoundData[] kInfo = new CGameSoundData[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new CGameSoundData();
+			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
+			kInfo[i - 1].strName = Cells[1];
+			kInfo[i - 1].strResource = Cells[2];
+			kInfo[i - 1].nType = int.Parse(Cells[3]);
+			kInfo[i - 1].nVolume = int.Parse(Cells[4]);
+			kInfo[i - 1].nLoop = int.Parse(Cells[5]);
+		}
+
+		cSoundsData = kInfo;
+	}
+
 	#endregion
 
 	#region SplitText
@@ -1338,6 +1380,15 @@ public class GameManager : GenericMonoSingleton<GameManager> {
             return 0;
     }
     #endregion 
+
+	public CGameSoundData Get_TableInfo_sound(int _nIndex)
+	{
+		for (int nIndex = 0; nIndex < cSoundsData.Length; nIndex++)
+			if (cSoundsData [nIndex].nIndex == _nIndex)
+				return cSoundsData [nIndex];
+
+		return null;
+	}
 }
 
 enum E_Equiment
@@ -1691,6 +1742,17 @@ public class BossWeapon
 	public int nSlot = 0;
 	public string strGrade;
 	public string explain;
+}
+
+[System.Serializable]
+public class CGameSoundData
+{
+	public int nIndex= 0;
+	public string strName ="";
+	public string strResource = "";
+	public int nType = 0;
+	public int nVolume = 100;
+	public int nLoop = 0;
 }
 
 #endregion
