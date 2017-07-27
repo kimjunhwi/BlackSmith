@@ -77,7 +77,7 @@ public class SoundManager : MonoBehaviour
 	//----------------------------------------------
 	public void LoadSource()
 	{
-		AddSource((int)eSound.bgm_main);
+		//AddSource((int)eSound.bgm_main);
 //		AddSource((int)eSound.bgm_battle);
 //
 //		AddSource((int)eSound.ui_button   	, "snd_ui_click");
@@ -97,6 +97,7 @@ public class SoundManager : MonoBehaviour
 	}   
 
 	// Add Source ----------------------------------------------------------------
+	/*
 	GameObject AddSource(int _sound_index, string _sound_name  ="")
 	{
 		GameObject kGO = new GameObject();
@@ -108,13 +109,13 @@ public class SoundManager : MonoBehaviour
 		if (_sound_name == "") //TableInfo_sound ���� �ε���ȣ��.
 		{
 			kGO.name = "Snd_" + _sound_index;
-			CGameSoundData kTableInfo_sound = GameManager.Instance.Get_TableInfo_sound((int)_sound_index);
-			if (kTableInfo_sound == null)
-			{
-				Debug.Log("ERROR : CGameSnd Get_TableInfo_sound: " + _sound_index); 
-				return null;
+			//CGameSoundData kTableInfo_sound = GameManager.Instance.Get_TableInfo_sound((int)_sound_index);
+			//if (kTableInfo_sound == null)
+			//{
+			//	Debug.Log("ERROR : CGameSnd Get_TableInfo_sound: " + _sound_index); 
+			//	return null;
 			}
-			szPrefab = kTableInfo_sound.strResource;
+			//szPrefab = kTableInfo_sound.strResource;
 			//Debug.Log("sound AddSource: " + szPrefab ); 
 		}
 		else //
@@ -153,7 +154,7 @@ public class SoundManager : MonoBehaviour
 		return kGO;
 
 	}
-
+*/
 	GameObject GetSource(int _index)
 	{
 		foreach ( GameObject kGO in SourceArray )			
@@ -180,7 +181,7 @@ public class SoundManager : MonoBehaviour
 		GameObject kGO = GetSource( _index );
 		if( kGO == null)
 		{			
-			kGO = AddSource( _index );
+			//kGO = AddSource( _index );
 		}
 		if( kGO )
 		{
