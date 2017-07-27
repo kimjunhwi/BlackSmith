@@ -96,9 +96,9 @@ public class QuestTimer : MonoBehaviour
 		}
 	}
 
-	void OnEnable()
+	public void StartQuestTimer()
 	{
-		
+		StartCoroutine (Timer (nInitTime_Min, nInitTime_sec));
 	}
 
 	public IEnumerator Timer(int _curMin, int _curSec)
@@ -131,6 +131,7 @@ public class QuestTimer : MonoBehaviour
 				//break;
 				curMin = 0;
 				fCurSec = 10;
+				//시간이 다되면 자동으로 갱신
 				questManager.QuestInit ();
 				//QuestTimer_Text.enabled = false;
 			}

@@ -11,19 +11,19 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	public int nQuestMaxCount = 0;
 	public int nQuestMaxHaveCount = 3;
 	private int nQuestMileCount = 0;
-	private int nQeustMaxMileCount = 0;
-	private int nQuestTotalCount = 32;
+	private int nQeustMaxMileCount = 0;				
+	private int nQuestTotalCount = 32;				//전체 퀘스트 개수
 
 	public GameObject questPopUpWindow_YesNo;		//Yes or No
-	public Button questPopUpWindow_YesButton;
-	public Button questPopUpWindow_NoButton;
-	public Text questPopUpWindowYesNo_Text;
+	public Button questPopUpWindow_YesButton;		//Yes or No가 있는 창에서의 YesButton
+	public Button questPopUpWindow_NoButton;		//Yes or No가 있는 창에서의 NoButton
+	public Text questPopUpWindowYesNo_Text;			//Yes or No창의 text
 	private bool isInitConfirm;
 
 	public GameObject questPopUpWindow_Yes;			//Yes
+	public Button completeButton;					//Yes만 있는 창에서의 YesButton
+	public Text rewardText;							//Yes만 있는 창에서의 YesButton
 
-	public Text rewardText;
-	public Button completeButton;
 
 	public GameObject questDay;
 	private GameObject getInfoGameObject;
@@ -64,6 +64,8 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 		questTimer.isTimeOn = true;
 		isInitConfirm = true;
 	
+
+		//저장되어 있는 퀘스트를 불러온다 없으면 무작위로 뿌린다.
 		if (GameManager.Instance.cQuestSaveListInfo.Count != 0) 
 			QuestSaveInitStart ();	
 
@@ -71,9 +73,9 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			QuestInitStart ();
 		
 		completeButton.onClick.AddListener (() => CompleteQuest(0f));
-		questPopUpWindow_YesButton.onClick.AddListener (QuestInit);
-		questPopUpWindow_YesButton.onClick.AddListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
-		questPopUpWindow_YesButton.onClick.AddListener (CheckQuestDestroy);
+		//questPopUpWindow_YesButton.onClick.AddListener (QuestInit);
+		//questPopUpWindow_YesButton.onClick.AddListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
+		//questPopUpWindow_YesButton.onClick.AddListener (CheckQuestDestroy);
 
 	}
 
@@ -180,15 +182,19 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	public void CheckQuestDestroy()
 	{
 		QuestPanel deleteQuestPanel = null;
-		foreach (QuestPanel quest in questObjects)
+
+		for (int i = 0; i < questDay.transform.childCount; i++)
 		{
-			if(quest.bIsQuest == false)
-			{
-				Destroy (quest.gameObject);
-				deleteQuestPanel = quest;
+			
+			GameObject go = questDay.transform.GetChild (0).gameObject;
+			deleteQuestPanel = go.GetComponent<QuestPanel> ();
+
+			if (deleteQuestPanel.bIsQuest == false) {
+				deleteQuestPanel.bIsQuest = false;
+				questObjectPool.ReturnObject (go);
+				questObjects.Remove (deleteQuestPanel);
 			}
 		}
-		questObjects.Remove (deleteQuestPanel);
 	}
 
 	public void AllDestroyQuest()
@@ -205,6 +211,7 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	{
 		if (!questPopUpWindow_YesNo.activeSelf) 
 		{
+			//추후 루비 추가 해야됨
 			questPopUpWindow_YesNo.SetActive (true);
 			questPopUpWindowYesNo_Text.text = "퀘스트를 초기화 하시겠습니까?";
 		}
@@ -219,9 +226,9 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	{
 		isInitConfirm = true;
 		QuestInitStart ();
-
 	}
 
+	//게임을 시작하고 처음 퀘스트를 켰을때
 	public void QuestSaveInitStart()
 	{
 		GameObject quest;
@@ -300,6 +307,7 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 
 	}
 
+	//저장되어있던 데이터 배치
 	public void QuestSaveDataDispatch()
 	{
 		for(int i = 0 ; i< questObjects.Count; i++)
