@@ -331,9 +331,6 @@ public class BossSasin : BossCharacter
 	{
 		isFailed = true;
 
-		StopCoroutine (BossSkillStandard ());
-		StopCoroutine (BossSkill_01 ());
-		StopCoroutine (BossSKill_02 ());
 
 		StartCoroutine (BossDie ());
 

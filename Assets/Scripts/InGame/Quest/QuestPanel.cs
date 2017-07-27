@@ -9,8 +9,8 @@ public class QuestPanel : MonoBehaviour
 
     public int nCost;
 
-   	public bool bIsQuest { get; set;}
-    public bool bIsBuy { get; set; }
+	public bool bIsQuest = false;
+	public bool bIsBuy  = false;
 
 	[HideInInspector]
 	public CGameQuestInfo questData;
@@ -95,8 +95,8 @@ public class QuestPanel : MonoBehaviour
 			textReward.text = questData.nRewardBossPotion.ToString ();
 		}
 
-		Button sButton = startButton.GetComponent<Button> ();
-		sButton.onClick.AddListener (() =>  questManager.CompleteQuest(float.Parse(textReward.text)));
+		//Button sButton = startButton.GetComponent<Button> ();
+		//sButton.onClick.AddListener (() =>  questManager.CompleteQuest(float.Parse(textReward.text)));
         
     }
 

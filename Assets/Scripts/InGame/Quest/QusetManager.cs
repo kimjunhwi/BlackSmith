@@ -25,11 +25,11 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	public Text rewardText;							//Yes만 있는 창에서의 YesButton
 
 
-	public GameObject questDay;
-	private GameObject getInfoGameObject;
+	public GameObject questDay;						//QuestElement를 가지는 Obj
+		
 
+	//현재 퀘스트의 정보를 가지는 리스트
     public List<QuestPanel> questObjects = new List<QuestPanel>();
-	public GameObject questContents;
     public CGameQuestInfo[] questDatas;
 
 	private float sliderSpeed = 0.5f;
@@ -61,22 +61,21 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 
 		CheckColor = new Color (255.0f, 0, 0, 255.0f);
 
-		questTimer.isTimeOn = true;
-		isInitConfirm = true;
 	
 
 		//저장되어 있는 퀘스트를 불러온다 없으면 무작위로 뿌린다.
-		if (GameManager.Instance.cQuestSaveListInfo.Count != 0) 
-			QuestSaveInitStart ();	
-
+		if (GameManager.Instance.cQuestSaveListInfo.Count != 0)
+		{
+			isInitConfirm = false;
+			QuestSaveInitStart ();
+		}
 		else
+		{
+			isInitConfirm = true;
 			QuestInitStart ();
-		
+		}
+		questPopUpWindow_NoButton.onClick.AddListener(() => GameObjectSetActive(questPopUpWindow_YesNo, false));
 		completeButton.onClick.AddListener (() => CompleteQuest(0f));
-		//questPopUpWindow_YesButton.onClick.AddListener (QuestInit);
-		//questPopUpWindow_YesButton.onClick.AddListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
-		//questPopUpWindow_YesButton.onClick.AddListener (CheckQuestDestroy);
-
 	}
 
 
@@ -89,14 +88,14 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 
 	public void OnPointerClick (PointerEventData eventData)
 	{
-		getInfoGameObject = eventData.pointerEnter;
+		GameObject  getInfoGameObject = eventData.pointerEnter;
 		GameManager.Instance.cQuestSaveListInfo.Clear ();
 		if (getInfoGameObject.gameObject.name == "QuestPanel")
 		{
-			int curItemCount = questContents.transform.childCount;
+			int curItemCount = questDay.transform.childCount;
 			for (int i = 0; i < curItemCount; i++) 
 			{
-				Transform child = questContents.transform.GetChild (i);
+				Transform child = questDay.transform.GetChild (i);
 				QuestPanel childQuestPanel = child.GetComponent<QuestPanel> ();
 				GameManager.Instance.cQuestSaveListInfo.Add (childQuestPanel.questData);
 			}
@@ -137,18 +136,15 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 		}
 	}
 
+	//포기 버튼을 누를시
 	public void GiveUpQuest()
 	{
 		if (!questPopUpWindow_YesNo.activeSelf) 
 		{
 			questPopUpWindow_YesNo.SetActive (true);
 			questPopUpWindowYesNo_Text.text = "퀘스트를 포기 하시겠습니까?";
-		
-		}
-		else 
-		{
-			CheckQuestDestroy ();
-			questPopUpWindow_YesNo.SetActive (false);
+			questPopUpWindow_YesButton.onClick.AddListener (CheckQuestDestroy);
+			questPopUpWindow_YesButton.onClick.AddListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
 		}
 	}
 
@@ -178,6 +174,11 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 		}
 	}
 
+	public void CheckQuestListAndStartTimer()
+	{
+		if (questDay.transform.childCount < 3)
+			questTimer.StartQuestTimer ();
+	}
 
 	public void CheckQuestDestroy()
 	{
@@ -186,15 +187,21 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 		for (int i = 0; i < questDay.transform.childCount; i++)
 		{
 			
-			GameObject go = questDay.transform.GetChild (0).gameObject;
+			GameObject go = questDay.transform.GetChild (i).gameObject;
 			deleteQuestPanel = go.GetComponent<QuestPanel> ();
 
-			if (deleteQuestPanel.bIsQuest == false) {
+			if (deleteQuestPanel.bIsQuest == false)
+			{
 				deleteQuestPanel.bIsQuest = false;
+
 				questObjectPool.ReturnObject (go);
 				questObjects.Remove (deleteQuestPanel);
+				questPopUpWindow_YesButton.onClick.RemoveListener (CheckQuestDestroy);
+				questPopUpWindow_YesButton.onClick.RemoveListener (() => GameObjectSetActive(questPopUpWindow_YesNo, false));
 			}
 		}
+		if(questTimer.isTimeOn == false)
+			CheckQuestListAndStartTimer ();
 	}
 
 	public void AllDestroyQuest()
@@ -204,6 +211,8 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			GameObject go = questDay.transform.GetChild (0).gameObject;
 			questObjectPool.ReturnObject(go);
 		}
+
+
 	}
 		
 	//시간이 지나가지 않아도 초기화 버튼으로 초기화 할때
@@ -214,6 +223,8 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			//추후 루비 추가 해야됨
 			questPopUpWindow_YesNo.SetActive (true);
 			questPopUpWindowYesNo_Text.text = "퀘스트를 초기화 하시겠습니까?";
+			questPopUpWindow_YesButton.onClick.AddListener (QuestInitStart);
+			questTimer.isTimeEnd = true;
 		}
 		else
 		{
@@ -231,6 +242,7 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	//게임을 시작하고 처음 퀘스트를 켰을때
 	public void QuestSaveInitStart()
 	{
+		
 		GameObject quest;
 		nQuestCount = 0;
 		AllDestroyQuest ();
@@ -249,17 +261,20 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 
 		QuestSaveDataDispatch ();	//Data Dispatch
 
+		questTimer.isTimeEnd = false;
 		questTimer.isTimeOn = false;
 		isInitConfirm = false;
 		
 	}
 
-	//초기화 버튼을 누를시
+
 	public void QuestInitStart()
 	{
 		GameObject quest;
+		questPopUpWindow_YesButton.onClick.RemoveListener (QuestInitStart);
 
-		if (questTimer.isTimeOn == true)
+		//시간이 다 될시   
+		if (questTimer.isTimeEnd == true)
 		{
 			nQuestCount = 0;
 			AllDestroyQuest ();
@@ -279,9 +294,11 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 			QuestDataDispatch ();	//Data Dispatch
 
 			questTimer.isTimeOn = false;
-			isInitConfirm = false;
-		}
+			questTimer.isTimeEnd = false;
+			questTimer.InitQuestTimer ();
 
+		}
+		//초기화 버튼을 누를시
 		if(isInitConfirm == true)
 		{
 			nQuestCount = 0;
@@ -301,8 +318,9 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 
 			QuestDataDispatch ();	//Data Dispatch
 
-			questTimer.isTimeOn = false;
 			isInitConfirm = false;
+			questTimer.isTimeOn = false;
+			questTimer.InitQuestTimer ();
 		}
 
 	}
