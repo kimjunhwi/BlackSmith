@@ -1,20 +1,20 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/Quest/QuestTimer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/Manager/GameManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/InGame/Manager/SoundManager.cs" Line="112" Column="4" />
+      <File FileName="Assets/Scripts/InGame/Manager/SoundManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Shop/Shop.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/UIManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1685" Column="14" />
-      <File FileName="Assets/Scripts/InGame/Quest/QusetManager.cs" Line="236" Column="2" />
-      <File FileName="Assets/Scripts/InGame/Quest/QuestPanel.cs" Line="99" Column="5" />
-      <File FileName="Assets/Scripts/InGame/Quest/QuestTimer.cs" Line="108" Column="3" />
-      <File FileName="Assets/Scripts/InGame/Manager/SimpleObjectPool.cs" Line="68" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="333" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossConsumeItemInfo.cs" Line="12" Column="15" />
-      <File FileName="Assets/Scripts/InGame/Manager/ScoreManager.cs" Line="63" Column="1" />
-      <File FileName="Assets/Unity-Logs-Viewer/Reporter/Reporter.cs" Line="1789" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="236" Column="3" />
+      <File FileName="Assets/Scripts/InGame/Quest/QusetManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Quest/QuestPanel.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Quest/QuestTimer.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/SimpleObjectPool.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossSasin.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossConsumeItemInfo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/ScoreManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Unity-Logs-Viewer/Reporter/Reporter.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
