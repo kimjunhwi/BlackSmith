@@ -13,8 +13,8 @@ public class QuestTimer : MonoBehaviour
 	System.DateTime EndData;											//게임을 끌 때의 데이터
 	System.TimeSpan timeCal;
 
-	private float fCurSec;
-	private int curMin;													//현재 분
+	public float fCurSec;
+	public int curMin;													//현재 분
 	private int nInitTime_Min = 179;
 	private int nInitTime_sec = 59;
 
@@ -29,6 +29,32 @@ public class QuestTimer : MonoBehaviour
 		PlayerPrefs.SetString ("EndSaveTime", EndData.ToString ());
 		PlayerPrefs.Save ();
 		Debug.Log ("EndTime :" + EndData.ToString ());
+	}
+
+
+	//초기화 시간이 지났는지
+	public bool checkIsTimeGone()
+	{
+		if (PlayerPrefs.HasKey ("EndSaveTime"))
+		{
+			strTime = PlayerPrefs.GetString ("EndSaveTime");
+			EndData = System.Convert.ToDateTime (strTime);
+		}
+		StartedTime = System.DateTime.Now;
+		Debug.Log ("StartTime :"+ StartedTime + " / EndTime :" + EndData);
+		timeCal = StartedTime - EndData;
+
+		int nStartTime = StartedTime.Hour * 3600 + StartedTime.Minute * 60 + StartedTime.Second;
+		int nEndTime = EndData.Hour * 3600 + EndData.Minute * 60 + EndData.Second;
+
+		int nCheck = Mathf.Abs(nEndTime - nStartTime);
+
+		//하루가 지나거나 100분이 지나면 그냥 현재 퀘스트 개수만 띄워준다.
+		if (timeCal.Days != 0 || nCheck >= 6000) {
+			//QuestTimer_Text.text = questManager.nQuestCount.ToString () + " / " + questManager.nQuestMaxCount.ToString ();
+			return true;
+		} else
+			return false;
 	}
 
 	public void LoadTime()
@@ -50,7 +76,6 @@ public class QuestTimer : MonoBehaviour
 		//하루가 지나거나 100분이 지나면 그냥 현재 퀘스트 개수만 띄워준다.
 		if (timeCal.Days != 0 || nCheck >= 6000 ) 
 		{
-			
 			//QuestTimer_Text.text = questManager.nQuestCount.ToString () + " / " + questManager.nQuestMaxCount.ToString ();
 			QuestTimer_Text.enabled = false;
 		}
@@ -63,55 +88,67 @@ public class QuestTimer : MonoBehaviour
 			//1h + 40m
 			int nPassedTime_Min = (int)timeCal.TotalMinutes;
 			int nPassedTime_Sec = (int)timeCal.Seconds % 60;
-
+			isTimeOn = true;
 			if (nPassedTime_Min < 20) 
 			{
+				Debug.Log ("Start Timer");
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			}
 			else if (nPassedTime_Min < 40)
 			{
 				nPassedTime_Min = (int)nPassedTime_Min - 20;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 1200) % 60);
+				Debug.Log ("QuestTimer is On : " + isTimeOn + " Start Timer !");
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			} 
 			else if (nPassedTime_Min < 60)
 			{
 				nPassedTime_Min = (int)nPassedTime_Min - 40;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 2400) % 60);
+				Debug.Log ("QuestTimer is On : " + isTimeOn + " Start Timer !");
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			}
 			else if (nPassedTime_Min < 80)
 			{
 				nPassedTime_Min = (int)nPassedTime_Min - 60;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 3600) % 60);
+				Debug.Log ("QuestTimer is On : " + isTimeOn + " Start Timer !");
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec -nPassedTime_Sec));
 			}
 			else if (nPassedTime_Min < 100)
 			{
 				nPassedTime_Min = (int)nPassedTime_Min - 80;
 				nPassedTime_Sec = (int)((nPassedTime_Sec - 4800) % 60);
+				Debug.Log ("QuestTimer is On : " + isTimeOn + " Start Timer !");
 				StartCoroutine (Timer (nInitTime_Min - nPassedTime_Min, nInitTime_sec - nPassedTime_Sec));
 			}
-
+		
 			QuestTimer_Text.enabled = true;
 		}
 	}
 
 	public void StartQuestTimer()
 	{
+		gameObject.SetActive (true);
 		QuestTimer_Text.enabled = true;
+		isTimeOn = true;
+		nInitTime_Min = 179;
+		nInitTime_sec = 59;
+		Debug.Log ("QuestTimer is On : " + isTimeOn + " Start Timer !");
 		StartCoroutine (Timer (nInitTime_Min, nInitTime_sec));
 	}
 	public void InitQuestTimer()
 	{
+		nInitTime_Min = 179;
+		nInitTime_sec = 59;
+		Debug.Log ("QuestTimer is On : " + isTimeOn + " Start Timer !");
 		QuestTimer_Text.enabled = false;
-		StopCoroutine (Timer (nInitTime_Min, nInitTime_sec));
 		isTimeOn = false;
+		gameObject.SetActive (false);
 	}
 
 	public IEnumerator Timer(int _curMin, int _curSec)
 	{
-		
 		int second = 0;
 
 		fCurSec = (float)_curSec;
@@ -120,7 +157,6 @@ public class QuestTimer : MonoBehaviour
 
 		while (curMin >= 0f) 
 		{
-			isTimeOn = true;
 			fCurSec -= Time.deltaTime;
 			second = (int)fCurSec;
 
@@ -143,7 +179,6 @@ public class QuestTimer : MonoBehaviour
 				fCurSec = 10;
 				//시간이 다되면 자동으로 갱신
 				questManager.QuestInit ();
-				//QuestTimer_Text.enabled = false;
 			}
 
 			if (curMin != 0 && second == 0f) 

@@ -22,7 +22,7 @@ public class QuestPanel : MonoBehaviour
 	//Complete
 	public GameObject startButton;
 	public Text completeText;
-
+	public Button sButton;
 
 	//
 	public int nItemIndex =0;
@@ -95,9 +95,11 @@ public class QuestPanel : MonoBehaviour
 			textReward.text = questData.nRewardBossPotion.ToString ();
 		}
 
-		//Button sButton = startButton.GetComponent<Button> ();
-		//sButton.onClick.AddListener (() =>  questManager.CompleteQuest(float.Parse(textReward.text)));
-        
+
+		sButton = startButton.GetComponent<Button> ();
+		sButton.onClick.RemoveListener (() =>  questManager.CompleteQuest(float.Parse(textReward.text)));
+		sButton.onClick.AddListener (() =>  questManager.CompleteQuest(float.Parse(textReward.text)));
+
     }
 
 	public void QuestComplete()

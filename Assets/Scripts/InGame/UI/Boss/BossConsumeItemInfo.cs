@@ -32,24 +32,25 @@ public class BossConsumeItemInfo : MonoBehaviour
 
 	}
 
-	public void SaveTime()
+	public void BossInviteMentSaveTime()
 	{
 		EndData = System.DateTime.Now;
-		PlayerPrefs.SetString ("BossSaveTime", EndData.ToString ());
-
+		PlayerPrefs.SetString ("BossInvitementSaveTime", EndData.ToString ());
 		Debug.Log ("BossPanel Time Save : " + EndData.ToString ());
 	}
-	public void LoadTime()
+	public void BossInviteMentLoadTime()
 	{
 
-		if (PlayerPrefs.HasKey ("BossSaveTime"))
+		if (PlayerPrefs.HasKey ("BossInvitementSaveTime"))
 		{
-			strTime = PlayerPrefs.GetString ("BossSaveTime");
+			strTime = PlayerPrefs.GetString ("BossInvitementSaveTime");
 			EndData = System.Convert.ToDateTime (strTime);
 		}
+		else
+			PlayerPrefs.SetString ("BossInvitementSaveTime", EndData.ToString ());
+
+
 		Debug.Log ("BossPanel Time Load : " + EndData.ToString ());
-
-
 		StartedTime = System.DateTime.Now;
 
 		timeCal = StartedTime - EndData;
@@ -63,7 +64,6 @@ public class BossConsumeItemInfo : MonoBehaviour
 		if (timeCal.Days != 0 || nCheck >= 6000 || nInviteMentCurCount == nInviteMentMaxCount) 
 		{
 			//초대장 갯수 풀로 할것
-			PlayerPrefs.SetString ("NowTime", EndData.ToString ());
 			nInviteMentCurCount = nInviteMentMaxCount;
 			inviteMentTimer_Text.enabled = false;
 			inviteMentCount_Text.text = nInviteMentCurCount.ToString () + " / " + nInviteMentMaxCount.ToString ();

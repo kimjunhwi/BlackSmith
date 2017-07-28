@@ -50,13 +50,15 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public CGameQuestInfo[] cQusetInfo = null;                  //퀘스트 정보들
 
-	public CGamePlayerEnhance[] cSmithEnhaceInfo = null;          //대장간 강화 정보
+	public BossPanelInfo[] cBossPanelInfo = null;                //보스 패널 정보
+
+	public CGamePlayerEnhance[] cSmithEnhaceInfo = null;        //대장간 강화 정보
 
 	public CGamePlayerEnhance[] cRepairEnhanceInfo = null;      //수리 강화 정보
 
-	public CGamePlayerEnhance[] cMaxWaterEnhanceInfo = null;  //물 최대치 강화 정보
+	public CGamePlayerEnhance[] cMaxWaterEnhanceInfo = null;  	//물 최대치 강화 정보
 
-	public CGamePlayerEnhance[] cWaterPlusEnhanceInfo = null;//물 증가량 강화 정보
+	public CGamePlayerEnhance[] cWaterPlusEnhanceInfo = null;	//물 증가량 강화 정보
 
 	public CGamePlayerEnhance[] cAccuracyRateInfo = null;        //명중률 강화 정보
 
@@ -91,7 +93,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
 
-	public List<CGameQuestInfo> cQuestSaveListInfo = null;				//퀘스트 저장
+	public List<CGameQuestInfo> cQuestSaveListInfo = null;		//퀘스트 저장
+
+	public List<BossPanelInfo> cBossPanelListInfo = null;
 
     private JsonData itemData;
     private JsonData ArbaitData;
@@ -103,6 +107,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     private const string strEquiementPath = "Equiment.json";
     private const string strInvetoryPath = "Inventory.json";
 	private const string strQuestPath = "Quest.json";
+	private const string strBossPanelInfoPath = "BossPanelInfo.json";
 
     private string strWeaponPath;
 
@@ -174,6 +179,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		cQuestSaveListInfo = ConstructString<CGameQuestInfo>(strQuestPath);
 
+		cBossPanelListInfo = ConstructString<BossPanelInfo> (strBossPanelInfoPath);
+
         //ConstructEquimentDatabase();
 
         //ConstructWeaponDatabase();
@@ -194,6 +201,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		string PlayerFilePath = Path.Combine (Application.persistentDataPath, strPlayerPath);
 
 		string QuestFilePath = Path.Combine (Application.persistentDataPath, strQuestPath);
+
+		string BossPanelInfoFilePath = Path.Combine (Application.persistentDataPath, strBossPanelInfoPath);
 
 		if(Directory.Exists(ArbaitFilePath)) 
 		yield return StartCoroutine (LinkedArbaitAccess (ArbaitFilePath));
@@ -233,6 +242,10 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		if(Directory.Exists(QuestFilePath)) 
 			yield return StartCoroutine (LinkedQuestAccess (QuestFilePath));
+
+		if(Directory.Exists(BossPanelInfoFilePath)) 
+			yield return StartCoroutine (LinkedQuestAccess (BossPanelInfoFilePath));
+
 
 #endif
 
@@ -343,6 +356,21 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		cQuestSaveListInfo = JsonHelper.ListFromJson<CGameQuestInfo>(dataAsJson);
 	}
 
+	IEnumerator LinkedBossPanelInfoAccess(string filePath)
+	{
+		Debug.Log ("BossPanel Loaded");
+
+		WWW www = new WWW(filePath);
+
+		yield return www;
+
+		string dataAsJson = www.text.ToString();
+
+		Debug.Log (dataAsJson);
+
+		cBossPanelListInfo = JsonHelper.ListFromJson<BossPanelInfo>(dataAsJson);
+	}
+
 
 
     private List<T> ConstructString<T>(string _strPath)
@@ -379,6 +407,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		SavePlayerData ();
 
 		SaveQuestList ();
+
+		SaveBossPanelInfoList ();
 
     }
 
@@ -463,6 +493,25 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 
 		string dataAsJson = JsonHelper.ListToJson<CGameQuestInfo>(cQuestSaveListInfo);
+
+		File.WriteAllText(filePath, dataAsJson);
+	}
+
+	public void SaveBossPanelInfoList()
+	{
+		if (cQuestSaveListInfo == null)
+			return;
+
+		#if UNITY_EDITOR
+		string filePath = Path.Combine(Application.streamingAssetsPath, strBossPanelInfoPath);
+
+		#elif UNITY_ANDROID
+		string filePath = Path.Combine(Application.persistentDataPath, strBossPanelInfoPath);
+
+		#endif
+
+
+		string dataAsJson = JsonHelper.ListToJson<BossPanelInfo>(cBossPanelListInfo);
 
 		File.WriteAllText(filePath, dataAsJson);
 	}
@@ -1638,6 +1687,9 @@ public class CGameWeaponInfo
 	}
 }
 
+
+
+
 [System.Serializable]
 public class CGameArbaitGrade
 {
@@ -1811,9 +1863,15 @@ public class BossWeapon
 	public string explain;
 }
 
-
+[System.Serializable]
 public class BossPanelInfo
 {
+	public int nBossInviteMentCount;
+	public int nBossSasinLeftCount;
+	public int nBossMusicLeftCount;
+	public int nBossIceLeftCount;
+	public int nBossFireLeftCount;
+	public int nBossPotionCount;
 }
 
 [System.Serializable]

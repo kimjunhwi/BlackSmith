@@ -7,6 +7,7 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 {
 	GameObject getInfoGameObject;
 	public bool isBossSummon = false;				//보스 소환중
+	public BossConsumeItemInfo bossConumeItemInfo;
 
 	public void OnPointerDown (PointerEventData eventData)
 	{
@@ -18,11 +19,11 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 		if (getInfoGameObject.gameObject.name == "BackGroundPanel")
 			getInfoGameObject.transform.parent.gameObject.SetActive (false);
 		
-		if (getInfoGameObject.gameObject.name == "BossBackGround" && isBossSummon == false) 
+		if (getInfoGameObject.gameObject.name == "BossBackGround" && isBossSummon == false)
 		{
-			getInfoGameObject.SetActive(false);
+			//보스 창이 닫히면 시간 저장
+			bossConumeItemInfo.BossInviteMentSaveTime ();
+			getInfoGameObject.SetActive (false);
 		}
-		
-
 	}
 }

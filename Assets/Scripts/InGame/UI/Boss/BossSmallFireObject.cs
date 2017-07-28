@@ -9,21 +9,9 @@ public class BossSmallFireObject : MonoBehaviour, IPointerDownHandler
 	public int nTouchCount;
 	public SimpleObjectPool smallFireObjPull;	//해당 오브젝트 풀
 	public RectTransform parentTransform;	
+	public BossFire bossfire;
+	public RepairObject repairObj;
 
-	public void StartCheckSmallFire()
-	{
-		StartCoroutine (CheckSmallFire ());
-	}
-
-	public IEnumerator CheckSmallFire()
-	{
-		while ( true )
-		{
-			if(nTouchCount <= 0)
-				smallFireObjPull.ReturnObject (gameObject);
-			yield return null;
-		}
-	}
 
 	public void OnPointerDown (PointerEventData eventData)
 	{
@@ -37,6 +25,16 @@ public class BossSmallFireObject : MonoBehaviour, IPointerDownHandler
 			
 			if (nTouchCount > 0)
 				nTouchCount--;
+			else
+			{
+				//불씨 하나당 물 충전량 -3%
+				repairObj.fSmallFireMinusWater -= (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
+				//불씨 하나당 온도 증가량 10%
+				repairObj.fSmallFirePlusTemperatrue -= 0.1f;
+				bossfire.nCurFireCount--;
+				smallFireObjPull.ReturnObject (getInfoGameObject);
+			}
 		}
+
 	}
 }
