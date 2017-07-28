@@ -231,10 +231,13 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 //		}
 
 		if(Directory.Exists(PlayerFilePath)) 
+		{
+		Debug.Log("Search PlayerData");
 		yield return StartCoroutine (LinkedPlayerAccess (PlayerFilePath));
-
+		}
 		else 
 		{
+		Debug.Log("No SearchPlayerData");
 		PlayerFilePath = Path.Combine(Application.streamingAssetsPath, strPlayerPath);
 		yield return StartCoroutine(LinkedPlayerAccess (PlayerFilePath));
 		}
