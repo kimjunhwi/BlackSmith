@@ -232,17 +232,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		Debug.Log("7");
 
 		if(Directory.Exists(QuestFilePath)) 
-		yield return StartCoroutine (LinkedPlayerAccess (QuestFilePath));
-
-		else 
-		{
-		QuestFilePath = Path.Combine(Application.streamingAssetsPath, strQuestPath);
-		yield return StartCoroutine(LinkedPlayerAccess (QuestFilePath));
-		}
-
-
-
-
+			yield return StartCoroutine (LinkedQuestAccess (QuestFilePath));
 
 #endif
 

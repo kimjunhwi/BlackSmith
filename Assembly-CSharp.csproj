@@ -83,6 +83,8 @@
      <Compile Include="Assets\Scripts\InGame\Manager\SpawnManager.cs" />
      <Compile Include="Assets\Scripts\InGame\Manager\UIManager.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\BasicParticle.cs" />
+     <Compile Include="Assets\Scripts\InGame\Particle\BreakBoomParticle.cs" />
+     <Compile Include="Assets\Scripts\InGame\Particle\BreakBoomPool.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairParticle.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairPool.cs" />
      <Compile Include="Assets\Scripts\InGame\Particle\NormalRepairParticle.cs" />
