@@ -1718,6 +1718,12 @@ public class CGamePlayerData
 	public int nEnhanceAccuracyRateLevel;
 	public int nEnhanceCriticalLevel;
 	public int nEnhanceArbaitLevel;
+    public int nSasinMaterial;
+    public int nRusiuMaterial;
+    public int nIceMaterial;
+    public int nFireMaterial;
+    public int nDay;
+    public int nGuestCount;
 
 	public CGamePlayerData(CGamePlayerData playerData)
 	{
@@ -1741,6 +1747,12 @@ public class CGamePlayerData
 		nEnhanceAccuracyRateLevel= playerData.nEnhanceAccuracyRateLevel;
 		nEnhanceCriticalLevel= playerData.nEnhanceCriticalLevel;
 		nEnhanceArbaitLevel = playerData.nEnhanceArbaitLevel;
+        nSasinMaterial = playerData.nSasinMaterial;
+        nRusiuMaterial = playerData.nRusiuMaterial;
+        nIceMaterial = playerData.nIceMaterial;
+        nFireMaterial = playerData.nFireMaterial;
+        nDay = playerData.nDay;
+        nGuestCount = playerData.nGuestCount;
 	}
 }
 

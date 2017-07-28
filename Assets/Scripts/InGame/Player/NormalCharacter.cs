@@ -394,7 +394,7 @@ public class NormalCharacter : Character {
 	public override void Complate(float _fComplate = 0.0f)
 	{
 		//50%이상
-		if ((weaponData.fMaxComplate * 0.5) < _fComplate) {
+		if ((weaponData.fMaxComplate * 0.7) < _fComplate) {
 			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fMaxComplate);
 
 			ScoreManager.ScoreInstance.GoldPlus (fGold);
