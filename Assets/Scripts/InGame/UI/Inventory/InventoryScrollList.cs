@@ -17,7 +17,7 @@ public class InventoryScrollList : MonoBehaviour {
 
     public SimpleObjectPool buttonObjectPool;
 
-    void RefreshDisplay()
+    public void RefreshDisplay()
     {
         RemoveButtons();
         AddButtons();

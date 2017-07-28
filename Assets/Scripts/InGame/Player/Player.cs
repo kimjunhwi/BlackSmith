@@ -63,6 +63,20 @@ public class Player
 	public float GetTemperatureMinus() { return changeStats.fTemperatureMinus; }
     public void SetTemperatureMinus(float _fValue) { changeStats.fTemperatureMinus = _fValue; }
 
+    public int GetSasinMaterial() { return changeStats.nSasinMaterial; }
+    public void SetSasinMaterial(int _nValue) { changeStats.nSasinMaterial = _nValue; }
+    public int GetRusiuMaterial() { return changeStats.nRusiuMaterial; }
+    public void SetRusiuMaterial(int _nValue) { changeStats.nRusiuMaterial = _nValue; }
+    public int GetIceMaterial() { return changeStats.nIceMaterial; }
+    public void SetIceMaterial(int _nValue) { changeStats.nIceMaterial = _nValue; }
+    public int GetFireMaterial() { return changeStats.nFireMaterial; }
+    public void SetFireMaterial(int _nValue) { changeStats.nFireMaterial = _nValue; }
+
+    public int GetDay() { return changeStats.nDay; }
+    public void SetDay(int _nValue) { changeStats.nDay = _nValue; }
+
+    public int GetGuestCount() { return changeStats.nGuestCount; }
+
 
     public void Awake()
     {
@@ -151,6 +165,9 @@ public class Player
                 ApplyItemData(AccessoryEquipmnet, true);
                 break;
         }
+
+        //아이템을 장착했기에 다시 정렬
+        inventory.inventorySlots[_item.nSlotIndex].RefreshDisplay();
     }
 
 	//세이브를 위한 아이템 전부 해제

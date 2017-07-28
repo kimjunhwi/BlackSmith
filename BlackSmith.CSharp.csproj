@@ -114,9 +114,12 @@
     <Compile Include="Assets\Scripts\InGame\Manager\ReadOnly.cs" />
     <Compile Include="Assets\Scripts\InGame\Manager\ScoreManager.cs" />
     <Compile Include="Assets\Scripts\InGame\Manager\SimpleObjectPool.cs" />
+    <Compile Include="Assets\Scripts\InGame\Manager\SoundManager.cs" />
     <Compile Include="Assets\Scripts\InGame\Manager\SpawnManager.cs" />
     <Compile Include="Assets\Scripts\InGame\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\BasicParticle.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\BreakBoomParticle.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\BreakBoomPool.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairParticle.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairPool.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\NormalRepairParticle.cs" />
@@ -129,6 +132,7 @@
     <Compile Include="Assets\Scripts\InGame\Player\Sasin.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
+    <Compile Include="Assets\Scripts\InGame\Quest\QuestTimer.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QusetManager.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossAnimation.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossArbaitDeFreeze.cs" />
@@ -210,6 +214,7 @@
     <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
     <None Include="Assets\Resources\Data\Weapon.txt" />
+    <None Include="Assets\Resources\Data\sound.txt" />
     <None Include="Assets\StreamingAssets\build_info.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />

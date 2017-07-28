@@ -154,6 +154,7 @@
     <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
     <None Include="Assets\Resources\Data\Weapon.txt" />
+    <None Include="Assets\Resources\Data\sound.txt" />
     <None Include="Assets\StreamingAssets\build_info.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
