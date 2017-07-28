@@ -109,11 +109,11 @@ public class RepairObject : MonoBehaviour {
     private bool m_bIsFever = false;
     private const float m_fFeverTime = 10.0f;
 
-    private const float m_fNormalCretaeTime = 4.5f;
-    private const float m_fFeverCreateTime = 1.5f;
+    private const float m_fNormalCretaeTime = 1.5f;
+    private const float m_fFeverCreateTime = 0.5f;
 
-    private const float m_fNormalSpeed = 1.0f;
-    private const float m_fFeverSpeed = 3.0f;
+    private const float m_fNormalSpeed = 1.2f;
+    private const float m_fFeverSpeed = 3.6f;
 
 	private float m_fMinusTemperature = 0.0f;
 	private const float m_fMinusDefault = 0.1f;

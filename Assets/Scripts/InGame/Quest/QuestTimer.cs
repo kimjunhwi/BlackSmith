@@ -18,7 +18,8 @@ public class QuestTimer : MonoBehaviour
 	private int nInitTime_Min = 179;
 	private int nInitTime_sec = 59;
 
-	public bool isTimeOn = false;
+	public bool isTimeOn = false;				//시간이 켜져 있는지 아닌지
+	public bool isTimeEnd = false;				//시간이 끝났는지 아닌지
 
 	public QusetManager questManager;
 
@@ -96,13 +97,21 @@ public class QuestTimer : MonoBehaviour
 		}
 	}
 
-	void OnEnable()
+	public void StartQuestTimer()
 	{
-		
+		QuestTimer_Text.enabled = true;
+		StartCoroutine (Timer (nInitTime_Min, nInitTime_sec));
+	}
+	public void InitQuestTimer()
+	{
+		QuestTimer_Text.enabled = false;
+		StopCoroutine (Timer (nInitTime_Min, nInitTime_sec));
+		isTimeOn = false;
 	}
 
 	public IEnumerator Timer(int _curMin, int _curSec)
 	{
+		
 		int second = 0;
 
 		fCurSec = (float)_curSec;
@@ -111,6 +120,7 @@ public class QuestTimer : MonoBehaviour
 
 		while (curMin >= 0f) 
 		{
+			isTimeOn = true;
 			fCurSec -= Time.deltaTime;
 			second = (int)fCurSec;
 
@@ -127,10 +137,11 @@ public class QuestTimer : MonoBehaviour
 
 			if (curMin == 0 && second == 0f)
 			{
-				isTimeOn = true;
+				isTimeEnd = true;
 				//break;
 				curMin = 0;
 				fCurSec = 10;
+				//시간이 다되면 자동으로 갱신
 				questManager.QuestInit ();
 				//QuestTimer_Text.enabled = false;
 			}

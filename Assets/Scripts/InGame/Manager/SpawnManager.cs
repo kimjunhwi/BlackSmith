@@ -43,7 +43,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	public bool bIsBossCreate = false;
 
     
-    private float m_fCreateTime = 4.5f;
+    private float m_fCreateTime = 1.5f;
     private float m_fCreatePlusTime;            //몬스터 생성시간에 도달하면 몬스터 생성되는시간
     private float m_fLevelTime;             //다음 레벨 시간에 도달하게 하는 시간
 
@@ -51,7 +51,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
     private CGameWeaponInfo cLevelData;         //Level에 따른 데이터를 받아오기 위함
 
-    private float fSpeed = 1.0f;
+    private float fSpeed = 1.2f;
 
 	public CameraShake cameraShake;
 

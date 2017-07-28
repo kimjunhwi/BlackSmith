@@ -97,6 +97,7 @@ public class SoundManager : MonoBehaviour
 	}   
 
 	// Add Source ----------------------------------------------------------------
+
 	GameObject AddSource(int _sound_index, string _sound_name  ="")
 	{
 		GameObject kGO = new GameObject();
@@ -117,7 +118,7 @@ public class SoundManager : MonoBehaviour
 			szPrefab = kTableInfo_sound.strResource;
 			//Debug.Log("sound AddSource: " + szPrefab ); 
 		}
-		else //
+		else 
 		{
 			kGO.name = "Snd_" + _sound_index;
 			szPrefab = _sound_name;
@@ -180,7 +181,7 @@ public class SoundManager : MonoBehaviour
 		GameObject kGO = GetSource( _index );
 		if( kGO == null)
 		{			
-			kGO = AddSource( _index );
+			//kGO = AddSource( _index );
 		}
 		if( kGO )
 		{

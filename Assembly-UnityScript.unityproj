@@ -73,6 +73,7 @@
      <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
      <None Include="Assets\Resources\Data\ArbaitEnhance.txt" />
      <None Include="Assets\Resources\Data\FourGradeEnhance.txt" />
+     <None Include="Assets\Resources\Data\sound.txt" />
      <None Include="Assets\Resources\Data\SgradeArbait.txt" />
      <None Include="Assets\StreamingAssets\build_info.txt" />
  <Reference Include="UnityEngine.UI">
