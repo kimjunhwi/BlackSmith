@@ -401,6 +401,61 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		SaveQuestList ();
     }
 
+    void DataSave()
+    {
+        Debug.Log("Quit");
+
+        if (player == null)
+            return;
+
+        player.ReleliveAllItem();
+
+        Debug.Log("1");
+
+        SpawnManager.Instance.ReleliveArbait();
+
+        Debug.Log("2");
+
+        playerData = player.changeStats;
+
+        Debug.Log("3");
+
+        SaveEquiment();
+
+        Debug.Log("4");
+
+        SavePlayerData();
+
+        Debug.Log("5");
+
+        SaveQuestList();
+    }
+
+    void Update()
+    {
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            if (Input.GetKey(KeyCode.Home))
+            {
+                //home button
+                DataSave();
+
+                Application.Quit();
+            }
+            else if (Input.GetKey(KeyCode.Escape))
+            {
+                //back button
+            }
+            else if (Input.GetKey(KeyCode.Menu))
+            {
+                //menu button
+                DataSave();
+
+                Application.Quit();
+            }
+        }
+    }
+
 
 	public void SavePlayerData()
 	{
