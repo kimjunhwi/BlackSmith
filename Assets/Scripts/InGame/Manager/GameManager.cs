@@ -378,7 +378,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		if (player == null)
 			return;
 
-		player.ReleliveAllItem ();
+		player.SetAllItemData (false);
 
 		Debug.Log ("1");
 
@@ -408,7 +408,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         if (player == null)
             return;
 
-        player.ReleliveAllItem();
+		player.SetAllItemData (false);
 
         Debug.Log("1");
 
@@ -429,32 +429,22 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         Debug.Log("5");
 
         SaveQuestList();
+
+
+		player.SetAllItemData (true);
     }
 
-    void Update()
-    {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.GetKey(KeyCode.Home))
-            {
-                //home button
-                DataSave();
-
-                Application.Quit();
-            }
-            else if (Input.GetKey(KeyCode.Escape))
-            {
-                //back button
-            }
-            else if (Input.GetKey(KeyCode.Menu))
-            {
-                //menu button
-                DataSave();
-
-                Application.Quit();
-            }
-        }
-    }
+	public void OnApplicationPause(bool bIsPause)
+	{
+		if (bIsPause) {
+			if (player != null) 
+			{
+				Debug.Log ("Puase");
+				DataSave ();
+			}
+		} 
+			
+	}
 
 
 	public void SavePlayerData()
