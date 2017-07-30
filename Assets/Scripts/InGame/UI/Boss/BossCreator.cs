@@ -60,16 +60,20 @@ public class BossCreator : MonoBehaviour
 		bossUIDisable.SetActive (false);
 	}
 
-	private void OnEnable()
+	public void BossPanelSetUp()
 	{
+
+		LoadTime ();
+
 		bossElementList[0].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossIceLeftCount, nBossMaxLeftCount);
 		bossElementList[1].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossSasinLeftCount, nBossMaxLeftCount);
 		bossElementList[2].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossFireLeftCount, nBossMaxLeftCount);
 		bossElementList[3].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossMusicLeftCount, nBossMaxLeftCount);
 	}
+
 	public void LoadTime()
 	{
-		bossConsumeItemInfo.LoadTime ();
+		bossConsumeItemInfo.BossInviteMentLoadTime ();
 	}
 
 	public void BossCreateInit(int _index)

@@ -15,10 +15,9 @@ public class BossFire : BossCharacter
 	public RectTransform smallFireRespawnPoint;			//불씨 생성지점
 
 	private int nSmallFireMaxCount;						//작은 불 개수(최대)
-	private int nCurFireCount;							//작은 불 개수(현재)
+	public int nCurFireCount;							//작은 불 개수(현재)
 
-	public GameObject FireBoom;							//불씨 터질때의 Obj
-	private Animator FireBoomAnimator;					//불씨 Animator
+	public BossFireBoom bossFireBoom;
 
 
 	//tmpValue
@@ -30,11 +29,11 @@ public class BossFire : BossCharacter
 	private void Start()
 	{
 		nSmallFireMaxCount = 12;
+		bossFireBoom.bossFire = this;
+		bossFireBoom.repairObj = repairObj;
 		animator = gameObject.GetComponent<Animator> ();
 		fXPos = smallFireRespawnPoint.position.x;
 		fYPos = smallFireRespawnPoint.position.y;
-		FireBoomAnimator = FireBoom.GetComponent<Animator> ();
-		FireBoom.SetActive (false);
 
 		gameObject.SetActive (false);
 		smallFirePool.PreloadPool ();
@@ -113,8 +112,10 @@ public class BossFire : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			if (fTime >= 2.0f && nCurFireCount < 5 )
+			if (fTime >= 2.0f && nCurFireCount < nSmallFireMaxCount )
 				CreateSmallFire ();
+
+		
 
 			if (fCurComplete < 0) {
 				FailState ();
@@ -136,7 +137,7 @@ public class BossFire : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
-		nSmallFireMaxCount = 10;
+		
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_FIREANGRY);
@@ -154,8 +155,15 @@ public class BossFire : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
-			if (fTime >= 2.0f  && nCurFireCount < 10 )
+			if (fTime >= 2.0f  && nCurFireCount < nSmallFireMaxCount )
 				CreateSmallFire ();
+
+			//불씨 개수 10개 일시 터진다
+			if (nCurFireCount >= 10)
+			{
+				bossFireBoom.BoomFireSmall ();
+			}
+
 
 			if (fCurComplete < 0) {
 				FailState ();
@@ -195,40 +203,7 @@ public class BossFire : BossCharacter
 			//불씨 개수 10개 일시 터진다
 			if (nCurFireCount >= 10)
 			{
-				FireBoom.SetActive (true);
-				FireBoomAnimator.SetBool ("isBoom", true);
-				int nRemoveCount = 0;
-
-				//물 현재량 0
-				repairObj.fCurrentWater = 0f;
-				//온도 최대로
-				repairObj.SetMaxTempuratrue();
-
-				if (smallFireRespawnPoint.childCount >= 10) 
-				{
-					nRemoveCount = 10;
-					nCurFireCount -= 10;
-				} 
-				else
-				{
-					nRemoveCount = smallFireRespawnPoint.childCount;
-					nCurFireCount -= nRemoveCount;
-				}
-				while (nRemoveCount != 0) 
-				{
-					GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;
-					smallFirePool.ReturnObject (go);
-					nRemoveCount--;
-
-					//불씨 하나당 물 충전량 -3%
-					repairObj.fSmallFireMinusWater -= (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
-					//불씨 하나당 온도 증가량 10%
-					repairObj.fSmallFirePlusTemperatrue -= 0.1f;
-				}
-				yield return new WaitForSeconds (0.6f);
-				FireBoomAnimator.SetBool ("isBoom", false);
-				FireBoomAnimator.Play ("BossIdle");
-				FireBoom.SetActive (false);
+				bossFireBoom.BoomFireSmall ();
 			}
 				
 		
@@ -363,6 +338,9 @@ public class BossFire : BossCharacter
 
 	}
 
+
+
+
 	public void ActiveTimer()
 	{
 
@@ -396,6 +374,7 @@ public class BossFire : BossCharacter
 
 	public void CreateSmallFire()
 	{
+		Debug.Log ("SmallFire Count = " + nCurFireCount);
 		smallFire = smallFirePool.GetObject ();
 		smallFire.transform.SetParent (smallFireRespawnPoint.transform,false);
 		smallFire.transform.localScale = Vector3.one;
@@ -409,9 +388,11 @@ public class BossFire : BossCharacter
 
 		BossSmallFireObject smallFireObj = smallFire.GetComponent<BossSmallFireObject> ();
 		smallFireObj.smallFireObjPull = smallFirePool;
+		smallFireObj.repairObj = repairObj;
 		smallFireObj.nTouchCount = 3;
 		smallFireObj.parentTransform = smallFireRespawnPoint;
-		smallFireObj.StartCheckSmallFire ();
+		smallFireObj.bossfire = this;
+
 		fTime = 0f;
 		nCurFireCount++;
 	}

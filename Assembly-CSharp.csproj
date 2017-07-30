@@ -110,6 +110,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossEffect.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossElement.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossFire.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossFireBoom.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossIce.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossIceWall.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossMissText.cs" />

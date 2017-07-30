@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
 
     public GameObject obj;
-
+	public BossConsumeItemInfo bossConsumeItemInfo;
 
 	public GameObject []uiPanels;
 	public GameObject []uiButtons;
@@ -23,12 +23,24 @@ public class UIManager : MonoBehaviour
 		
 		if (uiPanels [nIndex].activeSelf) 
 		{
+			//보스 패널 닫을시 시간 저장 
+			if (nIndex == 3)
+			{
+				
+				bossConsumeItemInfo.BossInviteMentSaveTime ();
+
+			}
 			uiPanels [nIndex].SetActive (false);
 
 		}
 		else
 		{
 			AllDisable ();
+			//보스 패널 열시 시간 로드 
+			if (nIndex == 3) 
+			{
+				bossConsumeItemInfo.BossInviteMentLoadTime ();
+			}
 			uiPanels [nIndex].SetActive (true);
 		}
 	}
