@@ -838,8 +838,22 @@ public class RepairObject : MonoBehaviour {
 		if (weaponData == null)
 			return;
 
-        if (fCurrentWater >= fUseWater)
-        {
+		if(fCurrentTemperature >= fMaxTemperature * 0.3f)
+		{
+			fWeaponDownTemperature = fCurrentTemperature - fMaxTemperature * 0.3f;
+
+			fCurrentTemperature -= fMaxTemperature * 0.3f;
+
+			if (fCurrentTemperature < 0)
+				fCurrentTemperature = 0;
+
+			fCurrentWater -= fMaxTemperature * 0.3f;
+
+			if (fCurrentWater < 0)
+				fCurrentWater = 0;
+
+			fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () - weaponData.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
+
 			Debug.Log ("TouchWater!!");
 			//bossWaterCat_animator.SetBool ("isTouchWater", true);
 
@@ -847,27 +861,10 @@ public class RepairObject : MonoBehaviour {
 
 			SpawnManager.Instance.UseWater ();
 
-            //useWater
-            fMinusTemperature = (fMaxTemperature * 0.3f) * (1 + fWeaponDownTemperature);
-
-			fMinusWater = ((1 + (fCurrentComplate / fMinusTemperature) * fWeaponDownDamage) * (1 + (fUseWater * 0.01f)  + fWeaponDownTemperature));
-
-			fCurrentWater -= fMinusTemperature;
-
-			fCurrentComplate += fMinusWater;
-
             WaterSlider.value = fCurrentWater;
-
-			fCurrentTemperature -= fMinusTemperature;
 
 			if (fCurrentComplate > weaponData.fMaxComplate)
 				fCurrentComplate = weaponData.fMaxComplate;
-
-			if (fCurrentWater < 0)
-				fCurrentWater = 0;
-
-			if (fCurrentTemperature < 0)
-				fCurrentTemperature = 0;
 
 			TemperatureSlider.value = fCurrentTemperature;
 

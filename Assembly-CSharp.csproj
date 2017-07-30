@@ -46,6 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\OptionItem.cs" />
+     <Compile Include="Assets\OptionScroll.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_AnimationScrollTexture.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_AnimationSpriteSheet.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_DeadTime.cs" />

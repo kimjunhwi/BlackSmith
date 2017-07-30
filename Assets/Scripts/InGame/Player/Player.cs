@@ -175,7 +175,7 @@ public class Player
 	{
 		if (WeaponEquipment != null) 	ApplyItemData (WeaponEquipment, false);
 		if (GearEquipmnet  != null)		ApplyItemData (GearEquipmnet, false);
-		if (AccessoryEquipmnet != null)	ApplyItemData (GearEquipmnet, false);
+		if (AccessoryEquipmnet != null)	ApplyItemData (AccessoryEquipmnet, false);
 	}
 
     public void ApplyItemData(CGameEquiment _item, bool bIsPlus)

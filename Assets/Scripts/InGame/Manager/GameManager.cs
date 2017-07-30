@@ -83,6 +83,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public BossWeapon[] bossWeaponInfo = null;
 
+
+	List<CGamePlayerData> playerSave = new List<CGamePlayerData>();
     //세이브가 필요한 부분들은 LitJson을 사용함
     //
     private List<ArbaitData> ArbaitDataBase = new List<ArbaitData>();
@@ -92,6 +94,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     public List<CGameEquiment> cInvetoryInfo = null;            //인벤토리 정보들
 
 	public List<CGameQuestInfo> cQuestSaveListInfo = null;				//퀘스트 저장
+
+	public List<CGameMainWeaponOption> cMainWeaponOption = null;
 
     private JsonData itemData;
     private JsonData ArbaitData;
@@ -368,27 +372,38 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     void OnApplicationQuit()
     {
+
+		Debug.Log ("Quit");
+
 		if (player == null)
 			return;
 
 		player.ReleliveAllItem ();
 
+		Debug.Log ("1");
+
 		SpawnManager.Instance.ReleliveArbait ();
+
+		Debug.Log ("2");
 
 		playerData = player.changeStats;
 
+		Debug.Log ("3");
+
         SaveEquiment();
+
+		Debug.Log ("4");
 
 		SavePlayerData ();
 
-		SaveQuestList ();
+		Debug.Log ("5");
 
+		SaveQuestList ();
     }
+
 
 	public void SavePlayerData()
 	{
-		List<CGamePlayerData> playerSave = new List<CGamePlayerData>();
-
 		#if UNITY_EDITOR
 		string filePath = Path.Combine(Application.streamingAssetsPath, strPlayerPath);
 
@@ -400,6 +415,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		playerSave.Add (playerData);
 
 		string dataAsJson = JsonHelper.ListToJson<CGamePlayerData>(playerSave);
+
+		Debug.Log (dataAsJson);
 
 		File.WriteAllText(filePath, dataAsJson);
 	}
@@ -419,7 +436,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			cInvetoryInfo = player.inventory.GetItemList ();
 		else
 			return;
-
 
         string dataAsJson = JsonHelper.ListToJson<CGameEquiment>(cInvetoryInfo);
 
@@ -1496,6 +1512,33 @@ public class CGameEquiment
 	public float fAccuracyRate = 0;
 	public int nStrenthCount = 0;
     public bool bIsEquip = false;
+
+	public CGameEquiment(){}
+
+	public CGameEquiment(CGameEquiment _equimentData)
+	{
+		nIndex = _equimentData.nIndex;
+		strResource = _equimentData.strResource;
+		strName = _equimentData.strName;
+		bIsBuy = _equimentData.bIsBuy;
+		nSlotIndex = _equimentData.nSlotIndex;
+		nGrade = _equimentData.nGrade;
+		fReapirPower = _equimentData.fReapirPower;
+		fTemperaPlus = _equimentData.fTemperaPlus;
+		fTemperaDown = _equimentData.fTemperaDown;;
+		fArbaitRepair = _equimentData.fArbaitRepair;
+		fHonorPlus = _equimentData.fHonorPlus;
+		fGoldPlus = _equimentData.fGoldPlus;
+		fWaterMaxPlus = _equimentData.fWaterMaxPlus;
+		fWaterChargePlus = _equimentData.fWaterChargePlus;
+		fWaterUse = _equimentData.fWaterUse;
+		fCriticalDamage = _equimentData.fCriticalDamage;
+		fBigCritical = _equimentData.fBigCritical;
+		fAccuracyRate = _equimentData.fAccuracyRate;
+		nStrenthCount = _equimentData.nStrenthCount;
+		bIsEquip = _equimentData.bIsEquip;
+
+	}
 }
 
 
@@ -1704,13 +1747,13 @@ public class CGamePlayerData
     public float fCriticalDamage;		//크리데미지
     public float fBigSuccessed;		//대성공
     public float fAccuracyRate;		//정확도
-    public int nBlackSmithLevel;
-    public int nEnhanceRepaireLevel;
-    public int nEnhanceMaxWaterLevel;
-	public int nEnhanceWaterPlusLevel;
-	public int nEnhanceAccuracyRateLevel;
-	public int nEnhanceCriticalLevel;
-	public int nEnhanceArbaitLevel;
+    public int nBlackSmithLevel;			//대장간 레벨
+    public int nEnhanceRepaireLevel;		//수리력 레벨
+    public int nEnhanceMaxWaterLevel;		//물최대치 레벨
+	public int nEnhanceWaterPlusLevel;		//물 추가 증가치 레벨
+	public int nEnhanceAccuracyRateLevel;	//명중률 증가 레벨
+	public int nEnhanceCriticalLevel;		//크리티컬 확률 레벨
+	public int nEnhanceArbaitLevel;			//아르바이트 강화 레벨
     public int nSasinMaterial;
     public int nRusiuMaterial;
     public int nIceMaterial;
@@ -1750,7 +1793,14 @@ public class CGamePlayerData
 }
 
 
-
+[System.Serializable]
+public class CGameMainWeaponOption
+{
+	public int nIndex = 0;
+	public string strOptionName = "";
+	public int nValue = 0;
+	public bool bIsLock = false;
+}
 
 [System.Serializable]
 public class CGameCharacterInfo

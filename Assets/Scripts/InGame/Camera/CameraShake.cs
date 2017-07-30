@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour {
 
+	public Vector3 Postion;
+
 	private Vector3 cameraPos;
 	private Vector2 shakeCameraPos;
 	private float fShake;
@@ -16,6 +18,9 @@ public class CameraShake : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+
+		Postion = new Vector3 (transform.position.x, transform.position.y, transform.position.z);
+
 		//카메라 포지션을 가져 옴
 		cameraPos = transform.localPosition;
 	}
@@ -35,6 +40,8 @@ public class CameraShake : MonoBehaviour {
 	public void StopShaking()
 	{
 		isShaking = false;
+
+		transform.position = Postion;
 	}
 
 	// Update is called once per frame
