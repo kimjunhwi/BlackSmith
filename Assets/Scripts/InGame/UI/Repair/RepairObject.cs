@@ -834,44 +834,50 @@ public class RepairObject : MonoBehaviour {
 	}
 
     public void TouchWater()
-    {
+	{
 		if (weaponData == null)
 			return;
 
-		if(fCurrentTemperature >= fMaxTemperature * 0.3f)
-		{
-			fWeaponDownTemperature = fCurrentTemperature - fMaxTemperature * 0.3f;
+		if (fCurrentTemperature >= fMaxTemperature * 0.3f)
+			fWeaponDownTemperature = fMaxTemperature * 0.3f;
+		
+		else
+			fWeaponDownTemperature = fCurrentTemperature;
 
-			fCurrentTemperature -= fMaxTemperature * 0.3f;
+		fCurrentTemperature -= fMaxTemperature * 0.3f;
 
-			if (fCurrentTemperature < 0)
-				fCurrentTemperature = 0;
+		if (fCurrentTemperature < 0)
+			fCurrentTemperature = 0;
 
-			fCurrentWater -= fMaxTemperature * 0.3f;
+		fCurrentWater -= fMaxTemperature * 0.3f;
 
-			if (fCurrentWater < 0)
-				fCurrentWater = 0;
+		if (fCurrentWater < 0)
+			fCurrentWater = 0;
 
-			fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () - weaponData.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
+		Debug.Log ("Before fCurrent : " + fCurrentComplate);          
 
-			Debug.Log ("TouchWater!!");
-			//bossWaterCat_animator.SetBool ("isTouchWater", true);
+		fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () - weaponData.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
 
-			isTouchWater = true;
+		Debug.Log ("After fCurrent : " + fCurrentComplate);     
 
-			SpawnManager.Instance.UseWater ();
+		Debug.Log ("TouchWater!!");
+		//bossWaterCat_animator.SetBool ("isTouchWater", true);
 
-            WaterSlider.value = fCurrentWater;
+		isTouchWater = true;
 
-			if (fCurrentComplate > weaponData.fMaxComplate)
-				fCurrentComplate = weaponData.fMaxComplate;
+		SpawnManager.Instance.UseWater ();
 
-			TemperatureSlider.value = fCurrentTemperature;
+		WaterSlider.value = fCurrentWater;
 
-			if(fCurrentComplate >= weaponData.fMaxComplate)
-                SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
-        }
-    }
+		if (fCurrentComplate > weaponData.fMaxComplate)
+			fCurrentComplate = weaponData.fMaxComplate;
+
+		TemperatureSlider.value = fCurrentTemperature;
+
+		if (fCurrentComplate >= weaponData.fMaxComplate)
+			SpawnManager.Instance.ComplateCharacter (AfootObject, weaponData.fMaxComplate);
+        
+	}
 
 	public void TouchBossWater()
 	{

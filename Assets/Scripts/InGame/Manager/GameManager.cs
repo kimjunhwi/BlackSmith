@@ -380,25 +380,17 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		player.SetAllItemData (false);
 
-		Debug.Log ("1");
-
 		SpawnManager.Instance.ReleliveArbait ();
-
-		Debug.Log ("2");
 
 		playerData = player.changeStats;
 
-		Debug.Log ("3");
-
         SaveEquiment();
-
-		Debug.Log ("4");
 
 		SavePlayerData ();
 
-		Debug.Log ("5");
-
 		SaveQuestList ();
+
+		player.SetAllItemData (true);
     }
 
     void DataSave()
@@ -410,26 +402,15 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		player.SetAllItemData (false);
 
-        Debug.Log("1");
-
         SpawnManager.Instance.ReleliveArbait();
-
-        Debug.Log("2");
 
         playerData = player.changeStats;
 
-        Debug.Log("3");
-
         SaveEquiment();
-
-        Debug.Log("4");
 
         SavePlayerData();
 
-        Debug.Log("5");
-
         SaveQuestList();
-
 
 		player.SetAllItemData (true);
     }

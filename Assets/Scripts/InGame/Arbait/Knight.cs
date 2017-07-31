@@ -165,9 +165,9 @@ public class Knight : ArbaitBatch {
 
 				//크리티컬 확률 
 				if (Random.Range (1, 100) <= Mathf.Round (m_CharacterChangeData.fAccuracyRate)) 
-					m_fComplate += m_CharacterChangeData.fRepairPower * 1.5f;
+					m_fComplate += m_CharacterChangeData.fRepairPower * 1.5f * fRepairDownPercent;
 				else 
-					m_fComplate += m_CharacterChangeData.fRepairPower;
+					m_fComplate += m_CharacterChangeData.fRepairPower *fRepairDownPercent;
 
 				//완성 됐을 경우
 				if (m_fComplate >= weaponData.fMaxComplate)
