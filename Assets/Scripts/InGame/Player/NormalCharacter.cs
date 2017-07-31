@@ -22,6 +22,7 @@ public class NormalCharacter : Character {
    
 	//무기가 보일 말풍선(?) // 미정
 	private GameObject WeaponBackground;
+	private GameObject TimerGameobject;
 
 	private Transform ComplateScale;
 
@@ -42,6 +43,14 @@ public class NormalCharacter : Character {
 	//캐릭터가 지정한 위치에 도달했는가
 	public bool m_bIsArrival = false;
 
+	public Sprite[] TimerSprites;
+
+	public SpriteRenderer Timer;
+
+	private int nTimerCount = 0;
+	private float fNextTimer = 0.0f;
+	private const int nMaxTimerCount = 10;
+
 	public override void Awake()
     {
         base.Awake();
@@ -50,6 +59,8 @@ public class NormalCharacter : Character {
 		boxCollider = gameObject.GetComponent<BoxCollider2D>();
 
 		WeaponBackground = transform.FindChild("Case").gameObject;
+
+		TimerGameobject = transform.FindChild ("Timer").gameObject;
 
 		backGround = WeaponBackground.GetComponent<SpriteRenderer> ();
 
@@ -93,7 +104,14 @@ public class NormalCharacter : Character {
 
         weaponData = GameManager.Instance.GetWeaponData((int)E_GRADE);
 
+		//다음 시간 저장 
+		fNextTimer += (float)(weaponData.fLimitedTime * 0.125);
+
+		//이미지를 넣어줌
+		Timer.sprite = TimerSprites [nTimerCount++];
+
         //현재 대장간 레벨에 따른 공식을 적용
+
 
         //ex) 대장간 레벨의 5%를 적용될 수치와 곱하고 그것을 더해줌
 		weaponData.fMaxComplate += weaponData.fMaxComplate * (cPlayerData.GetSmithLevel () * 0.05f);
@@ -118,6 +136,8 @@ public class NormalCharacter : Character {
         
         WeaponBackground.SetActive(false);
 
+		TimerGameobject.SetActive (false);
+
 		ComplateScale.localScale = new Vector3(1.0f, 0.0f , 1.0f);
     }
 
@@ -137,11 +157,17 @@ public class NormalCharacter : Character {
 
         m_fTemperator = 0;
 
+		fNextTimer = 0.0f;
+
+		nTimerCount = 0;
+
         m_fCharacterTime = 0.0f;
 
         weaponsSprite.sprite = null;
 
         WeaponBackground.SetActive(false);
+
+		TimerGameobject.SetActive (false);
 
         m_VecMoveDistance = new Vector3(0.0f, 0.0f, 0.0f);
     }
@@ -149,6 +175,15 @@ public class NormalCharacter : Character {
     void Update()
     {
         m_fCharacterTime += Time.deltaTime;
+
+		if (m_fCharacterTime > fNextTimer && nTimerCount < nMaxTimerCount) 
+		{
+			//다음 시간 저장 
+			fNextTimer += (float)(weaponData.fLimitedTime * 0.125);
+
+			//이미지를 넣어줌
+			Timer.sprite  = TimerSprites [nTimerCount++];
+		}
 
         StartCoroutine(this.CheckCharacterState());
 
@@ -190,6 +225,7 @@ public class NormalCharacter : Character {
 					m_bIsFirst = true;
 
 					WeaponBackground.SetActive (true);
+					TimerGameobject.SetActive (true);
 				}
 
                 //만약 수리중이라면 도착했다는것으로 간주하고 리턴
@@ -269,6 +305,8 @@ public class NormalCharacter : Character {
 					arbait.ResetWeaponData();
 				
 				WeaponBackground.SetActive (false);
+				TimerGameobject.SetActive (false);
+
 			}
 
 			transform.position = Vector3.MoveTowards (transform.position, m_VecStartPos, fSpeed * Time.deltaTime);
@@ -413,6 +451,7 @@ public class NormalCharacter : Character {
 		mySprite.sortingOrder = (int)E_SortingSprite.E_BACK;
 
 		WeaponBackground.SetActive(false);
+		TimerGameobject.SetActive (false);
 	}
 
 	public void RepairObjectInputWeapon()

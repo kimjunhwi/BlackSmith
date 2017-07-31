@@ -46,8 +46,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\OptionItem.cs" />
-     <Compile Include="Assets\OptionScroll.cs" />
+     <Compile Include="Assets\BossSoul.cs" />
+     <Compile Include="Assets\MakingUI.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_AnimationScrollTexture.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_AnimationSpriteSheet.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_DeadTime.cs" />
@@ -129,9 +129,15 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\AccuracyPanelUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\ArbaitPanelUI.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulFire.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulIce.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulRusiu.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulSasin.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\CriticalPanelUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\EnhanceUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\MaxWaterPanelUI.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\OptionItem.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\OptionScroll.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\RepairPanelUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\SmithPanelUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\WaterPlusPanelUI.cs" />
