@@ -231,19 +231,25 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //보스 소환시 호출 캐릭터를 이동속도를 3으로 한후 전부 되돌림
 	public void AllCharacterComplate()
 	{
-		bIsBossCreate = true;
+		
 
 		if (list_Character.Count == 0)
 			return;
 
 		int nIndex = 0;
 
-		while (true) {
-			list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (3.0f, true);
+		while (true)
+		{
+			list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (4.0f, true);
 
-			if (nIndex >= list_Character.Count)
+			if (nIndex >= list_Character.Count) 
+			{
+				bIsBossCreate = true;
 				break;
+			}
 		}
+
+
 	}
 
     //이동

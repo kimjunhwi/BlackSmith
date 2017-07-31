@@ -50,7 +50,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public CGameQuestInfo[] cQusetInfo = null;                  //퀘스트 정보들
 
-	public BossPanelInfo[] cBossPanelInfo = null;                //보스 패널 정보
+	public BossPanelInfo cBossPanelInfo = null;
 
 	public CGamePlayerEnhance[] cSmithEnhaceInfo = null;        //대장간 강화 정보
 
@@ -95,7 +95,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public List<CGameQuestInfo> cQuestSaveListInfo = null;		//퀘스트 저장
 
-	public List<BossPanelInfo> cBossPanelListInfo = null;
+	public List<BossPanelInfo> cBossPanelListInfo = new List<BossPanelInfo>();
 
     private JsonData itemData;
     private JsonData ArbaitData;
@@ -123,6 +123,10 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public IEnumerator DataLoad()
     {
+		//PlayerPrefs.DeleteKey ("BossRegenTime");
+		//PlayerPrefs.DeleteKey ("BossInvitementSaveTime");
+
+
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
 
 		Load_TableInfo_Sound ();
@@ -179,7 +183,10 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		cQuestSaveListInfo = ConstructString<CGameQuestInfo>(strQuestPath);
 
-		cBossPanelListInfo = ConstructString<BossPanelInfo> (strBossPanelInfoPath);
+		if(ConstructString<BossPanelInfo> (strBossPanelInfoPath) == null)
+			cBossPanelListInfo.Add(cBossPanelInfo);
+		else
+			cBossPanelListInfo = ConstructString<BossPanelInfo> (strBossPanelInfoPath);
 
         //ConstructEquimentDatabase();
 
@@ -248,6 +255,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		if(Directory.Exists(BossPanelInfoFilePath)) 
 			yield return StartCoroutine (LinkedQuestAccess (BossPanelInfoFilePath));
+		else
+			cBossPanelListInfo.Add(cBossPanelInfo);
 
 
 #endif
@@ -412,6 +421,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		SaveQuestList ();
 
 		SaveBossPanelInfoList ();
+
+
 
     }
 
@@ -1495,6 +1506,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	}
 }
 
+
 enum E_Equiment
 {
 	E_REPAIR = 6,
@@ -1869,12 +1881,20 @@ public class BossWeapon
 [System.Serializable]
 public class BossPanelInfo
 {
+	public bool isSaved;
+	
 	public int nBossInviteMentCount;
+	public int nBossPotionCount;
+
 	public int nBossSasinLeftCount;
 	public int nBossMusicLeftCount;
 	public int nBossIceLeftCount;
 	public int nBossFireLeftCount;
-	public int nBossPotionCount;
+
+	public int nBossInviteMentCurMin;
+	public float fBossInviteMentCurSec;
+	public int nBossRegenCurMin;
+	public float fBossRegenCurSec;
 }
 
 [System.Serializable]

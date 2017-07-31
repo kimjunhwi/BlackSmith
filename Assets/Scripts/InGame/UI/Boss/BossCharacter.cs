@@ -35,6 +35,8 @@ public class BossCharacter : Character
 	public BossTalkPanel bossTalkPanel;			//보스 말풍선 
 	public GameObject bossWeapon;				//보스 무기 obj
 	public UIDisable uiDisable;
+	public UIManager uiManager;
+	public GameObject bossPanel;
 
 	public string[] bossWord = new string[4];					//보스 말풍선(시작시 할당) 
 

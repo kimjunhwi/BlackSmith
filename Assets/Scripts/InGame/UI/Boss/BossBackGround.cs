@@ -10,6 +10,8 @@ public class BossBackGround : MonoBehaviour {
 	public bool isBossBackGround = false;
 	public bool isOriginBackGround = false;
 
+	public BossCreator bossCreator;
+
 
 
 
@@ -25,10 +27,11 @@ public class BossBackGround : MonoBehaviour {
 
 	public IEnumerator ChangeBackGroundToBossBackGround()
 	{
-		float fBackGroundBoss_AlphaValue = 1.0f;
-		float fOriginBackGround_AlphaValue =0;
-		Color originColor;
-		Color originBossColor;
+		float fBackGroundBoss_AlphaValue = 0f;
+		float fOriginBackGround_AlphaValue =0f;
+
+		Color originColor = new Color (0f, 0f, 0f, 0f);
+		Color originBossColor = new Color (0f, 0f, 0f, 0f);
 
 		while (true)
 		{
@@ -44,26 +47,29 @@ public class BossBackGround : MonoBehaviour {
 			gameBackGround_Image.color = originColor;
 			gameBackGroundBoss_Image.color = originBossColor;
 
-			if (fOriginBackGround_AlphaValue <= 0) {
+			if (fOriginBackGround_AlphaValue <= 0)
+			{
+				Debug.Log ("보스 배경 ChangeComplete!");
 				isBossBackGround = true;
 				isOriginBackGround = false;
 				break;
-			}
+			} 
 			else
 				yield return null;
 		}
 
-		yield break;
+
 	}
 
 	public IEnumerator ReturnBossBackGroundToBackGround()
 	{
 		float fBackGroundBoss_AlphaValue = 0f;
-		float fOriginBackGround_AlphaValue =1.0f;
-		Color originColor;
-		Color originBossColor;
+		float fOriginBackGround_AlphaValue =0f;
+		Color originColor = new Color (0f, 0f, 0f, 0f);
+		Color originBossColor = new Color (0f, 0f, 0f, 0f);
 
-		while (true) {
+		while (true) 
+		{
 			fOriginBackGround_AlphaValue = gameBackGround_Image.color.a;
 			fBackGroundBoss_AlphaValue = gameBackGroundBoss_Image.color.a;
 
@@ -78,6 +84,7 @@ public class BossBackGround : MonoBehaviour {
 
 			if (fBackGroundBoss_AlphaValue <= 0)
 			{
+				Debug.Log ("원래 배경 ChangeComplete!");
 				isOriginBackGround = true;	
 				isBossBackGround = false;
 				break;
@@ -88,6 +95,6 @@ public class BossBackGround : MonoBehaviour {
 		}
 
 	
-		yield break;
+	
 	}
 }

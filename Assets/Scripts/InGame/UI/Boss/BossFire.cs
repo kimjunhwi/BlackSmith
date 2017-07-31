@@ -19,6 +19,8 @@ public class BossFire : BossCharacter
 
 	public BossFireBoom bossFireBoom;
 
+	private bool isActivePassiveSkill01 = false;
+	private bool isActivePassiveSkill02 = false;
 
 	//tmpValue
 	private GameObject smallFire;
@@ -119,6 +121,7 @@ public class BossFire : BossCharacter
 
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30) {
@@ -164,9 +167,14 @@ public class BossFire : BossCharacter
 				bossFireBoom.BoomFireSmall ();
 			}
 
+			//if (isActivePassiveSkill01 == false)
+			//	GameManager.Instance.player.SetMaxWaterPlus ();
+			
+
 
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60) {
@@ -205,11 +213,16 @@ public class BossFire : BossCharacter
 			{
 				bossFireBoom.BoomFireSmall ();
 			}
+
+			if (isActivePassiveSkill02 == false)
+				GameManager.Instance.player.SetWaterPlus (GameManager.Instance.player.GetWaterPlus() * 0.5f);
+			
 				
 		
 			if (fCurComplete < 0) 
 			{
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -254,7 +267,8 @@ public class BossFire : BossCharacter
 
 					break;
 				}
-			} else
+			}
+			else
 				yield return null;
 		}
 		StartCoroutine (BossResult ());
@@ -264,24 +278,32 @@ public class BossFire : BossCharacter
 
 	protected override IEnumerator BossResult ()
 	{
-		yield return null;
-
+		
 		ActiveTimer ();
-		//실패가 아닐시
-		if (isFailed == false) {
-			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-			bossPopUpWindow.PopUpWindowReward_Switch ();
-			bossPopUpWindow.GetBossInfo (this);							//보상 정보 
-		} 
-		//실패시
-		else {
-			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-			bossPopUpWindow.PopUpWindowReward_Switch ();
+
+		while (true) {
+			
+			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch_isSuccess ();
+				bossPopUpWindow.GetBossInfo (this);
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isSuccess);
+			} 
+			//실패시
+			if(isFailed == true && bossPopUpWindow.isRewardPanelOn_Fail == false)
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch_isFail ();
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
+			}
+			if (eCureentBossState == EBOSS_STATE.FINISH) {
+				StartCoroutine (BossFinish ());
+				break;
+			}
+			yield return null;
 		}
-		eCureentBossState = EBOSS_STATE.FINISH;
 
-
-		StartCoroutine (BossFinish ());
 	}	
 
 

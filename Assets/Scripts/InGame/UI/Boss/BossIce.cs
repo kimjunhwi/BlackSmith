@@ -107,6 +107,7 @@ public class BossIce : BossCharacter
 			
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
@@ -161,6 +162,7 @@ public class BossIce : BossCharacter
 			//Fail Condition
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
@@ -212,6 +214,7 @@ public class BossIce : BossCharacter
 
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -244,8 +247,6 @@ public class BossIce : BossCharacter
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
 			{
-
-
 				break;
 			}
 			else
@@ -258,36 +259,35 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossResult ()
 	{
-		while (true)
-		{
-			Debug.Log ("BossResult Active!!");
-			yield return new WaitForSeconds (1.0f);
+		Debug.Log ("BossResult Active!!");
 
-			ActiveTimer ();
+
+		ActiveTimer ();
+		while (true) {
 			//실패가 아닐시
-			if (isFailed == false)
+			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
 			{
 				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
-				bossPopUpWindow.GetBossInfo (this);							//보상 정보 
+				bossPopUpWindow.PopUpWindowReward_Switch_isSuccess ();
+				bossPopUpWindow.GetBossInfo (this);
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isSuccess);
 			} 
 			//실패시
-			else 
+			if(isFailed == true && bossPopUpWindow.isRewardPanelOn_Fail == false)
 			{
 				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
+				bossPopUpWindow.PopUpWindowReward_Switch_isFail ();
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
 			}
-			eCureentBossState = EBOSS_STATE.FINISH;
-			if (eCureentBossState == EBOSS_STATE.FINISH)
+			if (eCureentBossState == EBOSS_STATE.FINISH) {
+				StartCoroutine (BossFinish ());
 				break;
-			else
-				yield return null;
-
+			}
+	
+			yield return null;
+	
 		}
-		StartCoroutine (BossFinish ());
-
-		yield break;
-	}	
+	}
 
 	protected override IEnumerator BossFinish ()
 	{

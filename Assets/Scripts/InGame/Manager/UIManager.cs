@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
 
     public GameObject obj;
-	public BossConsumeItemInfo bossConsumeItemInfo;
+	public BossCreator bossCreator;
 
 	public GameObject []uiPanels;
 	public GameObject []uiButtons;
@@ -26,9 +26,8 @@ public class UIManager : MonoBehaviour
 			//보스 패널 닫을시 시간 저장 
 			if (nIndex == 3)
 			{
-				
-				bossConsumeItemInfo.BossInviteMentSaveTime ();
-
+				bossCreator.bossConsumeItemInfo.BossInviteMentSaveTime ();
+				bossCreator.bossConsumeItemInfo.bossRegenTimer.BossRegenTimeSave ();
 			}
 			uiPanels [nIndex].SetActive (false);
 
@@ -36,21 +35,27 @@ public class UIManager : MonoBehaviour
 		else
 		{
 			AllDisable ();
+			uiPanels [nIndex].SetActive (true);
+
 			//보스 패널 열시 시간 로드 
 			if (nIndex == 3) 
 			{
-				bossConsumeItemInfo.BossInviteMentLoadTime ();
+				bossCreator.BossPanelSetUp ();
+				bossCreator.bossConsumeItemInfo.BossInviteMentLoadTime ();
+				bossCreator.bossConsumeItemInfo.bossRegenTimer.BossRegenTimeLoad ();
+
 			}
-			uiPanels [nIndex].SetActive (true);
+		
 		}
 	}
 
 
 	public void AllDisable()
 	{
+		
 		foreach (GameObject obj in uiPanels) 
 		{
-			obj.SetActive (false);
+			obj.SetActive (false);	
 		}
 	}
 		

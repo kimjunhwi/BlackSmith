@@ -143,8 +143,10 @@ public class BossMusic : BossCharacter
 				
 
 			//현재 완성도 (실패조건)
-			if (fCurComplete < 0)
+			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
+			}
 		
 			if (fCurComplete >=	(fMaxComplete / 100) * 30)
 				eCureentBossState = EBOSS_STATE.PHASE_01;
@@ -220,8 +222,10 @@ public class BossMusic : BossCharacter
 			}
 
 		
-			if (fCurComplete < 0) 
+			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
+			}
 			
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
 				eCureentBossState = EBOSS_STATE.PHASE_02;
@@ -289,6 +293,7 @@ public class BossMusic : BossCharacter
 
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -335,23 +340,34 @@ public class BossMusic : BossCharacter
 	{
 
 		Debug.Log ("BossResult Active!!");
-		yield return new WaitForSeconds (1.0f);
 		ActiveTimer ();
+		while (true) 
+		{
 			//실패가 아닐시
-		if (isFailed == false)
-		{
-			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-			bossPopUpWindow.PopUpWindowReward_Switch ();
-			bossPopUpWindow.GetBossInfo (this);
-		} 
-		//실패시
-		else
-		{
-			bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-			bossPopUpWindow.PopUpWindowReward_Switch ();
+			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch_isSuccess ();
+				bossPopUpWindow.GetBossInfo (this);
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isSuccess);
+			} 
+			//실패시
+			if(isFailed == true && bossPopUpWindow.isRewardPanelOn_Fail == false)
+			{
+				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
+				bossPopUpWindow.PopUpWindowReward_Switch_isFail ();
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
+			}
+
+			//결과 창에서 확인시 넘어간다
+			if (eCureentBossState == EBOSS_STATE.FINISH) {
+				StartCoroutine (BossFinish ());
+				break;
+			}
+			
+			yield return null;
+
 		}
-		eCureentBossState = EBOSS_STATE.FINISH;
-		StartCoroutine (BossFinish ());
 
 	}	
 

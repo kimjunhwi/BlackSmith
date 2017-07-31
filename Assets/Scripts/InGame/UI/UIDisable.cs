@@ -23,6 +23,9 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 		{
 			//보스 창이 닫히면 시간 저장
 			bossConumeItemInfo.BossInviteMentSaveTime ();
+			bossConumeItemInfo.bossRegenTimer.BossRegenTimeSave ();
+
+
 			getInfoGameObject.SetActive (false);
 		}
 	}

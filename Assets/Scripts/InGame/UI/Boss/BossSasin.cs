@@ -32,6 +32,7 @@ public class BossSasin : BossCharacter
 
 		skullObjectPool.PreloadPool ();
 	}
+
 	private void OnEnable()
 	{
 		if (isFirstActive == false) {
@@ -43,6 +44,7 @@ public class BossSasin : BossCharacter
 		}
 	
 	}
+
 	private void OnDisable()
 	{
 		StopCoroutine (BossWait ());
@@ -64,9 +66,9 @@ public class BossSasin : BossCharacter
 
 				//애니메이션이 끝났는지 확인 끝났으면 다음애니메이션으로 넘긴다.
 				//SasinAppear Animation length = 1.0f
-				if (animator.GetCurrentAnimatorStateInfo (0).length > 1.0f) 
+				if (animator.GetCurrentAnimatorStateInfo (0).IsName("BossSasinAppear")) 
 				{
-					yield return new WaitForSeconds (0.5f);
+					//yield return new WaitForSeconds (0.5f);
 					animator.SetBool ("isAppear", true);
 					eCureentBossState = EBOSS_STATE.PHASE_00;
 				} 
@@ -95,6 +97,8 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		uiManager.AllDisable ();
+		bossPanel.SetActive (true);
 		//기본페이즈에서 실패시 보스 화난 이펙트가 안뜨게 하기 위한 변수
 		isStandardPhaseFailed = true;
 		//StandardPhase 말풍선
@@ -110,6 +114,7 @@ public class BossSasin : BossCharacter
 			//Fail Condition
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 		
@@ -155,6 +160,7 @@ public class BossSasin : BossCharacter
 
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >=	(fMaxComplete / 100) * 60)
@@ -188,6 +194,7 @@ public class BossSasin : BossCharacter
 
 			if (fCurComplete < 0) {
 				FailState ();
+				yield break;
 			}
 
 			if (fCurComplete >= fMaxComplete)
@@ -208,17 +215,21 @@ public class BossSasin : BossCharacter
 	protected override IEnumerator BossDie ()
 	{
 		yield return null;
+		ActiveTimer ();
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
 		animator.SetBool ("isDisappear", true);
 
 		while (true)
 		{
-			yield return new WaitForSeconds (0.1f);
 
-			eCureentBossState = EBOSS_STATE.RESULT;
-			if (eCureentBossState == EBOSS_STATE.RESULT)
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("BossSasinDisappear"))
 			{
-				break;
+				yield return new WaitForSeconds (0.8f);
+				eCureentBossState = EBOSS_STATE.RESULT;
+				if (eCureentBossState == EBOSS_STATE.RESULT) {
+
+					break;
+				}
 			}
 			else
 				yield return null;
@@ -229,33 +240,38 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossResult ()
 	{
-		yield return null;
+		
 		while (true)
 		{
-			Debug.Log ("BossResult Active!!");
-			yield return new WaitForSeconds (1.0f);
-			ActiveTimer ();
+			if (eCureentBossState == EBOSS_STATE.FINISH) {
+				StartCoroutine (BossFinish ());
+				yield break;
+			}
 			//실패가 아닐시
-			if (isFailed == false)
+			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
 			{
+				Debug.Log ("BossResult : Success");
 				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
+				bossPopUpWindow.PopUpWindowReward_Switch_isSuccess ();
 				bossPopUpWindow.GetBossInfo (this);
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isSuccess);
 			} 
 			//실패시
-			else 
+			if(isFailed == true && bossPopUpWindow.isRewardPanelOn_Fail == false)
 			{
+				Debug.Log ("BossResult : Fail");
 				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
-				bossPopUpWindow.PopUpWindowReward_Switch ();
+				bossPopUpWindow.PopUpWindowReward_Switch_isFail ();
+				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
 			}
-			eCureentBossState = EBOSS_STATE.FINISH;
-			if (eCureentBossState == EBOSS_STATE.FINISH)
-				break;
-			else
-				yield return null;
+
 			
+		
+			yield return new WaitForSeconds(0.1f);
 		}
-		StartCoroutine (BossFinish ());
+	
+
+
 	}
 
 	protected override IEnumerator BossFinish ()
