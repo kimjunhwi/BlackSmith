@@ -170,12 +170,12 @@ public class Player
         inventory.inventorySlots[_item.nSlotIndex].RefreshDisplay();
     }
 
-	//세이브를 위한 아이템 전부 해제
-	public void ReleliveAllItem()
+	//세이브를 위한 아이템 세팅
+	public void SetAllItemData(bool bIsUp)
 	{
-		if (WeaponEquipment != null) 	ApplyItemData (WeaponEquipment, false);
-		if (GearEquipmnet  != null)		ApplyItemData (GearEquipmnet, false);
-		if (AccessoryEquipmnet != null)	ApplyItemData (GearEquipmnet, false);
+		if (WeaponEquipment != null) 	ApplyItemData (WeaponEquipment, bIsUp);
+		if (GearEquipmnet  != null)		ApplyItemData (GearEquipmnet, bIsUp);
+		if (AccessoryEquipmnet != null)	ApplyItemData (AccessoryEquipmnet, bIsUp);
 	}
 
     public void ApplyItemData(CGameEquiment _item, bool bIsPlus)

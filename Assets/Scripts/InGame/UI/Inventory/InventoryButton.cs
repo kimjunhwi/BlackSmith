@@ -24,6 +24,20 @@ public class InventoryButton : MonoBehaviour {
         button.onClick.AddListener(HandleClick);
     }
 
+	void OnEnable()
+	{
+		
+	}
+
+	public void SetInit()
+	{
+		equimentData = null;
+
+		WeaponObject.SetActive (false);
+
+		EquipWeapon.SetActive (false);
+	}
+
 	public void Setup(CGameEquiment currentEquiment,InventoryShowPanel _inventoryPanel)
     {
         equimentData = currentEquiment;

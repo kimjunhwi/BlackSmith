@@ -76,6 +76,12 @@ public class ArbaitBatch : MonoBehaviour {
     private float m_fWaterRepairPowerPlusTime = 0.0f;
     private float m_fWaterCriticalPlusTime = 0.0f;
 
+	//수리력 감소 체크 , 감소 되는 량 
+	protected float fRepairDownPercent = 1;
+	protected float fAttackSpeedDownPercent = 1;
+
+
+
     //무기 등급을 어디까지 받아올지를 정하기 위해 사용
     public int nGrade { get; set; }
 
@@ -532,4 +538,9 @@ public class ArbaitBatch : MonoBehaviour {
 
 		m_fTemperator = 0.0f;
     }
+
+	public void SetAttackSpeed(float _fValue)
+	{
+		m_fRepairTime = m_CharacterChangeData.fAttackSpeed * _fValue;
+	}
 }

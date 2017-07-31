@@ -98,7 +98,6 @@ public class InventoryScrollList : MonoBehaviour {
                 newButton.transform.SetParent(contentPanel, false);
                 newButton.transform.localScale = Vector3.one;
 
-
                 InventoryButton sampleButton = newButton.GetComponent<InventoryButton>();
                 sampleButton.Setup(item, inventoryPanel);
             }
@@ -107,6 +106,9 @@ public class InventoryScrollList : MonoBehaviour {
                 GameObject newButton = buttonObjectPool.GetObject();
                 newButton.transform.SetParent(contentPanel, false);
                 newButton.transform.localScale = Vector3.one;
+
+				InventoryButton sampleButton = newButton.GetComponent<InventoryButton>();
+				sampleButton.SetInit ();
             }
         }
     }

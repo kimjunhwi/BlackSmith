@@ -71,9 +71,11 @@ public class Inventory : MonoBehaviour {
 
     public void GetEquimnet(CGameEquiment _getEquimnet)
     {
-        List_Equiments.Add(_getEquimnet);
+		CGameEquiment newItem = new CGameEquiment (_getEquimnet);
 
-        inventorySlots[_getEquimnet.nSlotIndex].AddItem(_getEquimnet);
+		List_Equiments.Add(newItem);
+
+		inventorySlots[_getEquimnet.nSlotIndex].AddItem(newItem);
     }
 
     
