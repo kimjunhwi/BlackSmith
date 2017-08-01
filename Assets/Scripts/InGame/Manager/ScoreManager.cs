@@ -33,16 +33,26 @@ public class ScoreManager : MonoBehaviour
     public Text goldText;
 	public Text honorText;
 
-    public float m_fGetGold = 0;
+    private float m_fGetGold = 0;
 	private float m_fGetHonor = 0;
 
     private void Awake()
     {
         scireInstance = this;
-		goldText.text = "0";
-		honorText.text = "0";
+
+        if(PlayerPrefs.HasKey("Gold"))
+            m_fGetGold = PlayerPrefs.GetFloat("Gold");
+
+        if (PlayerPrefs.HasKey("Honor"))
+            m_fGetHonor = PlayerPrefs.GetFloat("Honor");
+
+        goldText.text = m_fGetGold.ToString();
+		honorText.text = m_fGetHonor.ToString();
+
+        
     }
 
+    public float GetGold() { return m_fGetGold; }
 	public float GetHonor() { return m_fGetHonor; }
 
 

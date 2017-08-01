@@ -16,19 +16,19 @@ public class Druid : ArbaitBatch
     {
         base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_ELLIE;
+        nIndex = (int)E_ARBAIT.E_ELLIE;
     }
 
     // Update is called once per frame
-	protected override void Update()
-	{
-		StartCoroutine(this.CharacterAction());
-	}
+    protected override void Update()
+    {
+        StartCoroutine(this.CharacterAction());
+    }
 
 
     protected override void OnEnable()
     {
-		if (m_CharacterChangeData == null || nBatchIndex == -1)
+        if (m_CharacterChangeData == null || nBatchIndex == -1)
             return;
 
         bIsComplate = false;
@@ -39,7 +39,7 @@ public class Druid : ArbaitBatch
 
         CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
+        SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
     }
 
     protected override void OnDisable()
@@ -55,25 +55,52 @@ public class Druid : ArbaitBatch
 
         base.OnDisable();
 
-		m_bIsApplyBuff = false;
+        m_bIsApplyBuff = false;
 
-		m_fBuffTime = 0.0f;
+        m_fBuffTime = 0.0f;
 
-		fChangeRepair = 0.0f;
+        fChangeRepair = 0.0f;
 
-		fChangeCritical = 0.0f;
+        fChangeCritical = 0.0f;
     }
 
     public override void ApplySkill()
     {
         if (m_bIsApplyBuff)
-			m_fBuffTime = 0.0f;
+            m_fBuffTime = 0.0f;
 
         else
             StartCoroutine(ApplyDruidSkill());
     }
 
-    protected override void ReliveSkill() { }
+    protected override void ReliveSkill()
+    {
+    }
+
+    public override void RelivePauseSkill()
+    {
+        base.RelivePauseSkill();
+
+        if (m_bIsApplyBuff)
+        {
+            playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+
+            playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
+        }
+
+    }
+
+    public override void ApplyPauseSkill()
+    {
+        base.ApplyPauseSkill();
+
+        if (m_bIsApplyBuff)
+        {
+            playerData.SetRepairPower(playerData.GetRepairPower() + fChangeRepair);
+
+            playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
+        }
+    }
 
     private IEnumerator ApplyDruidSkill()
     {

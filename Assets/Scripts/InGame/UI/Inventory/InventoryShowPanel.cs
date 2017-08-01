@@ -50,7 +50,7 @@ public class InventoryShowPanel : MonoBehaviour {
 
 		if (enhanceData [ItemData.nStrenthCount].nGoldCost != 0) {
 			
-			if (enhanceData [ItemData.nStrenthCount].nGoldCost <= ScoreManager.ScoreInstance.m_fGetGold) 
+			if (enhanceData [ItemData.nStrenthCount].nGoldCost <= ScoreManager.ScoreInstance.GetGold()) 
 			{
 				ScoreManager.ScoreInstance.GoldPlus (-enhanceData [ItemData.nStrenthCount].nGoldCost);
 

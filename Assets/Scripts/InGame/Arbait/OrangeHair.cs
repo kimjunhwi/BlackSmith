@@ -4,37 +4,37 @@ using UnityEngine;
 using ReadOnlys;
 
 public class OrangeHair : ArbaitBatch {
-	private float fChangePlusWater = 0.0f;
+    private float fChangePlusWater = 0.0f;
 
-	protected override void Awake ()
-	{
-		base.Awake ();
+    protected override void Awake()
+    {
+        base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_MIA;
-	}
+        nIndex = (int)E_ARBAIT.E_MIA;
+    }
 
-	// Update is called once per frame
-	protected override void Update()
-	{
-		StartCoroutine(this.CharacterAction());
-	}
+    // Update is called once per frame
+    protected override void Update()
+    {
+        StartCoroutine(this.CharacterAction());
+    }
 
     protected override void OnEnable()
-	{
-		if (m_CharacterChangeData == null || nBatchIndex == -1)
-			return;
+    {
+        if (m_CharacterChangeData == null || nBatchIndex == -1)
+            return;
 
-		bIsComplate = false;
+        bIsComplate = false;
 
-		nGrade = m_CharacterChangeData.grade;
+        nGrade = m_CharacterChangeData.grade;
 
-		E_STATE = E_ArbaitState.E_WAIT;
+        E_STATE = E_ArbaitState.E_WAIT;
 
-		CheckCharacterState(E_STATE);
+        CheckCharacterState(E_STATE);
 
         ApplySkill();
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
+        SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
     }
 
     protected override void OnDisable()
@@ -46,10 +46,10 @@ public class OrangeHair : ArbaitBatch {
 
     public override void ApplySkill()
     {
-        if (fChangePlusWater != 0 )
+        if (fChangePlusWater != 0)
             ReliveSkill();
 
-		fChangePlusWater = playerData.GetWaterPlus() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+        fChangePlusWater = playerData.GetWaterPlus() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
         playerData.SetWaterPlus(playerData.GetWaterPlus() + fChangePlusWater);
     }
@@ -59,7 +59,21 @@ public class OrangeHair : ArbaitBatch {
         playerData.SetWaterPlus(playerData.GetWaterPlus() - fChangePlusWater);
     }
 
-	public override void CheckCharacterState(E_ArbaitState _E_STATE)
+    public override void RelivePauseSkill()
+    {
+        base.RelivePauseSkill();
+
+        ReliveSkill();
+    }
+
+    public override void ApplyPauseSkill()
+    {
+        base.ApplyPauseSkill();
+
+        ApplySkill();
+    }
+
+    public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
 		if (E_STATE == _E_STATE)
 			return;

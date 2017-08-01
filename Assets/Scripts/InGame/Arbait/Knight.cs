@@ -5,66 +5,83 @@ using ReadOnlys;
 
 public class Knight : ArbaitBatch {
 
-	private bool m_bIsApplyBuff = false;
+    private bool m_bIsApplyBuff = false;
 
-	private float m_fBuffTime = 0.0f;
+    private float m_fBuffTime = 0.0f;
 
-	private float m_fChangeAccuracy = 0;
+    private float m_fChangeAccuracy = 0;
 
-	protected override void Awake()
-	{
-		base.Awake();
+    protected override void Awake()
+    {
+        base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_GLAUS;
-	}
+        nIndex = (int)E_ARBAIT.E_GLAUS;
+    }
 
-	// Update is called once per frame
-	protected override void Update()
-	{
-		StartCoroutine(this.CharacterAction());
-	}
+    // Update is called once per frame
+    protected override void Update()
+    {
+        StartCoroutine(this.CharacterAction());
+    }
 
-	protected override void OnEnable()
-	{
-		if (m_CharacterChangeData == null || nBatchIndex == -1)
-			return;
+    protected override void OnEnable()
+    {
+        if (m_CharacterChangeData == null || nBatchIndex == -1)
+            return;
 
-		bIsComplate = false;
+        bIsComplate = false;
 
 
-		nGrade = m_CharacterChangeData.grade;
+        nGrade = m_CharacterChangeData.grade;
 
-		E_STATE = E_ArbaitState.E_WAIT;
+        E_STATE = E_ArbaitState.E_WAIT;
 
-		CheckCharacterState(E_STATE);
+        CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
-	}
+        SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
+    }
 
-	protected override void OnDisable()
-	{
-		if (m_bIsApplyBuff)
-		{
-			m_bIsApplyBuff = false;
+    protected override void OnDisable()
+    {
+        if (m_bIsApplyBuff)
+        {
+            m_bIsApplyBuff = false;
 
-			playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
-		}
+            playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+        }
 
-		base.OnDisable();
-	}
+        base.OnDisable();
+    }
 
-	public override void ApplySkill()
-	{
-		if (m_bIsApplyBuff)
-			m_fBuffTime = 0.0f;
+    public override void ApplySkill()
+    {
+        if (m_bIsApplyBuff)
+            m_fBuffTime = 0.0f;
 
-		else
-			StartCoroutine(ApplyDruidSkill());
-	}
+        else
+            StartCoroutine(ApplyDruidSkill());
+    }
 
-	protected override void ReliveSkill() { }
+    protected override void ReliveSkill() { }
 
-	private IEnumerator ApplyDruidSkill()
+    public override void RelivePauseSkill()
+    {
+        base.RelivePauseSkill();
+
+        if (m_bIsApplyBuff)
+            playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+
+    }
+
+    public override void ApplyPauseSkill()
+    {
+        base.ApplyPauseSkill();
+
+        if (m_bIsApplyBuff)
+            playerData.SetAccuracyRate(playerData.GetAccuracyRate() + m_fChangeAccuracy);
+    }
+
+    private IEnumerator ApplyDruidSkill()
 	{
 		yield return new WaitForSeconds(0.1f);
 

@@ -175,7 +175,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 #if UNITY_EDITOR
 
-		ArbaitDataBase = ConstructString<ArbaitData>(strArbaitPath);
+        ArbaitDataBase = ConstructString<ArbaitData>(strArbaitPath);
 
         equimnetData = ConstructString<CGameEquiment>(strEquiementPath);
 
@@ -183,12 +183,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         playerData = ConstructString<CGamePlayerData>(strPlayerPath)[0];
 
-		cQuestSaveListInfo = ConstructString<CGameQuestInfo>(strQuestPath);
-
-		if(ConstructString<BossPanelInfo> (strBossPanelInfoPath) == null)
-			cBossPanelListInfo.Add(cBossPanelInfo);
-		else
-			cBossPanelListInfo = ConstructString<BossPanelInfo> (strBossPanelInfoPath);
+        cQuestSaveListInfo = ConstructString<CGameQuestInfo>(strQuestPath);
 
         //ConstructEquimentDatabase();
 
@@ -253,26 +248,21 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		if(Directory.Exists(QuestFilePath)) 
 			yield return StartCoroutine (LinkedQuestAccess (QuestFilePath));
 
-		if(Directory.Exists(BossPanelInfoFilePath)) 
-			yield return StartCoroutine (LinkedQuestAccess (BossPanelInfoFilePath));
-		else
-			cBossPanelListInfo.Add(cBossPanelInfo);
-
 #endif
 
-        Debug.Log( playerData.strName);
+        Debug.Log(playerData.strName);
 
         player = new Player();
 
-		player.Init(cInvetoryInfo,playerData);
+        player.Init(cInvetoryInfo, playerData);
 
-		SoundManager.instance.LoadSource ();
+        SoundManager.instance.LoadSource();
 
-		SoundManager.instance.PlayBGM (eSound.bgm_main);
+        SoundManager.instance.PlayBGM(eSound.bgm_main);
 
-		logoManager.bIsSuccessed = true;
+        logoManager.bIsSuccessed = true;
 
-		yield break;
+        yield break;
     }
 
     IEnumerator LinkedArbaitAccess(string filePath)
@@ -406,28 +396,13 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     void OnApplicationQuit()
     {
 
-		Debug.Log ("Quit");
+        DataSave();
 
-		if (player == null)
-			return;
-
-		player.SetAllItemData (false);
-
-		SpawnManager.Instance.ReleliveArbait ();
-
-		playerData = player.changeStats;
-
-        SaveEquiment();
-
-		SavePlayerData ();
-
-		SaveQuestList ();
-
-		SaveBossPanelInfoList ();
-
-		player.SetAllItemData (true);
+        StopAllCoroutines();
     }
 
+    //데이터 저장시 호출된다.
+    //저장이 되는 부분은 OnApplicationPuase가 TRUE 이고 플레이어가 존재할시 호출
     void DataSave()
     {
         Debug.Log("Quit");
@@ -435,35 +410,44 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         if (player == null)
             return;
 
-		player.SetAllItemData (false);
+        PlayerPrefs.SetFloat("Gold", ScoreManager.ScoreInstance.GetGold());
+        PlayerPrefs.SetFloat("Honor", ScoreManager.ScoreInstance.GetHonor());
+
+        player.SetAllItemData(false);
 
         SpawnManager.Instance.ReleliveArbait();
 
         playerData = player.changeStats;
 
-        SaveEquiment();
+        SaveArbaitData();
 
         SavePlayerData();
 
+        SaveEquiment();
+
         SaveQuestList();
 
-		player.SetAllItemData (true);
+        SpawnManager.Instance.ApplyArbait();
+
+        player.SetAllItemData(true);
+
+        PlayerPrefs.Save();
     }
 
-	public void OnApplicationPause(bool bIsPause)
-	{
-		if (bIsPause) {
-			if (player != null) 
-			{
-				Debug.Log ("Puase");
-				DataSave ();
-			}
-		} 
-			
-	}
+    //public void OnApplicationPause(bool bIsPause)
+    //{
+    //    if (bIsPause) {
+    //        if (player != null) 
+    //        {
+    //            Debug.Log ("Puase");
+    //            DataSave ();
+    //        }
+    //    } 
+
+    //}
 
 
-	public void SavePlayerData()
+    public void SavePlayerData()
 	{
 		#if UNITY_EDITOR
 		string filePath = Path.Combine(Application.streamingAssetsPath, strPlayerPath);
@@ -481,6 +465,20 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		File.WriteAllText(filePath, dataAsJson);
 	}
+
+    public void SaveArbaitData()
+    {
+#if UNITY_EDITOR
+        string filePath = Path.Combine(Application.streamingAssetsPath, strArbaitPath);
+
+#elif UNITY_ANDROID
+		string filePath = Path.Combine(Application.persistentDataPath, strArbaitPath);
+
+#endif
+        string dataAsJson = JsonHelper.ListToJson<ArbaitData>(ArbaitDataBase);
+
+        File.WriteAllText(filePath, dataAsJson);
+    }
 
     public void SaveEquiment()
     {

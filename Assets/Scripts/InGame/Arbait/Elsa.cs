@@ -5,54 +5,53 @@ using ReadOnlys;
 
 public class Elsa : ArbaitBatch {
 
-	private float fChangeCritical = 0.0f;
+    private float fChangeCritical = 0.0f;
 
-	protected override void Awake()
-	{
-		base.Awake();
+    protected override void Awake()
+    {
+        base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_ROSA;
+        nIndex = (int)E_ARBAIT.E_ROSA;
 
-	}
+    }
 
-	// Update is called once per frame
-	protected override void Update()
-	{
-		StartCoroutine(this.CharacterAction());
-	}
+    // Update is called once per frame
+    protected override void Update()
+    {
+        StartCoroutine(this.CharacterAction());
+    }
 
 
-	protected override void OnEnable()
-	{
-		if (m_CharacterChangeData == null || nBatchIndex == -1)
-			return;
+    protected override void OnEnable()
+    {
+        if (m_CharacterChangeData == null || nBatchIndex == -1)
+            return;
 
-		bIsComplate = false;
+        bIsComplate = false;
 
-		nGrade = m_CharacterChangeData.grade;
+        nGrade = m_CharacterChangeData.grade;
 
-		E_STATE = E_ArbaitState.E_WAIT;
+        E_STATE = E_ArbaitState.E_WAIT;
 
-		CheckCharacterState(E_STATE);
+        CheckCharacterState(E_STATE);
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
-	}
+        SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
+    }
 
-	protected override void OnDisable()
-	{
-		ReliveSkill();
+    protected override void OnDisable()
+    {
+        ReliveSkill();
 
-		base.OnDisable();
+        base.OnDisable();
 
-		fChangeCritical = 0.0f;
-	}
+        fChangeCritical = 0.0f;
+    }
 
-	protected override void ReliveSkill()
-	{
-		playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
-	}
+    protected override void ReliveSkill()
+    {
+    }
 
-	public override void CheckCharacterState(E_ArbaitState _E_STATE)
+    public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
 		if (E_STATE == _E_STATE)
 			return;

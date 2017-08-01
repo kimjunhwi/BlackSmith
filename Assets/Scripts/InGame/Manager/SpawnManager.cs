@@ -115,31 +115,37 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //몬스터 오브젝트풀을 생성한다.
     private void CreateMonsterPool()
     {
+        if (m_CharicPool == null)
+            return;
+
         for (int i = 0; i < m_CharicPool.Length; i++)
         {
             m_CharicPool[i] = Instantiate(m_CharicPool[i]);
             m_CharicPool[i].SetActive(false);
         }
-		 
-		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+
+        for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
         {
             //화면에 보이는 배치 오브젝트
-			m_BatchArbait[nIndex] = Instantiate(m_BatchArbait[nIndex]);
+            m_BatchArbait[nIndex] = Instantiate(m_BatchArbait[nIndex]);
 
-			//미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
-			array_ArbaitData [nIndex] = m_BatchArbait[nIndex].GetComponent<ArbaitBatch> ();
+            //미리 ArbaitBatch를 캐싱해준후 아르바이트 데이터를 넣어줌
+            array_ArbaitData[nIndex] = m_BatchArbait[nIndex].GetComponent<ArbaitBatch>();
 
-			array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
+            array_ArbaitData[nIndex].m_CharacterChangeData = GameManager.Instance.GetArbaitData(nIndex);
 
-			GameObject createArbaitUI = Instantiate (ArbaitPanel);
+            m_BatchArbait[nIndex].SetActive(false);
+        }
 
-			createArbaitUI.GetComponent<ArbaitCharacter> ().SetUp (nIndex,arbaitSprite[nIndex]);
+        for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+        {
+            GameObject createArbaitUI = Instantiate(ArbaitPanel);
 
-			createArbaitUI.transform.SetParent (contentsPanel, false);
+            createArbaitUI.GetComponent<ArbaitCharacter>().SetUp(nIndex, arbaitSprite[nIndex]);
 
-			createArbaitUI.transform.localScale = Vector3.one;
+            createArbaitUI.transform.SetParent(contentsPanel, false);
 
-			m_BatchArbait[nIndex].SetActive(false);
+            createArbaitUI.transform.localScale = Vector3.one;
         }
     }
 
@@ -361,6 +367,9 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //인자로 넣은 값을 넣을 수 있는지 없는지를 확인한다.
     public int InsertArbatiWeaponCheck(int _nGrade)
     {
+        if (m_BatchArbait == null)
+            return (int)E_CHECK.E_FAIL;
+
 		int nMinValue = 10;
 
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
@@ -590,13 +599,21 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		}
 	}
 
-	public void ReleliveArbait ()
-	{
-		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
-			if (m_BatchArbait [nIndex].activeSelf)
-				m_BatchArbait [nIndex].SetActive (false);
-		}
-	}
+    public void ReleliveArbait()
+    {
+        for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+        {
+            array_ArbaitData[nIndex].RelivePauseSkill();
+        }
+    }
+
+    public void ApplyArbait()
+    {
+        for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++)
+        {
+            array_ArbaitData[nIndex].ApplyPauseSkill();
+        }
+    }
 
     #endregion
 

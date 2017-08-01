@@ -6,87 +6,100 @@ using ReadOnlys;
 public class BlueHair : ArbaitBatch {
 
 
+    private float fChangeRepair = 0.0f;
 
-	private float fChangeRepair = 0.0f;
+    private float fGetRepairPower = 0.0f;
 
-	private float fGetRepairPower = 0.0f;
+    private float fMinusRepair = 0.0f;
 
-	private float fMinusRepair = 0.0f;
+    protected override void Awake()
+    {
+        base.Awake();
 
-	protected override void Awake ()
-	{
-		base.Awake ();
-
-		nIndex = (int)E_ARBAIT.E_ROY;
+        nIndex = (int)E_ARBAIT.E_ROY;
 
 
-	}
+    }
 
-	protected override void Update()
-	{
-		StartCoroutine(this.CharacterAction());
-	}
+    protected override void Update()
+    {
+        StartCoroutine(this.CharacterAction());
+    }
 
-	protected override void OnEnable()
-	{
-		if (m_CharacterChangeData == null || nBatchIndex == -1)
-			return;
+    protected override void OnEnable()
+    {
+        if (m_CharacterChangeData == null || nBatchIndex == -1)
+            return;
 
-		bIsComplate = false;
+        bIsComplate = false;
 
-		nGrade = m_CharacterChangeData.grade;
+        nGrade = m_CharacterChangeData.grade;
 
-		E_STATE = E_ArbaitState.E_WAIT;
+        E_STATE = E_ArbaitState.E_WAIT;
 
         CheckCharacterState(E_STATE);
 
         ApplySkill();
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
-	}
+        SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
+    }
 
-	protected override void OnDisable ()
-	{
+    protected override void OnDisable()
+    {
         ReliveSkill();
 
-		base.OnDisable ();
+        base.OnDisable();
 
-		fChangeRepair = 0.0f;
+        fChangeRepair = 0.0f;
 
-		fGetRepairPower = 0.0f;
+        fGetRepairPower = 0.0f;
 
-		fMinusRepair = 0.0f;
-	}
+        fMinusRepair = 0.0f;
+    }
 
     public override void ApplySkill()
     {
         if (fChangeRepair != 0)
             ReliveSkill();
 
-		fGetRepairPower = playerData.GetRepairPower ();
+        fGetRepairPower = playerData.GetRepairPower();
 
-		fChangeRepair = fGetRepairPower * (m_CharacterChangeData.fSkillPercent * 0.01f);
+        fChangeRepair = fGetRepairPower * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
-		fChangeRepair =  Mathf.Round (fChangeRepair);
+        fChangeRepair = Mathf.Round(fChangeRepair);
 
-		playerData.SetRepairPower(fGetRepairPower + fChangeRepair);
+        playerData.SetRepairPower(fGetRepairPower + fChangeRepair);
     }
 
     protected override void ReliveSkill()
     {
-		if (fChangeRepair == 0)
-			return;
+        if (fChangeRepair == 0)
+            return;
 
-		fGetRepairPower = playerData.GetRepairPower ();
+        fGetRepairPower = playerData.GetRepairPower();
 
-		fMinusRepair = fGetRepairPower - fChangeRepair;
+        fMinusRepair = fGetRepairPower - fChangeRepair;
 
-		fMinusRepair =  Mathf.Round (fMinusRepair);
+        fMinusRepair = Mathf.Round(fMinusRepair);
 
-		playerData.SetRepairPower(fMinusRepair);
+        playerData.SetRepairPower(fMinusRepair);
     }
 
-	public override void CheckCharacterState(E_ArbaitState _E_STATE)
+    public override void RelivePauseSkill()
+    {
+        base.RelivePauseSkill();
+
+        ReliveSkill();
+    }
+
+    public override void ApplyPauseSkill()
+    {
+        base.ApplyPauseSkill();
+
+        ApplySkill();
+    }
+
+    public override void CheckCharacterState(E_ArbaitState _E_STATE)
 	{
         if (E_STATE == _E_STATE)
            return;

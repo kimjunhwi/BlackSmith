@@ -106,34 +106,40 @@ public class ArbaitBatch : MonoBehaviour {
 
     protected virtual void OnEnable() { }
 
-	protected virtual void OnDisable()
+    protected virtual void OnDisable()
     {
         //만약 각 버프들이 활성화 중이라면 false로 바꾼후 수치를 원래대로 바꾼다.
         #region Disable Check Active Buff
+
+        //물 사용시 공격속도 증가 버프
         if (m_bIsWaterAttackSpeed)
         {
             m_bIsWaterAttackSpeed = false;
             m_CharacterChangeData.fAttackSpeed += m_fWaterAttackSpeedValue;
         }
 
+        //물 사용시 수리력 증가 버프
         if (m_bIsWaterRepairPower)
         {
             m_bIsWaterRepairPower = false;
             m_CharacterChangeData.fRepairPower -= m_fWaterRepairPowerValue;
         }
 
+        //물사용시 크리티컬증가 버프
         if (m_bIsWaterCritical)
         {
-             m_bIsWaterCritical = false;
-             m_CharacterChangeData.fCritical += m_fWaterCriticalValue;
+            m_bIsWaterCritical = false;
+            m_CharacterChangeData.fCritical -= m_fWaterCriticalValue;
         }
 
+        //대장간 수리시 명중률 증가버프
         if (m_bIsSmithBuffAccuracy)
         {
             m_bIsSmithBuffAccuracy = false;
-			m_CharacterChangeData.fAccuracyRate += m_fArbaitAccuracyValue;
+            m_CharacterChangeData.fAccuracyRate -= m_fArbaitAccuracyValue;
         }
 
+        //대장간 크리티컬시 공격속도 증가 버프
         if (m_bIsSmithCriticalAttackSpeed)
         {
             m_bIsSmithCriticalAttackSpeed = false;
@@ -143,15 +149,17 @@ public class ArbaitBatch : MonoBehaviour {
 
         Init();
 
-		nBatchIndex = -1;
+        nBatchIndex = -1;
     }
 
     //배치 될 경우 데이터를 넣어줌 (몇 번째 얘인지, 이 아르바이트에 원래 있던 위치, 아르바이트 데이터, 애니메이터)
-	public void GetArbaitData(int _nIndex ,GameObject _obj,ArbaitData _data) 
+    public void GetArbaitData(int _nIndex, GameObject _obj, ArbaitData _data)
     {
-		nBatchIndex = _nIndex;
+        nBatchIndex = _nIndex;
 
-		m_CharacterChangeData = _data;
+        m_CharacterChangeData = _data;
+
+        m_CharacterChangeData.batch = nBatchIndex;
 
         ArbaitPanelObject = _obj;
 
@@ -175,13 +183,13 @@ public class ArbaitBatch : MonoBehaviour {
 
         m_fTemperator = _fTemperator;
 
-		m_fMaxComplate = _data.fMaxComplate;
+        m_fMaxComplate = _data.fMaxComplate;
 
         E_STATE = E_ArbaitState.E_REPAIR;
     }
 
     //캐릭터 스테이트가 바뀌었을때 초기화를 위함
-	public virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
+    public virtual void CheckCharacterState(E_ArbaitState _E_STATE) { }
 
     //캐릭터 동작 부분
 	protected virtual IEnumerator CharacterAction() { yield return null; }
@@ -191,6 +199,57 @@ public class ArbaitBatch : MonoBehaviour {
 
     //스킬 해제
     protected virtual void ReliveSkill() { }
+
+    public virtual void RelivePauseSkill()
+    {
+        //물 사용시 공격속도 증가 버프
+        if (m_bIsWaterAttackSpeed)
+            m_CharacterChangeData.fAttackSpeed += m_fWaterAttackSpeedValue;
+
+
+        //물 사용시 수리력 증가 버프
+        if (m_bIsWaterRepairPower)
+            m_CharacterChangeData.fRepairPower -= m_fWaterRepairPowerValue;
+
+
+        //물사용시 크리티컬증가 버프
+        if (m_bIsWaterCritical)
+            m_CharacterChangeData.fCritical -= m_fWaterCriticalValue;
+
+
+        //대장간 수리시 명중률 증가버프
+        if (m_bIsSmithBuffAccuracy)
+            m_CharacterChangeData.fAccuracyRate -= m_fArbaitAccuracyValue;
+
+
+        //대장간 크리티컬시 공격속도 증가 버프
+        if (m_bIsSmithCriticalAttackSpeed)
+            m_CharacterChangeData.fAttackSpeed += m_fSmithCriticalAttackSpeedValue;
+    }
+
+    public virtual void ApplyPauseSkill()
+    {
+        //물 사용시 공격속도 증가 버프
+        if (m_bIsWaterAttackSpeed)
+            m_CharacterChangeData.fAttackSpeed -= m_fWaterAttackSpeedValue;
+
+        //물 사용시 수리력 증가 버프
+        if (m_bIsWaterRepairPower)
+            m_CharacterChangeData.fRepairPower += m_fWaterRepairPowerValue;
+
+        //물사용시 크리티컬증가 버프
+        if (m_bIsWaterCritical)
+            m_CharacterChangeData.fCritical += m_fWaterCriticalValue;
+
+        //대장간 수리시 명중률 증가버프
+        if (m_bIsSmithBuffAccuracy)
+            m_CharacterChangeData.fAccuracyRate += m_fArbaitAccuracyValue;
+
+        //대장간 크리티컬시 공격속도 증가 버프
+        if (m_bIsSmithCriticalAttackSpeed)
+            m_CharacterChangeData.fAttackSpeed -= m_fSmithCriticalAttackSpeedValue;
+
+    }
 
     //물 사용 했을 때 버프를 적용시키기 위함
     //만약 버프가 활성화 중이라면 경과시간을 0초로 바꿔줌

@@ -12,7 +12,7 @@ public class Nurse : ArbaitBatch {
     {
         base.Awake();
 
-		nIndex = (int)E_ARBAIT.E_NURSE;
+        nIndex = (int)E_ARBAIT.E_NURSE;
     }
 
     // Update is called once per frame
@@ -24,8 +24,8 @@ public class Nurse : ArbaitBatch {
 
     protected override void OnEnable()
     {
-		if (m_CharacterChangeData == null || nBatchIndex == -1)
-			return;
+        if (m_CharacterChangeData == null || nBatchIndex == -1)
+            return;
 
         bIsComplate = false;
 
@@ -37,7 +37,7 @@ public class Nurse : ArbaitBatch {
 
         ApplySkill();
 
-		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
+        SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index, nBatchIndex);
     }
 
     protected override void OnDisable()
@@ -52,20 +52,34 @@ public class Nurse : ArbaitBatch {
         if (fChangeCritical != 0)
             ReliveSkill();
 
-		fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+        fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
         playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
     }
 
     protected override void ReliveSkill()
     {
-		if (fChangeCritical ==0)
-			return;
-		
+        if (fChangeCritical == 0)
+            return;
+
         playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
     }
 
-	public override void CheckCharacterState(E_ArbaitState _E_STATE)
+    public override void RelivePauseSkill()
+    {
+        base.RelivePauseSkill();
+
+        ReliveSkill();
+    }
+
+    public override void ApplyPauseSkill()
+    {
+        base.ApplyPauseSkill();
+
+        ApplySkill();
+    }
+
+    public override void CheckCharacterState(E_ArbaitState _E_STATE)
     {
         if (E_STATE == _E_STATE)
             return;

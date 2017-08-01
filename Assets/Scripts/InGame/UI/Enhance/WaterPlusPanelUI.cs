@@ -19,7 +19,7 @@ public class WaterPlusPanelUI : EnhanceUI {
 
 	protected override void EnhanceButtonClick ()
 	{
-		if (ScoreManager.ScoreInstance.m_fGetGold >= cGameSmith[nLevel].nGoldCost)
+		if (ScoreManager.ScoreInstance.GetGold() >= cGameSmith[nLevel].nGoldCost)
         {
 
 			ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nGoldCost);
