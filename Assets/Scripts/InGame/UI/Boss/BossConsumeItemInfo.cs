@@ -37,7 +37,7 @@ public class BossConsumeItemInfo : MonoBehaviour
 	private int nInitTime_Min = 19;
 	private int nInitTime_sec = 59;
 
-	private int nInviteMentMaxCount = 5;								//초대장 최대 개수
+	public int nInviteMentMaxCount = 5;								//초대장 최대 개수
 	public int nInviteMentCurCount = 5;									//초대장 현재 개수
 	public BossRegenTimer bossRegenTimer;
 	public BossCreator bossCreator;
@@ -61,14 +61,18 @@ public class BossConsumeItemInfo : MonoBehaviour
 
 			Debug.Log ("BossInvitement Time Load : " + EndData.ToString ());
 		} 
-		//없으면
+		//없으면 (맨 처음 최초 실행때만 호출)
 		else 
 		{
 			PlayerPrefs.SetString ("BossInvitementSaveTime", EndData.ToString ());
-			if(isTimeOn_BossInviteMentTimer == false && nInviteMentCurCount < 5)
-				StartCoroutine (Timer (19, 59)); 
 			Debug.Log ("BossInvitement init Time : " + EndData.ToString ());
+			inviteMentCount_Text.text = nInviteMentCurCount.ToString () + " / " + nInviteMentMaxCount.ToString ();
+			inviteMentTimer_Text.enabled = false;
 
+			curMin = 19;
+			fCurSec = 59f;
+
+			return;
 		}
 
 		StartedTime = System.DateTime.Now;
@@ -101,6 +105,7 @@ public class BossConsumeItemInfo : MonoBehaviour
 			//20분이 지나지 않았다면 저장된 분에서 지나간 분 만큼 뺀 시간을 시작한다
 			if (nPassedTime_Min < 20) 
 			{
+
 				int ResultTime_Min = GameManager.Instance.cBossPanelListInfo [0].nBossInviteMentCurMin - nPassedTime_Min;
 
 				int ResultTime_Sec = (int)GameManager.Instance.cBossPanelListInfo [0].fBossInviteMentCurSec - nPassedTime_Sec;

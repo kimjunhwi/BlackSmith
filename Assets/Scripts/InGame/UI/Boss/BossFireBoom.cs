@@ -20,7 +20,6 @@ public class BossFireBoom : MonoBehaviour
 	{	
 		Debug.Log ("Boom Active");
 		gameObject.SetActive (true);
-		FireBoomAnimator.Play ("BossIdle");
 
 		FireBoomAnimator.SetBool ("isBoom", true);
 		int nRemoveCount = 0;
@@ -28,7 +27,7 @@ public class BossFireBoom : MonoBehaviour
 		//물 현재량 0
 		repairObj.fCurrentWater = 0f;
 		//온도 최대로
-		repairObj.SetMaxTempuratrue();
+		//repairObj.SetMaxTempuratrue();
 
 
 		if (bossFire.smallFireRespawnPoint.childCount >= 10) 

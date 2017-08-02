@@ -120,15 +120,14 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     public Player player;
 
     public CGamePlayerData playerData;
-
-    public float curLeftQuestTime_Minute = 0f;
-
-    public float curLeftQuestTime_Second = 0f;					//남아 있는 시간 저장
-
 	public GameObject Root_ui;
 
 	public IEnumerator DataLoad()
     {
+		//PlayerPrefs.DeleteKey ("BossRegenTime");
+		//PlayerPrefs.DeleteKey ("BossInvitementSaveTime");
+
+
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
 
 		Load_TableInfo_Sound ();
@@ -183,8 +182,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         playerData = ConstructString<CGamePlayerData>(strPlayerPath)[0];
 
-        cQuestSaveListInfo = ConstructString<CGameQuestInfo>(strQuestPath);
-
+		if(ConstructString<BossPanelInfo> (strBossPanelInfoPath) == null)
+			cBossPanelListInfo.Add(cBossPanelInfo);
+		else
+			cBossPanelListInfo = ConstructString<BossPanelInfo> (strBossPanelInfoPath);
+		
         //ConstructEquimentDatabase();
 
         //ConstructWeaponDatabase();
@@ -205,6 +207,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		string PlayerFilePath = Path.Combine (Application.persistentDataPath, strPlayerPath);
 
 		string QuestFilePath = Path.Combine (Application.persistentDataPath, strQuestPath);
+
+		string BossFilePath =  Path.Combine (Application.persistentDataPath, strBossPanelInfoPath);
 
 		if(Directory.Exists(ArbaitFilePath)) 
 		yield return StartCoroutine (LinkedArbaitAccess (ArbaitFilePath));
@@ -247,6 +251,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		if(Directory.Exists(QuestFilePath)) 
 			yield return StartCoroutine (LinkedQuestAccess (QuestFilePath));
+
+		if(Directory.Exists(BossFilePath)) 
+			yield return StartCoroutine (LinkedBossPanelInfoAccess (BossFilePath));
+		else
+			cBossPanelListInfo.Add(cBossPanelInfo);
 
 #endif
 
@@ -357,6 +366,20 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		cQuestSaveListInfo = JsonHelper.ListFromJson<CGameQuestInfo>(dataAsJson);
 	}
 
+	IEnumerator LinkedBossPanelInfoAccess(string filePath)
+	{
+		Debug.Log ("BossPanel Loaded");
+
+		WWW www = new WWW(filePath);
+
+		yield return www;
+
+		string dataAsJson = www.text.ToString();
+
+		Debug.Log (dataAsJson);
+
+		cBossPanelListInfo = JsonHelper.ListFromJson<BossPanelInfo>(dataAsJson);
+	}
 
 
     private List<T> ConstructString<T>(string _strPath)
@@ -377,20 +400,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         return null;
     }
 
-	IEnumerator LinkedBossPanelInfoAccess(string filePath)
-	{
-		Debug.Log ("BossPanel Loaded");
 
-		WWW www = new WWW(filePath);
-
-		yield return www;
-
-		string dataAsJson = www.text.ToString();
-
-		Debug.Log (dataAsJson);
-
-		cBossPanelListInfo = JsonHelper.ListFromJson<BossPanelInfo>(dataAsJson);
-	}
 
 
     void OnApplicationQuit()
@@ -426,6 +436,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         SaveEquiment();
 
         SaveQuestList();
+
+		SaveBossPanelInfoList ();
 
         SpawnManager.Instance.ApplyArbait();
 

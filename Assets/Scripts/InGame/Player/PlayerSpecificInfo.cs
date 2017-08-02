@@ -16,9 +16,11 @@ public class PlayerSpecificInfo : MonoBehaviour {
     public Text WaterMaxText;
     public Text WaterRechargeAmountText;
 
+
     void Awake()
     {
         player = GameManager.Instance.player;
+
     }
 
 	public void OnEnable()
@@ -37,5 +39,6 @@ public class PlayerSpecificInfo : MonoBehaviour {
         AccuracyRateText.text = string.Format("명중률 : {0}", player.GetAccuracyRate());
         WaterMaxText.text = string.Format("최대 물 충전량 : {0}", player.GetMaxWaterPlus());
         WaterRechargeAmountText.text = string.Format("물 충전량 : {0}", player.GetWaterPlus()); 
+
     }
 }

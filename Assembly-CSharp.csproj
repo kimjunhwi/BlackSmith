@@ -95,8 +95,8 @@
      <Compile Include="Assets\Scripts\InGame\Player\NormalCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\Player.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\PlayerController.cs" />
+     <Compile Include="Assets\Scripts\InGame\Player\PlayerDaysInfo.cs" />
      <Compile Include="Assets\Scripts\InGame\Player\PlayerSpecificInfo.cs" />
-     <Compile Include="Assets\Scripts\InGame\Player\Sasin.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestTimer.cs" />
