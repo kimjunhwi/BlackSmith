@@ -28,7 +28,7 @@ public class BreakBoomPool : SimpleObjectPool {
     public void Init()
     {
         // 실제 경로는  /Assets/Resources/ 하위입니다.
-        strPrefabName = "Prefabs/FxPrefab/CriticalRepair";
+        strPrefabName = "Prefabs/FxPrefab/WeaponBreakBoom";
 
         //게임오브젝트를 미리 할당해줌
         prefab = Resources.Load(strPrefabName) as GameObject;
@@ -36,7 +36,7 @@ public class BreakBoomPool : SimpleObjectPool {
         // 초기에 만들 오브젝트 수를 정합니다.
         nPoolSize = 20;
         // 오브젝트 풀의 게임 오브젝트 이름을 설정합니다.
-        gameObject.name = "CriticalRepair";
+        gameObject.name = "WeaponBreakBoom";
         gameObject.layer = 2;
         // 오브젝트를 미리 생성해둡니다.
         PreloadPool();

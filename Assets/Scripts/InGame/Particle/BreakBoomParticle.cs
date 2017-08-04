@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class BreakBoomParticle : MonoBehaviour {
 
+    private Animator anim;
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     public void Play()
     {
+        anim.SetTrigger("bIsBoom");
+
         StartCoroutine(StartDisappearAfter(2f));
     }
 
@@ -13,6 +22,11 @@ public class BreakBoomParticle : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
 
-        CriticalRepairPool.Instance.ReturnObject(gameObject);
+        BreakBoomPool.Instance.ReturnObject(gameObject);
+    }
+
+    public void ResetAnimation()
+    {
+        anim.SetTrigger("bIsBoom");
     }
 }
