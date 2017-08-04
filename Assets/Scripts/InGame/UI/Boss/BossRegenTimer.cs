@@ -59,7 +59,6 @@ public class BossRegenTimer : MonoBehaviour
 
 		int nStartTime = StartedTime.Hour * 3600 + StartedTime.Minute * 60 + StartedTime.Second;
 		int nEndTime = EndData.Hour * 3600 + EndData.Minute * 60 + EndData.Second;
-
 		int nCheck = Mathf.Abs(nEndTime - nStartTime);
 
 		//하루가 지나거나 20분이 지나거나 현재 초대장이 가득 찼으면

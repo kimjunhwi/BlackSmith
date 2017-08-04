@@ -21,8 +21,8 @@ public class BossIce : BossCharacter
 
 	private void Start()
 	{
+		iceWall_instance = iceWall.GetComponent<BossIceWall> ();
 		animator = gameObject.GetComponent<Animator> ();
-		iceWall.SetActive (false);
 
 		for (int i = 0; i < 3; i++) 
 			isIceWall_ArbaitOn [i] = false;
@@ -90,6 +90,9 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		uiManager.AllDisable ();
+		bossPanel.SetActive (true);
+
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
 		isStandardPhaseFailed = true;
@@ -98,12 +101,6 @@ public class BossIce : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			//Boss Ice Wall Timer
-			if(isIceWallOn == false)
-				fIceWallGenerateTimer += Time.deltaTime;
-			
-			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
-				ActiveIceWall ();
 			
 			if (fCurComplete < 0) {
 				FailState ();
@@ -136,13 +133,6 @@ public class BossIce : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
-			//Boss Ice Wall Timer
-			if(isIceWallOn == false)
-				fIceWallGenerateTimer += Time.deltaTime;
-
-			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
-				ActiveIceWall ();
-			
 
 			//모든 알바 빙결 해제(현재온도가 맥스 온도를 넘을 시에)
 			if (repairObj.isCurTemperatureOver () == true) {
@@ -188,12 +178,6 @@ public class BossIce : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 	
-			if(isIceWallOn == false)
-				fIceWallGenerateTimer += Time.deltaTime;
-
-			if (fIceWallGenerateTimer >= nBossIceWallGenerateTime && isIceWallOn == false) 
-				ActiveIceWall ();
-			
 			//모든 알바 빙결 해제(현재온도가 맥스 온도를 넘을 시에)
 			if (repairObj.isCurTemperatureOver () == true) {
 				DefreezeAllArbait ();
@@ -236,25 +220,44 @@ public class BossIce : BossCharacter
 	{
 
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
+		animator.SetBool ("isDisappear", true);
+
 		while (true)
 		{
-
-
-			animator.SetBool ("isDisappear", true);
-
-			yield return new WaitForSeconds (0.1f);
+			yield return new WaitForSeconds (1.0f);
 
 			eCureentBossState = EBOSS_STATE.RESULT;
 			if (eCureentBossState == EBOSS_STATE.RESULT)
 			{
+				//Effect Off
+				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
+
+				//RepairPanel IceWall Off
+				if (iceWall.activeSelf == true)
+					ActiveIceWall ();
+
+				//Arbait IceWall off
+				DefreezeAllArbait();
+
+				//말풍선 off
+				if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+					bossTalkPanel.bossTalkPanel.SetActive (false);
+
+				animator.SetBool ("isAppear", false);
+				animator.SetBool ("isDisappear", false);
+				animator.SetBool ("isBackGroundChanged", false);	
+				animator.Play ("BossIdle");
+
+
+				bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+				repairObj.SetFinishBoss ();		//수리 패널 초기화
+
 				break;
 			}
 			else
 				yield return null;
 		}
 		StartCoroutine (BossResult ());
-
-		yield break;
 	}
 
 	protected override IEnumerator BossResult ()
@@ -263,7 +266,13 @@ public class BossIce : BossCharacter
 
 
 		ActiveTimer ();
-		while (true) {
+		while (true) 
+		{
+			//확인버튼을 누르면 피니쉬로 넘어간다
+			if (eCureentBossState == EBOSS_STATE.FINISH) {
+				StartCoroutine (BossFinish ());
+				yield break;
+			}
 			//실패가 아닐시
 			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
 			{
@@ -279,13 +288,9 @@ public class BossIce : BossCharacter
 				bossPopUpWindow.PopUpWindowReward_Switch_isFail ();
 				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
 			}
-			if (eCureentBossState == EBOSS_STATE.FINISH) {
-				StartCoroutine (BossFinish ());
-				break;
-			}
-	
-			yield return null;
-	
+
+
+			yield return new WaitForSeconds(0.1f);
 		}
 	}
 
@@ -293,24 +298,6 @@ public class BossIce : BossCharacter
 	{
 		yield return null;
 
-		//Effect Off
-		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_ICEBLLIZARD);
-
-		//RepairPanel IceWall Off
-		if (iceWall.activeSelf == true)
-			ActiveIceWall ();
-
-		//Arbait IceWall off
-		DefreezeAllArbait();
-
-		//말풍선 off
-		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-			bossTalkPanel.bossTalkPanel.SetActive (false);
-
-		animator.SetBool ("isAppear", false);
-		animator.SetBool ("isDisappear", false);
-		animator.SetBool ("isBackGroundChanged", false);	
-		animator.Play ("BossIdle");
 
 		//예외 코루틴 모두 종료
 		StopCoroutine (BossSkillStandard ());
@@ -318,9 +305,6 @@ public class BossIce : BossCharacter
 		StopCoroutine (BossSKill_02 ());
 		StopCoroutine (BossDie ());
 		StopCoroutine (BossResult ());
-
-		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-		repairObj.SetFinishBoss ();		//수리 패널 초기화
 
 		SpawnManager.Instance.m_nBatchArbaitCount = 0;
 
@@ -354,11 +338,10 @@ public class BossIce : BossCharacter
 		}
 		else 
 		{
-			isIceWallOn = true;
-			iceWall_instance = iceWall.GetComponent<BossIceWall> ();
-			iceWall_instance.nCountBreakWall = nBossIceWallCount;
-
+			Debug.Log ("Active Ice Wall");
 			iceWall.SetActive (true);
+			isIceWallOn = true;
+			iceWall_instance.nCountBreakWall = nBossIceWallCount;
 			iceWall_instance.StartFreezeRepair ();	//수리창 어는 것 시작
 		
 		}

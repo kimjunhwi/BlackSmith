@@ -120,17 +120,22 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 
 	public IEnumerator FreezeRepair()
 	{
+		
+		animator = gameObject.GetComponent<Animator> ();
 		animator.SetBool ("isFreeze", true); //Start Freeze Animation
 		while (true) 
 		{
+			Debug.Log ("While FreezeRepair");
 			if (animator.GetCurrentAnimatorStateInfo (0).IsName("Ice_Repair_Freeze")) 
 			{
+				Debug.Log ("Finish FreezeRepair");
 				//yield return new WaitForSeconds (0.1f);
 				animator.SetBool ("isIced", true);
+				yield break;
 			} 
 			yield return null;
 		}
-		yield break;
+	
 	}
 
 	public IEnumerator DeFreezeRepair()

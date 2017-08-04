@@ -15,19 +15,25 @@ public class BossFireBoom : MonoBehaviour
 		gameObject.SetActive (false);
 	}
 
-
-	public void BoomFireSmall()
-	{	
+	public void StartBoolFireSmall()
+	{
 		Debug.Log ("Boom Active");
 		gameObject.SetActive (true);
+		StartCoroutine (BoomFireSmall ());
+	}
+
+	public IEnumerator BoomFireSmall()
+	{	
 
 		FireBoomAnimator.SetBool ("isBoom", true);
+	
+
 		int nRemoveCount = 0;
 
 		//물 현재량 0
 		repairObj.fCurrentWater = 0f;
 		//온도 최대로
-		//repairObj.SetMaxTempuratrue();
+		repairObj.SetMaxTempuratrue();
 
 
 		if (bossFire.smallFireRespawnPoint.childCount >= 10) 
@@ -50,18 +56,25 @@ public class BossFireBoom : MonoBehaviour
 			repairObj.fSmallFireMinusWater -= (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
 			//불씨 하나당 온도 증가량 10%
 			repairObj.fSmallFirePlusTemperatrue -= 0.1f;
-
 		}
+
+
+		yield return new WaitForSeconds (0.6f);
+
+	
+		if (nRemoveCount == 0) 
+		{
+			Debug.Log ("DeActiveBoom");
+			FireBoomAnimator.SetBool ("isBoom", false);
+
+			FireBoomAnimator.Play ("BossIdle");
+
+			gameObject.SetActive (false);
+		}
+			
 	}
 
-	public void BoomFireDeActive()
-	{
-		Debug.Log ("DeActiveBoom");
-		FireBoomAnimator.SetBool ("isBoom", false);
 
-		FireBoomAnimator.Play ("BossIdle");
-
-		gameObject.SetActive (false);
-
-	}
 }
+
+

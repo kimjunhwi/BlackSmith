@@ -51,9 +51,9 @@
      <None Include="Assets\Resources\Data\Shop.txt" />
      <None Include="Assets\Resources\Data\Quest.txt" />
      <None Include="Assets\Resources\Data\AgradeArbait.txt" />
+     <None Include="Assets\Resources\Data\BossWeapon.txt" />
      <None Include="Assets\Resources\Data\ThreeGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\SmithEnhance.txt" />
-     <None Include="Assets\Resources\Data\BossWeapon.txt" />
      <None Include="Assets\Resources\Data\AccuracyEnhance.txt" />
      <None Include="Assets\Resources\Data\Character.txt" />
      <None Include="Assets\Resources\Data\CriticalEnhance.txt" />
@@ -64,9 +64,9 @@
      <None Include="Assets\Resources\Data\CgradeArbait.txt" />
      <None Include="Assets\Resources\Data\RepairEnhance.txt" />
      <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
-     <None Include="Assets\Resources\Data\Boss.txt" />
      <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
      <None Include="Assets\Resources\Data\ArbaitEnhance.txt" />
+     <None Include="Assets\Resources\Data\Boss.txt" />
      <None Include="Assets\Resources\Data\FourGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\sound.txt" />
      <None Include="Assets\Resources\Data\SgradeArbait.txt" />

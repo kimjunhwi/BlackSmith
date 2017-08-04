@@ -109,6 +109,15 @@ public class Player
 		return List_items.Count;
 	}
 
+	/*
+	public E_BOSS_WEAPON Check_Equipment()
+	{
+		if (WeaponEquipment != null)
+			return WeaponEquipment.nIndex;
+
+		return null;
+	}*/
+
     //아이템을 장착할 경우
     public void EquipItem(CGameEquiment _item)
     {

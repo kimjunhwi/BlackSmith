@@ -131,9 +131,9 @@ public class InventoryShowPanel : MonoBehaviour {
 		NameText.text = string.Format("{0} +{1}", ItemData.strName , ItemData.nStrenthCount);
 
 
-		GradeText.text = ItemData.nGrade.ToString ();
+		GradeText.text = ItemData.sGrade;
 
-		enhanceData = GameManager.Instance.GetEnhanceArbaitData (ItemData.nGrade);
+		enhanceData = GameManager.Instance.GetEnhanceArbaitData (ItemData.sGrade);
 
 		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(ItemData.strResource);
 	

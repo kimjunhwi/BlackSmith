@@ -101,6 +101,8 @@ public class BossFire : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		uiManager.AllDisable ();
+		bossPanel.SetActive (true);
 		
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		isStandardPhaseFailed = true;
@@ -116,11 +118,7 @@ public class BossFire : BossCharacter
 
 			if (fTime >= 2.0f && nCurFireCount < nSmallFireMaxCount )
 				CreateSmallFire ();
-			//불씨 개수 10개 일시 터진다
-			if (nCurFireCount >= 5)
-			{
-				bossFireBoom.BoomFireSmall ();
-			}
+		
 		
 
 			if (fCurComplete < 0) {
@@ -155,7 +153,6 @@ public class BossFire : BossCharacter
 			fRandomXPos = Random.Range (fXPos - (smallFireRespawnPoint.sizeDelta.x/2), fXPos + (smallFireRespawnPoint.sizeDelta.x/2));
 			fRandomYPos = Random.Range (fYPos - (smallFireRespawnPoint.sizeDelta.y/2), fYPos + (smallFireRespawnPoint.sizeDelta.y/2));
 
-
 			fTime += Time.deltaTime;
 
 			//BossWeapon info
@@ -165,17 +162,7 @@ public class BossFire : BossCharacter
 			if (fTime >= 2.0f  && nCurFireCount < nSmallFireMaxCount )
 				CreateSmallFire ();
 
-			//불씨 개수 10개 일시 터진다
-			if (nCurFireCount >= 10)
-			{
-				bossFireBoom.BoomFireSmall ();
-			}
-
-			//if (isActivePassiveSkill01 == false)
-			//	GameManager.Instance.player.SetMaxWaterPlus ();
-			
-
-
+		
 			if (fCurComplete < 0) {
 				FailState ();
 				yield break;
@@ -215,7 +202,7 @@ public class BossFire : BossCharacter
 			//불씨 개수 10개 일시 터진다
 			if (nCurFireCount >= 10)
 			{
-				bossFireBoom.BoomFireSmall ();
+				bossFireBoom.StartBoolFireSmall ();
 			}
 
 			if (isActivePassiveSkill02 == false)
@@ -265,9 +252,29 @@ public class BossFire : BossCharacter
 		{
 			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("FireDisappear"))
 			{
-				yield return new WaitForSeconds (0.8f);
+								yield return new WaitForSeconds (0.8f);
 				eCureentBossState = EBOSS_STATE.RESULT;
-				if (eCureentBossState == EBOSS_STATE.RESULT) {
+				if (eCureentBossState == EBOSS_STATE.RESULT) 
+				{
+					//Effect Off
+					if(isStandardPhaseFailed == false)
+						bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_FIREANGRY);
+
+					//말풍선 off
+					if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+						bossTalkPanel.bossTalkPanel.SetActive (false);
+
+					animator.SetBool ("isAppear", false);
+					animator.SetBool ("isDisappear", false);
+					animator.SetBool ("isBackGroundChanged", false);	
+					animator.Play ("BossIdle");
+
+
+
+					Debug.Log ("Finish Boss");
+					bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+					repairObj.SetFinishBoss ();									//수리 패널 초기화
+
 
 					break;
 				}
@@ -285,48 +292,36 @@ public class BossFire : BossCharacter
 		
 		ActiveTimer ();
 
-		while (true) {
-			
-			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
+		while (true) 
+		{
+			//확인버튼을 누르면 피니쉬로 넘어간다
+			if (eCureentBossState == EBOSS_STATE.FINISH) 
 			{
+				StartCoroutine (BossFinish ());
+				yield break;
+			}
+
+			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) {
 				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
 				bossPopUpWindow.PopUpWindowReward_Switch_isSuccess ();
 				bossPopUpWindow.GetBossInfo (this);
 				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isSuccess);
 			} 
 			//실패시
-			if(isFailed == true && bossPopUpWindow.isRewardPanelOn_Fail == false)
-			{
+			if (isFailed == true && bossPopUpWindow.isRewardPanelOn_Fail == false) {
 				bossPopUpWindow.SetBossRewardBackGroundImage (isFailed);
 				bossPopUpWindow.PopUpWindowReward_Switch_isFail ();
 				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
 			}
-			if (eCureentBossState == EBOSS_STATE.FINISH) {
-				StartCoroutine (BossFinish ());
-				break;
-			}
-			yield return null;
-		}
 
+			yield return new WaitForSeconds (0.1f);
+		}
 	}	
 
 
 	protected override IEnumerator BossFinish ()
 	{
 		yield return null;
-		//Effect Off
-		if(isStandardPhaseFailed == false)
-			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_FIREANGRY);
-		
-		//말풍선 off
-		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-			bossTalkPanel.bossTalkPanel.SetActive (false);
-		
-		animator.SetBool ("isAppear", false);
-		animator.SetBool ("isDisappear", false);
-		animator.SetBool ("isBackGroundChanged", false);	
-		animator.Play ("BossIdle");
-
 
 		StopCoroutine (repairObj.BossMusicWeaponMove ());
 		StopCoroutine (BossSkillStandard ());
@@ -334,10 +329,6 @@ public class BossFire : BossCharacter
 		StopCoroutine (BossSKill_02 ());
 		StopCoroutine (BossDie ());
 		StopCoroutine (BossResult ());
-
-		Debug.Log ("Finish Boss");
-		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-		repairObj.SetFinishBoss ();									//수리 패널 초기화
 
 
 		isFailed = false;

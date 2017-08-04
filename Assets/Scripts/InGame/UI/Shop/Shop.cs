@@ -124,12 +124,12 @@ public class Shop : MonoBehaviour {
             return GetEquiment();
 
         resultEquiment.nIndex = getEquiment.nIndex;
-        resultEquiment.nGrade = getEquiment.nGrade;
+		resultEquiment.sGrade = getEquiment.sGrade;
         resultEquiment.strName = getEquiment.strName;
         resultEquiment.nSlotIndex = getEquiment.nSlotIndex;
         resultEquiment.strResource = getEquiment.strResource;
-
-        int nLength = resultEquiment.nGrade;
+		/*
+		int nLength = resultEquiment.sGrade;
 
         int nInsertIndex = 0;
 
@@ -140,7 +140,7 @@ public class Shop : MonoBehaviour {
             if (CheckData(resultEquiment, nInsertIndex))
                 nLength--;
         }
-
+		*/
         return resultEquiment;
     }
 

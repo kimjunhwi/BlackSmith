@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryScrollList : MonoBehaviour {
+public class InventoryScrollList : MonoBehaviour
+{
 
 	private int nMaxItemList = 50;
 
@@ -71,22 +72,23 @@ public class InventoryScrollList : MonoBehaviour {
             }
         }
 
+		/*
         //등급이 높은 것을 정렬
         itemList.Sort(delegate(CGameEquiment A, CGameEquiment B)
         {
-            if (A.nGrade < B.nGrade) return 1;
-            else if (A.nGrade > B.nGrade) return -1;
+			if (A.sGrade < B.sGrade) return 1;
+				else if (A.sGrade > B.sGrade) return -1;
             else return 0;
         });
 
         //강화가 높은것을 정렬
         itemList.Sort(delegate(CGameEquiment A, CGameEquiment B)
         {
-            if (A.nGrade == B.nGrade && A.nStrenthCount < B.nStrenthCount) return 1;
-            else if (A.nGrade != B.nGrade || A.nStrenthCount > B.nStrenthCount) return -1;
+				if (A.sGrade == B.sGrade && A.nStrenthCount < B.nStrenthCount) return 1;
+				else if (A.sGrade != B.sGrade || A.nStrenthCount > B.nStrenthCount) return -1;
             else return 0;
         });
-
+		*/
 
         for (int i = 0; i < nMaxItemList; i++)
         {

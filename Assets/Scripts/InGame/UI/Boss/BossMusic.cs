@@ -26,7 +26,7 @@ public class BossMusic : BossCharacter
 	public bool isReflect 	= false;			  //루시우 반사 여부 
 	public bool isSwitch 	= false;
 
-	private float fCurReflectTime = 0f;			  //현재 시간
+	public float fCurReflectTime = 0f;			  //현재 시간
 	private float fReflectRoutineTime = 5f;	  	  //반사 주기 시간 (5초마다 바뀐다)
 	private float fReflectMaxTime = 10f;
 
@@ -84,6 +84,7 @@ public class BossMusic : BossCharacter
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 					
 					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					repairObj.bossWeaponAnimator.SetBool ("isBackGroundChanged", true);
 					ActiveTimer ();
 					uiDisable.isBossSummon = false;
 					break;
@@ -98,6 +99,9 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSkillStandard ()
 	{
+		uiManager.AllDisable ();
+		bossPanel.SetActive (true);
+
 		isStandardPhaseFailed = true;
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		while (true)
@@ -119,20 +123,22 @@ public class BossMusic : BossCharacter
 				isSwitch = false;
 				isReflect = false;
 				fCurReflectTime = 0f;
-				//Debug.Log ("상태 변환 : 반사 -> 노말");
+				repairObj.bossWeaponAnimator.SetBool ("isPhase00_Reflect", false);
+				Debug.Log ("상태 변환 : 반사 -> 노말");
 			}
 				
 			//NonReflect
 			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
 			{
-				//Debug.Log ("노말 상태!");
+				
 			}
 
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
 			{
 				isReflect = true;
 				isSwitch = true;
-				//Debug.Log ("상태 변환 : 노말 -> 반사");
+				repairObj.bossWeaponAnimator.SetBool ("isPhase00_Reflect", true);
+				Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
 
 			//Reflect
@@ -167,7 +173,8 @@ public class BossMusic : BossCharacter
 		nNoteMaxCount = 4;
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
-
+		repairObj.bossWeaponAnimator.SetBool ("isPhase00_Reflect", false);
+		repairObj.bossWeaponAnimator.SetBool ("isPhase00", true);
 		isStandardPhaseFailed = false;
 		while (true)
 		{
@@ -199,7 +206,8 @@ public class BossMusic : BossCharacter
 				isSwitch = false;
 				isReflect = false;
 				fCurReflectTime = 0f;
-				//Debug.Log ("상태 변환 : 반사 -> 노말");
+				repairObj.bossWeaponAnimator.SetBool ("isPhase01_Reflect", false);
+				Debug.Log ("상태 변환 : 반사 -> 노말");
 			}
 
 			//NonReflect
@@ -212,7 +220,8 @@ public class BossMusic : BossCharacter
 			{
 				isReflect = true;
 				isSwitch = true;
-				//Debug.Log ("상태 변환 : 노말 -> 반사");
+				repairObj.bossWeaponAnimator.SetBool ("isPhase01_Reflect", true);
+				Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
 
 			//Reflect
@@ -267,7 +276,8 @@ public class BossMusic : BossCharacter
 				isSwitch = false;
 				isReflect = false;
 				fCurReflectTime = 0f;
-				//Debug.Log ("상태 변환 : 반사 -> 노말");
+				repairObj.bossWeaponAnimator.SetBool ("isPhase01_Reflect", false);
+				Debug.Log ("상태 변환 : 반사 -> 노말");
 			}
 
 			//NonReflect
@@ -280,7 +290,8 @@ public class BossMusic : BossCharacter
 			{
 				isReflect = true;
 				isSwitch = true;
-				//Debug.Log ("상태 변환 : 노말 -> 반사");
+				repairObj.bossWeaponAnimator.SetBool ("isPhase01_Reflect", true);
+				Debug.Log ("상태 변환 : 노말 -> 반사");
 			}
 
 			//Reflect
@@ -316,14 +327,42 @@ public class BossMusic : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
 		animator.SetBool ("isDisappear", true);
 
+
+		repairObj.bossWeaponAnimator.SetBool ("isPhase00_Reflect", false);
+		repairObj.bossWeaponAnimator.SetBool ("isPhase01_Reflect", false);
+		repairObj.bossWeaponAnimator.SetBool ("isBackGroundChanged", false);
+		repairObj.bossWeaponAnimator.SetBool ("isPhase00", false);
+		repairObj.bossWeaponAnimator.Play ("BossIdle");
+
 		while (true)
 		{
 			
 			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("RucioDisappear")) 
 			{
+
+
+				yield return new WaitForSeconds (0.8f);
 				eCureentBossState = EBOSS_STATE.RESULT;
 				if (eCureentBossState == EBOSS_STATE.RESULT)
-				{
+				{	
+					//BossFx off
+					if(isStandardPhaseFailed == false)
+						bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
+
+					//말풍선 off
+					if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+						bossTalkPanel.bossTalkPanel.SetActive (false);
+
+
+					animator.SetBool ("isAppear", false);
+					animator.SetBool ("isDisappear", false);
+					animator.SetBool ("isBackGroundChanged", false);	
+					animator.Play ("BossIdle");
+
+
+
+					bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+					repairObj.SetFinishBoss ();									//수리 패널 초기화
 					
 					break;
 				}
@@ -332,8 +371,6 @@ public class BossMusic : BossCharacter
 				yield return null;
 		}
 		StartCoroutine (BossResult ());
-
-		yield break;
 	}
 
 	protected override IEnumerator BossResult ()
@@ -343,6 +380,11 @@ public class BossMusic : BossCharacter
 		ActiveTimer ();
 		while (true) 
 		{
+			//확인버튼을 누르면 피니쉬로 넘어간다
+			if (eCureentBossState == EBOSS_STATE.FINISH) {
+				StartCoroutine (BossFinish ());
+				yield break;
+			}
 			//실패가 아닐시
 			if (isFailed == false && bossPopUpWindow.isRewardPanelOn_Success == false) 
 			{
@@ -359,13 +401,8 @@ public class BossMusic : BossCharacter
 				bossPopUpWindow.PopUpWindow_Reward_YesButton.onClick.AddListener (bossPopUpWindow.PopUpWindowReward_Switch_isFail);
 			}
 
-			//결과 창에서 확인시 넘어간다
-			if (eCureentBossState == EBOSS_STATE.FINISH) {
-				StartCoroutine (BossFinish ());
-				break;
-			}
-			
-			yield return null;
+
+			yield return new WaitForSeconds(0.1f);
 
 		}
 
@@ -375,19 +412,6 @@ public class BossMusic : BossCharacter
 	protected override IEnumerator BossFinish ()
 	{
 		yield return null;
-		//BossFx off
-		if(isStandardPhaseFailed == false)
-			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
-
-		//말풍선 off
-		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-			bossTalkPanel.bossTalkPanel.SetActive (false);
-
-
-		animator.SetBool ("isAppear", false);
-		animator.SetBool ("isDisappear", false);
-		animator.SetBool ("isBackGroundChanged", false);	
-		animator.Play ("BossIdle");
 
 		//예외 코루틴 모두 종료
 		StopCoroutine (repairObj.BossMusicWeaponMove ());
@@ -397,9 +421,6 @@ public class BossMusic : BossCharacter
 		StopCoroutine (BossDie ());
 		StopCoroutine (BossResult ());
 
-		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
-		repairObj.SetFinishBoss ();									//수리 패널 초기화
-	
 		//변수 초기화  
 		isStandardPhaseFailed = false;
 		isFailed = false;

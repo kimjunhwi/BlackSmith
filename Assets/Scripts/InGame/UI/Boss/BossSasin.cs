@@ -66,16 +66,10 @@ public class BossSasin : BossCharacter
 
 				//애니메이션이 끝났는지 확인 끝났으면 다음애니메이션으로 넘긴다.
 				//SasinAppear Animation length = 1.0f
-				if (animator.GetCurrentAnimatorStateInfo (0).IsName("BossSasinAppear")) 
-				{
-					//yield return new WaitForSeconds (0.5f);
-					animator.SetBool ("isAppear", true);
-					eCureentBossState = EBOSS_STATE.PHASE_00;
-				} 
-				else
-					yield return null;
+				yield return new WaitForSeconds (1.0f);
+				animator.SetBool ("isAppear", true);
+				eCureentBossState = EBOSS_STATE.PHASE_00;
 
-			
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) 
 				{
 					//무기 이미지 추가
@@ -86,6 +80,9 @@ public class BossSasin : BossCharacter
 					uiDisable.isBossSummon = false;
 					break;
 				}
+
+				//yield return new WaitForSeconds(0.1f);
+
 			}
 			else
 				yield return null;
@@ -219,23 +216,30 @@ public class BossSasin : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
 		animator.SetBool ("isDisappear", true);
 
-		while (true)
+		yield return new WaitForSeconds (1.0f);
+		eCureentBossState = EBOSS_STATE.RESULT;
+		if (eCureentBossState == EBOSS_STATE.RESULT) 
 		{
+			//효과 off
+			if (isStandardPhaseFailed == false)
+				bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
+			//말풍선 off
+			if (bossTalkPanel.bossTalkPanel.activeSelf == true)
+				bossTalkPanel.bossTalkPanel.SetActive (false);
 
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("BossSasinDisappear"))
-			{
-				yield return new WaitForSeconds (0.8f);
-				eCureentBossState = EBOSS_STATE.RESULT;
-				if (eCureentBossState == EBOSS_STATE.RESULT) {
+			//Animation 초기화
+			animator.SetBool ("isAppear", false);
+			animator.SetBool ("isDisappear", false);
+			animator.SetBool ("isBackGroundChanged", false);	
+			animator.Play ("BossIdle");
 
-					break;
-				}
-			}
-			else
-				yield return null;
+
+
+			repairObj.SetFinishBoss ();									//수리 패널 초기화
+
 		}
-			
 		StartCoroutine (BossResult ());
+		yield break;
 	}
 
 	protected override IEnumerator BossResult ()
@@ -243,6 +247,7 @@ public class BossSasin : BossCharacter
 		
 		while (true)
 		{
+			//확인버튼을 누르면 피니쉬로 넘어간다
 			if (eCureentBossState == EBOSS_STATE.FINISH) {
 				StartCoroutine (BossFinish ());
 				yield break;
@@ -278,18 +283,8 @@ public class BossSasin : BossCharacter
 	{
 		yield return null;
 
-		//효과 off
-		if(isStandardPhaseFailed == false)
-			bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_SASINANGRY);
-		//말풍선 off
-		if (bossTalkPanel.bossTalkPanel.activeSelf == true)
-			bossTalkPanel.bossTalkPanel.SetActive (false);
-
-		//Animation 초기화
-		animator.SetBool ("isAppear", false);
-		animator.SetBool ("isDisappear", false);
-		animator.SetBool ("isBackGroundChanged", false);	
-		animator.Play ("BossIdle");
+		//배경 초기화 
+		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 
 		//혹시나 도는 코루틴들 종료
 		StopCoroutine (BossSkillStandard ());
@@ -298,14 +293,11 @@ public class BossSasin : BossCharacter
 		StopCoroutine (BossDie ());
 		StopCoroutine (BossResult ());
 
-		repairObj.SetFinishBoss ();									//수리 패널 초기화
-
 		//상태 변수 초기화
 		isFailed = false;
 		isStandardPhaseFailed = false;
 
-		//배경 초기화 
-		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+	
 		if (bossBackGround.isBossBackGround == true) {
 			SpawnManager.Instance.bIsBossCreate = false;			//손님들 재등장
 		}

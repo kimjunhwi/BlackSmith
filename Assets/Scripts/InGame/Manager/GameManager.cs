@@ -124,8 +124,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	public IEnumerator DataLoad()
     {
-		//PlayerPrefs.DeleteKey ("BossRegenTime");
-		//PlayerPrefs.DeleteKey ("BossInvitementSaveTime");
+		PlayerPrefs.DeleteKey ("BossRegenTime");
+		PlayerPrefs.DeleteKey ("BossInvitementSaveTime");
 
 
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
@@ -732,7 +732,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
             kInfo[i - 1].strName = Cells[2];
             kInfo[i - 1].bIsBuy = bool.Parse(Cells[3]);
             kInfo[i - 1].nSlotIndex = int.Parse(Cells[4]);
-            kInfo[i - 1].nGrade = int.Parse(Cells[5]);
+            kInfo[i - 1].sGrade = Cells[5];
 			kInfo[i - 1].fReapirPower = float.Parse(Cells[6]);
 			kInfo[i - 1].fTemperaPlus = float.Parse(Cells[7]);
 			kInfo[i - 1].fTemperaDown = float.Parse(Cells[8]);
@@ -776,16 +776,20 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 			kInfo[i - 1] = new Boss();
 			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
-			kInfo [i - 1].name = Cells [1];
+			kInfo [i - 1].bossName = Cells [1];
 			kInfo[i - 1].skillExplainOne =Cells[2];
 			kInfo[i - 1].skillExplainTwo = Cells[3];
-			kInfo[i - 1].GetWeaponsIndex = Cells[4];
-			kInfo[i - 1].fComplate = float.Parse(Cells[5]);
-			kInfo[i - 1].fWaitSecond = float.Parse(Cells[6]);
+			kInfo[i - 1].bossWeaponName = Cells[4];
+			kInfo[i - 1].GetWeaponsIndex = Cells[5];
+			kInfo[i - 1].fComplate = float.Parse(Cells[6]);
 			kInfo[i - 1].nGold = int.Parse(Cells[7]);
 			kInfo[i - 1].nHonor = int.Parse(Cells[8]);
 			kInfo[i - 1].nDia = int.Parse(Cells[9]);
-			kInfo[i - 1].fWaitSecond = float.Parse(Cells[10]);
+			kInfo[i - 1].fDropPercent =float.Parse( Cells[10]);
+			kInfo[i - 1].bossWord02 = Cells[11];
+			kInfo[i - 1].bossWord03 = Cells[12];
+			kInfo[i - 1].bossWord04 = Cells[13];
+			kInfo[i - 1].bossWord04 = Cells[14];
 		}
 
 		bossInfo = kInfo;
@@ -814,11 +818,26 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 			kInfo[i - 1] = new BossWeapon();
 			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
-			kInfo[i - 1].strResouce = Cells[1];
+			kInfo[i - 1].strResource = Cells[1];
 			kInfo[i - 1].strName = Cells[2];
-			kInfo[i - 1].nSlot = int.Parse(Cells[3]);
-			kInfo[i - 1].strGrade = Cells[4];
-			kInfo[i - 1].explain = Cells[5];
+			kInfo[i - 1].bIsBuy = bool.Parse(Cells[3]);
+			kInfo[i - 1].nSlotIndex = int.Parse(Cells[4]);
+			kInfo[i - 1].sGrade = Cells[5];
+			kInfo[i - 1].fReapirPower = float.Parse(Cells[6]);
+			kInfo[i - 1].fTemperaPlus = float.Parse(Cells[7]);
+			kInfo[i - 1].fTemperaDown = float.Parse(Cells[8]);
+			kInfo[i - 1].fArbaitRepair = float.Parse(Cells[9]);
+			kInfo[i - 1].fHonorPlus = float.Parse(Cells[10]);
+			kInfo[i - 1].fGoldPlus = float.Parse(Cells[11]);
+			kInfo[i - 1].fWaterMaxPlus = float.Parse(Cells[12]);
+			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[13]);
+			kInfo[i - 1].fWaterUse = float.Parse(Cells[14]);
+			kInfo[i - 1].fCritical = float.Parse(Cells[15]);
+			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[16]);
+			kInfo[i - 1].fBigCritical = float.Parse(Cells[17]);
+			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[18]);
+			kInfo [i - 1].nStrenthCount = int.Parse (Cells [19]);
+			kInfo [i - 1].explain = Cells [20];
 		}
 
 		bossWeaponInfo = kInfo;
@@ -1409,9 +1428,20 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     }
 	#endregion
 
-	public CGameEnhanceData[] GetEnhanceArbaitData(int _nIndex)
+	public CGameEnhanceData[] GetEnhanceArbaitData(string _nIndex)
 	{
-		switch (_nIndex) {
+		int nIndex = 0;
+		if (_nIndex == "C")
+			nIndex = 1;
+		else if (_nIndex == "B")
+			nIndex = 2;
+		else if (_nIndex == "A")
+			nIndex = 3;
+		else 
+			nIndex = 4;
+
+
+		switch (nIndex) {
 		case 1:
 			return cOneGradeEnhance;
 
@@ -1588,7 +1618,7 @@ public class CGameEquiment
     public string strName = "";
     public bool bIsBuy = false;
     public int nSlotIndex = 0;
-    public int nGrade = 0;
+	public string sGrade = "";
     public float fReapirPower = 0;
 	public float fTemperaPlus = 0;
     public float fTemperaDown = 0;
@@ -1614,7 +1644,7 @@ public class CGameEquiment
 		strName = _equimentData.strName;
 		bIsBuy = _equimentData.bIsBuy;
 		nSlotIndex = _equimentData.nSlotIndex;
-		nGrade = _equimentData.nGrade;
+		sGrade = _equimentData.sGrade;
 		fReapirPower = _equimentData.fReapirPower;
 		fTemperaPlus = _equimentData.fTemperaPlus;
 		fTemperaDown = _equimentData.fTemperaDown;;
@@ -1924,35 +1954,38 @@ public class Boss
 	//id값
 	public int nIndex;
 	//이름
-	public string name;
-
+	public string bossName;
+	//Passive 01
 	public string skillExplainOne;
-
+	//Passive 02
 	public string skillExplainTwo;
-
+	//BossWeaponName
+	public string bossWeaponName;
+	//Weapon reward index
 	public string GetWeaponsIndex;
-
+	//완성도
 	public float fComplate;
-
-	public float fWaitSecond;
-
+	//골드
 	public int nGold;
-
+	//명예
 	public int nHonor;
-
+	//보석
 	public int nDia;
-
+	//장비 드랍 확률
 	public float fDropPercent;
+	//보스 대사 01
+	public string bossWord01;
+	//보스 대사 02
+	public string bossWord02;
+	//보스 대사 03
+	public string bossWord03;
+	//보스 대사 04
+	public string bossWord04;
 }
 
 [System.Serializable]
-public class BossWeapon
+public class BossWeapon : CGameEquiment
 {
-	public int nIndex = 0;
-	public string strResouce = string.Empty;
-	public string strName = string.Empty;
-	public int nSlot = 0;
-	public string strGrade;
 	public string explain;
 }
 

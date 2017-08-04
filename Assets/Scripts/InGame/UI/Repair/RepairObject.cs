@@ -47,13 +47,17 @@ public class RepairObject : MonoBehaviour {
 
 	//Boss
 	public BossCharacter bossCharacter;		//보스 캐릭터 받는 것
+	BossIce bossIce;
 	private float fBossMaxComplete;		//보스 캐릭터 최대 완성도
 	GameObject waterObject;				//물 오브젝트
+	public GameObject waterPaching;
 	GameObject bossWeaponObject;		//보스 무기 버튼
 	GameObject bossWaterObject;			//보스 물 버튼 
 
 	Image BossWeaponAlphaSprite;
 	Image BossWeaponSprite;
+	public Animator bossWeaponAnimator;
+	public RuntimeAnimatorController[] bossWeaponController;
 
 	//BossSasinText
 	//tmp value
@@ -151,6 +155,8 @@ public class RepairObject : MonoBehaviour {
 		BossWeaponAlphaSprite = bossWeaponObject.transform.GetChild (0).GetComponent<Image> ();
 		BossWeaponSprite = bossWeaponObject.transform.GetChild (1).GetComponent<Image> ();
 
+		//BossWeaponAnimator
+		bossWeaponAnimator = BossWeaponSprite.gameObject.GetComponent<Animator>();
 
 		this.StartCoroutine (this.StartWaterFx ());
 
@@ -185,6 +191,7 @@ public class RepairObject : MonoBehaviour {
 		bossWaterObject.SetActive (false);
 		WeaponObject.SetActive (true);
 		waterObject.SetActive (true);
+		waterPaching.SetActive (false);
 	}
 
 	public IEnumerator StartWaterFx()
@@ -201,7 +208,8 @@ public class RepairObject : MonoBehaviour {
 					bossWaterCat_animator.SetBool ("isTouchWater", true);
 					CatWater_animator.SetBool ("isTouchWater", true);
 
-					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread")) {
+					if (CatWater_animator.GetCurrentAnimatorStateInfo (0).IsName ("Water_Fx_spread"))
+					{
 						yield return new WaitForSeconds (0.5f);
 						//Debug.Log ("BossWeaponWaterFinish !!");
 						waterFxObj.transform.SetAsFirstSibling ();
@@ -357,6 +365,13 @@ public class RepairObject : MonoBehaviour {
 			{
 				fWaterSlideTime += Time.deltaTime;
 				WaterSlider.value = Mathf.Lerp (WaterSlider.value, fCurrentWater, fWaterSlideTime);
+
+				if(WaterSlider.value > fUseWater)
+				{
+					waterPaching.SetActive (true);
+				}
+				else
+					waterPaching.SetActive (false);
 			} 
 			else
 				fCurrentWater = fMaxWater;
@@ -458,22 +473,53 @@ public class RepairObject : MonoBehaviour {
 		WeaponObject.SetActive (false);
 		waterObject.SetActive (false);
 
-		if (_bossData.nIndex == 0)
+		if (_bossData.nIndex == 0) {
 			bossCharacter = _bossData;
-		else if (_bossData.nIndex == 1)
+			bossIce = (BossIce)bossCharacter;
+
+			//input Image
+			BossWeaponSprite.sprite = _sprite;
+
+			//Change AnimController 
+			bossWeaponAnimator.runtimeAnimatorController = bossWeaponController [0];
+
+		} else if (_bossData.nIndex == 1)
+		{
 			bossCharacter = _bossData;
-		else if (_bossData.nIndex == 2)
+
+			//input Image
+			BossWeaponSprite.sprite = _sprite;
+
+			//Change AnimController 
+			bossWeaponAnimator.runtimeAnimatorController = bossWeaponController [1];
+		}
+		else if (_bossData.nIndex == 2) 
+		{
 			bossCharacter = _bossData;
+
+			//input Image
+			BossWeaponSprite.sprite = _sprite;
+
+			//Change AnimController 
+			bossWeaponAnimator.runtimeAnimatorController = bossWeaponController [2];
+		}
 		else if (_bossData.nIndex == 3)
 		{
 			bossMusic = (BossMusic)_bossData;
 			bossCharacter = _bossData;
+
+			//input Image
+			BossWeaponSprite.sprite = _sprite;
+		
+			//Change AnimController 
+			bossWeaponAnimator.runtimeAnimatorController = bossWeaponController [3];
 		}
 		else
 			return;
 		
-		//input Image
-		BossWeaponSprite.sprite = _sprite;
+
+
+
 		//weaponData = data;
 
 		fMaxTemperature = bossCharacter.bossInfo.fComplate * 0.03f;
@@ -645,7 +691,8 @@ public class RepairObject : MonoBehaviour {
 		fRandomXPos = Random.Range (fXPos - (textRectTrasnform.sizeDelta.x / 2), fXPos + (textRectTrasnform.sizeDelta.x / 2));
 		fRandomYPos = Random.Range (fYPos - (textRectTrasnform.sizeDelta.y / 2), fYPos + (textRectTrasnform.sizeDelta.y / 2));
 
-		if (bossCharacter.nIndex == 1) { 
+		if (bossCharacter.nIndex == 1) 
+		{ 
 			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
 				Debug.Log ("SasinPhase00");
 			 
@@ -886,6 +933,7 @@ public class RepairObject : MonoBehaviour {
 
 		if (fCurrentWater >= fUseWater) 
 		{
+			//waterPaching.SetActive (true);
 			//물 터치시 노트 한단계씩 떨어진다.
 			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
 				
@@ -916,8 +964,8 @@ public class RepairObject : MonoBehaviour {
 				}
 			}
 			//얼음 보스시. 물을 사용하면 화면을 얼게 한다
-			else if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE) {
-				BossIce bossIce = (BossIce)bossCharacter;
+			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE)
+			{
 				bossIce.ActiveIceWall ();
 			}
 
@@ -957,6 +1005,7 @@ public class RepairObject : MonoBehaviour {
 				//bossCharacter.
 			}
 		}
+
 	}
 
     //만약 수리중에 대기시간이 다 지나서 되돌아갈때 확인함
