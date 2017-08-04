@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class RepairObject : MonoBehaviour {
+public class RepairObject : MonoBehaviour{
 
 
     public Slider ComplateSlider;
@@ -12,7 +13,7 @@ public class RepairObject : MonoBehaviour {
 
     public Text ComplateText;
 
-    public Transform CavasTransform;
+    public Transform CanvasTransform;
 
     //진행중인 오브젝트
 	public GameObject AfootObject;
@@ -71,6 +72,8 @@ public class RepairObject : MonoBehaviour {
 	private float fYPos;
 
 	int nChancePercent = 50;									//미스 확률
+	float fCalcValue = 0.0f; 
+
 
 	//BossMusic
 	private BossMusic bossMusic;
@@ -121,6 +124,12 @@ public class RepairObject : MonoBehaviour {
 
 	private float m_fMinusTemperature = 0.0f;
 	private const float m_fMinusDefault = 0.1f;
+
+	//MissText
+	public GameObject textParent;
+	private const int nEnableTime = 2;
+	public SimpleObjectPool damageTextPool;
+
 
 	void Start()
 	{
@@ -338,19 +347,26 @@ public class RepairObject : MonoBehaviour {
                     {
                         GameObject obj = TemperatureBoomPool.Instance.GetObject();
 
-                        obj.GetComponent<TemperatureBoomParticle>().Play();
+						obj.transform.SetParent(CanvasTransform,false);
 
-                        obj.transform.SetParent(transform);
+                        obj.GetComponent<TemperatureBoomParticle>().Play();
 
                         SpawnManager.Instance.CheckComplateWeapon(AfootObject, fCurrentComplate, fCurrentTemperature);
                     }
                     else
                     {
+						//터지는 파티클
                         GameObject obj = BreakBoomPool.Instance.GetObject();
+
+						obj.transform.SetParent(CanvasTransform,false);
 
                         obj.GetComponent<BreakBoomParticle>().Play();
 
-                        obj.transform.SetParent(transform);
+						GameObject BoomObject = TemperatureBoomPool.Instance.GetObject();
+
+						BoomObject.transform.SetParent(CanvasTransform,false);
+
+						BoomObject.GetComponent<TemperatureBoomParticle>().Play();
 
                         SpawnManager.Instance.ComplateCharacter(AfootObject, fCurrentComplate);
                     }
@@ -507,20 +523,33 @@ public class RepairObject : MonoBehaviour {
 		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
 	}
 
+	public void ShowDamage(int nDamage)
+	{
+		int nRandomX = Random.Range (0, 20);
+		int nRandomY = Random.Range (0, 10);
+		fRandomXPos = Random.Range (textParent.transform.position.x - nRandomX,textParent.transform.position.x + nRandomX);
+		fRandomYPos = Random.Range (textParent.transform.position.y - nRandomY,textParent.transform.position.y + nRandomY);
+
+		GameObject damageText = damageTextPool.GetObject ();
+
+		damageText.transform.SetParent (textParent.transform,false);
+		damageText.transform.localScale = Vector3.one;
+		damageText.transform.position = new Vector3(fRandomXPos,fRandomYPos,textParent.transform.position.z);
+		damageText.name = "Damage";
+
+		DamageTextPool damagePool = damageText.GetComponent<DamageTextPool> ();
+		damagePool.Damage (nDamage);
+		damagePool.textObjPool = damageTextPool;
+		damagePool.leftSecond = nEnableTime;
+	}
+
+
     //무기터치
-    public void TouchWeapon()
+	public void TouchWeapon(Vector3 _position)
     {
 
         if (weaponData == null)
 			return;
-
-#if UNITY_EDITOR 
-        mouseTouchPosition = Input.mousePosition;
-
-#elif UNITY_ANDROID
-        mouseTouchPosition = Input.GetTouch(0).position;
-        
-#endif
 
         Debug.Log("Touch");
 
@@ -533,9 +562,9 @@ public class RepairObject : MonoBehaviour {
 
             GameObject obj = CriticalTouchPool.Instance.GetObject();
 
-            obj.transform.SetParent(CavasTransform);
+			obj.transform.SetParent(CanvasTransform,false);
 
-            obj.transform.position = Input.mousePosition;
+			obj.transform.position = _position;
 
             obj.GetComponent<CriticalTouchParticle>().Play();
 
@@ -576,9 +605,9 @@ public class RepairObject : MonoBehaviour {
 
             GameObject obj = CriticalTouchPool.Instance.GetObject();
 
-            obj.transform.SetParent(CavasTransform,false);
+			obj.transform.SetParent(CanvasTransform,false);
 
-            obj.transform.position = Input.mousePosition;
+			obj.transform.position = _position;
 
             obj.GetComponent<CriticalTouchParticle>().Play();
 
@@ -594,15 +623,19 @@ public class RepairObject : MonoBehaviour {
 
             GameObject obj = NormalTouchPool.Instance.GetObject();
 
-            obj.transform.SetParent(CavasTransform, false);
+			obj.transform.SetParent(CanvasTransform, false);
 
-            obj.transform.position = Input.mousePosition;
+			obj.transform.position = _position;
 
             obj.GetComponent<NormalTouchParticle>().Play();
 
             m_PlayerAnimationController.UserNormalRepair();
 
-			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() - weaponData.fMinusRepair);
+			fCalcValue = (player.GetRepairPower () - weaponData.fMinusRepair);
+
+			ShowDamage ((int)fCalcValue);
+
+			fCurrentComplate += fCalcValue;
         }
         //공식에 따른 온도 증가
 
@@ -638,9 +671,6 @@ public class RepairObject : MonoBehaviour {
 
 			return;
 		}
-
-
-   
     }
 
 	public void TouchBossWeapon()
@@ -899,7 +929,7 @@ public class RepairObject : MonoBehaviour {
 			fWeaponDownTemperature = fMaxTemperature * 0.3f;
 		
 		else
-			fWeaponDownTemperature = fCurrentTemperature;
+			return;
 
 		fCurrentTemperature -= fMaxTemperature * 0.3f;
 

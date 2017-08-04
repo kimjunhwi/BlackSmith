@@ -22,17 +22,21 @@ public class MakingUI : MonoBehaviour {
 
 	Player playerData;
 
+	//기본 값
+	const int m_nBasicGold = 1200;
+	const int m_nBasicHonor = 300;
+	const int m_nBasicMinRepair = 6;
+	const int m_nBasicMaxRepair = 10;
+	const int m_nBasicMinOption = 3;
+	const int m_nBasicMaxOption = 5;
 
-	//base Data
-	int nGoldCost = 1200;
-	int nHonorCost = 300;
-	int nMinRepair = 6;
-	int nMaxRepair = 10;
-	int nAddMinOption = 3;
-	int nAddMaxOption = 5;
-	int nBossOptionMin = 3;
-	int nBossOptionMax = 5;
-
+	//일차 별로 증가하는 값, 단 추가옵션과 보스옵션 같은 경우 10 레벨 마다 증가 한다.
+	const int m_nPlusGoldPercent = 20;
+	const int m_nPlusHonorPercent = 10;
+	const int m_nPlusRepairMinPercent = 10;
+	const int m_nPlusRepairMaxPercent = 10;
+	const int m_nPlusOptionMinPercent = 10;
+	const int m_nPlusOptionMaxPercent = 10;
 
 	//Calc Data
 	int nCalcGoldCost = 0;
@@ -41,8 +45,7 @@ public class MakingUI : MonoBehaviour {
 	float fCalcMaxRepair = 0;
 	int nCalcAddMinOption = 0;
 	int nCalcAddMaxOption = 0;
-	int nCalcBossOptionMin = 0;
-	int nCalcBossOptionMax = 0;
+
 
 	void Awake()
 	{
@@ -92,15 +95,29 @@ public class MakingUI : MonoBehaviour {
 
 		CostDayText.text = numChk.ToString();
 
-		fCalcMinRepair = nMinRepair + (float)(nMinRepair * (10 * numChk * 0.01f));
-		fCalcMaxRepair = nMaxRepair + nMaxRepair * (10 * numChk * 0.01f);
+		fCalcMinRepair = m_nBasicMinRepair + (float)(m_nBasicMinRepair * (m_nPlusRepairMinPercent * numChk * 0.01f));
+		fCalcMaxRepair = m_nBasicMaxRepair + m_nBasicMaxRepair * (m_nPlusRepairMaxPercent * numChk * 0.01f);
 
 		RandomRepairPower.text = string.Format("제작시 수리력 {0:F1} ~ {1:F1}",fCalcMinRepair,fCalcMaxRepair);
 	}
 
 	void MakeWeapon()
 	{
+		if (CostDayText.text == "0")
+			return;
 
+		int nDight = 0;
+		int nDightCost = int.Parse (CostDayText.text);
+		float nCostDay = (float)nDightCost;
+
+		while (nCostDay >= 10) 
+		{
+			nCostDay *= 0.1f;
+			nDight++;
+		}
+
+		nCalcGoldCost = (int)(m_nBasicGold + m_nBasicGold * (m_nPlusGoldPercent * nCostDay * 0.01f));
+		nCalcHonorCost = (int)(m_nBasicHonor + m_nBasicHonor * (m_nPlusHonorPercent * nDight * 0.01f));
 
 
 	}

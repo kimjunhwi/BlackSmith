@@ -1636,6 +1636,11 @@ public class CGameEquiment
 }
 
 
+[System.Serializable]
+public class CreaterWeapon
+{
+	public string strName
+}
 
 [System.Serializable]
 public class ArbaitData

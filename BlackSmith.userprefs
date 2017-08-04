@@ -1,31 +1,36 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/Manager/GameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/MakingUI.cs">
     <Files>
-      <File FileName="Assets/Scripts/InGame/Manager/UIManager.cs" Line="29" Column="59" />
-      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="128" Column="5" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossRegenTimer.cs" Line="26" Column="31" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossConsumeItemInfo.cs" Line="73" Column="18" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="115" Column="85" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="120" Column="26" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFireBoom.cs" Line="15" Column="3" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Cleo.cs" Line="113" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Player/PlayerSpecificInfo.cs" Line="23" Column="3" />
-      <File FileName="Assets/Scripts/InGame/Player/Player.cs" Line="10" Column="24" />
-      <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="279" Column="5" />
-      <File FileName="Assets/Scripts/InGame/Player/PlayerDaysInfo.cs" Line="54" Column="3" />
-      <File FileName="Assets/Scripts/InGame/UI/UIDisable.cs" Line="13" Column="3" />
-      <File FileName="Assets/Unity-Logs-Viewer/Reporter/Reporter.cs" Line="1789" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossIceWall.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossEffect.cs" Line="21" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/SoundManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/GenericMonoSingleton.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/ArbaitBatch.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/BlueHair.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/BrownHair.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/Cleo.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/Cleric.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/Druid.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/Elsa.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/Knight.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/Nurse.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Arbait/OrangeHair.cs" Line="49" Column="1" />
+      <File FileName="Assets/MakingUI.cs" Line="121" Column="3" />
+      <File FileName="Assets/BossSoul.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulFire.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulIce.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulSasin.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulRusiu.cs" Line="20" Column="12" />
+      <File FileName="Assets/WeaponButton.cs" Line="41" Column="8" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="638" Column="22" />
+      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1642" Column="23" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/OptionItem.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossConsumeItemInfo.cs" line="166" column="1" />
-      <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Arbait/ArbaitBatch.cs" line="130" column="1" />
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossConsumeItemInfo.cs" line="161" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Arbait/BlueHair.cs" line="108" column="1" />
-      <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Arbait/OrangeHair.cs" line="48" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="455" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossIce.cs" line="105" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Boss/BossIce.cs" line="121" column="1" />
@@ -35,11 +40,11 @@
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" line="22" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/UI/Enhance/RepairPanelUI.cs" line="22" column="1" />
       <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Manager/SoundManager.cs" line="247" column="1" />
-      <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/Manager/SoundManager.cs" line="108" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/Quest/QusetManager.cs" line="164" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/Quest/QusetManager.cs" line="297" column="1" />
       <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/Quest/QuestTimer.cs" line="122" column="1" />
-      <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="859" column="1" />
+      <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/Scripts/InGame/UI/Repair/RepairObject.cs" line="861" column="1" />
+      <Breakpoint file="/Users/ImaiDakaki/BlackSmith/Assets/MakingUI.cs" line="82" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

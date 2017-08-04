@@ -5,14 +5,21 @@ using UnityEngine;
 public class CriticalTouchParticle : MonoBehaviour {
 
     private Animator anim;
+	private RectTransform rectTransform;
+
+	private const float m_fWidth = 200;
+	private const float m_fHeight = 200;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+		rectTransform = GetComponent<RectTransform> ();
     }
 
     public void Play()
     {
+		rectTransform.sizeDelta = new Vector2 (m_fWidth, m_fHeight);
+
         anim.SetTrigger("bIsTouch");
 
         StartCoroutine(StartDisappearAfter(2f));
@@ -22,7 +29,7 @@ public class CriticalTouchParticle : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
         
-        NormalTouchPool.Instance.ReturnObject(gameObject);
+		CriticalTouchPool.Instance.ReturnObject(gameObject);
     }
 
     public void ResetAnimation()

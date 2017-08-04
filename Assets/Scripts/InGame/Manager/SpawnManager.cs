@@ -78,6 +78,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         NormalTouchPool.Instance.Init();
 
         CriticalTouchPool.Instance.Init();
+
+		Input.multiTouchEnabled = true;
     }
 
     private void Update()
