@@ -116,7 +116,11 @@ public class BossFire : BossCharacter
 
 			if (fTime >= 2.0f && nCurFireCount < nSmallFireMaxCount )
 				CreateSmallFire ();
-
+			//불씨 개수 10개 일시 터진다
+			if (nCurFireCount >= 5)
+			{
+				bossFireBoom.BoomFireSmall ();
+			}
 		
 
 			if (fCurComplete < 0) {
