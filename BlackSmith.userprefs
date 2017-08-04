@@ -1,30 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/MakingUI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs">
     <Files>
       <File FileName="Assets/Scripts/InGame/Manager/SoundManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/GenericMonoSingleton.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/ArbaitBatch.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/BlueHair.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/BrownHair.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Cleo.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Cleric.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Druid.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Elsa.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Knight.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/Nurse.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Arbait/OrangeHair.cs" Line="49" Column="1" />
-      <File FileName="Assets/MakingUI.cs" Line="121" Column="3" />
+      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1672" Column="24" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="207" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Inventory/Inventory.cs" Line="11" Column="31" />
+      <File FileName="Assets/Scripts/InGame/UI/Inventory/InventoryScrollList.cs" Line="6" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="169" Column="1" />
       <File FileName="Assets/BossSoul.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulFire.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulIce.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulSasin.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/BossSoul/BossSoulRusiu.cs" Line="20" Column="12" />
-      <File FileName="Assets/WeaponButton.cs" Line="41" Column="8" />
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="638" Column="22" />
-      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1642" Column="23" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/OptionItem.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

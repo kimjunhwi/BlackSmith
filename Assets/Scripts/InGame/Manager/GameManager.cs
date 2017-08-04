@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
@@ -1669,7 +1669,7 @@ public class CGameEquiment
 [System.Serializable]
 public class CreaterWeapon
 {
-	public string strName
+	public string strName;
 }
 
 [System.Serializable]
