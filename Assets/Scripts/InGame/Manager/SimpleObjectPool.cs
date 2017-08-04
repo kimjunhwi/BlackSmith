@@ -9,7 +9,7 @@ public class SimpleObjectPool : MonoBehaviour
     public string strPrefabName;
 
     //미리 만들어 둘 사이즈(파티클 밑,개수가 정해져 있지 않는 것들
-    public int nPoolSize = 20;
+    public int nPoolSize = 100;
 
     // the prefab that this object pool returns instances of
     public GameObject prefab;
@@ -71,7 +71,7 @@ public class SimpleObjectPool : MonoBehaviour
         if (pooledObject != null && pooledObject.pool == this)
         {
             // make the instance a child of this and disable it
-            toReturn.transform.SetParent(transform);
+			toReturn.transform.SetParent(transform,false);
             toReturn.SetActive(false);
 
             // add the instance to the collection of inactive instances

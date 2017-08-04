@@ -67,9 +67,19 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         CreateMonsterPool();
 
         //터치 오브젝트들을 초기화 밑 할당 해줌 (추후 텍스트 추가)
+        BreakBoomPool.Instance.Init();
+
         NormalRepairPool.Instance.Init();
 
         CriticalRepairPool.Instance.Init();
+
+        TemperatureBoomPool.Instance.Init();
+
+        NormalTouchPool.Instance.Init();
+
+        CriticalTouchPool.Instance.Init();
+
+		Input.multiTouchEnabled = true;
     }
 
     private void Update()
@@ -367,14 +377,14 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //인자로 넣은 값을 넣을 수 있는지 없는지를 확인한다.
     public int InsertArbatiWeaponCheck(int _nGrade)
     {
-        if (m_BatchArbait == null)
-            return (int)E_CHECK.E_FAIL;
-
 		int nMinValue = 10;
 
 		for (int nIndex = 0; nIndex < m_BatchArbait.Length; nIndex++) {
-			
-			if (m_BatchArbait [nIndex].activeSelf) {
+
+            if (m_BatchArbait[nIndex] == null)
+                return (int)E_CHECK.E_FAIL;
+
+            if (m_BatchArbait [nIndex].activeSelf) {
 
 				if ((array_ArbaitData [nIndex].bIsRepair == false)) {
 
@@ -384,7 +394,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 					if (nMinValue == 0)
 						return nMinValue;
 				}
-
 			}
 		}
 

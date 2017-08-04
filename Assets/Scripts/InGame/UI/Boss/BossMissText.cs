@@ -33,6 +33,5 @@ public class BossMissText : MonoBehaviour
 			rectTransformY += 0.5f;
 			textRectTransform.anchoredPosition = new Vector2(rectTransformX, rectTransformY);
 		}
-
 	}
 }

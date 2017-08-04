@@ -124,8 +124,14 @@
     <Compile Include="Assets\Scripts\InGame\Particle\BreakBoomPool.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairParticle.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\CriticalRepairPool.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\CriticalTouchParticle.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\CriticalTouchPool.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\NormalRepairParticle.cs" />
     <Compile Include="Assets\Scripts\InGame\Particle\NormalRepairPool.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\NormalTouchParticle.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\NormalTouchPool.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\TemperatureBoomParticle.cs" />
+    <Compile Include="Assets\Scripts\InGame\Particle\TemperatureBoomPool.cs" />
     <Compile Include="Assets\Scripts\InGame\Player\Character.cs" />
     <Compile Include="Assets\Scripts\InGame\Player\NormalCharacter.cs" />
     <Compile Include="Assets\Scripts\InGame\Player\Player.cs" />

@@ -110,8 +110,6 @@ public class Cleo : ArbaitBatch {
 			{
 				fTime = 0.0f;
 
-                Debug.Log(m_CharacterChangeData.fAttackSpeed);
-
 				animator.SetTrigger("bIsRepair");
 
 				//크리티컬 확률 

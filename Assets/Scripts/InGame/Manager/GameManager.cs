@@ -403,13 +403,13 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 
 
-    void OnApplicationQuit()
-    {
+    //void OnApplicationQuit()
+    //{
 
-        DataSave();
+    //    DataSave();
 
-        StopAllCoroutines();
-    }
+    //    StopAllCoroutines();
+    //}
 
     //데이터 저장시 호출된다.
     //저장이 되는 부분은 OnApplicationPuase가 TRUE 이고 플레이어가 존재할시 호출
@@ -444,19 +444,21 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         player.SetAllItemData(true);
 
         PlayerPrefs.Save();
+
+        StopAllCoroutines();
     }
 
-    //public void OnApplicationPause(bool bIsPause)
-    //{
-    //    if (bIsPause) {
-    //        if (player != null) 
-    //        {
-    //            Debug.Log ("Puase");
-    //            DataSave ();
-    //        }
-    //    } 
-
-    //}
+    public void OnApplicationPause(bool bIsPause)
+    {
+        if (bIsPause)
+        {
+            if (player != null)
+            {
+                Debug.Log("Puase");
+                DataSave();
+            }
+        }
+    }
 
 
     public void SavePlayerData()
@@ -1664,6 +1666,11 @@ public class CGameEquiment
 }
 
 
+[System.Serializable]
+public class CreaterWeapon
+{
+	public string strName
+}
 
 [System.Serializable]
 public class ArbaitData

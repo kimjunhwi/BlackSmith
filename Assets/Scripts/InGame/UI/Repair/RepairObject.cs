@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class RepairObject : MonoBehaviour {
+public class RepairObject : MonoBehaviour{
 
 
     public Slider ComplateSlider;
@@ -11,6 +12,8 @@ public class RepairObject : MonoBehaviour {
     public Slider WaterSlider;
 
     public Text ComplateText;
+
+    public Transform CanvasTransform;
 
     //진행중인 오브젝트
 	public GameObject AfootObject;
@@ -73,6 +76,8 @@ public class RepairObject : MonoBehaviour {
 	private float fYPos;
 
 	int nChancePercent = 50;									//미스 확률
+	float fCalcValue = 0.0f; 
+
 
 	//BossMusic
 	private BossMusic bossMusic;
@@ -92,6 +97,8 @@ public class RepairObject : MonoBehaviour {
 	private Vector3 bossWeaponObjOriginPosition;				//원래 수리 패널에 있을때의 무기 위치
 	private Vector2 bossWeaponObjOriginSize;					//원래 수리 패널에 터치 인식 범위의 크기
 	private Vector2 bossWeaponSize;								//무기 이미지 만큼의 크기
+
+    private Vector3 mouseTouchPosition;
 	public bool isMoveWeapon = false;
 	private float translateValue;
 
@@ -121,6 +128,12 @@ public class RepairObject : MonoBehaviour {
 
 	private float m_fMinusTemperature = 0.0f;
 	private const float m_fMinusDefault = 0.1f;
+
+	//MissText
+	public GameObject textParent;
+	private const int nEnableTime = 2;
+	public SimpleObjectPool damageTextPool;
+
 
 	void Start()
 	{
@@ -338,11 +351,33 @@ public class RepairObject : MonoBehaviour {
 						}
 					}
 
-					if (fCurrentComplate > 0)
-						SpawnManager.Instance.CheckComplateWeapon (AfootObject,fCurrentComplate,fCurrentTemperature);
+                    if (fCurrentComplate > 0)
+                    {
+                        GameObject obj = TemperatureBoomPool.Instance.GetObject();
 
-					else
-						SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
+						obj.transform.SetParent(CanvasTransform,false);
+
+                        obj.GetComponent<TemperatureBoomParticle>().Play();
+
+                        SpawnManager.Instance.CheckComplateWeapon(AfootObject, fCurrentComplate, fCurrentTemperature);
+                    }
+                    else
+                    {
+						//터지는 파티클
+                        GameObject obj = BreakBoomPool.Instance.GetObject();
+
+						obj.transform.SetParent(CanvasTransform,false);
+
+                        obj.GetComponent<BreakBoomParticle>().Play();
+
+						GameObject BoomObject = TemperatureBoomPool.Instance.GetObject();
+
+						BoomObject.transform.SetParent(CanvasTransform,false);
+
+						BoomObject.GetComponent<TemperatureBoomParticle>().Play();
+
+                        SpawnManager.Instance.ComplateCharacter(AfootObject, fCurrentComplate);
+                    }
 				}
 			}
 
@@ -534,22 +569,50 @@ public class RepairObject : MonoBehaviour {
 		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
 	}
 
+	public void ShowDamage(int nDamage)
+	{
+		int nRandomX = Random.Range (0, 20);
+		int nRandomY = Random.Range (0, 10);
+		fRandomXPos = Random.Range (textParent.transform.position.x - nRandomX,textParent.transform.position.x + nRandomX);
+		fRandomYPos = Random.Range (textParent.transform.position.y - nRandomY,textParent.transform.position.y + nRandomY);
+
+		GameObject damageText = damageTextPool.GetObject ();
+
+		damageText.transform.SetParent (textParent.transform,false);
+		damageText.transform.localScale = Vector3.one;
+		damageText.transform.position = new Vector3(fRandomXPos,fRandomYPos,textParent.transform.position.z);
+		damageText.name = "Damage";
+
+		DamageTextPool damagePool = damageText.GetComponent<DamageTextPool> ();
+		damagePool.Damage (nDamage);
+		damagePool.textObjPool = damageTextPool;
+		damagePool.leftSecond = nEnableTime;
+	}
+
+
     //무기터치
-    public void TouchWeapon()
+	public void TouchWeapon(Vector3 _position)
     {
+
         if (weaponData == null)
 			return;
 
+        Debug.Log("Touch");
 
-		Debug.Log ("Touch");
-		Debug.Log (player.GetRepairPower());
-
-		fComplateSlideTime = 0.0f;
+        fComplateSlideTime = 0.0f;
 
         //피버일경우 크리 데미지로 완성도를 증가시킴
         if (m_bIsFever)
         {
 			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() - (player.GetRepairPower() * weaponData.fMinusRepair *0.01f)) * 1.5f;
+
+            GameObject obj = CriticalTouchPool.Instance.GetObject();
+
+			obj.transform.SetParent(CanvasTransform,false);
+
+			obj.transform.position = _position;
+
+            obj.GetComponent<CriticalTouchParticle>().Play();
 
             m_PlayerAnimationController.UserCriticalRepair();
 
@@ -564,35 +627,62 @@ public class RepairObject : MonoBehaviour {
             return;
         }
 
-		if (Random.Range (0, 100) >= Mathf.Round (player.GetAccuracyRate () - player.GetAccuracyRate () * weaponData.fMinusAccuracy * 0.01f)) {
+		//if (Random.Range (0, 100) >= Mathf.Round (player.GetAccuracyRate () - player.GetAccuracyRate () * weaponData.fMinusAccuracy * 0.01f)) {
 
-			textObj = textObjectPool.GetObject ();
-			textObj.transform.SetParent (textRectTrasnform.transform, false);
-			textObj.transform.localScale = Vector3.one;
-			textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, textObj.transform.position.z);
-			textObj.name = "Miss";
+		//	textObj = textObjectPool.GetObject ();
+		//	textObj.transform.SetParent (textRectTrasnform.transform, false);
+		//	textObj.transform.localScale = Vector3.one;
+		//	textObj.transform.position = new Vector3 (fRandomXPos, fRandomYPos, textObj.transform.position.z);
+		//	textObj.name = "Miss";
 
-			bossMissText = textObj.GetComponent<BossMissText> ();
-			bossMissText.textObjPool = textObjectPool;
-			bossMissText.leftSecond = 2.0f;
-			bossMissText.parentTransform = textRectTrasnform;
+		//	bossMissText = textObj.GetComponent<BossMissText> ();
+		//	bossMissText.textObjPool = textObjectPool;
+		//	bossMissText.leftSecond = 2.0f;
+		//	bossMissText.parentTransform = textRectTrasnform;
 
-			return;
-		}
+		//	return;
+		//}
+
+
         //크리티컬 확률 
 		if (Random.Range(0, 100) <= Mathf.Round(player.GetCriticalChance() - (player.GetCriticalChance() * weaponData.fMinusCritical *0.01f)))
         {
             Debug.Log("Cri!!!");
+
+            GameObject obj = CriticalTouchPool.Instance.GetObject();
+
+			obj.transform.SetParent(CanvasTransform,false);
+
+			obj.transform.position = _position;
+
+            obj.GetComponent<CriticalTouchParticle>().Play();
+
             SpawnManager.Instance.PlayerCritical();
+
 			fCurrentComplate = fCurrentComplate +(player.GetRepairPower() - weaponData.fMinusRepair) * 1.5f;
+
             m_PlayerAnimationController.UserCriticalRepair();
         }
         else
         {
             Debug.Log("Nor!!!!");
+
+            GameObject obj = NormalTouchPool.Instance.GetObject();
+
+			obj.transform.SetParent(CanvasTransform, false);
+
+			obj.transform.position = _position;
+
+            obj.GetComponent<NormalTouchParticle>().Play();
+
             m_PlayerAnimationController.UserNormalRepair();
-			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() - weaponData.fMinusRepair);
-        } 
+
+			fCalcValue = (player.GetRepairPower () - weaponData.fMinusRepair);
+
+			ShowDamage ((int)fCalcValue);
+
+			fCurrentComplate += fCalcValue;
+        }
         //공식에 따른 온도 증가
 
         //fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
@@ -627,9 +717,6 @@ public class RepairObject : MonoBehaviour {
 
 			return;
 		}
-
-
-   
     }
 
 	public void TouchBossWeapon()
@@ -889,7 +976,7 @@ public class RepairObject : MonoBehaviour {
 			fWeaponDownTemperature = fMaxTemperature * 0.3f;
 		
 		else
-			fWeaponDownTemperature = fCurrentTemperature;
+			return;
 
 		fCurrentTemperature -= fMaxTemperature * 0.3f;
 

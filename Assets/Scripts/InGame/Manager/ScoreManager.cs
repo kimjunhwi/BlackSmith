@@ -40,16 +40,18 @@ public class ScoreManager : MonoBehaviour
     {
         scireInstance = this;
 
-        if(PlayerPrefs.HasKey("Gold"))
-            m_fGetGold = PlayerPrefs.GetFloat("Gold");
+		if (PlayerPrefs.HasKey ("Gold"))
+			m_fGetGold = PlayerPrefs.GetFloat ("Gold");
+		else
+			m_fGetGold = 0.0f;
 
-        if (PlayerPrefs.HasKey("Honor"))
-            m_fGetHonor = PlayerPrefs.GetFloat("Honor");
+		if (PlayerPrefs.HasKey ("Honor"))
+			m_fGetHonor = PlayerPrefs.GetFloat ("Honor");
+		else
+			m_fGetGold = 0.0f;
 
-        goldText.text = m_fGetGold.ToString();
-		honorText.text = m_fGetHonor.ToString();
-
-        
+		goldText.text = m_fGetGold.ToString("F1");
+		honorText.text = m_fGetHonor.ToString("F1");
     }
 
     public float GetGold() { return m_fGetGold; }
