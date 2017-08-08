@@ -8,12 +8,13 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 	private GameObject getInfoGameObject;
 	public int nCountBreakWall;
 	public BossIce bossIce;
-	private Animator animator;
+	public Animator animator_IceWallRepair;
+	public Animator animator_IceWallArbait;
+
 	public int nCurrentArbaitIndex = -1;
 
 	void Start()
 	{
-		animator = GetComponent<Animator> ();
 		gameObject.SetActive (false);
 	}
 
@@ -42,11 +43,11 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			nCountBreakWall--;
 			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
 			if (nCountBreakWall == 10) {
-				animator.SetBool ("isBreak01", true);
+				animator_IceWallRepair.SetBool ("isBreak01", true);
 			}
 
 			if (nCountBreakWall == 5) {
-				animator.SetBool ("isBreak02", true);
+				animator_IceWallRepair.SetBool ("isBreak02", true);
 			}
 
 
@@ -61,11 +62,11 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			nCountBreakWall--;
 			Debug.Log(getInfoGameObject.gameObject.name + " = " + nCountBreakWall);
 			if (nCountBreakWall == 7) {
-				animator.SetBool ("isBreak01", true);
+				animator_IceWallArbait.SetBool ("isBreak01", true);
 			}
 
 			if (nCountBreakWall == 4) {
-				animator.SetBool ("isBreak02", true);
+				animator_IceWallArbait.SetBool ("isBreak02", true);
 			}
 
 			if (nCountBreakWall == 0) {
@@ -78,11 +79,11 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		{
 			nCountBreakWall--;
 			if (nCountBreakWall == 7) {
-				animator.SetBool ("isBreak01", true);
+				animator_IceWallArbait.SetBool ("isBreak01", true);
 			}
 
 			if (nCountBreakWall == 4) {
-				animator.SetBool ("isBreak02", true);
+				animator_IceWallArbait.SetBool ("isBreak02", true);
 			}
 
 			if (nCountBreakWall == 0) {
@@ -95,11 +96,11 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		{
 			nCountBreakWall--;
 			if (nCountBreakWall == 7) {
-				animator.SetBool ("isBreak01", true);
+				animator_IceWallArbait.SetBool ("isBreak01", true);
 			}
 
 			if (nCountBreakWall == 4) {
-				animator.SetBool ("isBreak02", true);
+				animator_IceWallArbait.SetBool ("isBreak02", true);
 			}
 
 			if (nCountBreakWall == 0) {
@@ -120,17 +121,15 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 
 	public IEnumerator FreezeRepair()
 	{
-		
-		animator = gameObject.GetComponent<Animator> ();
-		animator.SetBool ("isFreeze", true); //Start Freeze Animation
+		animator_IceWallRepair.SetBool ("isFreeze", true); //Start Freeze Animation
 		while (true) 
 		{
 			Debug.Log ("While FreezeRepair");
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName("Ice_Repair_Freeze")) 
+			if (animator_IceWallRepair.GetCurrentAnimatorStateInfo (0).IsName("Ice_Repair_Freeze")) 
 			{
 				Debug.Log ("Finish FreezeRepair");
 				//yield return new WaitForSeconds (0.1f);
-				animator.SetBool ("isIced", true);
+				animator_IceWallRepair.SetBool ("isIced", true);
 				yield break;
 			} 
 			yield return null;
@@ -140,19 +139,19 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 
 	public IEnumerator DeFreezeRepair()
 	{
-		animator.SetBool ("isDefreeze", true); //Start Freeze Animation
+		animator_IceWallRepair.SetBool ("isDefreeze", true); //Start Freeze Animation
 		while (true) 
 		{
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName("Ice_Repair_Defreeze")) 
+			if (animator_IceWallRepair.GetCurrentAnimatorStateInfo (0).IsName("Ice_Repair_Defreeze")) 
 			{
 				yield return new WaitForSeconds (0.3f);
-				animator.SetBool ("isFreeze", false);
-				animator.SetBool ("isIced", false);
-				animator.SetBool ("isBreak01", false);
-				animator.SetBool ("isBreak02", false);
-				animator.SetBool ("isDefreeze", false);
+				animator_IceWallRepair.SetBool ("isFreeze", false);
+				animator_IceWallRepair.SetBool ("isIced", false);
+				animator_IceWallRepair.SetBool ("isBreak01", false);
+				animator_IceWallRepair.SetBool ("isBreak02", false);
+				animator_IceWallRepair.SetBool ("isDefreeze", false);
 
-				animator.Play ("Arbait_Ice_Idle");
+				animator_IceWallRepair.Play ("Arbait_Ice_Idle");
 
 
 				bossIce.ActiveIceWall ();
@@ -163,13 +162,14 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 		
 	public IEnumerator FreezeArbait()
 	{
-		animator.SetBool ("isFreeze", true); //Start Freeze Animation
+		animator_IceWallArbait = gameObject.GetComponent<Animator> ();
+		animator_IceWallArbait.SetBool ("isFreeze", true); //Start Freeze Animation
 		while (true) 
 		{
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName("Arbait_Freeze")) 
+			if (animator_IceWallArbait.GetCurrentAnimatorStateInfo (0).IsName("Arbait_Freeze")) 
 			{
 				//yield return new WaitForSeconds (0.1f);
-				animator.SetBool ("isIced", true);
+				animator_IceWallArbait.SetBool ("isIced", true);
 			} 
 			yield return null;
 		}
@@ -180,11 +180,11 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 	public void DeFreezeArbait()
 	{
 		//FreezeAnimation Init
-		animator.SetBool ("isFreeze", false);
-		animator.SetBool ("isIced", false);
-		animator.SetBool ("isBreak01", false);
-		animator.SetBool ("isBreak02", false);
-		animator.Play ("Arbait_Ice_Idle");
+		animator_IceWallArbait.SetBool ("isFreeze", false);
+		animator_IceWallArbait.SetBool ("isIced", false);
+		animator_IceWallArbait.SetBool ("isBreak01", false);
+		animator_IceWallArbait.SetBool ("isBreak02", false);
+		animator_IceWallArbait.Play ("Arbait_Ice_Idle");
 
 		BossArbaitDeFreeze bossDefreeze = null;
 
@@ -199,12 +199,13 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 
 	public void DeFreezeArbaitAll()
 	{
+		Debug.Log ("Arbait Ice Wall DeActive");
 		//FreezeAnimation Init
-		animator.SetBool ("isFreeze", false);
-		animator.SetBool ("isIced", false);
-		animator.SetBool ("isBreak01", false);
-		animator.SetBool ("isBreak02", false);
-		animator.Play ("Arbait_Ice_Idle");
+		animator_IceWallArbait.SetBool ("isFreeze", false);
+		animator_IceWallArbait.SetBool ("isIced", false);
+		animator_IceWallArbait.SetBool ("isBreak01", false);
+		animator_IceWallArbait.SetBool ("isBreak02", false);
+		animator_IceWallArbait.Play ("Arbait_Ice_Idle");
 
 		nCurrentArbaitIndex = -1;
 		nCountBreakWall = 0;

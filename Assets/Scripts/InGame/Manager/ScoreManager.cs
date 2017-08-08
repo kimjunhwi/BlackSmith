@@ -77,7 +77,7 @@ public class ScoreManager : MonoBehaviour
         goldText.text = GetCurrentcyIntoString(m_fGetGold);
     }
 
-	private void HonorPlus(float _fValue)
+	public void HonorPlus(float _fValue)
 	{
 		m_fGetHonor += _fValue;
 

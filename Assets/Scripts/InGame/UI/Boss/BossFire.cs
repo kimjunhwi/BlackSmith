@@ -235,6 +235,7 @@ public class BossFire : BossCharacter
 	{
 		yield return null;
 		Debug.Log ("Boss Die");
+		//화면에 남아있는 불씨들을 없앤다
 		while (smallFireRespawnPoint.childCount != 0) 
 		{
 			GameObject go = smallFireRespawnPoint.GetChild (0).gameObject;

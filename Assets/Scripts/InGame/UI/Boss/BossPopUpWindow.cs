@@ -59,6 +59,11 @@ public class BossPopUpWindow : MonoBehaviour
 
 	Camera cam;
 
+	//Image strPath
+	private const string strGoldImagePath = "DungeonUI/dungeon_reward_gold";
+	private const string strHonorImagePath = "DungeonUI/dungeon_reward_honor";
+	private const string strRubyImagePath = "DungeonUI/dungeon_reward_roobie";
+
 	void Start()
 	{
 
@@ -164,166 +169,23 @@ public class BossPopUpWindow : MonoBehaviour
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE)
 			{
-				float nRandom_Weapon01 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon01 <= bossIce.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [0].strResource);
-					GameManager.Instance.player.inventory.inventorySlots [GameManager.Instance.bossWeaponInfo [0].nSlotIndex].AddItem
-					(GameManager.Instance.bossWeaponInfo [0]);
-				}
-
-				float nRandom_Weapon02 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon02 <= bossIce.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [1].strResource);
-					GameManager.Instance.player.inventory.inventorySlots [GameManager.Instance.bossWeaponInfo [1].nSlotIndex].AddItem
-					(GameManager.Instance.bossWeaponInfo [1]);
-				}
-				//Gold
-				GameObject Gold = rewardObjPool.GetObject ();
-				Gold.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-				Gold.transform.localScale = Vector3.one;
-				Text GoldText = Gold.GetComponentInChildren<Text> ();
-				GoldText.text = "";
-				GoldText.text = "골드";
-				Image GoldRewardImage = Gold.transform.GetChild(1).GetComponent<Image> ();
-				GoldRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [0].strResource);
-				ScoreManager.ScoreInstance.GoldPlus (bossIce.bossInfo.nGold);
-				//Honor
-				//Dia
-
-			
+				RewardShowAndAdd (0, 1);
 			}
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_SASIN)
 			{
-				float nRandom_Weapon01 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon01 <= bossSasin.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [2].strResource);
-				}
-
-				float nRandom_Weapon02 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon02 <= bossSasin.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [3].strResource);
-				}
-				//Gold
-				GameObject Gold = rewardObjPool.GetObject ();
-				Gold.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-				Gold.transform.localScale = Vector3.one;
-				Text GoldText = Gold.GetComponentInChildren<Text> ();
-				GoldText.text = "";
-				GoldText.text = "골드";
-				Image GoldRewardImage = Gold.transform.GetChild(1).GetComponent<Image> ();
-				GoldRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [0].strResource);
-				ScoreManager.ScoreInstance.GoldPlus (bossSasin.bossInfo.nGold);
-				//Honor
-				//Dia
+				RewardShowAndAdd (2, 3);
 			}
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE)
 			{
-				float nRandom_Weapon01 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon01 <= bossFire.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [4].strResource);
-				}
-
-				float nRandom_Weapon02 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon02 <= bossFire.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [5].strResource);
-				}
-				//Gold
-				GameObject Gold = rewardObjPool.GetObject ();
-				Gold.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-				Gold.transform.localScale = Vector3.one;
-				Text GoldText = Gold.GetComponentInChildren<Text> ();
-				GoldText.text = "";
-				GoldText.text = "골드";
-				Image GoldRewardImage = Gold.transform.GetChild(1).GetComponent<Image> ();
-				GoldRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [0].strResource);
-				ScoreManager.ScoreInstance.GoldPlus (bossFire.bossInfo.nGold);
-				//Honor
-				//Dia
+				RewardShowAndAdd (4, 5);
 			}
 
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC)
 			{
-				float nRandom_Weapon01 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon01 <= bossMusic.bossInfo.fDropPercent) {
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [6].strResource);
-				}
-
-				float nRandom_Weapon02 = Random.Range (0f, 1f);	
-				if (nRandom_Weapon02 <= bossMusic.bossInfo.fDropPercent)
-				{
-					GameObject Reward = rewardObjPool.GetObject ();
-					Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-					Reward.transform.localScale = Vector3.one;
-					Text RewardText = Reward.GetComponentInChildren<Text> ();
-					RewardText.text = "";
-					RewardText.text = "장비";
-					Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
-					RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [7].strResource);
-				}
-				//Gold
-				GameObject Gold = rewardObjPool.GetObject ();
-				Gold.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
-				Gold.transform.localScale = Vector3.one;
-				Text GoldText = Gold.GetComponentInChildren<Text> ();
-				GoldText.text = "";
-				GoldText.text = "골드";
-				Image GoldRewardImage = Gold.transform.GetChild(1).GetComponent<Image> ();
-				GoldRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [0].strResource);
-				ScoreManager.ScoreInstance.GoldPlus (bossMusic.bossInfo.nGold);
-				//Honor
-				//Dia
+				RewardShowAndAdd (6, 7);
 			}
 
 
@@ -380,4 +242,76 @@ public class BossPopUpWindow : MonoBehaviour
 		}
 	}
 
+
+	public void RewardShowAndAdd(int _bossWeaponIndex01, int _bossWeaponIndex02)
+	{
+		BossCharacter bossCharacter = null;
+		if (_bossWeaponIndex01 == 0 && _bossWeaponIndex02 == 1)
+			bossCharacter = bossIce;
+		if (_bossWeaponIndex01 == 2 && _bossWeaponIndex02 == 3)
+			bossCharacter = bossSasin;
+		if (_bossWeaponIndex01 == 4 && _bossWeaponIndex02 == 5)
+			bossCharacter = bossFire;
+		if (_bossWeaponIndex01 == 6 && _bossWeaponIndex02 == 7)
+			bossCharacter = bossMusic;
+
+
+		float nRandom_Weapon01 = Random.Range (0f, 1f);	
+		if (nRandom_Weapon01 <= bossCharacter.bossInfo.fDropPercent) 
+		{
+			GameObject Reward = rewardObjPool.GetObject ();
+			Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
+			Reward.transform.localScale = Vector3.one;
+			Text RewardText = Reward.GetComponentInChildren<Text> ();
+			RewardText.text = "장비";
+			Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
+			RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [_bossWeaponIndex01].strResource);
+			GameManager.Instance.player.inventory.inventorySlots [GameManager.Instance.bossWeaponInfo [_bossWeaponIndex01].nSlotIndex].AddItem
+			(GameManager.Instance.bossWeaponInfo [_bossWeaponIndex01]);
+
+		}
+
+		float nRandom_Weapon02 = Random.Range (0f, 1f);	
+		if (nRandom_Weapon02 <= bossCharacter.bossInfo.fDropPercent)
+		{
+			GameObject Reward = rewardObjPool.GetObject ();
+			Reward.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
+			Reward.transform.localScale = Vector3.one;
+			Text RewardText = Reward.GetComponentInChildren<Text> ();
+			RewardText.text = "장비";
+			Image RewardImage = Reward.transform.GetChild(1).GetComponent<Image> ();
+			RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [_bossWeaponIndex02].strResource);
+			GameManager.Instance.player.inventory.inventorySlots [GameManager.Instance.bossWeaponInfo [_bossWeaponIndex02].nSlotIndex].AddItem
+			(GameManager.Instance.bossWeaponInfo [_bossWeaponIndex02]);
+
+		}
+		//Gold
+		GameObject Gold = rewardObjPool.GetObject ();
+		Gold.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
+		Gold.transform.localScale = Vector3.one;
+		Text GoldText = Gold.GetComponentInChildren<Text> ();
+		GoldText.text = "골드";
+		Image GoldRewardImage = Gold.transform.GetChild(1).GetComponent<Image> ();
+		GoldRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (strGoldImagePath);
+		ScoreManager.ScoreInstance.GoldPlus (bossCharacter.bossInfo.nGold);
+		//Honor
+		GameObject Honor = rewardObjPool.GetObject ();
+		Honor.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
+		Honor.transform.localScale = Vector3.one;
+		Text HonorText = Honor.GetComponentInChildren<Text> ();
+		HonorText.text = "명예";
+		Image HonorRewardImage = Honor.transform.GetChild(1).GetComponent<Image> ();
+		HonorRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (strHonorImagePath);
+		ScoreManager.ScoreInstance.HonorPlus (bossCharacter.bossInfo.nHonor);
+		//Dia
+		GameObject Dia = rewardObjPool.GetObject ();
+		Dia.transform.SetParent (PopUpWindow_RewardPanel.transform, false);
+		Dia.transform.localScale = Vector3.one;
+		Text DiaText = Dia.GetComponentInChildren<Text> ();
+		DiaText.text = "보석";
+		Image DiaRewardImage = Dia.transform.GetChild(1).GetComponent<Image> ();
+		DiaRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (strRubyImagePath);
+		//ScoreManager.ScoreInstance.HonorPlus (bossCharacter.bossInfo.nDia);
+
+	}
 }

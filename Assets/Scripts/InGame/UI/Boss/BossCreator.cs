@@ -42,8 +42,6 @@ public class BossCreator : MonoBehaviour
 	public BossElement[] bossElementList;			//보스 리스트 원소
 	public BossEffect bossEffect;					//보스 이펙트
 
-
-
 	//각각의 보스 남은 도전 횟수
 	public int nBossSasinLeftCount = 3;
 	public int nBossIceLeftCount = 3;
@@ -51,6 +49,10 @@ public class BossCreator : MonoBehaviour
 	public int nBossMusicLeftCount = 3;
 
 	public int nBossMaxLeftCount = 3;
+
+	private int curLevel = 1;	//현재래벨
+	private int maxLevel = 100;	//최대래벨
+	private int minLevel = 1;	//최소래벨
 
 	private int nBossIndex =0; 
 
@@ -99,9 +101,13 @@ public class BossCreator : MonoBehaviour
 		{
 			Debug.Log ("Load Saved Info");
 			bossElementList[0].BossLeftCount_Text.text = string.Format("{0} / {1}", GameManager.Instance.cBossPanelListInfo[0].nBossIceLeftCount, nBossMaxLeftCount);
+			bossElementList[0].bossLevel_Text.text = string.Format ("Lv {0}", GameManager.Instance.cBossPanelListInfo[0].nBossIceCurLevel);
 			bossElementList[1].BossLeftCount_Text.text = string.Format("{0} / {1}",  GameManager.Instance.cBossPanelListInfo[0].nBossSasinLeftCount, nBossMaxLeftCount);
+			bossElementList[1].bossLevel_Text.text = string.Format ("Lv {0}", GameManager.Instance.cBossPanelListInfo[0].nBossSasinCurLevel);
 			bossElementList[2].BossLeftCount_Text.text = string.Format("{0} / {1}",  GameManager.Instance.cBossPanelListInfo[0].nBossFireLeftCount, nBossMaxLeftCount);
+			bossElementList[2].bossLevel_Text.text = string.Format ("Lv {0}", GameManager.Instance.cBossPanelListInfo[0].nBossFireCurLevel);
 			bossElementList[3].BossLeftCount_Text.text = string.Format("{0} / {1}",  GameManager.Instance.cBossPanelListInfo[0].nBossMusicLeftCount, nBossMaxLeftCount);
+			bossElementList[3].bossLevel_Text.text = string.Format ("Lv {0}", GameManager.Instance.cBossPanelListInfo[0].nBossMusicCurLevel);
 			bossConsumeItemInfo.nInviteMentCurCount = GameManager.Instance.cBossPanelListInfo [0].nBossInviteMentCount;
 		}
 		else
@@ -109,9 +115,14 @@ public class BossCreator : MonoBehaviour
 			Debug.Log ("Load Init Info");
 	
 			bossElementList[0].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossIceLeftCount, nBossMaxLeftCount);
+			bossElementList[0].bossLevel_Text.text = string.Format ("Lv {0}", minLevel);
 			bossElementList[1].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossSasinLeftCount, nBossMaxLeftCount);
+			bossElementList[1].bossLevel_Text.text = string.Format ("Lv {0}", minLevel);
 			bossElementList[2].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossFireLeftCount, nBossMaxLeftCount);
+			bossElementList[2].bossLevel_Text.text = string.Format ("Lv {0}", minLevel);
 			bossElementList[3].BossLeftCount_Text.text = string.Format("{0} / {1}", nBossMusicLeftCount, nBossMaxLeftCount);
+			bossElementList[3].bossLevel_Text.text = string.Format ("Lv {0}", minLevel);
+
 			bossConsumeItemInfo.nInviteMentCurCount = bossConsumeItemInfo.nInviteMentMaxCount;
 		}
 
@@ -303,6 +314,12 @@ public class BossCreator : MonoBehaviour
 		GameManager.Instance.cBossPanelListInfo [0].nBossSasinLeftCount = nBossSasinLeftCount;
 		GameManager.Instance.cBossPanelListInfo [0].nBossIceLeftCount = nBossIceLeftCount;
 		GameManager.Instance.cBossPanelListInfo [0].nBossInviteMentCount = 	bossConsumeItemInfo.nInviteMentCurCount;
+
+
+		GameManager.Instance.cBossPanelListInfo [0].nBossIceCurLevel = bossElementList [0].curLevel;
+		GameManager.Instance.cBossPanelListInfo [0].nBossSasinCurLevel = bossElementList [1].curLevel;
+		GameManager.Instance.cBossPanelListInfo [0].nBossFireCurLevel = bossElementList [2].curLevel;
+		GameManager.Instance.cBossPanelListInfo [0].nBossMusicCurLevel = bossElementList [3].curLevel;
 
 		bossConsumeItemInfo.BossInviteMentSaveTime ();
 		bossRegenTimer.BossRegenTimeSave ();
