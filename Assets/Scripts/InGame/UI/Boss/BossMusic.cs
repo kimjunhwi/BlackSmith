@@ -176,6 +176,10 @@ public class BossMusic : BossCharacter
 		repairObj.bossWeaponAnimator.SetBool ("isPhase00_Reflect", false);
 		repairObj.bossWeaponAnimator.SetBool ("isPhase00", true);
 		isStandardPhaseFailed = false;
+
+		if(repairObj.isMoveWeapon == false)
+			repairObj.StartBossMusiceWeaponMove();
+		
 		while (true)
 		{
 			fRandomXPos = bossWeapon.transform.position.x;

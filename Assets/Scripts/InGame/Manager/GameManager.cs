@@ -439,6 +439,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		SaveBossPanelInfoList ();
 
+
+
         SpawnManager.Instance.ApplyArbait();
 
         player.SetAllItemData(true);
@@ -2050,6 +2052,11 @@ public class BossPanelInfo
 	public float fBossInviteMentCurSec;
 	public int nBossRegenCurMin;
 	public float fBossRegenCurSec;
+
+	public int nBossSasinCurLevel;
+	public int nBossMusicCurLevel;
+	public int nBossIceCurLevel;
+	public int nBossFireCurLevel;
 }
 
 [System.Serializable]

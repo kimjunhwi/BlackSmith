@@ -5,11 +5,10 @@ using UnityEngine;
 public class BossIce : BossCharacter 
 {
 	//IceWall
-	private BossIceWall iceWall_instance;
 	public GameObject iceWall;
 	public bool isIceWallOn;					  		//IceWall이 켜졌는지 아닌지
 	public float fIceWallGenerateTimer = 0f;			//현재 수리패널 얼음 타이머
-	private float nBossIceWallGenerateTime = 15.0f;
+	private float fBossIceWallGenerateTime = 15.0f;		//수리패널 얼음이 나타나는 타이머
 	private int nBossIceWallCount = 15;					//수리패널에 어는 얼음 깨지는 횟수
 	//IceWall Arbait
 	int iceWallIndex = 0;
@@ -21,7 +20,6 @@ public class BossIce : BossCharacter
 
 	private void Start()
 	{
-		iceWall_instance = iceWall.GetComponent<BossIceWall> ();
 		animator = gameObject.GetComponent<Animator> ();
 
 		for (int i = 0; i < 3; i++) 
@@ -101,8 +99,16 @@ public class BossIce : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
+			//수리패널 얼음
+			if (fIceWallGenerateTimer >= fBossIceWallGenerateTime)
+				ActiveIceWall ();
 			
-			if (fCurComplete < 0) {
+			if (isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
+
+
+			if (fCurComplete < 0) 
+			{
 				FailState ();
 				yield break;
 			}
@@ -123,6 +129,7 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
+		repairObj.bossWeaponAnimator.SetBool ("isPhase00", true);
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 
 		isStandardPhaseFailed = false;
@@ -134,12 +141,21 @@ public class BossIce : BossCharacter
 			float fMaxComplete = bossInfo.fComplate;
 
 
+			//수리패널 얼음
+			if (fIceWallGenerateTimer >= fBossIceWallGenerateTime)
+				ActiveIceWall ();
+			
+			if (isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
+
+			
+
 			//모든 알바 빙결 해제(현재온도가 맥스 온도를 넘을 시에)
-			if (repairObj.isCurTemperatureOver () == true) {
-				DefreezeAllArbait ();
-				fIceWallArbaitTimer = 0;
-				yield return null;
-			}
+			//if (repairObj.isCurTemperatureOver () == true) 
+			//{
+			//	DefreezeAllArbait ();
+
+			//}
 
 			//Arbait Ice Wall Timer
 			//얼지 않은 아르바이트들이 있다면 시간이 계속간다
@@ -170,7 +186,7 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
-
+		repairObj.bossWeaponAnimator.SetBool ("isPhase01", true);
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE02]);
 		while (true)
 		{
@@ -178,12 +194,24 @@ public class BossIce : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 	
+
+
+			//수리패널 얼음
+			if (fIceWallGenerateTimer >= fBossIceWallGenerateTime)
+				ActiveIceWall ();
+			
+			if (isIceWallOn == false)
+				fIceWallGenerateTimer += Time.deltaTime;
+
+
+
+
+
 			//모든 알바 빙결 해제(현재온도가 맥스 온도를 넘을 시에)
-			if (repairObj.isCurTemperatureOver () == true) {
-				DefreezeAllArbait ();
-				fIceWallArbaitTimer = 0;
-				yield return null;
-			}
+			//if (repairObj.isCurTemperatureOver () == true) {
+			//	DefreezeAllArbait ();
+			//	fIceWallArbaitTimer = 0;
+			//}
 
 			//Arbait Ice Wall Timer
 			if (SpawnManager.Instance.FreezeArbaitCheck() == true) {
@@ -200,6 +228,10 @@ public class BossIce : BossCharacter
 				FailState ();
 				yield break;
 			}
+
+			if (fCurComplete >=	(fMaxComplete / 100) * 90)
+				repairObj.bossWeaponAnimator.SetBool ("isPhase02", true);
+
 
 			if (fCurComplete >= fMaxComplete)
 				eCureentBossState = EBOSS_STATE.DIE;
@@ -248,6 +280,11 @@ public class BossIce : BossCharacter
 				animator.SetBool ("isBackGroundChanged", false);	
 				animator.Play ("BossIdle");
 
+
+				repairObj.bossWeaponAnimator.SetBool ("isPhase00", false);
+				repairObj.bossWeaponAnimator.SetBool ("isPhase01", false);
+				repairObj.bossWeaponAnimator.SetBool ("isPhase02", false);
+				repairObj.bossWeaponAnimator.Play ("IceWeapon");
 
 				bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 				repairObj.SetFinishBoss ();		//수리 패널 초기화
@@ -329,11 +366,13 @@ public class BossIce : BossCharacter
 
 	public void ActiveIceWall()
 	{
+		BossIceWall iceWall_instance = null;
+		iceWall_instance = iceWall.GetComponent<BossIceWall> ();
 		if (iceWall.activeSelf == true)
 		{
 			iceWall.SetActive (false);
 			isIceWallOn = false;
-			fIceWallGenerateTimer = 0f;
+
 			nBossIceWallCount = 15;
 		}
 		else 
@@ -341,6 +380,7 @@ public class BossIce : BossCharacter
 			Debug.Log ("Active Ice Wall");
 			iceWall.SetActive (true);
 			isIceWallOn = true;
+			fIceWallGenerateTimer = 0f;
 			iceWall_instance.nCountBreakWall = nBossIceWallCount;
 			iceWall_instance.StartFreezeRepair ();	//수리창 어는 것 시작
 		
@@ -350,6 +390,7 @@ public class BossIce : BossCharacter
 	public void FreezeArbait()
 	{
 		//아르바이트가 얼지 않은 곳의 인덱스를 가져온다
+		BossIceWall iceWall_instance = null;
 		iceWallIndex = SpawnManager.Instance.FreezeArbait ();
 
 		if (iceWallIndex == -1)
@@ -372,6 +413,7 @@ public class BossIce : BossCharacter
 
 	public void DefreezeAllArbait()
 	{
+		fIceWallArbaitTimer = 0;
 		SpawnManager.Instance.GetFreezeArbait ();
 		//얼어있는 아르바이트가 없다면 그냥 return;
 		if (SpawnManager.Instance.checkList.Count == 0) 
@@ -382,11 +424,10 @@ public class BossIce : BossCharacter
 
 		for (int i = 0; i < SpawnManager.Instance.checkList.Count ; i++) 
 		{
+			BossIceWall iceWall_Freeze = null;
 			Debug.Log ("Max Temp DefreezeAll Arbait");
-			BossIceWall iceWall_Freeze = iceWall_Arbait_Freeze [SpawnManager.Instance.checkList[i]].GetComponent<BossIceWall> ();
-
+			iceWall_Freeze = iceWall_Arbait_Freeze [SpawnManager.Instance.checkList[i]].GetComponent<BossIceWall> ();
 			iceWall_Freeze.DeFreezeArbaitAll ();
-		
 			iceWall_Arbait_Defreeze [SpawnManager.Instance.checkList[i]].SetActive (true);
 			isIceWall_ArbaitOn [SpawnManager.Instance.checkList[i]] = false;
 
@@ -394,7 +435,6 @@ public class BossIce : BossCharacter
 			bossDefreeze = iceWall_Arbait_Defreeze [SpawnManager.Instance.checkList[i]].GetComponent<BossArbaitDeFreeze> ();
 			bossDefreeze.nIndex = SpawnManager.Instance.checkList[i];
 			bossDefreeze.StartDeFreeze ();
-			//SpawnManager.Instance.DeFreezeArbait (SpawnManager.Instance.checkList[i]);
 		}
 	}
 

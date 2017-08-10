@@ -12,5 +12,23 @@ public class BossElement : MonoBehaviour
 	public Button bossLevelRight_Button;
 	public Button bossLevelLeft_Button;
 
+	public int curLevel = 1;	//현재래벨
+	private int maxLevel = 100;	//최대래벨
+	private int minLevel = 1;	//최소래벨
+
+	public void AddLevel()
+	{
+		if (curLevel < maxLevel)
+			curLevel++;
+		bossLevel_Text.text = string.Format ("Lv {0}", curLevel);
+	}
+
+	public void MinusLevel()
+	{
+		if (curLevel > minLevel)
+			curLevel--;
+		bossLevel_Text.text = "Lv " + curLevel.ToString ();
+	}
+
 
 }

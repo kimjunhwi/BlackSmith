@@ -265,6 +265,11 @@ public class RepairObject : MonoBehaviour{
 			
 	}
 
+	public void StartBossMusiceWeaponMove()
+	{
+		StartCoroutine (BossMusicWeaponMove ());
+	}
+
 	public IEnumerator BossMusicWeaponMove()
 	{
 		isMoveWeapon = true;
@@ -336,9 +341,14 @@ public class RepairObject : MonoBehaviour{
 					fCurrentTemperature = 0.0f;
 					TemperatureSlider.value = fCurrentTemperature;
 
+					//얼음 보스시 온도가 터지면 모든 아르바이트 빙결 해제 
+					if(bossIce != null)
+						bossIce.DefreezeAllArbait ();
+
+
 					if (fBossMaxComplete == 0.0f)
 						fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
-					
+
 					else 
 					{
 						//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
@@ -754,7 +764,8 @@ public class RepairObject : MonoBehaviour{
 				//Debug.Log ("IcePhase02");
 				//아르바이트 공속 감소 들어가야함
 				//크리티컬 확률 감소o
-				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f))
+				{
 					//Debug.Log ("Cri!!!");
 					SpawnManager.Instance.PlayerCritical ();
 					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 1.5f;
@@ -905,8 +916,7 @@ public class RepairObject : MonoBehaviour{
 				Debug.Log ("MusicPhase01");
 				//아르바이트의 수리력이 50% 감소, 무기 움직임 시작
 
-				if(isMoveWeapon == false)
-					StartCoroutine( BossMusicWeaponMove());
+
 			}
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
 			{
@@ -1148,6 +1158,9 @@ public class RepairObject : MonoBehaviour{
 
 	public void SetFinishBoss()
 	{
+		bossIce = null;
+		bossMusic = null;
+
 		bossWeaponObject.transform.position = bossWeaponObjOriginPosition;
 		bossWeaponRectTransform.sizeDelta = bossWeaponObjOriginSize;
 
