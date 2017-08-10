@@ -52,6 +52,11 @@ public class OptionItem : MonoBehaviour {
 		{
 			OptionImage.sprite = OptionSprite;
 			LockImage.sprite = LockSprite;
+		} 
+		else 
+		{
+			OptionImage.sprite = UnOptionSprite;
+			LockImage.sprite = UnLockSprite;
 		}
 
 	}

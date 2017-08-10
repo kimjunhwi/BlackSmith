@@ -82,4 +82,11 @@ public class OptionScroll : MonoBehaviour {
 			}
 		}
 	}
+
+	public void AddItem(int _nIndex,string _strExplain,int _nValue, bool _bIsLock = false)
+	{
+		CGameMainWeaponOption plusItem = new CGameMainWeaponOption ();
+
+
+	}
 }

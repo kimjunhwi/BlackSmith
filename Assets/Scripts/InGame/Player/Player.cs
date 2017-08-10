@@ -9,6 +9,8 @@ public class Player
 	//변화될 값 
 	public CGamePlayerData changeStats;
 
+	//플레이어 제작 무기  
+	private CreatorWeapon creatorWeapon;
 
     public List<CGameEquiment> List_items;
 
@@ -77,11 +79,61 @@ public class Player
 
     public int GetGuestCount() { return changeStats.nGuestCount; }
 
+	//08.09
+	//플레이어 제작 
+	public void SetCreatorWeapon(CreatorWeapon _weapon)
+	{
+		creatorWeapon = _weapon; 
+	}
 
-    public void Awake()
-    {
+	public float GetCreatorWeaponRepair(){
+		return creatorWeapon.fRepair;
+	}
 
-    }
+	public float GetCreatorWeaponArbaitRepair(){
+		return creatorWeapon.fArbaitRepair;
+	}
+
+	public float GetCreatorWeaponPlusHonorPercent(){
+		return creatorWeapon.fPlusHonorPercent;
+	}
+
+	public float GetCreatorWeaponPlusGoldPercent(){
+		return creatorWeapon.fPlusGoldPercent;
+	}
+
+	public float GetCreatorWeaponMaxWaterPlus(){
+		return creatorWeapon.fMaxWaterPlus;
+	}
+
+	public float GetCreatorWeaponWaterPlus(){
+		return creatorWeapon.fWaterPlus;
+	}
+
+	public float GetCreatorWeaponActiveWater(){
+		return creatorWeapon.fActiveWater;
+	}
+
+	public float GetCreatorWeaponCriticalChance(){
+		return creatorWeapon.fCriticalChance;
+	}
+
+	public float GetCreatorWeaponCriticalDamage(){
+		return creatorWeapon.fCriticalDamage;
+	}
+
+	public float GetCreatorWeaponBigSuccessed(){
+		return creatorWeapon.fBigSuccessed;
+	}
+
+	public float GetCreatorWeaponAccuracyRate(){
+		return creatorWeapon.fAccuracyRate;
+	}
+
+
+
+
+
 
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
     {

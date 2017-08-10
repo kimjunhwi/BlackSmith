@@ -1604,6 +1604,21 @@ enum E_Equiment
 	E_MAX,
 }
 
+enum E_CREATOR
+{
+	E_ARBAIT = 0,
+	E_HONOR,
+	E_GOLD,
+	E_WATERMAX,
+	E_WATERCHARGE,
+	E_WATERUSE,
+	E_CRITICAL,
+	E_CRITICALD,
+	E_BIGCRITICAL,
+	E_ACCURACY,
+	E_MAX,
+}
+
 #region Classese
 
 [System.Serializable]
@@ -1667,9 +1682,31 @@ public class CGameEquiment
 
 
 [System.Serializable]
-public class CreaterWeapon
+public class CreatorWeapon
 {
-	public string strName;
+	public string strResource = "";
+	public int nGrade = 0;				//옵션 등급
+
+	public float fRepair = 0.0f;		//수리력
+	public float fArbaitRepair = 0.0f;	//아르바이트 수리력
+	public float fPlusHonorPercent = 0.0f ;//명예 추가 증가량
+	public float fPlusGoldPercent = 0.0f;	//골드 추가 증가량
+	public float fMaxWaterPlus = 0.0f;	//물 최대치 증가
+	public float fWaterPlus = 0.0f;		//물 추가 수치
+	public float fActiveWater = 0.0f;		//물 사용시 추가 증가
+	public float fCriticalChance = 0.0f;	//크리티컬 찬스
+	public float fCriticalDamage = 0.0f;	//크리티컬 데미지
+	public float fBigSuccessed = 0.0f;	//대 성공 확률 
+	public float fAccuracyRate = 0.0f;	//명중률
+
+	public float fIceBossValue = 0.0f;
+	public float fRusiuBossValue = 0.0f;
+	public float fSasinBossValue = 0.0f;
+	public float fFireBossValue = 0.0f;
+
+	public int nOneLockSlotIndex = 0;
+	public int nTwoLockSlotIndex = 0;
+	public int nThreeLockSlotIndex = 0;
 }
 
 [System.Serializable]
