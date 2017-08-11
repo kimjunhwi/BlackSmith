@@ -267,6 +267,8 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         SoundManager.instance.LoadSource();
 
+		Debug.Log (player.fRepairPower);
+
         SoundManager.instance.PlayBGM(eSound.bgm_main);
 
         logoManager.bIsSuccessed = true;
@@ -423,8 +425,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         PlayerPrefs.SetFloat("Gold", ScoreManager.ScoreInstance.GetGold());
         PlayerPrefs.SetFloat("Honor", ScoreManager.ScoreInstance.GetHonor());
 
-        player.SetAllItemData(false);
-
         SpawnManager.Instance.ReleliveArbait();
 
         playerData = player.changeStats;
@@ -439,11 +439,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		SaveBossPanelInfoList ();
 
-
-
         SpawnManager.Instance.ApplyArbait();
-
-        player.SetAllItemData(true);
 
         PlayerPrefs.Save();
 
@@ -1927,6 +1923,9 @@ public class CGamePlayerData
     public int nIceMaterial;
     public int nFireMaterial;
     public int nDay;
+	public int nMaxDay;
+	public int nFaieldGuest;
+	public int nSuccessedGuest;
     public int nGuestCount;
 
 	public CGamePlayerData(CGamePlayerData playerData)
@@ -1956,6 +1955,9 @@ public class CGamePlayerData
         nIceMaterial = playerData.nIceMaterial;
         nFireMaterial = playerData.nFireMaterial;
         nDay = playerData.nDay;
+		nMaxDay = playerData.nMaxDay;
+		nFaieldGuest = playerData.nFaieldGuest;
+		nSuccessedGuest = playerData.nSuccessedGuest;
         nGuestCount = playerData.nGuestCount;
 	}
 }

@@ -614,7 +614,7 @@ public class RepairObject : MonoBehaviour{
         //피버일경우 크리 데미지로 완성도를 증가시킴
         if (m_bIsFever)
         {
-			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() - (player.GetRepairPower() * weaponData.fMinusRepair *0.01f)) * 1.5f;
+			fCurrentComplate = fCurrentComplate + (player.GetRepairPower() + (player.GetRepairPower() * weaponData.fMinusRepair *0.01f)) * 1.5f;
 
             GameObject obj = CriticalTouchPool.Instance.GetObject();
 
@@ -655,7 +655,7 @@ public class RepairObject : MonoBehaviour{
 
 
         //크리티컬 확률 
-		if (Random.Range(0, 100) <= Mathf.Round(player.GetCriticalChance() - (player.GetCriticalChance() * weaponData.fMinusCritical *0.01f)))
+		if (Random.Range(0, 100) <= Mathf.Round(player.GetCriticalChance() + (player.GetCriticalChance() * weaponData.fMinusCritical *0.01f)))
         {
             Debug.Log("Cri!!!");
 
@@ -669,7 +669,7 @@ public class RepairObject : MonoBehaviour{
 
             SpawnManager.Instance.PlayerCritical();
 
-			fCurrentComplate = fCurrentComplate +(player.GetRepairPower() - weaponData.fMinusRepair) * 1.5f;
+			fCurrentComplate = fCurrentComplate +(player.GetRepairPower() + weaponData.fMinusRepair * 0.01f) * 1.5f;
 
             m_PlayerAnimationController.UserCriticalRepair();
         }
@@ -687,7 +687,7 @@ public class RepairObject : MonoBehaviour{
 
             m_PlayerAnimationController.UserNormalRepair();
 
-			fCalcValue = (player.GetRepairPower () - weaponData.fMinusRepair);
+			fCalcValue = (player.GetRepairPower () +(player.GetRepairPower () * weaponData.fMinusRepair * 0.01f));
 
 			ShowDamage ((int)fCalcValue);
 

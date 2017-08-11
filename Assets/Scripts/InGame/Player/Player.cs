@@ -45,7 +45,13 @@ public class Player
 	public void SetWaterPlus(float _fValue) { changeStats.fWaterPlus = _fValue; }
 
 	public float GetRepairPower(){ return changeStats.fRepairPower; }
-	public void SetRepairPower(float _fValue) { changeStats.fRepairPower = _fValue; }
+	public void SetRepairPower(float _fValue) { 
+
+		changeStats.fRepairPower = _fValue;  
+
+		SetRepairPower ();
+
+	}
 
 	public float GetArbaitRepairPower() {return changeStats.fArbaitsPower;}
 	public void SetArbaitRepairPower(float _fValue){ changeStats.fArbaitsPower = _fValue;}
@@ -81,59 +87,28 @@ public class Player
 
 	//08.09
 	//플레이어 제작 
-	public void SetCreatorWeapon(CreatorWeapon _weapon)
-	{
+	public void SetCreatorWeapon(CreatorWeapon _weapon){
 		creatorWeapon = _weapon; 
+
+		SetRepairPower ();
 	}
 
-	public float GetCreatorWeaponRepair(){
-		return creatorWeapon.fRepair;
+	public float fRepairPower;
+
+	public void SetRepairPower () {
+
+		float fWeaponEquipPower = 0.0f;
+		float fGearEquipPower = 0.0f;
+		float fAccessoryEquipPower = 0.0f;
+		float fCreatorEquippower = 0.0f;
+
+		if (WeaponEquipment != null)fWeaponEquipPower = WeaponEquipment.fReapirPower;
+		if (GearEquipmnet != null) fGearEquipPower = GearEquipmnet.fReapirPower;
+		if (AccessoryEquipmnet != null) fAccessoryEquipPower = AccessoryEquipmnet.fReapirPower;
+		if (creatorWeapon != null) fCreatorEquippower = creatorWeapon.fRepair;
+
+		fRepairPower = changeStats.fRepairPower + (changeStats.fRepairPower * (fWeaponEquipPower + fGearEquipPower + fAccessoryEquipPower + fCreatorEquippower) * 0.01f);
 	}
-
-	public float GetCreatorWeaponArbaitRepair(){
-		return creatorWeapon.fArbaitRepair;
-	}
-
-	public float GetCreatorWeaponPlusHonorPercent(){
-		return creatorWeapon.fPlusHonorPercent;
-	}
-
-	public float GetCreatorWeaponPlusGoldPercent(){
-		return creatorWeapon.fPlusGoldPercent;
-	}
-
-	public float GetCreatorWeaponMaxWaterPlus(){
-		return creatorWeapon.fMaxWaterPlus;
-	}
-
-	public float GetCreatorWeaponWaterPlus(){
-		return creatorWeapon.fWaterPlus;
-	}
-
-	public float GetCreatorWeaponActiveWater(){
-		return creatorWeapon.fActiveWater;
-	}
-
-	public float GetCreatorWeaponCriticalChance(){
-		return creatorWeapon.fCriticalChance;
-	}
-
-	public float GetCreatorWeaponCriticalDamage(){
-		return creatorWeapon.fCriticalDamage;
-	}
-
-	public float GetCreatorWeaponBigSuccessed(){
-		return creatorWeapon.fBigSuccessed;
-	}
-
-	public float GetCreatorWeaponAccuracyRate(){
-		return creatorWeapon.fAccuracyRate;
-	}
-
-
-
-
-
 
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
     {
@@ -172,102 +147,80 @@ public class Player
 
     //아이템을 장착할 경우
     public void EquipItem(CGameEquiment _item)
-    {
-        //아이템이 어디 부위인지 확인한다.
-        switch (_item.nSlotIndex)
-        {
-            case (int)E_EQUIMNET_INDEX.E_WEAPON:
+	{
+		//아이템이 어디 부위인지 확인한다.
+		switch (_item.nSlotIndex) {
+		case (int)E_EQUIMNET_INDEX.E_WEAPON:
 
                 //만약 무기가 있을 경우 그 무기가 현재 플레이어에 적용되는 값을 빼고 아이템을 넣어줌
                 //그 후 다시 아이템 효과를 플레이어에게 적용한다.
-                if (WeaponEquipment != null)
-                {
-                    WeaponEquipment.bIsEquip = false;
+			if (WeaponEquipment != null)
+				WeaponEquipment.bIsEquip = false;
+			
+			else if (WeaponEquipment == _item) {
 
-                    ApplyItemData(WeaponEquipment, false);
-                }
+				WeaponEquipment.bIsEquip = false;
 
-                WeaponEquipment = _item;
+				WeaponEquipment = null;
 
-                WeaponEquipment.bIsEquip = true;
+				SetRepairPower ();
 
-                ApplyItemData(WeaponEquipment, true);
-                break;
-            case (int)E_EQUIMNET_INDEX.E_WEAR:
+				return;
+			}
 
-                if (GearEquipmnet != null)
-                {
-                    ApplyItemData(GearEquipmnet, false);
+			WeaponEquipment = _item;
 
-                    GearEquipmnet.bIsEquip = false;
-                }
+			WeaponEquipment.bIsEquip = true;
+			break;
+		case (int)E_EQUIMNET_INDEX.E_WEAR:
 
-                GearEquipmnet = _item;
+			if (GearEquipmnet != null)
+				GearEquipmnet.bIsEquip = false;
+			
+			else if (GearEquipmnet == _item) {
 
-                GearEquipmnet.bIsEquip = true;
+				GearEquipmnet.bIsEquip = false;
 
-                ApplyItemData(GearEquipmnet, true);
+				GearEquipmnet = null;
 
-                break;
-            case (int)E_EQUIMNET_INDEX.E_ACCESSORY:
+				SetRepairPower ();
+
+				return;
+			}
+
+			GearEquipmnet = _item;
+
+			GearEquipmnet.bIsEquip = true;
+
+			break;
+		case (int)E_EQUIMNET_INDEX.E_ACCESSORY:
 
 
-                if (AccessoryEquipmnet != null)
-                {
-                    ApplyItemData(AccessoryEquipmnet, false);
+			if (AccessoryEquipmnet != null)
+				AccessoryEquipmnet.bIsEquip = false;
+			
+			else if (AccessoryEquipmnet == _item) {
 
-                    AccessoryEquipmnet.bIsEquip = false;
-                }
+				AccessoryEquipmnet.bIsEquip = false;
 
-                AccessoryEquipmnet = _item;
+				AccessoryEquipmnet = null;
 
-                AccessoryEquipmnet.bIsEquip = true;
+				SetRepairPower ();
 
-                ApplyItemData(AccessoryEquipmnet, true);
-                break;
-        }
+				return;
+			}
 
-        //아이템을 장착했기에 다시 정렬
-        inventory.inventorySlots[_item.nSlotIndex].RefreshDisplay();
-    }
+			AccessoryEquipmnet = _item;
 
-	//세이브를 위한 아이템 세팅
-	public void SetAllItemData(bool bIsUp)
-	{
-		if (WeaponEquipment != null) 	ApplyItemData (WeaponEquipment, bIsUp);
-		if (GearEquipmnet  != null)		ApplyItemData (GearEquipmnet, bIsUp);
-		if (AccessoryEquipmnet != null)	ApplyItemData (AccessoryEquipmnet, bIsUp);
+			AccessoryEquipmnet.bIsEquip = true;
+			break;
+		}
+
+		SetRepairPower ();
+
+		//아이템을 장착했기에 다시 정렬
+		inventory.inventorySlots [_item.nSlotIndex].RefreshDisplay ();
 	}
-
-    public void ApplyItemData(CGameEquiment _item, bool bIsPlus)
-    {
-        if(bIsPlus)
-        {
-            if (_item.fReapirPower != 0) changeStats.fRepairPower += _item.fReapirPower;
-            if (_item.fArbaitRepair != 0) changeStats.fArbaitsPower += _item.fReapirPower;
-            if (_item.fHonorPlus != 0) changeStats.fHornorPlusPercent += _item.fReapirPower;
-            if (_item.fGoldPlus != 0) changeStats.fGoldPlusPercent += _item.fReapirPower;
-            if (_item.fWaterMaxPlus != 0) changeStats.fMaxWaterPlus += _item.fReapirPower;
-            if (_item.fWaterChargePlus != 0) changeStats.fWaterPlus += _item.fReapirPower;
-            if (_item.fCritical != 0) changeStats.fCriticalChance += _item.fReapirPower;
-            if (_item.fCriticalDamage != 0) changeStats.fCriticalDamage += _item.fReapirPower;
-            if (_item.fBigCritical != 0) changeStats.fBigSuccessed += _item.fReapirPower;
-            if (_item.fAccuracyRate != 0) changeStats.fAccuracyRate += _item.fReapirPower;
-        }
-        else 
-        {
-            if (_item.fReapirPower != 0) changeStats.fRepairPower -= _item.fReapirPower;
-            if (_item.fArbaitRepair != 0) changeStats.fArbaitsPower -= _item.fReapirPower;
-            if (_item.fHonorPlus != 0) changeStats.fHornorPlusPercent -= _item.fReapirPower;
-            if (_item.fGoldPlus != 0) changeStats.fGoldPlusPercent -= _item.fReapirPower;
-            if (_item.fWaterMaxPlus != 0) changeStats.fMaxWaterPlus -= _item.fReapirPower;
-            if (_item.fWaterChargePlus != 0) changeStats.fWaterPlus -= _item.fReapirPower;
-            if (_item.fCritical != 0) changeStats.fCriticalChance -= _item.fReapirPower;
-            if (_item.fCriticalDamage != 0) changeStats.fCriticalDamage -= _item.fReapirPower;
-            if (_item.fBigCritical != 0) changeStats.fBigSuccessed -= _item.fReapirPower;
-            if (_item.fAccuracyRate != 0) changeStats.fAccuracyRate -= _item.fReapirPower;
-        }
-    }
 }
 
 
