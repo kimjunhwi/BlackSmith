@@ -127,6 +127,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSmallFireObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTalkPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTimer.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossWeaponShake.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Bossweapon.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Note2Object.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Note3Object.cs" />
@@ -150,6 +151,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\SmithPanelUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\WaterPlusPanelUI.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Enhance\WeaponButton.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Enhance\WeaponShakeIt.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\Inventory.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryButton.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryScrollList.cs" />

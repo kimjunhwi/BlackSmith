@@ -48,7 +48,7 @@ public class ShopShowPanel : MonoBehaviour {
         }
     }
 
-    public void Setting(CGameEquiment _ItemData)
+	public void Setting(CGameEquiment _ItemData)
     {
         ItemData = _ItemData;
 
@@ -75,6 +75,8 @@ public class ShopShowPanel : MonoBehaviour {
         if (ItemData.fCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.fCriticalDamage);
         if (ItemData.fBigCritical       != 0) CreateText("대성공 : ", ItemData.fBigCritical);
         if (ItemData.fAccuracyRate      != 0) CreateText("명중률 : ", ItemData.fAccuracyRate);
+
+
     }
     public void CreateText(string strName, float fValue)
     {
@@ -83,6 +85,6 @@ public class ShopShowPanel : MonoBehaviour {
 		textObject.transform.localScale = Vector3.one;
 
         Text newText = textObject.GetComponent<Text>();
-		newText.text = string.Format("{0} {1}", strName , fValue);
+			newText.text = string.Format("{0} {1}", strName , fValue);
 	}
 }

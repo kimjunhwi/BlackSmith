@@ -27,7 +27,7 @@ public class BossMusic : BossCharacter
 	public bool isSwitch 	= false;
 
 	public float fCurReflectTime = 0f;			  //현재 시간
-	private float fReflectRoutineTime = 5f;	  	  //반사 주기 시간 (5초마다 바뀐다)
+	public float fReflectRoutineTime = 5f;	  	  //반사 주기 시간 (5초마다 바뀐다)
 	private float fReflectMaxTime = 10f;
 
 	public int nCurLevel = 0;
@@ -125,6 +125,10 @@ public class BossMusic : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
+			if (fReflectRoutineTime <= 1.0f)
+				fReflectRoutineTime = 1.0f;
+			
+
 			//반사 타이머
 			fCurReflectTime += Time.deltaTime;
 			//Debug.Log ("fCurReflectTime = " + fCurReflectTime); 
@@ -142,7 +146,7 @@ public class BossMusic : BossCharacter
 			//NonReflect
 			if (fCurReflectTime < fReflectRoutineTime && isSwitch == false && isReflect == false) 
 			{
-				
+				//Debug.Log ("노말 상태");
 			}
 
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == false && isReflect == false ) 
@@ -156,7 +160,7 @@ public class BossMusic : BossCharacter
 			//Reflect
 			if (fCurReflectTime >= fReflectRoutineTime && isSwitch == true && isReflect == true) 
 			{
-				//Debug.Log ("반사 상태!");
+				//Debug.Log ("반사 상태");
 			}
 				
 
@@ -196,6 +200,8 @@ public class BossMusic : BossCharacter
 		
 		while (true)
 		{
+			if (fReflectRoutineTime <= 1.0f)
+				fReflectRoutineTime = 1.0f;
 			fRandomXPos = bossWeapon.transform.position.x;
 			fRandomYPos = bossWeapon.transform.position.y;
 		
@@ -209,14 +215,6 @@ public class BossMusic : BossCharacter
 
 			//반사 타이머
 			fCurReflectTime += Time.deltaTime;
-
-			//최대 시간에 도달하면 초기화
-			if (fCurReflectTime >= fReflectMaxTime) 
-			{
-				isSwitch = false;
-				isReflect = false;
-				fCurReflectTime = 0f;
-			}
 
 			//최대 시간에 도달하면 초기화
 			if (fCurReflectTime >= fReflectMaxTime) 
@@ -272,6 +270,11 @@ public class BossMusic : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE02]);
 		while (true)
 		{
+
+			if (fReflectRoutineTime <= 1.0f)
+				fReflectRoutineTime = 1.0f;
+
+
 			fRandomXPos = bossWeapon.transform.position.x;
 			fRandomYPos = bossWeapon.transform.position.y;
 
@@ -352,6 +355,8 @@ public class BossMusic : BossCharacter
 		repairObj.bossWeaponAnimator.SetBool ("isPhase00", false);
 		repairObj.bossWeaponAnimator.Play ("BossIdle");
 
+
+
 		while (true)
 		{
 			
@@ -380,6 +385,7 @@ public class BossMusic : BossCharacter
 
 
 					bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+					repairObj.ShowBreakWeapon ();
 					repairObj.SetFinishBoss ();									//수리 패널 초기화
 					
 					break;
@@ -487,6 +493,7 @@ public class BossMusic : BossCharacter
 		noteObj.parentTransform = bossNoteRespawnPoint;
 		noteObj.fTime = nContinueTime;
 		noteObj.repairObj = repairObj;
+		noteObj.bossMusic = this;
 		noteObj.StartNoteObjMove ();
 		fTime = 0f;
 

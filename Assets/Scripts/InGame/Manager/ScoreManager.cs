@@ -30,6 +30,8 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+	public PlayerDaysInfo playerDaysInfo;
+
     public Text goldText;
 	public Text honorText;
 
@@ -82,6 +84,18 @@ public class ScoreManager : MonoBehaviour
 		m_fGetHonor += _fValue;
 
 		honorText.text = GetCurrentcyIntoString (m_fGetHonor);
+	}
+
+	public void SetCurrentDays(int _Days)
+	{
+		playerDaysInfo.CurrentDaysText.text = string.Format ("{0}", _Days);
+		GameManager.Instance.player.SetDay (_Days);
+	}
+
+	public void SetMaxDays(int _Days)
+	{
+		playerDaysInfo.MaxDaysText.text = string.Format ("{0}", _Days);
+		GameManager.Instance.player.SetMaxDay (_Days);
 	}
 
 }

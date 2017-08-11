@@ -54,6 +54,8 @@ public class BossCreator : MonoBehaviour
 	private int maxLevel = 100;	//최대래벨
 	private int minLevel = 1;	//최소래벨
 
+
+
 	private int nBossIndex =0; 
 
 	void Awake()
@@ -171,8 +173,6 @@ public class BossCreator : MonoBehaviour
 
 		if (_index == (int)E_BOSSNAME.E_BOSSNAME_ICE) 
 		{
-			nBossIceLeftCount--;	//해당보스의 횟수 차감
-
 			//보스 리스트에서 해당 보스의 정보와 보스를 셋팅 한다.
 			BossIce bossIce = bossList[0].GetComponent<BossIce> ();
 

@@ -270,6 +270,8 @@ public class BossIce : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
 		animator.SetBool ("isDisappear", true);
 
+	
+
 		while (true)
 		{
 			yield return new WaitForSeconds (1.0f);
@@ -303,6 +305,8 @@ public class BossIce : BossCharacter
 				repairObj.bossWeaponAnimator.Play ("IceWeapon");
 
 				bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+				//Weapon 터지는 효과
+				repairObj.ShowBreakWeapon ();
 				repairObj.SetFinishBoss ();		//수리 패널 초기화
 
 				break;
@@ -319,6 +323,7 @@ public class BossIce : BossCharacter
 
 
 		ActiveTimer ();
+
 		while (true) 
 		{
 			//확인버튼을 누르면 피니쉬로 넘어간다

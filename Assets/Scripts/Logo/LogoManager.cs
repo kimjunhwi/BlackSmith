@@ -17,8 +17,8 @@ public class LogoManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void Update () 
+	{
         if(bIsSuccessed == true)
         {
 			Debug.Log("Successed");

@@ -14,7 +14,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 	public SimpleObjectPool noteObjPull;		//해당 오브젝트 풀
 	public RectTransform parentTransform;		
 	private RectTransform myRectTransform;		
-	private BossMusic bossMusic;
+	public BossMusic bossMusic;
 	public RepairObject repairObj;
 	public GameObject bossWeapon_Obj;
 	//private;
@@ -134,6 +134,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2_Left.transform.localScale = Vector3.one;
 		note2_Left.transform.position = new Vector3 (gameObject.transform.position.x - 40f, gameObject.transform.position.y,
 			gameObject.transform.position.z);
+		
 
 		//예외 처리
 		//left
@@ -154,6 +155,7 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.parentTransform = parentTransform;
 		note2Obj.repairObj = repairObj;
 		note2Obj.StartNoteObjMove ();
+		note2Obj.bossMusic = bossMusic;
 
 
 
@@ -184,7 +186,8 @@ public class NoteObject : MonoBehaviour  ,IPointerDownHandler
 		note2Obj.parentTransform = parentTransform;
 		note2Obj.repairObj = repairObj;
 		note2Obj.StartNoteObjMove ();
-		//repairObj.AddBossWeaponSpeed (fBossSpeed * (fDecreaseWeaponSpeedRate / 2));
+		note2Obj.bossMusic = bossMusic;
+
 		bossMusic.IncreaseRefectionTime (0.5f);
 		bossMusic.nNoteCount--;
 	}

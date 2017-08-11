@@ -258,6 +258,8 @@ public class BossFire : BossCharacter
 		//Animator Bool change
 		animator.SetBool ("isDisappear", true);
 
+	
+
 		//사라지는 애니메이션이 끝날때 까지 기달인다.
 		while (true) 
 		{
@@ -284,6 +286,8 @@ public class BossFire : BossCharacter
 
 					Debug.Log ("Finish Boss");
 					bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
+					//Weapon 터지는 효과
+					repairObj.ShowBreakWeapon ();
 					repairObj.SetFinishBoss ();									//수리 패널 초기화
 
 

@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class WeaponButton : MonoBehaviour {
+public class WeaponButton : MonoBehaviour 
+{
 
 	public RepairObject repairObject;
 

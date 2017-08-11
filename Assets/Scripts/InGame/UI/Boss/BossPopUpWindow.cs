@@ -268,7 +268,6 @@ public class BossPopUpWindow : MonoBehaviour
 			RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [_bossWeaponIndex01].strResource);
 			GameManager.Instance.player.inventory.inventorySlots [GameManager.Instance.bossWeaponInfo [_bossWeaponIndex01].nSlotIndex].AddItem
 			(GameManager.Instance.bossWeaponInfo [_bossWeaponIndex01]);
-
 		}
 
 		float nRandom_Weapon02 = Random.Range (0f, 1f);	
@@ -283,7 +282,6 @@ public class BossPopUpWindow : MonoBehaviour
 			RewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (GameManager.Instance.bossWeaponInfo [_bossWeaponIndex02].strResource);
 			GameManager.Instance.player.inventory.inventorySlots [GameManager.Instance.bossWeaponInfo [_bossWeaponIndex02].nSlotIndex].AddItem
 			(GameManager.Instance.bossWeaponInfo [_bossWeaponIndex02]);
-
 		}
 		//Gold
 		GameObject Gold = rewardObjPool.GetObject ();

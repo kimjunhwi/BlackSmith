@@ -16,6 +16,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 
 
 	public RepairObject repairObj;
+	public BossMusic bossMusic;
 
 	//private;
 	public float fTime;
@@ -110,7 +111,10 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 		getInfoGameObject = eventData.pointerEnter;
 
 		if (getInfoGameObject.gameObject.name == "Note2")
+		{
 			note2ObjPull.ReturnObject (getInfoGameObject);
+			bossMusic.DecreaseRefectionTime (0.25f);
+		}
 		else
 			return;
 	}
@@ -186,5 +190,6 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	{
 		//StopCoroutine (NoteObjMove ());
 		note2ObjPull.ReturnObject (gameObject);
+		bossMusic.DecreaseRefectionTime (0.25f);
 	}
 }

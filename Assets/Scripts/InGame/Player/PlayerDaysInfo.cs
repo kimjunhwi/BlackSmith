@@ -33,6 +33,7 @@ public class PlayerDaysInfo : MonoBehaviour , IPointerDownHandler
 		if (getInfoGameObject.gameObject == null)
 			return;
 
+		//MaxDay
 		if (getInfoGameObject.gameObject.name == "CurrentDaysText" || 
 			getInfoGameObject.gameObject.name == "DayText") 
 		{
@@ -40,7 +41,7 @@ public class PlayerDaysInfo : MonoBehaviour , IPointerDownHandler
 		
 
 			CurrentDaysText.text = "";
-			MaxDaysText.text = player.GetDay ().ToString ();
+			MaxDaysText.text = player.GetMaxDay ().ToString ();
 
 
 			CurrentDaysPanel.SetActive (false);
@@ -49,6 +50,7 @@ public class PlayerDaysInfo : MonoBehaviour , IPointerDownHandler
 
 		}
 
+		//CurDay
 		if (getInfoGameObject.gameObject.name == "MaxDaysText"|| 
 			getInfoGameObject.gameObject.name == "DayText") 
 		{

@@ -228,6 +228,8 @@ public class BossSasin : BossCharacter
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_END]);
 		animator.SetBool ("isDisappear", true);
 
+
+
 		yield return new WaitForSeconds (1.0f);
 		eCureentBossState = EBOSS_STATE.RESULT;
 		if (eCureentBossState == EBOSS_STATE.RESULT) 
@@ -245,8 +247,11 @@ public class BossSasin : BossCharacter
 			animator.SetBool ("isBackGroundChanged", false);	
 			animator.Play ("BossIdle");
 
+			//배경 초기화 
+			bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 
-
+			//Weapon 터지는 효과
+			repairObj.ShowBreakWeapon ();
 			repairObj.SetFinishBoss ();									//수리 패널 초기화
 
 		}
@@ -295,8 +300,6 @@ public class BossSasin : BossCharacter
 	{
 		yield return null;
 
-		//배경 초기화 
-		bossBackGround.StartReturnBossBackGroundToBackGround ();	//배경 초기화
 
 		//혹시나 도는 코루틴들 종료
 		StopCoroutine (BossSkillStandard ());

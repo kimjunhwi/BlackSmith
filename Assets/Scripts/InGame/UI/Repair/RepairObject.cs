@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class RepairObject : MonoBehaviour{
-
-
-    public Slider ComplateSlider;
+public class RepairObject : MonoBehaviour
+{
+	public Slider ComplateSlider;
     public Slider TemperatureSlider;
     public Slider WaterSlider;
 
@@ -134,6 +133,11 @@ public class RepairObject : MonoBehaviour{
 	private const int nEnableTime = 2;
 	public SimpleObjectPool damageTextPool;
 
+	//WeaponBoom
+	public GameObject weaponBoomTransform;
+	//WeaponShake
+	public BossWeaponShake bossWeaponShake;
+	public WeaponShakeIt normalWeaponShake;
 
 	void Start()
 	{
@@ -373,20 +377,11 @@ public class RepairObject : MonoBehaviour{
                     }
                     else
                     {
-						//터지는 파티클
-                        GameObject obj = BreakBoomPool.Instance.GetObject();
-
-						obj.transform.SetParent(CanvasTransform,false);
-
-                        obj.GetComponent<BreakBoomParticle>().Play();
-
-						GameObject BoomObject = TemperatureBoomPool.Instance.GetObject();
-
-						BoomObject.transform.SetParent(CanvasTransform,false);
-
-						BoomObject.GetComponent<TemperatureBoomParticle>().Play();
-
-                        SpawnManager.Instance.ComplateCharacter(AfootObject, fCurrentComplate);
+						if (bossCharacter == null)
+						{
+							//터지는 파티클
+							ShowBreakWeapon ();
+						}
                     }
 				}
 			}
@@ -411,7 +406,7 @@ public class RepairObject : MonoBehaviour{
 				fWaterSlideTime += Time.deltaTime;
 				WaterSlider.value = Mathf.Lerp (WaterSlider.value, fCurrentWater, fWaterSlideTime);
 
-				if(WaterSlider.value > fUseWater)
+				if (fCurrentWater >= fMaxTemperature * 0.3f)
 				{
 					waterPaching.SetActive (true);
 				}
@@ -430,6 +425,23 @@ public class RepairObject : MonoBehaviour{
 				ComplateText.text = string.Format("{0:####} / {1}", ComplateSlider.value, ComplateSlider.maxValue);
 			}
 		}
+	}
+
+	public void ShowBreakWeapon()
+	{
+		//터지는 파티클
+		GameObject obj = BreakBoomPool.Instance.GetObject ();
+		obj.transform.SetParent (weaponBoomTransform.transform, false);
+
+		obj.GetComponent<BreakBoomParticle> ().Play ();
+
+		GameObject BoomObject = TemperatureBoomPool.Instance.GetObject ();
+
+		BoomObject.transform.SetParent (weaponBoomTransform.transform, false);
+
+		BoomObject.GetComponent<TemperatureBoomParticle> ().Play ();
+
+		SpawnManager.Instance.ComplateCharacter (AfootObject, fCurrentComplate);
 	}
 
 	IEnumerator OneSecondPlay()
@@ -603,12 +615,11 @@ public class RepairObject : MonoBehaviour{
     //무기터치
 	public void TouchWeapon(Vector3 _position)
     {
-
         if (weaponData == null)
 			return;
 
         Debug.Log("Touch");
-
+		normalWeaponShake.Shake (12.0f, 0.12f);
         fComplateSlideTime = 0.0f;
 
         //피버일경우 크리 데미지로 완성도를 증가시킴
@@ -731,10 +742,14 @@ public class RepairObject : MonoBehaviour{
 
 	public void TouchBossWeapon()
 	{
+		
 		if (bossCharacter == null)
 			return;
+
+		bossWeaponShake.Shake (12.0f, 0.12f);
 		//Ice
-		if (bossCharacter.nIndex == 0) { 
+		if (bossCharacter.nIndex == 0)
+		{ 
 			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) ;
 				//Debug.Log ("IcePhase00");
 			
@@ -751,6 +766,7 @@ public class RepairObject : MonoBehaviour{
 				else
 				{
 					//Debug.Log ("Nor!!!!");
+				
 					m_PlayerAnimationController.UserNormalRepair ();
 					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
 				}
@@ -982,9 +998,8 @@ public class RepairObject : MonoBehaviour{
 		if (weaponData == null)
 			return;
 
-		if (fCurrentTemperature >= fMaxTemperature * 0.3f)
+		if (fCurrentWater >= fMaxTemperature * 0.3f)
 			fWeaponDownTemperature = fMaxTemperature * 0.3f;
-		
 		else
 			return;
 
@@ -995,12 +1010,15 @@ public class RepairObject : MonoBehaviour{
 
 		fCurrentWater -= fMaxTemperature * 0.3f;
 
-		if (fCurrentWater < 0)
+		if (fCurrentWater < 0) {
 			fCurrentWater = 0;
+		}
 
+
+		//때리는 장비의 물수치 5% + 플레이어가 장비하고 있는 무기 물수치의 5%
+		float	 resultWaterValue =  (weaponData.fMinusUseWater * 0.01f);
 		Debug.Log ("Before fCurrent : " + fCurrentComplate);          
-
-		fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () - weaponData.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
+		fCurrentComplate += fWeaponDownTemperature + (fWeaponDownTemperature  * ( resultWaterValue ) );
 
 		Debug.Log ("After fCurrent : " + fCurrentComplate);     
 
@@ -1045,8 +1063,8 @@ public class RepairObject : MonoBehaviour{
 						noteObj = noteGameObject.gameObject.GetComponent<NoteObject> ();
 						noteObj.CreateNote ();
 					} 
-					else if
-						(bossNoteRectTransform.transform.GetChild (0).name == "Note2") {
+					else if(bossNoteRectTransform.transform.GetChild (0).name == "Note2") 
+					{
 						noteGameObject = bossNoteRectTransform.transform.GetChild (0);
 						note2Obj = noteGameObject.gameObject.GetComponent<Note2Object> ();
 						note2Obj.EraseObj ();
@@ -1072,16 +1090,34 @@ public class RepairObject : MonoBehaviour{
 			Debug.Log ("TouchBossWater!!");
 			//bossWaterCat_animator.SetBool ("isTouchWater", true);
 
+			if (fCurrentWater >= fMaxTemperature * 0.3f)
+				fWeaponDownTemperature = fMaxTemperature * 0.3f;
+
+			else
+				return;
+
+			fCurrentTemperature -= fMaxTemperature * 0.3f;
+
+			if (fCurrentTemperature < 0)
+				fCurrentTemperature = 0;
+
+			fCurrentWater -= fMaxTemperature * 0.3f;
+
+			if (fCurrentWater < 0)
+				fCurrentWater = 0;
+
+			//플레이어가 장비하고 있는 무기 물수치의 5%
+			//if(bossCharacter.bossInfo.nIndex == 2)
+			//	fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () -  bossCharacter.bossInfo.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
+			//else
+			//	fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () -  bossCharacter.bossInfo.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
+
+			Debug.Log ("TouchWater!!");
+			//bossWaterCat_animator.SetBool ("isTouchWater", true);
+
 			isTouchWater = true;
 
-			fMinusTemperature = (fMaxTemperature * 0.3f) * (1 + fWeaponDownTemperature);
-
-			fMinusWater = ((1 + (fCurrentComplate / fMinusTemperature) * fWeaponDownDamage) * (1 + (fUseWater * 0.01f) + fWeaponDownTemperature));
-
-			fCurrentWater -= fMinusTemperature;
-			fCurrentTemperature -= fMinusTemperature;
-
-			fCurrentComplate += fMinusWater;
+			SpawnManager.Instance.UseWater ();
 
 			WaterSlider.value = fCurrentWater;
 
@@ -1158,8 +1194,7 @@ public class RepairObject : MonoBehaviour{
 
 	public void SetFinishBoss()
 	{
-		bossIce = null;
-		bossMusic = null;
+		
 
 		bossWeaponObject.transform.position = bossWeaponObjOriginPosition;
 		bossWeaponRectTransform.sizeDelta = bossWeaponObjOriginSize;
@@ -1227,5 +1262,10 @@ public class RepairObject : MonoBehaviour{
 			}
 			isMoveWeapon = false;
 		}
+
+		bossCharacter = null;
+
+		bossIce = null;
+		bossMusic = null;
 	}
 }

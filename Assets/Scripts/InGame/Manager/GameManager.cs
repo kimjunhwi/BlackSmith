@@ -1676,6 +1676,10 @@ public class CGameEquiment
 		bIsEquip = _equimentData.bIsEquip;
 
 	}
+
+	public virtual string GetExplain(){
+		return "";
+	}
 }
 
 
@@ -2035,6 +2039,11 @@ public class Boss
 public class BossWeapon : CGameEquiment
 {
 	public string explain;
+
+	public override string GetExplain ()
+	{
+		return explain;
+	}
 }
 
 [System.Serializable]

@@ -124,7 +124,7 @@ public class InventoryShowPanel : MonoBehaviour {
 		}
 	}
 
-	public void SetUp(CGameEquiment _equiment)
+	public void SetUp(CGameEquiment _equiment,string strExplain = null)
 	{
 		ItemData = _equiment;
 
@@ -144,7 +144,10 @@ public class InventoryShowPanel : MonoBehaviour {
 
 		else
 			EnhanceCostText.text = enhanceData [ItemData.nStrenthCount].nHonorCost.ToString();
-		
+
+		if (strExplain != null)
+			CreateText (strExplain, 0f);
+
 
 		gameObject.SetActive (true);
 	}
@@ -156,7 +159,12 @@ public class InventoryShowPanel : MonoBehaviour {
 		textObject.transform.localScale = Vector3.one;
 
 		Text newText = textObject.GetComponent<Text>();
-		newText.text = string.Format("{0} {1}",  strName , nValue.ToString());
+
+		if(nValue == 0.0f)
+			newText.text = string.Format("{0}",  strName);
+
+		else
+			newText.text = string.Format("{0} {1}",  strName , nValue.ToString());
 	}
 
 

@@ -50,7 +50,6 @@ public class Player
 		changeStats.fRepairPower = _fValue;  
 
 		SetRepairPower ();
-
 	}
 
 	public float GetArbaitRepairPower() {return changeStats.fArbaitsPower;}
@@ -82,6 +81,9 @@ public class Player
 
     public int GetDay() { return changeStats.nDay; }
     public void SetDay(int _nValue) { changeStats.nDay = _nValue; }
+
+	public int GetMaxDay() { return changeStats.nMaxDay; }
+	public void SetMaxDay(int _nValue) { changeStats.nMaxDay = _nValue; }
 
     public int GetGuestCount() { return changeStats.nGuestCount; }
 
