@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ReadOnlys;
 
 public class Shop : MonoBehaviour {
 
@@ -128,8 +129,8 @@ public class Shop : MonoBehaviour {
         resultEquiment.strName = getEquiment.strName;
         resultEquiment.nSlotIndex = getEquiment.nSlotIndex;
         resultEquiment.strResource = getEquiment.strResource;
-		/*
-		int nLength = resultEquiment.sGrade;
+
+		int nLength = GetGradeAmount( resultEquiment.sGrade);
 
         int nInsertIndex = 0;
 
@@ -140,7 +141,7 @@ public class Shop : MonoBehaviour {
             if (CheckData(resultEquiment, nInsertIndex))
                 nLength--;
         }
-		*/
+
         return resultEquiment;
     }
 
@@ -244,6 +245,27 @@ public class Shop : MonoBehaviour {
 
         return false;
     }
+
+	public int GetGradeAmount(string strGrade)
+	{
+		switch (strGrade) 
+		{
+		case "C":
+			return 1;
+			break;
+		case "B":
+			return 2;
+			break;
+		case "A":
+			return 3;
+			break;
+		case "S":
+			return 4;
+			break;
+		}
+
+		return 0;
+	}
 
     //void OnDisable()
     //{

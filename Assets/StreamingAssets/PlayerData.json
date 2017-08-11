@@ -1,1 +1,35 @@
-{"list":[{"strName":"player","fRepairPower":5.0,"fTemperatureMinus":0.0,"fArbaitsPower":0.0,"fHornorPlusPercent":0.0,"fGold":0.0,"fGoldPlusPercent":0.0,"fWaterPlus":3.0,"fMaxWaterPlus":100.0,"fCriticalChance":0.0,"fCriticalDamage":0.0,"fBigSuccessed":1.0,"fAccuracyRate":100.0,"nBlackSmithLevel":1,"nEnhanceRepaireLevel":1,"nEnhanceMaxWaterLevel":0,"nEnhanceWaterPlusLevel":0,"nEnhanceAccuracyRateLevel":0,"nEnhanceCriticalLevel":0,"nEnhanceArbaitLevel":0,"nSasinMaterial":0,"nRusiuMaterial":0,"nIceMaterial":0,"nFireMaterial":0,"nDay":1,"nGuestCount":0}]}
+{
+  "list": [
+    {
+      "strName": "player",
+      "fRepairPower": 10.0,
+      "fTemperatureMinus": 0.0,
+      "fArbaitsPower": 0.0,
+      "fHornorPlusPercent": 0.0,
+      "fGold": 0.0,
+      "fGoldPlusPercent": 0.0,
+      "fWaterPlus": 1,
+      "fMaxWaterPlus": 100.0,
+      "fCriticalChance": 0.0,
+      "fCriticalDamage": 0.0,
+      "fBigSuccessed": 1.0,
+      "fAccuracyRate": 100.0,
+      "nBlackSmithLevel": 1,
+      "nEnhanceRepaireLevel": 0,
+      "nEnhanceMaxWaterLevel": 0,
+      "nEnhanceWaterPlusLevel": 0,
+      "nEnhanceAccuracyRateLevel": 0,
+      "nEnhanceCriticalLevel": 0,
+      "nEnhanceArbaitLevel": 0,
+      "nSasinMaterial": 0,
+      "nRusiuMaterial": 0,
+      "nIceMaterial": 0,
+      "nFireMaterial": 0,
+      "nDay": 1,
+	"nMaxDay" : 1,
+"nFaieldGuest" :0,
+"nSuccessedGuest" : 0,
+      "nGuestCount": 0
+    }
+  ]
+}
