@@ -189,6 +189,7 @@ public class BossCreator : MonoBehaviour
 			bossIce.uiDisable = uiDisable;
 			bossIce.uiManager = uiManager;
 			bossIce.bossPanel = bossPanel;
+			bossIce.nCurLevel = bossElementList [0].curLevel;
 
 			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "저... 무기좀... 고쳐주세요";
 			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "흐으음~~~";
@@ -219,6 +220,7 @@ public class BossCreator : MonoBehaviour
 			bossSasin.uiDisable = uiDisable;
 			bossSasin.uiManager = uiManager;
 			bossSasin.bossPanel = bossPanel;
+			bossSasin.nCurLevel = bossElementList [1].curLevel;
 
 			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "내가 사신이지롱";
 			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "나 화났어 ㅡ,ㅡ";
@@ -253,6 +255,8 @@ public class BossCreator : MonoBehaviour
 			bossFire.uiDisable = uiDisable;
 			bossFire.uiManager = uiManager;
 			bossFire.bossPanel = bossPanel;
+			bossFire.nCurLevel = bossElementList [2].curLevel;
+
 
 			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "Fire~~~";
 			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "흐으음~~~";
@@ -286,6 +290,8 @@ public class BossCreator : MonoBehaviour
 			bossMusic.uiDisable = uiDisable;
 			bossMusic.uiManager = uiManager;
 			bossMusic.bossPanel = bossPanel;
+			bossMusic.nCurLevel = bossElementList [3].curLevel;
+
 
 			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "소리 질러~!";
 			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "Whoh~";

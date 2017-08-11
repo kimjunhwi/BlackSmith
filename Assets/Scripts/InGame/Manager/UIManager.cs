@@ -26,8 +26,9 @@ public class UIManager : MonoBehaviour
 			//보스 패널 닫을시 시간 저장 
 			if (nIndex == 3)
 			{
-				bossCreator.bossConsumeItemInfo.BossInviteMentSaveTime ();
-				bossCreator.bossConsumeItemInfo.bossRegenTimer.BossRegenTimeSave ();
+				//bossCreator.bossConsumeItemInfo.BossInviteMentSaveTime ();
+				//bossCreator.bossConsumeItemInfo.bossRegenTimer.BossRegenTimeSave ();
+				bossCreator.BossPanelInfoSave ();
 			}
 			uiPanels [nIndex].SetActive (false);
 

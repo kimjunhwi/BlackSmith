@@ -543,6 +543,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	}
 
 
+
 	public int FreezeArbait()
 	{
 		list_FreeazeCharacter.Clear ();
@@ -578,6 +579,48 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 				checkList.Add (array_ArbaitData[i].nBatchIndex);
 		}
 	}
+
+	public void Active_IcePassive02()
+	{
+		Debug.Log ("Active_IcePassive02");
+		for (int i = 0; i < m_BatchArbait.Length; i++)
+		{
+			if (m_BatchArbait [i].activeSelf) 
+				array_ArbaitData [i].SetAttackSpeed (0.5f);
+			
+		}
+	}
+
+	public void DeActive_IcePassive02()
+	{
+		Debug.Log ("DeActive_IcePassive02");
+		for (int i = 0; i < m_BatchArbait.Length; i++)
+		{
+			if (m_BatchArbait [i].activeSelf) 
+				array_ArbaitData [i].SetAttackSpeed (1.0f);
+		}
+	}
+
+	public void Active_MusicPassive01()
+	{
+		Debug.Log ("Active_MusicPassive02");
+		for (int i = 0; i < m_BatchArbait.Length; i++)
+		{
+			if (m_BatchArbait [i].activeSelf) 
+				array_ArbaitData [i].SetArbaitRepair (0.5f);
+		}
+	}
+
+	public void DeActive_MusicPassive01()
+	{
+		Debug.Log ("DeActive_MusicPassive02");
+		for (int i = 0; i < m_BatchArbait.Length; i++)
+		{
+			if (m_BatchArbait [i].activeSelf) 
+				array_ArbaitData [i].SetArbaitRepair (1.0f);
+		}
+	}
+
 
 	public bool FreezeArbaitCheck()
 	{

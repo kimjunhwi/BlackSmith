@@ -20,6 +20,10 @@ public class BossSasin : BossCharacter
 	private GameObject Skull;
 	private float fTime = 0f;
 
+	public int nCurLevel = 0;
+
+
+
 	private void Start()
 	{
 		skullObjectPool = GameObject.Find ("SkullPool").GetComponent<SimpleObjectPool> ();
@@ -73,7 +77,15 @@ public class BossSasin : BossCharacter
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) 
 				{
 					//무기 이미지 추가
-					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					if (nCurLevel >= 2)
+					{
+						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache (sBossWeaponSprite), bossInfo.fComplate +
+							(bossInfo.fComplate  * 0.05f) * nCurLevel - 1, 0, 0, this);
+					} 
+					else 
+					{
+						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					}
 					//타이머 시작
 					ActiveTimer ();
 					//보스가 소환되는 도중에 무기 패널을 터치하면 보스 creator가 꺼지므로 소환중일때는 막아놓는다. 

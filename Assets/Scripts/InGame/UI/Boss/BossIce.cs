@@ -18,6 +18,10 @@ public class BossIce : BossCharacter
 	public GameObject[] iceWall_Arbait_Defreeze;		//풀리는 animation
 	public bool[] isIceWall_ArbaitOn;
 
+	public int nCurLevel = 0;
+
+
+
 	private void Start()
 	{
 		animator = gameObject.GetComponent<Animator> ();
@@ -72,7 +76,17 @@ public class BossIce : BossCharacter
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) 
 				{
-					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					
+					if (nCurLevel >= 2)
+					{
+						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache (sBossWeaponSprite), bossInfo.fComplate +
+							(bossInfo.fComplate  * 0.05f) * nCurLevel - 1, 0, 0, this);
+					} 
+					else 
+					{
+						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					}
+
 					ActiveTimer ();
 					uiDisable.isBossSummon = false;
 					break;
@@ -186,6 +200,8 @@ public class BossIce : BossCharacter
 
 	protected override IEnumerator BossSKill_02 ()
 	{
+		SpawnManager.Instance.Active_IcePassive02 ();
+
 		repairObj.bossWeaponAnimator.SetBool ("isPhase01", true);
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE02]);
 		while (true)
@@ -410,6 +426,7 @@ public class BossIce : BossCharacter
 			fIceWallArbaitTimer = 0f;
 		}
 	}
+		
 
 	public void DefreezeAllArbait()
 	{

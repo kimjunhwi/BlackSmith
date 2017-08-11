@@ -602,4 +602,9 @@ public class ArbaitBatch : MonoBehaviour {
 	{
 		m_fRepairTime = m_CharacterChangeData.fAttackSpeed * _fValue;
 	}
+
+	public void SetArbaitRepair(float _fValue)
+	{
+		fRepairDownPercent = fRepairDownPercent * _fValue;
+	}
 }

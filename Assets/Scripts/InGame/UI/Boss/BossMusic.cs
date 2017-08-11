@@ -30,6 +30,10 @@ public class BossMusic : BossCharacter
 	private float fReflectRoutineTime = 5f;	  	  //반사 주기 시간 (5초마다 바뀐다)
 	private float fReflectMaxTime = 10f;
 
+	public int nCurLevel = 0;
+
+
+
 	private void Start()
 	{
 		noteObjectPool = GameObject.Find ("NotePool").GetComponent<SimpleObjectPool> ();
@@ -83,7 +87,15 @@ public class BossMusic : BossCharacter
 
 				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
 					
-					repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					if (nCurLevel >= 2)
+					{
+						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache (sBossWeaponSprite), bossInfo.fComplate +
+							(bossInfo.fComplate  * 0.05f) * nCurLevel - 1, 0, 0, this);
+					} 
+					else 
+					{
+						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache(sBossWeaponSprite), bossInfo.fComplate, 0, 0, this);
+					}
 					repairObj.bossWeaponAnimator.SetBool ("isBackGroundChanged", true);
 					ActiveTimer ();
 					uiDisable.isBossSummon = false;
@@ -170,6 +182,8 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossSkill_01 ()
 	{
+		//Music01 Passive
+		SpawnManager.Instance.Active_MusicPassive01 ();
 		nNoteMaxCount = 4;
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_PHASE01]);
 		bossEffect.ActiveEffect (BOSSEFFECT.BOSSEFFECT_RUCIOVOLUMEUP);
@@ -177,8 +191,8 @@ public class BossMusic : BossCharacter
 		repairObj.bossWeaponAnimator.SetBool ("isPhase00", true);
 		isStandardPhaseFailed = false;
 
-		if(repairObj.isMoveWeapon == false)
-			repairObj.StartBossMusiceWeaponMove();
+		//if(repairObj.isMoveWeapon == false)
+		//	repairObj.StartBossMusiceWeaponMove();
 		
 		while (true)
 		{
