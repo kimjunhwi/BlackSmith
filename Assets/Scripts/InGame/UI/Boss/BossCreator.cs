@@ -135,6 +135,10 @@ public class BossCreator : MonoBehaviour
 	{
 		Debug.Log ("보스 CreateInit");
 		uiDisable.isBossSummon = true;
+
+		//ChangeSound
+		SoundManager.instance.ChangeBGM(eSoundArray.BGM_Main, eSoundArray.BGM_BossBattle);
+
 		//bossWeaponBlock_Obj.SetActive (true);
 		SpawnManager.Instance.cameraShake.Shake (0.1f, 1.0f);
 

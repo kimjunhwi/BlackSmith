@@ -318,7 +318,8 @@ public class BossIce : BossCharacter
 	protected override IEnumerator BossResult ()
 	{
 		Debug.Log ("BossResult Active!!");
-
+		//ChangeSound
+		SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
 
 		ActiveTimer ();
 

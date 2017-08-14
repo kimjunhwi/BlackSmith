@@ -85,8 +85,8 @@ public class BossMusic : BossCharacter
 				else
 					yield return null;
 
-				if (eCureentBossState == EBOSS_STATE.PHASE_00) {
-					
+				if (eCureentBossState == EBOSS_STATE.PHASE_00)
+				{
 					if (nCurLevel >= 2)
 					{
 						repairObj.GetBossWeapon (ObjectCashing.Instance.LoadSpriteFromCache (sBossWeaponSprite), bossInfo.fComplate +
@@ -399,7 +399,8 @@ public class BossMusic : BossCharacter
 
 	protected override IEnumerator BossResult ()
 	{
-
+		//ChangeSound
+		SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
 		Debug.Log ("BossResult Active!!");
 		ActiveTimer ();
 		while (true) 

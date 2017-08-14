@@ -758,7 +758,7 @@ public class RepairObject : MonoBehaviour
 		}
     }
 
-	public void TouchBossWeapon()
+	public void TouchBossWeapon(Vector3 _position)
 	{
 		
 		if (bossCharacter == null)
@@ -768,48 +768,105 @@ public class RepairObject : MonoBehaviour
 		//Ice
 		if (bossCharacter.nIndex == 0)
 		{ 
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) ;
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
+			{
 				//Debug.Log ("IcePhase00");
-			
-			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) 
+			}
+			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02)
 			{
 				//Debug.Log ("IcePhase01");
 				//크리티컬 확률 감소o
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
 					//Debug.Log ("Cri!!!");
+					GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+					obj.transform.SetParent (CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 					SpawnManager.Instance.PlayerCritical ();
-					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 1.5f;
+
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
 					m_PlayerAnimationController.UserCriticalRepair ();
-				} 
-				else
+
+
+
+				} else 
 				{
 					//Debug.Log ("Nor!!!!");
 				
-					m_PlayerAnimationController.UserNormalRepair ();
+					GameObject obj = NormalTouchPool.Instance.GetObject();
+
+					obj.transform.SetParent(CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<NormalTouchParticle>().Play();
+
+					m_PlayerAnimationController.UserNormalRepair();
+
+				
 					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
+
+					m_PlayerAnimationController.UserNormalRepair ();
+				
 				}
 
 				fCurrentTemperature += fMaxTemperature * 0.08f;
 				return;
 
-			}
+			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02)
 			{
 				//Debug.Log ("IcePhase02");
 				//아르바이트 공속 감소 들어가야함
 				//크리티컬 확률 감소o
-				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f))
-				{
+				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance () - 30.0f)) {
 					//Debug.Log ("Cri!!!");
+					GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+					obj.transform.SetParent (CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 					SpawnManager.Instance.PlayerCritical ();
-					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 1.5f;
+
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
 					m_PlayerAnimationController.UserCriticalRepair ();
-				} 
-				else
+				}
+				else 
 				{
 					//Debug.Log ("Nor!!!!");
+
+					GameObject obj = NormalTouchPool.Instance.GetObject();
+
+					obj.transform.SetParent(CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<NormalTouchParticle>().Play();
+
+					m_PlayerAnimationController.UserNormalRepair();
+
+					fCurrentComplate =  fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
 					m_PlayerAnimationController.UserNormalRepair ();
-					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
 				}
 
 				fCurrentTemperature += fMaxTemperature * 0.08f;
@@ -860,15 +917,46 @@ public class RepairObject : MonoBehaviour
 					//크리티컬 확률 
 					if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
 						Debug.Log ("Cri!!!");
+						GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+						obj.transform.SetParent (CanvasTransform, false);
+
+						obj.transform.position = _position;
+
+						obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 						SpawnManager.Instance.PlayerCritical ();
-						fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+
+						fCurrentComplate = fCurrentComplate + ((player.GetRepairPower () * 1.5f) * 0.7f);
+
+						ShowDamage ((int)((player.GetRepairPower () * 1.5f) * 0.7f),_position);
+
 						m_PlayerAnimationController.UserCriticalRepair ();
+
 					}
 					else
 					{
 						Debug.Log ("Nor!!!!");
+
+						GameObject obj = NormalTouchPool.Instance.GetObject();
+
+						obj.transform.SetParent(CanvasTransform, false);
+
+						obj.transform.position = _position;
+
+						obj.GetComponent<NormalTouchParticle>().Play();
+
+						m_PlayerAnimationController.UserNormalRepair(); 
+
+					
+						fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 0.7f);
+
+						ShowDamage ((int)(player.GetRepairPower () * 0.7f),_position);
+
+
 						m_PlayerAnimationController.UserNormalRepair ();
-						fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
+
+					
 					}
 					fCurrentTemperature += fMaxTemperature * 0.08f;
 
@@ -908,13 +996,46 @@ public class RepairObject : MonoBehaviour
 				//Player의 기본 능력치에 따른 크리 and 노말 평타
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
 					//Debug.Log ("Cri!!!");
+
+
+					GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+					obj.transform.SetParent (CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<CriticalTouchParticle> ().Play ();
+
+
 					SpawnManager.Instance.PlayerCritical ();
-					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+
+
+
+					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f);
+
+					ShowDamage ((int)(player.GetRepairPower () * 1.5f),_position);
+
 					m_PlayerAnimationController.UserCriticalRepair ();
-				} else {
+				}
+				else 
+				{
 					//Debug.Log ("Nor!!!!");
+					GameObject obj = NormalTouchPool.Instance.GetObject();
+
+					obj.transform.SetParent(CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<NormalTouchParticle>().Play();
+
+					m_PlayerAnimationController.UserNormalRepair();
+
+					fCurrentComplate =  fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
+
 					m_PlayerAnimationController.UserNormalRepair ();
-					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 				}
 
 
@@ -927,13 +1048,41 @@ public class RepairObject : MonoBehaviour
 				//Player의 기본 능력치에 따른 크리 and 노말 평타
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) {
 					//Debug.Log ("Cri!!!");
+					GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+					obj.transform.SetParent (CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 					SpawnManager.Instance.PlayerCritical ();
-					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+
+					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f);
+
+					ShowDamage ((int)(player.GetRepairPower () * 1.5f),_position);
+
+
 					m_PlayerAnimationController.UserCriticalRepair ();
+
 				} else {
 					//Debug.Log ("Nor!!!!");
+					GameObject obj = NormalTouchPool.Instance.GetObject();
+
+					obj.transform.SetParent(CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<NormalTouchParticle>().Play();
+
+					m_PlayerAnimationController.UserNormalRepair();
+
+					fCurrentComplate =  fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
+
 					m_PlayerAnimationController.UserNormalRepair ();
-					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 				}
 
 				fCurrentTemperature += (fMaxTemperature * 0.08f) + ((fMaxTemperature * 0.08f) * fSmallFirePlusTemperatrue);
@@ -969,13 +1118,39 @@ public class RepairObject : MonoBehaviour
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ()))
 				{
 					//Debug.Log ("Cri!!!");
+					GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+					obj.transform.SetParent (CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 					SpawnManager.Instance.PlayerCritical ();
-					fCurrentComplate = fCurrentComplate - (player.GetRepairPower () * 1.5f) * 0.7f;
+
+					fCurrentComplate = fCurrentComplate - (player.GetRepairPower () * 1.5f);
+
+					ShowDamage ((int)(player.GetRepairPower () * 1.5f),_position);
+
 					m_PlayerAnimationController.UserCriticalRepair ();
 				} else {
 					//Debug.Log ("Nor!!!!");
+					GameObject obj = NormalTouchPool.Instance.GetObject();
+
+					obj.transform.SetParent(CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<NormalTouchParticle>().Play();
+
+					m_PlayerAnimationController.UserNormalRepair();
+
+					fCurrentComplate =  fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
+
 					m_PlayerAnimationController.UserNormalRepair ();
-					fCurrentComplate = fCurrentComplate - player.GetRepairPower () * 0.7f;
 				}
 			}
 
@@ -985,13 +1160,43 @@ public class RepairObject : MonoBehaviour
 				if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ()))
 				{
 					//Debug.Log ("Cri!!!");
+					GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+					obj.transform.SetParent (CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 					SpawnManager.Instance.PlayerCritical ();
-					fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
+
 					m_PlayerAnimationController.UserCriticalRepair ();
-				} else {
+
+				} 
+				else
+				{
 					//Debug.Log ("Nor!!!!");
+					GameObject obj = NormalTouchPool.Instance.GetObject();
+
+					obj.transform.SetParent(CanvasTransform, false);
+
+					obj.transform.position = _position;
+
+					obj.GetComponent<NormalTouchParticle>().Play();
+
+					m_PlayerAnimationController.UserNormalRepair();
+
+					fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
+					ShowDamage ((int)player.GetRepairPower (),_position);
+
+
 					m_PlayerAnimationController.UserNormalRepair ();
-					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 				}
 			}
 				
@@ -1004,13 +1209,43 @@ public class RepairObject : MonoBehaviour
 		if (Random.Range (1, 100) <= Mathf.Round (player.GetCriticalChance ())) 
 		{
 			//Debug.Log ("Cri!!!");
+			GameObject obj = CriticalTouchPool.Instance.GetObject ();
+
+			obj.transform.SetParent (CanvasTransform, false);
+
+			obj.transform.position = _position;
+
+			obj.GetComponent<CriticalTouchParticle> ().Play ();
+
 			SpawnManager.Instance.PlayerCritical ();
-			fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f) * 0.7f;
+
+			fCurrentComplate = fCurrentComplate + (player.GetRepairPower () * 1.5f);
+
+			ShowDamage ((int)(player.GetRepairPower () * 1.5f),_position);
+
+
 			m_PlayerAnimationController.UserCriticalRepair ();
-		} else {
+		} 
+		else
+		{
 			//Debug.Log ("Nor!!!!");
+			GameObject obj = NormalTouchPool.Instance.GetObject();
+
+			obj.transform.SetParent(CanvasTransform, false);
+
+			obj.transform.position = _position;
+
+			obj.GetComponent<NormalTouchParticle>().Play();
+
+			m_PlayerAnimationController.UserNormalRepair();
+
+
+			fCurrentComplate = fCurrentComplate + player.GetRepairPower ();
+
+			ShowDamage ((int)player.GetRepairPower (),_position);
+
+
 			m_PlayerAnimationController.UserNormalRepair ();
-			fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 		}
 
 		fCurrentTemperature += fMaxTemperature * 0.08f;

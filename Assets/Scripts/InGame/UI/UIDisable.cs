@@ -9,6 +9,7 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 	public bool isBossSummon = false;				//보스 소환중
 	public BossConsumeItemInfo bossConumeItemInfo;
 	public BossCreator bossCreator;
+	public GameObject yesNoButton;
 
 	public void OnPointerDown (PointerEventData eventData)
 	{
@@ -24,7 +25,7 @@ public class UIDisable : MonoBehaviour, IPointerDownHandler
 		{
 			//보스 창이 닫히면 시간 저장
 			bossCreator.BossPanelInfoSave ();
-
+			yesNoButton.SetActive (false);
 			getInfoGameObject.SetActive (false);
 		}
 	}

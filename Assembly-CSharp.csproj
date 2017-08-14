@@ -128,6 +128,7 @@
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSmallFireObject.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTalkPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTimer.cs" />
+     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossWeaponButton.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossWeaponShake.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Bossweapon.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\Note2Object.cs" />

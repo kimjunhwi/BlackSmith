@@ -12,7 +12,7 @@ public class Cooltime
 public enum eSound : int
 {
 	bgm_main   = 101,
-	bgm_battle    = 102,
+	bgm_bossbattle    = 102,
 	snd_touchWeapon00 = 201,
 	snd_touchWeapon01 = 202,
 	snd_WeaponExplosion = 203,
@@ -21,9 +21,10 @@ public enum eSound : int
 public enum eSoundArray 
 {
 	BGM_Main = 0,
-	BGM_TouchWeapon00 = 1,
-	BGM_TouchWeapon01 = 2,
-	BGM_WeaponExplosion = 3,
+	BGM_BossBattle,
+	BGM_TouchWeapon00,
+	BGM_TouchWeapon01,
+	BGM_WeaponExplosion = 4,
 }
 
 public class SoundManager : MonoBehaviour 
@@ -62,7 +63,6 @@ public class SoundManager : MonoBehaviour
 
 	void Awake () 
 	{
-
 		DontDestroyOnLoad(this);		
 		//Debug.Log("CGameSnd Awake");		
 	}
@@ -72,6 +72,7 @@ public class SoundManager : MonoBehaviour
 	public void LoadSource()
 	{
 		AddSource((int)eSound.bgm_main, "Sound_BGM_Main");
+		AddSource ((int)eSound.bgm_bossbattle, "Sound_BGM_BossBattle");
 		AddSource((int)eSound.snd_touchWeapon00, "Sound_ES_TouchWeapon00");
 		AddSource((int)eSound.snd_touchWeapon01, "Sound_ES_TouchWeapon01");
 		AddSource((int)eSound.snd_WeaponExplosion, "Sound_ES_WeaponExplosion");
@@ -176,7 +177,21 @@ public class SoundManager : MonoBehaviour
 
 		return kGO;
 		*/
+	}
 
+	public void PlaySound(eSoundArray _index)
+	{
+		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
+		aSource.Play ();
+	}
+
+	public void ChangeBGM(eSoundArray _StopIndex, eSoundArray _StartIndex)
+	{
+		AudioSource aSource = SoundManager.instance.SoundArray [(int)_StopIndex].gameObject.GetComponent<AudioSource> ();
+		aSource.Stop ();
+
+		AudioSource sSource = SoundManager.instance.SoundArray [(int)_StartIndex].gameObject.GetComponent<AudioSource> ();
+		sSource.Play ();
 	}
 	/*
 	GameObject GetSource(int _index)
@@ -287,11 +302,7 @@ public class SoundManager : MonoBehaviour
 
 	// PlaySound  ---------------------------------------------------------------
 
-	public void PlaySound(eSoundArray _index)
-	{
-		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
-		aSource.Play ();
-	}
+
 
 	/*
 	public GameObject PlaySound(eSound _index )
