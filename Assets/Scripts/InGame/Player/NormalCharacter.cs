@@ -441,7 +441,6 @@ public class NormalCharacter : Character {
 
 			ScoreManager.ScoreInstance.GoldPlus (fGold);
 
-			cPlayerData.
 		}
 
 		m_bIsRepair = true;

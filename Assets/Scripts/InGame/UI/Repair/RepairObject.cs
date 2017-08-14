@@ -23,7 +23,7 @@ public class RepairObject : MonoBehaviour
 	float fTemperatureSlideTime = 0.0f;
 
 	private float fCurrentComplate = 0;				//현재완성도
-	private float fWeaponDownDamage ;		//현재무기 데미지
+	private float fWeaponDownDamage ;				//현재무기 데미지
     private float fWeaponDownTemperature = 0;		//무기 수리시 올라가는 온도
     private float fMaxTemperature;					//최대 온도
     private float fCurrentTemperature= 0;			//현재 온도

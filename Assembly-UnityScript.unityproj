@@ -69,13 +69,16 @@
      <None Include="Assets\Resources\Data\CgradeArbait.txt" />
      <None Include="Assets\Resources\Data\RepairEnhance.txt" />
      <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />
+     <None Include="Assets\Resources\Data\ArbaitEnhance2.txt" />
      <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
      <None Include="Assets\Resources\Data\ArbaitEnhance.txt" />
      <None Include="Assets\Resources\Data\Boss.txt" />
+     <None Include="Assets\Resources\Data\SmithEnhance2.txt" />
      <None Include="Assets\Resources\Data\FourGradeEnhance.txt" />
      <None Include="Assets\Resources\Data\sound.txt" />
      <None Include="Assets\Resources\Data\SgradeArbait.txt" />
      <None Include="Assets\StreamingAssets\build_info.txt" />
+     <None Include="Assets\Resources\Data\EquimpentEnhance2.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
