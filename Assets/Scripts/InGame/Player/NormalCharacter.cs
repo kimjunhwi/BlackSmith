@@ -104,6 +104,10 @@ public class NormalCharacter : Character {
 
         weaponData = GameManager.Instance.GetWeaponData((int)E_GRADE);
 
+		if (weaponData == null)
+			return;
+		
+
 		//다음 시간 저장 
 		fNextTimer += (float)(weaponData.fLimitedTime * 0.125);
 
@@ -431,16 +435,13 @@ public class NormalCharacter : Character {
 
 	public override void Complate(float _fComplate = 0.0f)
 	{
-		//50%이상
+		//70%이상
 		if ((weaponData.fMaxComplate * 0.7) < _fComplate) {
 			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fMaxComplate);
 
 			ScoreManager.ScoreInstance.GoldPlus (fGold);
-		}
-		//50%이하 실패 
-		else 
-		{
 
+			cPlayerData.
 		}
 
 		m_bIsRepair = true;

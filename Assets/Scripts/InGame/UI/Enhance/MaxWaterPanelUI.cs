@@ -1,40 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ReadOnlys;
 
 public class MaxWaterPanelUI : EnhanceUI {
 
-	CGamePlayerEnhance[] cGameSmith;
+	SmithEnhance m_EnhanceData;
 
 	protected override void Awake ()
 	{
 		base.Awake ();
 
-		if (cPlayer == null)
-			return;
-
-		cGameSmith = GameManager.Instance.cMaxWaterEnhanceInfo;
-
-		nLevel = cPlayer.GetMaxWaterLevel ();
+		nLevel = cPlayer.GetWaterPlusLevel ();
 
 		EnhanceText.text = strEnhanceName + nLevel;
+
+		m_EnhanceData = enhanceDatas[(int)E_SMITH_INDEX.E_MAX_WATER];
 	}
 
 	protected override void EnhanceButtonClick ()
 	{
 
-		if (ScoreManager.ScoreInstance.GetGold() >= cGameSmith [nLevel].nGoldCost) {
-			
-			ScoreManager.ScoreInstance.GoldPlus (-cGameSmith [nLevel].nGoldCost);
+		if (nLevel != 0 && (nLevel % 10 == 0)) 
+		{
+			if (ScoreManager.ScoreInstance.GetHonor() >= m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue))
+			{
+
+				ScoreManager.ScoreInstance.HonorPlus (-(m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue)));
+
+				nLevel++;
+
+				cPlayer.SetMaxWaterPlus(cPlayer.GetMaxWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
+
+				cPlayer.SetMaxWaterLevel(nLevel);
+
+				EnhanceText.text = strEnhanceName + nLevel;
+			}
+
+			return;
+		}
+
+
+		if (ScoreManager.ScoreInstance.GetGold() >= m_EnhanceData.fBasicGold + (nLevel * m_EnhanceData.fPlusGoldValue)) {
+
+			ScoreManager.ScoreInstance.GoldPlus (-(m_EnhanceData.fBasicGold + (nLevel * m_EnhanceData.fPlusGoldValue)));
 
 			nLevel++;
 
-			cPlayer.SetMaxWaterPlus (cPlayer.GetMaxWaterPlus () + cGameSmith [nLevel].fPlusPercentValue);
+			cPlayer.SetMaxWaterPlus(cPlayer.GetMaxWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
 
-			cPlayer.SetMaxWaterLevel (nLevel);
+			cPlayer.SetMaxWaterLevel(nLevel);
 
 			EnhanceText.text = strEnhanceName + nLevel;
-
 		}
 	}
 }

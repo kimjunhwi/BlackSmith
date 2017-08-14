@@ -1,18 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Enhance/MakingUI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/Manager/GameManager.cs">
     <Files>
       <File FileName="Assets/Scripts/InGame/Manager/SoundManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Manager/GenericMonoSingleton.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="692" Column="14" />
       <File FileName="Assets/Scripts/InGame/UI/Inventory/Inventory.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Inventory/InventoryScrollList.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/MakingUI.cs" Line="226" Column="46" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/OptionScroll.cs" Line="49" Column="2" NotebookId="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/OptionItem.cs" Line="1" Column="1" NotebookId="1" />
-      <File FileName="Assets/Scripts/InGame/Player/Player.cs" Line="1" Column="1" NotebookId="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1931" Column="52" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/MakingUI.cs" Line="195" Column="3" />
+      <File FileName="Assets/Scripts/InGame/Arbait/BlueHair.cs" Line="71" Column="34" />
+      <File FileName="Assets/StreamingAssets/PlayerData.json" Line="28" Column="17" NotebookId="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

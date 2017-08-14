@@ -29,6 +29,8 @@ public class InventoryShowPanel : MonoBehaviour {
 
 	CGameEnhanceData[] enhanceData;
 
+	EquipmentEnhance[] equipEnhanceData;
+
     Player player;
 
 	void Awake()
@@ -39,6 +41,8 @@ public class InventoryShowPanel : MonoBehaviour {
 		CloseButton.onClick.AddListener (ClosePanel);
 
         player = GameManager.Instance.player;
+
+		equipEnhanceData = GameManager.Instance.cEquipmentEnhance;
 
 		gameObject.SetActive (false);
 	}
@@ -69,7 +73,7 @@ public class InventoryShowPanel : MonoBehaviour {
 
 			Debug.Log ("강화 성공!!");
 
-			if (ItemData.fReapirPower != 0) ItemData.fReapirPower += ItemData.fReapirPower * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
+			if (ItemData.fReapirPower != 0) ItemData.fReapirPower += 5 * equipEnhanceData[0].fPlusPercent;
 			if (ItemData.fTemperaPlus       != 0)ItemData.fTemperaPlus += ItemData.fTemperaPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fTemperaDown       != 0) ItemData.fTemperaDown += ItemData.fTemperaDown * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fArbaitRepair      != 0) ItemData.fArbaitRepair += ItemData.fArbaitRepair * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;

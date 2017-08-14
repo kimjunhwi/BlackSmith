@@ -7,6 +7,8 @@ public class SmithPanelUI : EnhanceUI {
 
 	CGamePlayerEnhance[] cGameSmith;
 
+	SmithEnhance m_EnhanceData;
+
 	protected override void Awake ()
 	{
 		base.Awake ();
@@ -16,13 +18,33 @@ public class SmithPanelUI : EnhanceUI {
 		nLevel = cPlayer.GetSmithLevel ();
 
 		EnhanceText.text = strEnhanceName + nLevel;
+
+		m_EnhanceData = enhanceDatas[(int)E_SMITH_INDEX.E_SMITH];
 	}
 
 	protected override void EnhanceButtonClick ()
 	{
-		if (ScoreManager.ScoreInstance.GetGold() >= cGameSmith [nLevel].nGoldCost) {
+		if (nLevel != 0 && (nLevel % 10 == 0)) 
+		{
+			if (ScoreManager.ScoreInstance.GetHonor() >= m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue))
+			{
 
-			ScoreManager.ScoreInstance.GoldPlus (-cGameSmith [nLevel].nGoldCost);
+				ScoreManager.ScoreInstance.HonorPlus (-(m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue)));
+
+				nLevel++;
+
+				cPlayer.SetSmithLevel(nLevel);
+
+				EnhanceText.text = strEnhanceName + nLevel;
+			}
+
+			return;
+		}
+
+
+		if (ScoreManager.ScoreInstance.GetGold() >= m_EnhanceData.fBasicGold + (nLevel * m_EnhanceData.fPlusGoldValue)) {
+
+			ScoreManager.ScoreInstance.GoldPlus (-(m_EnhanceData.fBasicGold + (nLevel * m_EnhanceData.fPlusGoldValue)));
 
 			nLevel++;
 

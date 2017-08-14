@@ -9,31 +9,6 @@ using ReadOnlys;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public struct stArbait
-{
-    public int nId;
-    public int nLevel;
-    public string strName;
-    public int nMaxGrade;
-    public int nNowGrade;
-    public int nBatch;
-    public float dRepairPower;
-    public float dRepairLevelPlus;
-
-    public stArbait(int _id,int _level, string _strName, int _nNowGrade,int _nMaxGrade, int _nBatch,
-        float _dRepairPower, float _dRepairLevelPlus)
-    {
-        this.nId = _id;
-        this.nLevel = _level;
-        this.strName = _strName;
-        this.nNowGrade = _nNowGrade;
-        this.nMaxGrade = _nMaxGrade;
-        this.nBatch = _nBatch;
-        this.dRepairPower = _dRepairPower;
-        this.dRepairLevelPlus = _dRepairLevelPlus;
-    }
-}
-
 
 //모든 데이터 및 로드, 세이브를 관리하는 클래스 
 //어디서든 사용해야 하기 때문에 제네릭싱글톤을 통해 구현
@@ -80,6 +55,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 	public CGameArbaitGrade[] cArbaitBgrade = null;				//B등급 아르바이트
 	public CGameArbaitGrade[] cArbaitAgrade = null;				//S등급 아르바이트
 	public CGameArbaitGrade[] cArbaitSgrade = null;				//A등급 아르바이트
+
+	public ArbaitEnhance[] cArbaitEnhance = null;
+	public SmithEnhance[] cSmithEnhance = null;
+	public EquipmentEnhance[] cEquipmentEnhance = null;
+
 
 	public Boss[] bossInfo = null;
 
@@ -171,6 +151,18 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		Load_TableInfo_SgradeEnhance();
 
 		Load_TableInfo_PlayerArbaitEnhance ();
+
+		////////////
+		/// 
+		/// 
+		/// //
+
+		Load_TableInfo_ArbaitEnhance ();
+
+		Load_TableInfo_SmithEnhance2 ();
+
+		Load_TableInfo_EquipmentEnhance ();
+
 
 #if UNITY_EDITOR
 
@@ -450,7 +442,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     {
         if (bIsPause)
         {
-            if (player != null)
+			if (player != null && SceneManager.GetActiveScene().buildIndex == 2)
             {
                 Debug.Log("Puase");
                 DataSave();
@@ -1364,6 +1356,114 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		cArbaitSgrade = kInfo;
 	}
 
+
+
+	void Load_TableInfo_ArbaitEnhance()
+	{
+		if (cArbaitEnhance.Length != 0) return;
+
+		string txtFilePath = "ArbaitEnhance2";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		ArbaitEnhance[] kInfo = new ArbaitEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new ArbaitEnhance();
+
+			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
+			kInfo[i - 1].fRepairPercent = float.Parse(Cells[1]);
+			kInfo[i - 1].fCriticalPercent = float.Parse(Cells[2]);
+			kInfo[i - 1].fSpecialPercent = float.Parse(Cells[3]);
+			kInfo[i - 1].fBasicGold = float.Parse(Cells[4]);
+			kInfo[i - 1].fBasicHonor = float.Parse(Cells[5]);
+			kInfo[i - 1].fPlusGoldValue = float.Parse(Cells[6]);
+			kInfo[i - 1].fPlusHonorValue = float.Parse(Cells[7]);
+		}
+
+		cArbaitEnhance = kInfo;
+	}
+
+	void Load_TableInfo_SmithEnhance2()
+	{
+		if (cSmithEnhance.Length != 0) return;
+
+		string txtFilePath = "SmithEnhance2";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		SmithEnhance[] kInfo = new SmithEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new SmithEnhance();
+
+			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
+			kInfo[i - 1].fBasicPercent = float.Parse(Cells[1]);
+			kInfo[i - 1].fPlusPercent = float.Parse(Cells[2]);
+			kInfo[i - 1].fBasicGold = float.Parse(Cells[3]);
+			kInfo[i - 1].fBasicHonor = float.Parse(Cells[4]);
+			kInfo[i - 1].fPlusGoldValue = float.Parse(Cells[5]);
+			kInfo[i - 1].fPlusHonorValue = float.Parse(Cells[6]);
+		}
+
+		cSmithEnhance = kInfo;
+	}
+
+	void Load_TableInfo_EquipmentEnhance()
+	{
+		if (cEquipmentEnhance.Length != 0) return;
+
+		string txtFilePath = "EquimpentEnhance2";
+
+		TextAsset ta = LoadTextAsset(txtFilePath);
+
+		List<string> line = LineSplit(ta.text);
+
+		EquipmentEnhance[] kInfo = new EquipmentEnhance[line.Count - 1];
+
+		for (int i = 0; i < line.Count; i++)
+		{
+			//Console.WriteLine("line : " + line[i]);
+			if (line[i] == null) continue;
+			if (i == 0) continue; 	// Title skip
+
+			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
+			if (Cells[0] == "") continue;
+
+			kInfo[i - 1] = new EquipmentEnhance();
+
+			kInfo[i - 1].nIndex = int.Parse(Cells[0]);
+			kInfo[i - 1].fPlusPercent = float.Parse(Cells[1]);
+			kInfo[i - 1].fBasicGold = float.Parse(Cells[2]);
+			kInfo [i - 1].fBasicHonor = float.Parse (Cells [3]);
+			kInfo[i - 1].fPlusGoldValue = float.Parse(Cells[4]);
+			kInfo[i - 1].fPlusHonorValue = float.Parse(Cells[5]);
+		}
+
+		cEquipmentEnhance = kInfo;
+	}
+
+
 	#endregion
 
 	#region SplitText
@@ -1473,6 +1573,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
     public CGameWeaponInfo GetWeaponData(int _nGrade)
     {
+		if (player == null)
+			return null;
+
         int nRandom;
 
         nRandom = Random.Range(0, 7);
@@ -2070,6 +2173,42 @@ public class CGameSoundData
 	public int nType = 0;
 	public int nVolume = 100;
 	public int nLoop = 0;
+}
+
+[System.Serializable]
+public class ArbaitEnhance
+{
+	public int nIndex;
+	public float fRepairPercent;
+	public float fCriticalPercent;
+	public float fSpecialPercent;
+	public float fBasicGold;
+	public float fBasicHonor;
+	public float fPlusGoldValue;
+	public float fPlusHonorValue;
+}
+
+[System.Serializable]
+public class SmithEnhance
+{
+	public int nIndex;
+	public float fBasicPercent;
+	public float fPlusPercent;
+	public float fBasicGold;
+	public float fBasicHonor;
+	public float fPlusGoldValue;
+	public float fPlusHonorValue;
+}
+
+[System.Serializable]
+public class EquipmentEnhance
+{
+	public int nIndex;
+	public float fPlusPercent;
+	public float fBasicGold;
+	public float fBasicHonor;
+	public float fPlusGoldValue;
+	public float fPlusHonorValue;
 }
 
 #endregion

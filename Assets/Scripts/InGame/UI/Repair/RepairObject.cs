@@ -131,7 +131,7 @@ public class RepairObject : MonoBehaviour{
 
 	//MissText
 	public GameObject textParent;
-	private const int nEnableTime = 2;
+	private const int nEnableTime = 1;
 	public SimpleObjectPool damageTextPool;
 
 
@@ -579,18 +579,18 @@ public class RepairObject : MonoBehaviour{
 		ComplateText.text = string.Format("{0} / {1}", _fComplate, bossCharacter.bossInfo.fComplate);
 	}
 
-	public void ShowDamage(int nDamage)
+	public void ShowDamage(int nDamage,Vector3 _position)
 	{
-		int nRandomX = Random.Range (0, 20);
-		int nRandomY = Random.Range (0, 10);
-		fRandomXPos = Random.Range (textParent.transform.position.x - nRandomX,textParent.transform.position.x + nRandomX);
-		fRandomYPos = Random.Range (textParent.transform.position.y - nRandomY,textParent.transform.position.y + nRandomY);
+		//int nRandomX = Random.Range (0, 20);
+		//int nRandomY = Random.Range (0, 10);
+		//fRandomXPos = Random.Range (textParent.transform.position.x - nRandomX,textParent.transform.position.x + nRandomX);
+		//fRandomYPos = Random.Range (textParent.transform.position.y - nRandomY,textParent.transform.position.y + nRandomY);
 
 		GameObject damageText = damageTextPool.GetObject ();
 
 		damageText.transform.SetParent (textParent.transform,false);
 		damageText.transform.localScale = Vector3.one;
-		damageText.transform.position = new Vector3(fRandomXPos,fRandomYPos,textParent.transform.position.z);
+		damageText.transform.position = _position;
 		damageText.name = "Damage";
 
 		DamageTextPool damagePool = damageText.GetComponent<DamageTextPool> ();
@@ -689,7 +689,7 @@ public class RepairObject : MonoBehaviour{
 
 			fCalcValue = (player.GetRepairPower () +(player.GetRepairPower () * weaponData.fMinusRepair * 0.01f));
 
-			ShowDamage ((int)fCalcValue);
+			ShowDamage ((int)fCalcValue,_position);
 
 			fCurrentComplate += fCalcValue;
         }

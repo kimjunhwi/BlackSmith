@@ -1,37 +1,57 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ReadOnlys;
 
 public class CriticalPanelUI : EnhanceUI {
 
-	CGamePlayerEnhance[] cGameSmith;
+	SmithEnhance m_EnhanceData;
 
 	protected override void Awake ()
 	{
 		base.Awake ();
 
-		cGameSmith = GameManager.Instance.cCriticalEnhance;
-
-		nLevel = cPlayer.GetCriticalLevel ();
+		nLevel = cPlayer.GetWaterPlusLevel ();
 
 		EnhanceText.text = strEnhanceName + nLevel;
+
+		m_EnhanceData = enhanceDatas[(int)E_SMITH_INDEX.E_CRITICAL_CHANCE];
 	}
 
 	protected override void EnhanceButtonClick ()
 	{
-		if (ScoreManager.ScoreInstance.GetGold() >= cGameSmith[nLevel].nGoldCost)
-        {
 
-			ScoreManager.ScoreInstance.GoldPlus(-cGameSmith[nLevel].nGoldCost);
+		if (nLevel != 0 && (nLevel % 10 == 0)) 
+		{
+			if (ScoreManager.ScoreInstance.GetHonor() >= m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue))
+			{
+
+				ScoreManager.ScoreInstance.HonorPlus (-(m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue)));
+
+				nLevel++;
+
+				cPlayer.SetCriticalChance(cPlayer.GetCriticalChance() + nLevel * m_EnhanceData.fPlusPercent);
+
+				cPlayer.SetCriticalLevel(nLevel);
+
+				EnhanceText.text = strEnhanceName + nLevel;
+			}
+
+			return;
+		}
 
 
-            nLevel++;
+		if (ScoreManager.ScoreInstance.GetGold() >= m_EnhanceData.fBasicGold + (nLevel * m_EnhanceData.fPlusGoldValue)) {
 
-			cPlayer.SetCriticalChance(cPlayer.GetCriticalChance() + cGameSmith[nLevel].fPlusPercentValue);
+			ScoreManager.ScoreInstance.GoldPlus (-(m_EnhanceData.fBasicGold + (nLevel * m_EnhanceData.fPlusGoldValue)));
 
-            cPlayer.SetCriticalLevel(nLevel);
+			nLevel++;
 
-            EnhanceText.text = strEnhanceName + nLevel;
-        }
+			cPlayer.SetCriticalChance( cPlayer.GetCriticalChance() + nLevel * m_EnhanceData.fPlusPercent);
+
+			cPlayer.SetCriticalLevel(nLevel);
+
+			EnhanceText.text = strEnhanceName + nLevel;
+		}
 	}
 }

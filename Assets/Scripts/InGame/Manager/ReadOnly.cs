@@ -91,4 +91,15 @@ namespace ReadOnlys
         E_WEAR,
         E_ACCESSORY,
     }
+
+
+	//Smith Enhance
+	enum E_SMITH_INDEX
+	{
+		E_SMITH = 0,
+		E_MAX_WATER,
+		E_WATER_CHARGING,
+		E_ACCURACY_RATE,
+		E_CRITICAL_CHANCE,
+	}
 }

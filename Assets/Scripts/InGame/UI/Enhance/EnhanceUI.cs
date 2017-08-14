@@ -16,9 +16,13 @@ public class EnhanceUI : MonoBehaviour {
 
 	public Player cPlayer;
 
+	public SmithEnhance[] enhanceDatas;
+
 	protected virtual void Awake()
 	{
 		cPlayer = GameManager.Instance.player;
+
+		enhanceDatas = GameManager.Instance.cSmithEnhance;
 
 		EnhanceButton.onClick.AddListener (EnhanceButtonClick);
 	}
