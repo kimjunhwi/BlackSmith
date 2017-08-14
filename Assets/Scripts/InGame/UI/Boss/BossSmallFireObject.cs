@@ -28,11 +28,12 @@ public class BossSmallFireObject : MonoBehaviour, IPointerDownHandler
 			else
 			{
 				//불씨 하나당 물 충전량 -3%
-				repairObj.fSmallFireMinusWater -= (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
+				repairObj.fSmallFireMinusWater -= 0.03f;
 				//불씨 하나당 온도 증가량 10%
 				repairObj.fSmallFirePlusTemperatrue -= 0.1f;
 				bossfire.nCurFireCount--;
 				smallFireObjPull.ReturnObject (getInfoGameObject);
+				Debug.Log ("CurFireMinusWater : " + repairObj.fSmallFireMinusWater + "/ CurPlusTemperatrue : " +  repairObj.fSmallFirePlusTemperatrue);
 			}
 		}
 

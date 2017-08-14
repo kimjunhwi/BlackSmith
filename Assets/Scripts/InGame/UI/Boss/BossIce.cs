@@ -20,8 +20,6 @@ public class BossIce : BossCharacter
 
 	public int nCurLevel = 0;
 
-
-
 	private void Start()
 	{
 		animator = gameObject.GetComponent<Animator> ();
@@ -395,6 +393,7 @@ public class BossIce : BossCharacter
 			isIceWallOn = false;
 
 			nBossIceWallCount = 15;
+			iceWall_instance.StartDeFreezeRepair ();
 		}
 		else 
 		{

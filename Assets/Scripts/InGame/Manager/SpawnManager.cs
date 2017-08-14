@@ -55,6 +55,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public CameraShake cameraShake;
 
+	public SimpleObjectPool simpleSoundObjPool;
+
     private void Awake()
     {
         //게임매니저에서 아르바이트 수치를 받아옴
@@ -80,7 +82,13 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         CriticalTouchPool.Instance.Init();
 
 		Input.multiTouchEnabled = true;
-    }
+
+		//SoundInit
+		SoundManager.instance.SetSoundObjPool (simpleSoundObjPool);
+		SoundManager.instance.LoadSource ();
+		//SoundManager.instance.PlaySound (eSoundArray.BGM_Main);
+
+	}
 
     private void Update()
     {

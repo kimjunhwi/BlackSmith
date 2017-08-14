@@ -265,11 +265,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         player.Init(cInvetoryInfo, playerData);
 
-        SoundManager.instance.LoadSource();
+        //SoundManager.instance.LoadSource();
 
 		Debug.Log (player.fRepairPower);
 
-        SoundManager.instance.PlayBGM(eSound.bgm_main);
+        //SoundManager.instance.PlayBGM(eSound.bgm_main);
 
         logoManager.bIsSuccessed = true;
 
@@ -453,7 +453,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
             if (player != null)
             {
                 Debug.Log("Puase");
-                DataSave();
+                //DataSave();
             }
         }
     }

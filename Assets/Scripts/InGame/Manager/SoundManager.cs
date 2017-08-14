@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class Cooltime
@@ -12,29 +13,18 @@ public enum eSound : int
 {
 	bgm_main   = 101,
 	bgm_battle    = 102,
-	//snd_ui_click = 201,
-	//snd_levelup = 202,
-
-	ui_button      	= 1000,
-	ui_alarm      	= 1001,
-	ui_beep      	= 1002,
-	ui_popup		= 1003,
-
-	battle_notice     		= 1004,
-	battle_win      	= 1005,
-	battle_lose      	= 1006,
-
-	skill_arrow      	= 2000,
-	skill_magic      	= 2001,
-	skill_punch      	= 2002,
-	skill_slap1      	= 2003,
-	skill_slap2      	= 2004,
-	skill_sword      	= 2005,
-	skill_sword2      	= 2006,
-
-
-	snd_end
+	snd_touchWeapon00 = 201,
+	snd_touchWeapon01 = 202,
+	snd_WeaponExplosion = 203,
 };
+
+public enum eSoundArray 
+{
+	BGM_Main = 0,
+	BGM_TouchWeapon00 = 1,
+	BGM_TouchWeapon01 = 2,
+	BGM_WeaponExplosion = 3,
+}
 
 public class SoundManager : MonoBehaviour 
 {				
@@ -50,6 +40,10 @@ public class SoundManager : MonoBehaviour
 	ArrayList CloneArray = new ArrayList();
 
 	ArrayList CooltimeArray = new ArrayList();
+
+	public List<GameObject> SoundArray = new List<GameObject>();
+
+	public SimpleObjectPool simpleSoundObjPool;
 
 	private static SoundManager s_instance = null;
 
@@ -77,9 +71,12 @@ public class SoundManager : MonoBehaviour
 	//----------------------------------------------
 	public void LoadSource()
 	{
-		AddSource((int)eSound.bgm_main);
-//		AddSource((int)eSound.bgm_battle);
-//
+		AddSource((int)eSound.bgm_main, "Sound_BGM_Main");
+		AddSource((int)eSound.snd_touchWeapon00, "Sound_ES_TouchWeapon00");
+		AddSource((int)eSound.snd_touchWeapon01, "Sound_ES_TouchWeapon01");
+		AddSource((int)eSound.snd_WeaponExplosion, "Sound_ES_WeaponExplosion");
+
+
 //		AddSource((int)eSound.ui_button   	, "snd_ui_click");
 //		AddSource((int)eSound.ui_alarm   	, "snd_ui_alarm");
 //		AddSource((int)eSound.ui_beep   	, "snd_ui_beep");
@@ -97,9 +94,34 @@ public class SoundManager : MonoBehaviour
 	}   
 
 	// Add Source ----------------------------------------------------------------
-
-	GameObject AddSource(int _sound_index, string _sound_name  ="")
+	public void AddSource(int _sound_index, string _sound_name  ="")
 	{
+		GameObject soundObj = simpleSoundObjPool.GetObject ();
+		soundObj.transform.SetParent(gameObject.transform,false);
+		soundObj.transform.position = new Vector3(0, 0, 0);
+		soundObj.name = _sound_name;
+		//if (soundObj.name == _sound_name)
+		//	return;
+
+		CGameSoundData kTableInfo_sound = GameManager.Instance.Get_TableInfo_sound((int)_sound_index);
+		string szPrefab = "";
+		szPrefab = kTableInfo_sound.strResource;
+
+		AudioClip obj = (AudioClip)Resources.Load("Sound/" + szPrefab, typeof(AudioClip));
+		soundObj.GetComponent<AudioSource>().clip = obj;			//Add AudioClip
+		soundObj.GetComponent<AudioSource>().playOnAwake = false;	//Off playOnAwake
+
+		// CSndInfo
+		SoundInfo soundInfo = soundObj.GetComponent<SoundInfo> ();
+		if( soundInfo == null )
+			soundInfo = (SoundInfo)soundObj.AddComponent<SoundInfo>();
+
+		soundInfo.iID 			= soundObj.GetInstanceID();			
+		soundInfo.audiolength 	= soundObj.GetComponent<AudioSource>().clip.length;
+		soundInfo._index     = (int)_sound_index;
+
+		SoundArray.Add (soundObj);
+		/*
 		GameObject kGO = new GameObject();
 		//kGO.tag = "SoundObject";	
 		kGO.transform.parent = gameObject.transform;
@@ -109,6 +131,7 @@ public class SoundManager : MonoBehaviour
 		if (_sound_name == "") //TableInfo_sound ���� �ε���ȣ��.
 		{
 			kGO.name = "Snd_" + _sound_index;
+			//GetSoundData
 			CGameSoundData kTableInfo_sound = GameManager.Instance.Get_TableInfo_sound((int)_sound_index);
 			if (kTableInfo_sound == null)
 			{
@@ -152,9 +175,10 @@ public class SoundManager : MonoBehaviour
 		SourceArray.Add( kGO );
 
 		return kGO;
+		*/
 
 	}
-
+	/*
 	GameObject GetSource(int _index)
 	{
 		foreach ( GameObject kGO in SourceArray )			
@@ -259,17 +283,28 @@ public class SoundManager : MonoBehaviour
 		SoundManager.instance.RemoveClone( kBgm );
 		//Destroy ( kBgm );
 	}
+	*/
 
 	// PlaySound  ---------------------------------------------------------------
 
+	public void PlaySound(eSoundArray _index)
+	{
+		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
+		aSource.Play ();
+	}
+
+	/*
 	public GameObject PlaySound(eSound _index )
 	{
 		if(_index == 0)return null;
 		return PlaySound( (int)_index, Vector3.zero, false, fVolume_fx );
-		/*GameObject kGO = AddClone( _index, Vector3.zero );
+		GameObject kGO = AddClone( _index, Vector3.zero );
 		if(kGO == null)	
-			return null;*/
+			return null;
 	}
+	*/
+
+	/*
 	public GameObject PlaySound(int _index)
 	{
 		if (_index == 0) return null;
@@ -363,42 +398,11 @@ public class SoundManager : MonoBehaviour
 		}
 		return null;
 	}
-}
-
-public class CSndInfo : MonoBehaviour
-{
-	public int iID = 0;
-	public int _index = 0;
-	public bool bLoop = false;
-	public bool bRemove = false;
-	public float DeathTime = 0.0f;
-	//public AudioSource kAudioSource = null;
-	public float audiolength = 0.0f;
-
-	void Awake()
+	*/
+	public void SetSoundObjPool(SimpleObjectPool _SoundObjPool)
 	{
-		//DontDestroyOnLoad(this);
-	}
-
-	void Update()
-	{
-		if (bRemove)
-		{
-			DeathTime -= Time.deltaTime;
-			if (DeathTime <= 0.0f)
-			{
-				SoundManager.instance.RemoveClone(gameObject);
-				//Destroy( gameObject );
-			}
-		}
-
-		//if(audio == null)	return;		
-		//playOneShot
-		//if( !bLoop )
-		//	if(!audio.isPlaying)
-		//	{
-		//		Destroy( gameObject );
-		//	}
+		simpleSoundObjPool = _SoundObjPool;
 	}
 
 }
+

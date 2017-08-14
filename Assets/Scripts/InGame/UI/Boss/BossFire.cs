@@ -18,6 +18,7 @@ public class BossFire : BossCharacter
 	public int nCurFireCount;							//작은 불 개수(현재)
 
 	public BossFireBoom bossFireBoom;
+	private bool isSmallFireActive;
 
 	private bool isActivePassiveSkill01 = false;
 	private bool isActivePassiveSkill02 = false;
@@ -32,6 +33,7 @@ public class BossFire : BossCharacter
 
 	private void Start()
 	{
+		isSmallFireActive = false;
 		nSmallFireMaxCount = 12;
 		bossFireBoom.bossFire = this;
 		bossFireBoom.repairObj = repairObj;
@@ -113,6 +115,7 @@ public class BossFire : BossCharacter
 	{
 		uiManager.AllDisable ();
 		bossPanel.SetActive (true);
+		isSmallFireActive = true;
 		
 		bossTalkPanel.StartShowBossTalkWindow (2f, bossWord[(int)E_BOSSWORD.E_BOSSWORD_BEGIN]);
 		isStandardPhaseFailed = true;
@@ -126,7 +129,7 @@ public class BossFire : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			if (fTime >= 2.0f && nCurFireCount < nSmallFireMaxCount )
+			if (fTime >= 2.0f && nCurFireCount < nSmallFireMaxCount && isSmallFireActive == true)
 				CreateSmallFire ();
 		
 		
@@ -169,7 +172,7 @@ public class BossFire : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete = bossInfo.fComplate;
 
-			if (fTime >= 2.0f  && nCurFireCount < nSmallFireMaxCount )
+			if (fTime >= 1.5f  && nCurFireCount < nSmallFireMaxCount && isSmallFireActive == true )
 				CreateSmallFire ();
 
 		
@@ -206,7 +209,7 @@ public class BossFire : BossCharacter
 			float fCurComplete = repairObj.GetCurCompletion ();
 			float fMaxComplete =  bossInfo.fComplate;
 
-			if (fTime >= 2.0f  && nCurFireCount < 20 )
+			if (fTime >= 1.0f  && nCurFireCount < 20 && isSmallFireActive == true)
 				CreateSmallFire ();
 
 			//불씨 개수 10개 일시 터진다
@@ -244,6 +247,7 @@ public class BossFire : BossCharacter
 	protected override IEnumerator BossDie ()
 	{
 		yield return null;
+		isSmallFireActive = false;
 		Debug.Log ("Boss Die");
 		//화면에 남아있는 불씨들을 없앤다
 		while (smallFireRespawnPoint.childCount != 0) 
@@ -414,7 +418,7 @@ public class BossFire : BossCharacter
 		smallFire.name = "SmallFireTouch";
 
 		//불씨 하나당 물 충전량 -3%
-		repairObj.fSmallFireMinusWater += (float)(GameManager.Instance.playerData.fWaterPlus * 0.03);
+		repairObj.fSmallFireMinusWater += 0.03f;
 		//불씨 하나당 온도 증가량 10%
 		repairObj.fSmallFirePlusTemperatrue += 0.1f;
 
@@ -425,6 +429,7 @@ public class BossFire : BossCharacter
 		smallFireObj.parentTransform = smallFireRespawnPoint;
 		smallFireObj.bossfire = this;
 
+		Debug.Log ("CurFireMinusWater : " + repairObj.fSmallFireMinusWater + "/ CurPlusTemperatrue : " +  repairObj.fSmallFirePlusTemperatrue);
 		fTime = 0f;
 		nCurFireCount++;
 	}

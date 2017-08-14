@@ -23,7 +23,7 @@ public class RepairObject : MonoBehaviour
 	float fTemperatureSlideTime = 0.0f;
 
 	private float fCurrentComplate = 0;				//현재완성도
-	private float fWeaponDownDamage = 70.0f;		//현재무기 데미지
+	private float fWeaponDownDamage ;		//현재무기 데미지
     private float fWeaponDownTemperature = 0;		//무기 수리시 올라가는 온도
     private float fMaxTemperature;					//최대 온도
     private float fCurrentTemperature= 0;			//현재 온도
@@ -113,7 +113,8 @@ public class RepairObject : MonoBehaviour
 
     public PlayerController m_PlayerAnimationController; 
 
-	public bool isTouchWater;
+	public bool isTouchWaterAvailable;							//물이 사용가능한가??
+	public bool isTouchWater;									//물을 터치 했는가?
 
     // 07.20 피버
     private bool m_bIsFever = false;
@@ -357,7 +358,10 @@ public class RepairObject : MonoBehaviour
 					{
 						//SpawnManager.Instance.ComplateCharacter(AfootObject, weaponData.fMaxComplate);
 						//무기 실패취급으로 리턴
-						fCurrentComplate -= (fBossMaxComplete * 0.3f);  
+						if(bossCharacter != null)
+							fCurrentComplate -= (fBossMaxComplete * 0.3f);  
+						else
+							fCurrentComplate = (fCurrentComplate) - weaponData.fMaxComplate * 0.3f;
 
 						if (fCurrentComplate <= 0) {
 							SpawnManager.Instance.bIsBossCreate = false;
@@ -406,12 +410,15 @@ public class RepairObject : MonoBehaviour
 				fWaterSlideTime += Time.deltaTime;
 				WaterSlider.value = Mathf.Lerp (WaterSlider.value, fCurrentWater, fWaterSlideTime);
 
-				if (fCurrentWater >= fMaxTemperature * 0.3f)
-				{
+				if (fCurrentWater >= 1000f) {
+					isTouchWaterAvailable = true;
 					waterPaching.SetActive (true);
-				}
-				else
+				} 
+				else 
+				{
+					isTouchWaterAvailable = false;
 					waterPaching.SetActive (false);
+				}
 			} 
 			else
 				fCurrentWater = fMaxWater;
@@ -452,9 +459,10 @@ public class RepairObject : MonoBehaviour
 			fWaterSlideTime = 0.0f;
 			fTemperatureSlideTime = 0.0f;
 
-			fCurrentWater += (fPlusWater - fSmallFireMinusWater);
-
-			if (fCurrentTemperature > 0) {
+			fCurrentWater += (fPlusWater  - (fPlusWater * fSmallFireMinusWater));
+			Debug.Log ("CurPlusWater : " + GameManager.Instance.player.GetWaterPlus());
+			if (fCurrentTemperature > 0) 
+			{
 				fDownTemperature = (fMaxTemperature - fCurrentTemperature) * 0.05f;
 
 				fCurrentTemperature -= fDownTemperature;
@@ -614,9 +622,11 @@ public class RepairObject : MonoBehaviour
 
     //무기터치
 	public void TouchWeapon(Vector3 _position)
-    {
+	{
         if (weaponData == null)
 			return;
+
+		SoundManager.instance.PlaySound (eSoundArray.BGM_TouchWeapon01);
 
         Debug.Log("Touch");
 		normalWeaponShake.Shake (12.0f, 0.12f);
@@ -877,8 +887,12 @@ public class RepairObject : MonoBehaviour
 		//Fire
 		if (bossCharacter.nIndex == 2) 
 		{
-			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01)
+			if (bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_01) 
+			{
 				Debug.Log ("FirePhase00");
+
+				fCurrentTemperature += (fMaxTemperature * 0.08f) + ((fMaxTemperature * 0.08f) * fSmallFirePlusTemperatrue);
+			}
 			
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_01 && bossCharacter.eCureentBossState < Character.EBOSS_STATE.PHASE_02) 
 			{
@@ -895,7 +909,8 @@ public class RepairObject : MonoBehaviour
 					fCurrentComplate = fCurrentComplate + player.GetRepairPower () * 0.7f;
 				}
 
-				fCurrentTemperature += fMaxTemperature * 0.08f;
+
+				fCurrentTemperature += (fMaxTemperature * 0.08f) + ((fMaxTemperature * 0.08f) * fSmallFirePlusTemperatrue);
 				return;
 			} 
 			else if (bossCharacter.eCureentBossState >= Character.EBOSS_STATE.PHASE_02) 
@@ -997,56 +1012,58 @@ public class RepairObject : MonoBehaviour
 	{
 		if (weaponData == null)
 			return;
+		if (isTouchWaterAvailable == true) 
+		{
+			isTouchWaterAvailable = false;
+			isTouchWater = true;
 
-		if (fCurrentWater >= fMaxTemperature * 0.3f)
 			fWeaponDownTemperature = fMaxTemperature * 0.3f;
-		else
-			return;
+		
+			// 수리력 = 수리력 * ( 현재온도 * 11 * 0.00556) * ( 1 - 물수치(플레이어의 무기 + 장비의 물수치))
+			fCurrentComplate += GameManager.Instance.player.GetRepairPower() * (fCurrentTemperature  * 11f* 0.00556f) * 
+				(1f - (weaponData.fMinusUseWater * 0.05f));
+			
 
-		fCurrentTemperature -= fMaxTemperature * 0.3f;
+			fCurrentTemperature -= fMaxTemperature * 0.3f;
 
-		if (fCurrentTemperature < 0)
-			fCurrentTemperature = 0;
+			if (fCurrentTemperature < 0)
+				fCurrentTemperature = 0;
 
-		fCurrentWater -= fMaxTemperature * 0.3f;
+			fCurrentWater -= 1000f;
 
-		if (fCurrentWater < 0) {
-			fCurrentWater = 0;
+			if (fCurrentWater < 0) {
+				fCurrentWater = 0;
+			}
+
+			float	 resultWaterValue =  (weaponData.fMinusUseWater * 0.01f);
+			Debug.Log ("Before fCurrent : " + fCurrentComplate);          
+
+			Debug.Log ("After fCurrent : " + fCurrentComplate);     
+
+			Debug.Log ("TouchWater!!");
+			//bossWaterCat_animator.SetBool ("isTouchWater", true);
+
+			SpawnManager.Instance.UseWater ();
+
+			WaterSlider.value = fCurrentWater;
+
+			if (fCurrentComplate > weaponData.fMaxComplate)
+				fCurrentComplate = weaponData.fMaxComplate;
+
+			TemperatureSlider.value = fCurrentTemperature;
+
+			if (fCurrentComplate >= weaponData.fMaxComplate)
+				SpawnManager.Instance.ComplateCharacter (AfootObject, weaponData.fMaxComplate);
 		}
-
-
-		//때리는 장비의 물수치 5% + 플레이어가 장비하고 있는 무기 물수치의 5%
-		float	 resultWaterValue =  (weaponData.fMinusUseWater * 0.01f);
-		Debug.Log ("Before fCurrent : " + fCurrentComplate);          
-		fCurrentComplate += fWeaponDownTemperature + (fWeaponDownTemperature  * ( resultWaterValue ) );
-
-		Debug.Log ("After fCurrent : " + fCurrentComplate);     
-
-		Debug.Log ("TouchWater!!");
-		//bossWaterCat_animator.SetBool ("isTouchWater", true);
-
-		isTouchWater = true;
-
-		SpawnManager.Instance.UseWater ();
-
-		WaterSlider.value = fCurrentWater;
-
-		if (fCurrentComplate > weaponData.fMaxComplate)
-			fCurrentComplate = weaponData.fMaxComplate;
-
-		TemperatureSlider.value = fCurrentTemperature;
-
-		if (fCurrentComplate >= weaponData.fMaxComplate)
-			SpawnManager.Instance.ComplateCharacter (AfootObject, weaponData.fMaxComplate);
-        
 	}
 
 	public void TouchBossWater()
 	{
+
 		if (bossCharacter == null)
 			return;
 
-		if (fCurrentWater >= fUseWater) 
+		if (isTouchWaterAvailable == true ) 
 		{
 			//waterPaching.SetActive (true);
 			//물 터치시 노트 한단계씩 떨어진다.
@@ -1083,39 +1100,46 @@ public class RepairObject : MonoBehaviour
 			{
 				bossIce.ActiveIceWall ();
 			}
-
-
+				
 			//useWater
-
 			Debug.Log ("TouchBossWater!!");
-			//bossWaterCat_animator.SetBool ("isTouchWater", true);
+			isTouchWaterAvailable = false;
+			isTouchWater = true;
 
-			if (fCurrentWater >= fMaxTemperature * 0.3f)
-				fWeaponDownTemperature = fMaxTemperature * 0.3f;
+			fWeaponDownTemperature = fMaxTemperature * 0.3f;
 
-			else
-				return;
+			//플레이어가 장비하고 있는 무기 물수치의 5%
+			// 수리력 = 수리력 * ( 현재온도 * 11 * 0.00556) * ( 1 - 물수치(플레이어의 무기 + 장비의 물수치))
+			// 플레이어 수리력 추가 해야됨
+			float completeValueResult;
+
+			//불 보스 일 경우에만  물수치가 50%감소
+			if (bossCharacter.bossInfo.nIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE) 
+			{
+				completeValueResult = (GameManager.Instance.player.GetRepairPower () * (fCurrentTemperature * 11f * 0.00556f) *
+					(1f - (GameManager.Instance.bossWeaponInfo [0].fWaterUse * 0.05f) * 0.5f ));
+				fCurrentComplate += completeValueResult;
+				Debug.Log ("FireBossWaterValue : " + completeValueResult);
+			}
+			else 
+			{
+				completeValueResult = (GameManager.Instance.player.GetRepairPower () * (fCurrentTemperature * 11f * 0.00556f) *
+					(1f - (GameManager.Instance.bossWeaponInfo [0].fWaterUse * 0.05f)));
+				fCurrentComplate += completeValueResult;
+				Debug.Log ("OtherBossWaterValue : " + completeValueResult);
+			}
+
 
 			fCurrentTemperature -= fMaxTemperature * 0.3f;
 
 			if (fCurrentTemperature < 0)
 				fCurrentTemperature = 0;
 
-			fCurrentWater -= fMaxTemperature * 0.3f;
+			fCurrentWater -= 1000f;
 
 			if (fCurrentWater < 0)
 				fCurrentWater = 0;
 
-			//플레이어가 장비하고 있는 무기 물수치의 5%
-			//if(bossCharacter.bossInfo.nIndex == 2)
-			//	fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () -  bossCharacter.bossInfo.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
-			//else
-			//	fCurrentComplate += fWeaponDownTemperature + fWeaponDownTemperature * ((player.GetWaterPlus () -  bossCharacter.bossInfo.fMinusUseWater > 0) ? player.GetWaterPlus () - weaponData.fMinusUseWater : 0) * 0.01f;
-
-			Debug.Log ("TouchWater!!");
-			//bossWaterCat_animator.SetBool ("isTouchWater", true);
-
-			isTouchWater = true;
 
 			SpawnManager.Instance.UseWater ();
 

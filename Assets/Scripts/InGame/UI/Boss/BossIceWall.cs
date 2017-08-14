@@ -29,7 +29,10 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			}
 		}
 	}
-
+	public void StartDeFreezeRepair()
+	{
+		StartCoroutine (DeFreezeRepair ());
+	}
 	public void OnPointerDown (PointerEventData eventData)
 	{
 		getInfoGameObject = eventData.pointerEnter;
@@ -51,7 +54,8 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 			}
 
 
-			if (nCountBreakWall == 0) {
+			if (nCountBreakWall == 0)
+			{
 				StartCoroutine (DeFreezeRepair ());
 
 			}
@@ -103,7 +107,8 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 				animator_IceWallArbait.SetBool ("isBreak02", true);
 			}
 
-			if (nCountBreakWall == 0) {
+			if (nCountBreakWall == 0)
+			{
 				bossIce.isIceWall_ArbaitOn [2] = false;
 				DeFreezeArbait ();
 			}

@@ -105,6 +105,7 @@
      <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QuestTimer.cs" />
      <Compile Include="Assets\Scripts\InGame\Quest\QusetManager.cs" />
+     <Compile Include="Assets\Scripts\InGame\Sound\SoundInfo.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossAnimation.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossArbaitDeFreeze.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Boss\BossBackGround.cs" />
