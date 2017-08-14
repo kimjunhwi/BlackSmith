@@ -261,7 +261,8 @@ public class BossSasin : BossCharacter
 
 	protected override IEnumerator BossResult ()
 	{
-		
+		//ChangeSound
+		SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
 		while (true)
 		{
 			//확인버튼을 누르면 피니쉬로 넘어간다

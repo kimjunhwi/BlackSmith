@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
 
 	public GameObject []uiPanels;
 	public GameObject []uiButtons;
+	public GameObject yesNoButton; //BossInfo
 	void Start()
 	{
 		AllDisable ();
@@ -29,15 +30,17 @@ public class UIManager : MonoBehaviour
 				//bossCreator.bossConsumeItemInfo.BossInviteMentSaveTime ();
 				//bossCreator.bossConsumeItemInfo.bossRegenTimer.BossRegenTimeSave ();
 				bossCreator.BossPanelInfoSave ();
+				yesNoButton.SetActive (false);
 			}
 			uiPanels [nIndex].SetActive (false);
+		
 
 		}
 		else
 		{
 			AllDisable ();
 			uiPanels [nIndex].SetActive (true);
-
+			yesNoButton.SetActive (false);
 			//보스 패널 열시 시간 로드 
 			if (nIndex == 3) 
 			{
