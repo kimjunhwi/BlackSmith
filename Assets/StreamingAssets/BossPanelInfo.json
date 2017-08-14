@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 {"list":[{"isSaved":true,"nBossInviteMentCount":4,"nBossPotionCount":0,"nBossSasinLeftCount":3,"nBossMusicLeftCount":3,"nBossIceLeftCount":3,"nBossFireLeftCount":3,"nBossInviteMentCurMin":19,"fBossInviteMentCurSec":59.0,"nBossRegenCurMin":19,"fBossRegenCurSec":58.16127395629883,"nBossSasinCurLevel":1,"nBossMusicCurLevel":1,"nBossIceCurLevel":1,"nBossFireCurLevel":1}]}
+=======
+{"list":[{"isSaved":true,"nBossInviteMentCount":5,"nBossPotionCount":0,"nBossSasinLeftCount":3,"nBossMusicLeftCount":3,"nBossIceLeftCount":3,"nBossFireLeftCount":3,"nBossInviteMentCurMin":19,"fBossInviteMentCurSec":59.0,"nBossRegenCurMin":19,"fBossRegenCurSec":55.006324768066409,"nBossSasinCurLevel":1,"nBossMusicCurLevel":1,"nBossIceCurLevel":1,"nBossFireCurLevel":1}]}
+>>>>>>> aaaa93f96aced2722a0b90bb6ea5c0b1adf6d75d

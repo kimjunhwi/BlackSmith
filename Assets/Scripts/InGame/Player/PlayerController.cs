@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    Animator m_Animator;
+    public Animator m_Animator;
 
     public Transform particlePosition;
 
@@ -77,6 +77,11 @@ public class PlayerController : MonoBehaviour {
 	public void ResetNormal()
 	{
 		m_Animator.SetTrigger("bIsNormalRepair");
+	}
+
+	public void ResetCritical()
+	{
+		m_Animator.SetTrigger("bIsCriticalRepair");
 	}
 
 }
