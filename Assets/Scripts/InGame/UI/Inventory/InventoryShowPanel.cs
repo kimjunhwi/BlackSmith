@@ -74,12 +74,9 @@ public class InventoryShowPanel : MonoBehaviour {
 			Debug.Log ("강화 성공!!");
 
 			if (ItemData.fReapirPower != 0) ItemData.fReapirPower += 5 * equipEnhanceData[0].fPlusPercent;
-			if (ItemData.fTemperaPlus       != 0)ItemData.fTemperaPlus += ItemData.fTemperaPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fTemperaDown       != 0) ItemData.fTemperaDown += ItemData.fTemperaDown * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fArbaitRepair      != 0) ItemData.fArbaitRepair += ItemData.fArbaitRepair * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fHonorPlus         != 0) ItemData.fHonorPlus += ItemData.fHonorPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fGoldPlus          != 0) ItemData.fGoldPlus += ItemData.fGoldPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fWaterMaxPlus      != 0)ItemData.fWaterMaxPlus += ItemData.fWaterMaxPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fWaterChargePlus   != 0) ItemData.fWaterChargePlus += ItemData.fWaterChargePlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fCritical          != 0) ItemData.fCritical += ItemData.fCritical * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
 			if (ItemData.fCriticalDamage    != 0) ItemData.fCriticalDamage += ItemData.fCriticalDamage * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
@@ -177,12 +174,9 @@ public class InventoryShowPanel : MonoBehaviour {
 		RemoveText ();
 
 		if (ItemData.fReapirPower       != 0) CreateText("수리력 : ", ItemData.fReapirPower);
-		if (ItemData.fTemperaPlus       != 0) CreateText("온도증가량 : ", ItemData.fTemperaPlus);
-		if (ItemData.fTemperaDown       != 0) CreateText("온도감소량 : ", ItemData.fTemperaDown);
 		if (ItemData.fArbaitRepair      != 0) CreateText("알바수리력증가 : ", ItemData.fArbaitRepair);
 		if (ItemData.fHonorPlus         != 0) CreateText("명예증가량 : ", ItemData.fHonorPlus);
 		if (ItemData.fGoldPlus          != 0) CreateText("골드증가량 : ", ItemData.fGoldPlus);
-		if (ItemData.fWaterMaxPlus      != 0) CreateText("물최대치증가 : ", ItemData.fWaterMaxPlus);
 		if (ItemData.fWaterChargePlus   != 0) CreateText("물확률 : ", ItemData.fWaterChargePlus);
 		if (ItemData.fCritical          != 0) CreateText("크리티컬확률 : ", ItemData.fCritical);
 		if (ItemData.fCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.fCriticalDamage);

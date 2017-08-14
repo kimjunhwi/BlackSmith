@@ -54,6 +54,9 @@ public class ScoreManager : MonoBehaviour
 
 		goldText.text = m_fGetGold.ToString("F1");
 		honorText.text = m_fGetHonor.ToString("F1");
+
+		SetCurrentDays (GameManager.Instance.player.GetDay ());
+		SetMaxDays (GameManager.Instance.player.GetMaxDay ());
     }
 
     public float GetGold() { return m_fGetGold; }

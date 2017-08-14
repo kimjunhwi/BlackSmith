@@ -51,6 +51,8 @@ public class NormalCharacter : Character {
 	private float fNextTimer = 0.0f;
 	private const int nMaxTimerCount = 10;
 
+	private int nDay = 1;
+
 	public override void Awake()
     {
         base.Awake();
@@ -106,7 +108,23 @@ public class NormalCharacter : Character {
 
 		if (weaponData == null)
 			return;
-		
+
+		//무기 데이터가 있을 경우 날짜를 받아와 적용시켜 준다
+		//수리력 3% 나머지 1%
+		else 
+		{
+			nDay = cPlayerData.GetDay ();
+
+			weaponData.fMaxComplate = weaponData.fMaxComplate + (weaponData.fMaxComplate * nDay * 0.03f);
+			weaponData.fMinusRepair = weaponData.fMinusRepair + (weaponData.fMinusRepair * nDay * 0.01f);
+			weaponData.fMinusChargingWater = weaponData.fMinusChargingWater + (weaponData.fMinusChargingWater * nDay * 0.01f);
+			weaponData.fMinusCriticalDamage = weaponData.fMinusCriticalDamage + (weaponData.fMinusCriticalDamage * nDay * 0.01f);
+			weaponData.fMinusUseWater = weaponData.fMinusUseWater + (weaponData.fMinusUseWater * nDay * 0.01f);
+			weaponData.fMinusCriticalChance = weaponData.fMinusCriticalChance + (weaponData.fMinusCriticalChance * nDay * 0.01f);
+			weaponData.fMinusAccuracy = weaponData.fMinusAccuracy + (weaponData.fMinusAccuracy * nDay * 0.01f);
+			weaponData.fGold = weaponData.fGold + (weaponData.fGold * nDay * 0.01f);
+			weaponData.fHonor = weaponData.fHonor + (weaponData.fHonor * nDay * 0.01f);
+		}
 
 		//다음 시간 저장 
 		fNextTimer += (float)(weaponData.fLimitedTime * 0.125);
@@ -114,19 +132,6 @@ public class NormalCharacter : Character {
 		//이미지를 넣어줌
 		Timer.sprite = TimerSprites [nTimerCount++];
 
-        //현재 대장간 레벨에 따른 공식을 적용
-
-
-        //ex) 대장간 레벨의 5%를 적용될 수치와 곱하고 그것을 더해줌
-		weaponData.fMaxComplate += weaponData.fMaxComplate * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fMinusRepair += weaponData.fMinusRepair * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fPlusTemperature += weaponData.fPlusTemperature * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fMinusTemperature += weaponData.fMinusTemperature * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fMinusUseWater += weaponData.fMinusUseWater * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fMinusCritical += weaponData.fMinusCritical * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fMinusAccuracy += weaponData.fMinusAccuracy * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fGold += weaponData.fGold * (cPlayerData.GetSmithLevel () * 0.05f);
-		weaponData.fHonor += weaponData.fHonor * (cPlayerData.GetSmithLevel () * 0.05f);
 
         m_fComplate = 0;
 
@@ -441,7 +446,15 @@ public class NormalCharacter : Character {
 
 			ScoreManager.ScoreInstance.GoldPlus (fGold);
 
+			cPlayerData.SetSuccessedGuestCount (cPlayerData.GetSuccessedGuestCount () + 1);
+
+			//셩공 손님이 30명 이상 이라면 
+			if (cPlayerData.GetSuccessedGuestCount () >= 30) 
+			{
+				SpawnManager.Instance.SetDayInitInfo (cPlayerData.GetDay () + 1);	
+			}
 		}
+
 
 		m_bIsRepair = true;
 

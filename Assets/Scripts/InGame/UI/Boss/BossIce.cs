@@ -461,8 +461,6 @@ public class BossIce : BossCharacter
 
 	public void ActiveTimer()
 	{
-		
-
 		if (bossTimer_Obj.activeSelf == true)
 		{
 			bossTimer_Obj.SetActive (false);

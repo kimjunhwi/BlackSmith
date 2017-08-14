@@ -87,6 +87,12 @@ public class Player
 
     public int GetGuestCount() { return changeStats.nGuestCount; }
 
+	public int GetSuccessedGuestCount() { return changeStats.nSuccessedGuest; }
+	public void SetSuccessedGuestCount(int _nValue){changeStats.nSuccessedGuest = _nValue;}
+
+	public int GetFaieldGuestCount()	{ return changeStats.nFaieldGuest; }
+	public void SetFaieldGuestCount(int _nValue){ changeStats.nFaieldGuest = _nValue; }
+	
 	//08.09
 	//플레이어 제작 
 	public void SetCreatorWeapon(CreatorWeapon _weapon){
