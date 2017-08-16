@@ -35,6 +35,7 @@ public class BossCreator : MonoBehaviour
 	public BossTalkPanel bossTalkPanel;				//보스 말풍선
 	public GameObject bossWeapon_Obj;				//보스 무기 Obj
 	public UIDisable uiDisable;
+	public GameObject GuestPanel; 
 
 	private BossTimer bossTimer;
 
@@ -217,6 +218,7 @@ public class BossCreator : MonoBehaviour
 			bossIce.uiManager = uiManager;
 			bossIce.bossPanel = bossPanel;
 			bossIce.nCurLevel = bossElementList [0].curLevel;
+			bossIce.GuestPanel = GuestPanel;
 
 			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "저... 무기좀... 고쳐주세요";
 			bossIce.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "흐으음~~~";
@@ -248,6 +250,7 @@ public class BossCreator : MonoBehaviour
 			bossSasin.uiManager = uiManager;
 			bossSasin.bossPanel = bossPanel;
 			bossSasin.nCurLevel = bossElementList [1].curLevel;
+			bossSasin.GuestPanel = GuestPanel;
 
 			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "내가 사신이지롱";
 			bossSasin.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "나 화났어 ㅡ,ㅡ";
@@ -283,7 +286,7 @@ public class BossCreator : MonoBehaviour
 			bossFire.uiManager = uiManager;
 			bossFire.bossPanel = bossPanel;
 			bossFire.nCurLevel = bossElementList [2].curLevel;
-
+			bossFire.GuestPanel = GuestPanel;
 
 			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "Fire~~~";
 			bossFire.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "흐으음~~~";
@@ -318,7 +321,7 @@ public class BossCreator : MonoBehaviour
 			bossMusic.uiManager = uiManager;
 			bossMusic.bossPanel = bossPanel;
 			bossMusic.nCurLevel = bossElementList [3].curLevel;
-
+			bossMusic.GuestPanel = GuestPanel;
 
 			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_BEGIN] = "소리 질러~!";
 			bossMusic.bossWord [(int)E_BOSSWORD.E_BOSSWORD_PHASE01] = "Whoh~";
