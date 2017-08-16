@@ -189,10 +189,8 @@ public class RepairObject : MonoBehaviour
 		fUseWater  = 10.0f;
 
 		fPlusWater = player.GetWaterPlus ();
-		fMaxWater = player.GetMaxWaterPlus();
+		fMaxWater = player.GetBasicMaxWaterPlus();
 		fWeaponDownDamage = player.GetRepairPower ();
-		//fWeaponDownDamage += 30;
-		fMinusTemperature = player.GetTemperatureMinus ();
 
 		TemperatureSlider.maxValue = fMaxTemperature;
 		TemperatureSlider.value = 0;
@@ -646,7 +644,7 @@ public class RepairObject : MonoBehaviour
         if (weaponData == null)
 			return;
 
-		SoundManager.instance.PlayTouchNormalWeapon ();
+
 
         Debug.Log("Touch");
 		normalWeaponShake.Shake (12.0f, 0.12f);
@@ -708,11 +706,13 @@ public class RepairObject : MonoBehaviour
 
             obj.GetComponent<CriticalTouchParticle>().Play();
 
+			m_PlayerAnimationController.UserCriticalRepair();
+
             SpawnManager.Instance.PlayerCritical();
 
-			fCurrentComplate = fCurrentComplate * 1.5f +(player.GetRepairPower() + weaponData.fMinusRepair * 0.01f);
+			fCurrentComplate = fCurrentComplate + ((player.GetRepairPower() + weaponData.fMinusRepair * 0.01f)* 1.5f) ;
 
-            m_PlayerAnimationController.UserCriticalRepair();
+           
         }
         else
         {
@@ -746,7 +746,7 @@ public class RepairObject : MonoBehaviour
 
 
             //만약 완성됐을때 빅 성공인지를 체크
-            if (Random.Range(0.0f, 100.0f) <= Mathf.Round(player.GetBigSuccessedPercent()) && m_bIsFever == false)
+            if (Random.Range(0.0f, 100.0f) <= Mathf.Round(player.GetBigSuccessed()) && m_bIsFever == false)
             {
                 Debug.Log("Fever!!");
 
@@ -775,9 +775,6 @@ public class RepairObject : MonoBehaviour
 		
 		if (bossCharacter == null)
 			return;
-		
-		SoundManager.instance.PlayTouchNormalWeapon ();
-
 
 		bossWeaponShake.Shake (12.0f, 0.12f);
 		//Ice
@@ -909,7 +906,6 @@ public class RepairObject : MonoBehaviour
 				else
 				{
 					Debug.Log ("Attack To Sasin Miss");
-					SoundManager.instance.PlaySound (eSoundArray.ES_TouchSound_Miss);
 
 					textObj = textObjectPool.GetObject ();
 					textObj.transform.SetParent (textRectTrasnform.transform, false);
@@ -981,8 +977,6 @@ public class RepairObject : MonoBehaviour
 				else 
 				{
 					Debug.Log ("Miss");
-					SoundManager.instance.PlaySound (eSoundArray.ES_TouchSound_Miss);
-
 					textObj = textObjectPool.GetObject ();
 					textObj.transform.SetParent (textRectTrasnform.transform, false);
 					textObj.transform.localScale = Vector3.one;
@@ -1273,9 +1267,6 @@ public class RepairObject : MonoBehaviour
 	{
 		if (weaponData == null)
 			return;
-
-		SoundManager.instance.PlaySound (eSoundArray.ES_WaterActiveSound);
-
 		if (isTouchWaterAvailable == true) 
 		{
 			isTouchWaterAvailable = false;
@@ -1323,11 +1314,9 @@ public class RepairObject : MonoBehaviour
 
 	public void TouchBossWater()
 	{
+
 		if (bossCharacter == null)
 			return;
-
-		SoundManager.instance.PlaySound (eSoundArray.ES_WaterActiveSound);
-
 
 		if (isTouchWaterAvailable == true ) 
 		{
@@ -1507,14 +1496,12 @@ public class RepairObject : MonoBehaviour
 		fCurrentTemperature = 0f;
 		fUseWater = 10.0f;
 		fPlusWater = player.GetWaterPlus ();
-		fMaxWater = player.GetMaxWaterPlus ();
+		fMaxWater = player.GetBasicMaxWaterPlus ();
 		fWeaponDownDamage = player.GetRepairPower ();
 
 		//FireBoss
 		fSmallFireMinusWater = 0f;				
 		fSmallFirePlusTemperatrue = 0f;
-
-		fMinusTemperature = player.GetTemperatureMinus ();
 
 		TemperatureSlider.maxValue = fMaxTemperature;
 		TemperatureSlider.value = 0;

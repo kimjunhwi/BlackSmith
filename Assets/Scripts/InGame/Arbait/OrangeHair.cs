@@ -49,14 +49,14 @@ public class OrangeHair : ArbaitBatch {
         if (fChangePlusWater != 0)
             ReliveSkill();
 
-        fChangePlusWater = playerData.GetWaterPlus() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+		fChangePlusWater = playerData.GetBasicWaterPlus() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
-        playerData.SetWaterPlus(playerData.GetWaterPlus() + fChangePlusWater);
+		playerData.SetBasicWaterPlus(playerData.GetBasicWaterPlus() + fChangePlusWater);
     }
 
     protected override void ReliveSkill()
     {
-        playerData.SetWaterPlus(playerData.GetWaterPlus() - fChangePlusWater);
+		playerData.SetBasicWaterPlus(playerData.GetBasicWaterPlus() - fChangePlusWater);
     }
 
     public override void RelivePauseSkill()

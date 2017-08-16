@@ -52,9 +52,9 @@ public class Nurse : ArbaitBatch {
         if (fChangeCritical != 0)
             ReliveSkill();
 
-        fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+		fChangeCritical = playerData.GetBasicCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
-        playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
+		playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() + fChangeCritical);
     }
 
     protected override void ReliveSkill()
@@ -62,7 +62,7 @@ public class Nurse : ArbaitBatch {
         if (fChangeCritical == 0)
             return;
 
-        playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
+		playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() - fChangeCritical);
     }
 
     public override void RelivePauseSkill()

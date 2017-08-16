@@ -22,18 +22,31 @@ public class BossSoul : MonoBehaviour {
 
 	protected Player playerData;
 
+	private int nIndex = 0;
+
 	void Start()
 	{
 		insertButton.onClick.AddListener (InsertButton);
 	}
 
-	public void SetUp (MakingUI _MakingUI, Player _player)
+	public void SetUp (MakingUI _MakingUI, Player _player,int _nIndex)
 	{
 		MakingUI = _MakingUI;
 		playerData = _player;
+
+		nIndex = _nIndex;
 	}
 
 	protected virtual void InsertButton()
 	{
 	}
+
+	public void ReSetting()
+	{
+		bIsCheck = false;
+
+		BossSoulPanel.sprite = unActiveBossSoulPanel;
+		SoulCheckSlot.sprite = unActiveBossSoulCheckSlot;
+	}
+
 }

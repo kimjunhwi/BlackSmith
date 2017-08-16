@@ -41,7 +41,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     public ArbaitBatch[] array_ArbaitData;  //아르바이트 데이터 캐싱
 
 	public bool bIsBossCreate = false;
-
+	public bool bIsCharacterBack = false;
     
     private float m_fCreateTime = 1.5f;
     private float m_fCreatePlusTime;            //몬스터 생성시간에 도달하면 몬스터 생성되는시간
@@ -100,7 +100,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         //만들 수 있는 시간이 지났거나, 현재 손님이 없을경우,
         //캐릭터 카운트가 최대미만일 경우, 보스가 활성화 중이지 않을경우 캐릭터를 생성한다.
         if ((m_fCreatePlusTime >= m_fCreateTime || list_Character.Count ==0) && 
-            list_Character.Count < m_nMaxPollAmount && bIsBossCreate == false)
+			list_Character.Count < m_nMaxPollAmount && bIsBossCreate == false && bIsCharacterBack == false)
         {
             CreateCharacter();
         }
@@ -172,25 +172,19 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	//날짜가 바뀔시 그것에 대한 초기화를 진행
 	public void SetDayInitInfo(int _nDay)
 	{
-		m_fCreateTime = 0.0f;
+		m_fCreatePlusTime = 0.0f;
 		m_fLevelTime = 0.0f;
 
 		//손님을 전부 되돌림
 		if (list_Character.Count != 0) {
 
-			int nIndex = 0;
-
-			while (true) {
-				list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (4.0f, true);
-
-				if (nIndex >= list_Character.Count)
-					break;
-				
-			}
-
-
+			for(int nIndex = 0; nIndex < list_Character.Count; nIndex++)
+				list_Character[nIndex].GetComponent<NormalCharacter>().RetreatCharacter(4.0f,true);
+			
 			m_nDay = _nDay;
 
+			ScoreManager.ScoreInstance.SetSuccessedGuestCount (0);
+			ScoreManager.ScoreInstance.SetFaieldGuestCount (0);
 			ScoreManager.ScoreInstance.SetCurrentDays (m_nDay);
 
 			if (m_nDay > GameManager.Instance.player.GetMaxDay ()) {

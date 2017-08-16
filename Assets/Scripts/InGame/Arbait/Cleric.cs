@@ -48,9 +48,9 @@ public class Cleric : ArbaitBatch {
         {
             m_bIsApplyBuff = false;
 
-            playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+			playerData.SetBasicRepairPower(playerData.GetBasicRepairPower() - fChangeRepair);
 
-            playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
+			playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() - fChangeCritical);
         }
 
         base.OnDisable();
@@ -81,9 +81,9 @@ public class Cleric : ArbaitBatch {
 
         if (m_bIsApplyBuff)
         {
-            playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+			playerData.SetBasicRepairPower(playerData.GetBasicRepairPower() - fChangeRepair);
 
-            playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
+			playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() - fChangeCritical);
         }
 
     }
@@ -94,9 +94,9 @@ public class Cleric : ArbaitBatch {
 
         if (m_bIsApplyBuff)
         {
-            playerData.SetRepairPower(playerData.GetRepairPower() + fChangeRepair);
+			playerData.SetBasicRepairPower(playerData.GetBasicRepairPower() + fChangeRepair);
 
-            playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
+			playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() + fChangeCritical);
         }
     }
 
@@ -106,17 +106,17 @@ public class Cleric : ArbaitBatch {
 
 		m_bIsApplyBuff = true;
 
-		fChangeRepair = playerData.GetRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+		fChangeRepair = playerData.GetBasicRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
-		fChangeCritical = playerData.GetCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+		fChangeCritical = playerData.GetBasicCriticalChance() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
 		fChangeRepair = Mathf.Round(fChangeRepair);
 
 		fChangeCritical = Mathf.Round(fChangeCritical);
 
-		playerData.SetRepairPower(playerData.GetRepairPower() + fChangeRepair);
+		playerData.SetBasicRepairPower(playerData.GetBasicRepairPower() + fChangeRepair);
 
-		playerData.SetCriticalChance(playerData.GetCriticalChance() + fChangeCritical);
+		playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() + fChangeCritical);
 
 		while (true)
 		{
@@ -130,9 +130,9 @@ public class Cleric : ArbaitBatch {
 
 		m_bIsApplyBuff = false;
 
-		playerData.SetRepairPower(playerData.GetRepairPower() - fChangeRepair);
+		playerData.SetBasicRepairPower(playerData.GetBasicRepairPower() - fChangeRepair);
 
-		playerData.SetCriticalChance(playerData.GetCriticalChance() - fChangeCritical);
+		playerData.SetBasicCriticalChance(playerData.GetBasicCriticalChance() - fChangeCritical);
 	}
 
 	public override void CheckCharacterState(E_ArbaitState _E_STATE)

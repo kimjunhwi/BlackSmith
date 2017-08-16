@@ -19,12 +19,14 @@ public class BossSoulFire : BossSoul {
 			if (MakingUI.CheckMake () == false)
 				return;
 
-			bIsCheck = true;
-
 			//개수가 있는지 확인 , 현재 활성화 된 버튼이 몇 개인지 확인
+			if (playerData.GetSasinMaterial () > 0) {
 
-			BossSoulPanel.sprite = ActiveBossSoulPanel;
-			SoulCheckSlot.sprite = ActiveBossSoulCheckSlot;
+				bIsCheck = true;
+
+				BossSoulPanel.sprite = ActiveBossSoulPanel;
+				SoulCheckSlot.sprite = ActiveBossSoulCheckSlot;
+			}
 		}
 	}
 }
