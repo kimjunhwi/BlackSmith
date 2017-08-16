@@ -120,8 +120,8 @@ public class RepairObject : MonoBehaviour
     private bool m_bIsFever = false;
     private const float m_fFeverTime = 10.0f;
 
-    private const float m_fNormalCretaeTime = 1.5f;
-    private const float m_fFeverCreateTime = 0.5f;
+    private const float m_fNormalCretaeTime = 5f;
+    private const float m_fFeverCreateTime = 5f;
 
     private const float m_fNormalSpeed = 1.2f;
     private const float m_fFeverSpeed = 3.6f;
@@ -184,6 +184,8 @@ public class RepairObject : MonoBehaviour
 	
 
 		player = GameManager.Instance.player;
+
+		player.PlayerStatsSetting ();
 
 		fCurrentWater = 0f;
 		fUseWater  = 10.0f;
@@ -473,6 +475,8 @@ public class RepairObject : MonoBehaviour
 	{
 		while (true) {
 			yield return new WaitForSeconds (1.0f);
+
+			fPlusWater = player.GetWaterPlus ();
 
 			fWaterSlideTime = 0.0f;
 			fTemperatureSlideTime = 0.0f;

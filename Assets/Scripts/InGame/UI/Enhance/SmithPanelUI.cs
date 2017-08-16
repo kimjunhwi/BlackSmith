@@ -33,6 +33,8 @@ public class SmithPanelUI : EnhanceUI {
 
 				nLevel++;
 
+				cPlayer.SetBasicBigSuccessedPercent(cPlayer.GetBasicBigSuccessedPercent() + nLevel * m_EnhanceData.fPlusPercent);
+
 				cPlayer.SetSmithLevel(nLevel);
 
 				EnhanceText.text = strEnhanceName + nLevel;

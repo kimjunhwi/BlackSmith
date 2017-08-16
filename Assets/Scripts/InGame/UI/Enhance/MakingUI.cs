@@ -68,6 +68,9 @@ public class MakingUI : MonoBehaviour {
 		PlusDayButton.onClick.AddListener (PlusDay);
 		MakingButton.onClick.AddListener (MakeWeapon);
 
+
+		NowRepairPower.text = "0";
+
 		CostDayText.onValueChanged.AddListener (delegate {InputText();});
 	}
 
@@ -135,6 +138,8 @@ public class MakingUI : MonoBehaviour {
 		int nDay = 0;
 
 		string result = CostDayText.text;
+
+		bool isNum = int.TryParse(result , out nDay);
 
 		if (result == null)
 			nDay = 1;
@@ -300,6 +305,9 @@ public class MakingUI : MonoBehaviour {
 		}
 
 		//특수 옵션 미정 
+
+		NowRepairPower.text = string.Format("{0}", Mathf.RoundToInt(createWeapon.fRepair));
+
 		playerData.SetCreatorWeapon (createWeapon);
 
 		SpawnManager.Instance.SetDayInitInfo (playerData.GetDay ());
