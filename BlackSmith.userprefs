@@ -3,24 +3,24 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/Player/PlayerController.cs">
     <Files>
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Enhance/MakingUI.cs" Line="303" Column="30" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/MakingUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Arbait/BlueHair.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/EnhanceUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/AccuracyPanelUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/CriticalPanelUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/SmithPanelUI.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Player/Player.cs" Line="262" Column="65" />
+      <File FileName="Assets/Scripts/InGame/Player/Player.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Manager/ScoreManager.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Arbait/ArbaitCharacter.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Boss/BossIce.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="47" Column="31" />
-      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="115" Column="1" />
-      <File FileName="Assets/Scripts/InGame/Particle/CriticalTouchPool.cs" Line="31" Column="51" />
-      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="709" Column="50" />
-      <File FileName="Assets/StreamingAssets/PlayerData.json" Line="1" Column="188" />
-      <File FileName="Assets/Scripts/InGame/Particle/NormalRepairPool.cs" Line="28" Column="5" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Particle/CriticalTouchPool.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="1" Column="1" />
+      <File FileName="Assets/StreamingAssets/PlayerData.json" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Particle/NormalRepairPool.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Player/PlayerController.cs" Line="57" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
