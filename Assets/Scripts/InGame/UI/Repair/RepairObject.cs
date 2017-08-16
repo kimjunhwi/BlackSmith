@@ -379,6 +379,7 @@ public class RepairObject : MonoBehaviour
 
                         SpawnManager.Instance.CheckComplateWeapon(AfootObject, fCurrentComplate, fCurrentTemperature);
                     }
+
                     else
                     {
 						if (bossCharacter == null)
@@ -388,11 +389,22 @@ public class RepairObject : MonoBehaviour
 
 							player.SetFaieldGuestCount (player.GetFaieldGuestCount () + 1);
 
+                            ScoreManager.ScoreInstance.SetFaieldGuestCount(player.GetFaieldGuestCount());
+
 							//손님 실패가 5명 이상 이라면 
 							if (player.GetFaieldGuestCount () >= 5) 
 							{
+                                //초기화
+                                player.SetSuccessedGuestCount(0);
+                                player.SetFaieldGuestCount(0);
 
-							}
+                                ScoreManager.ScoreInstance.SetSuccessedGuestCount(0);
+                                ScoreManager.ScoreInstance.SetFaieldGuestCount(0);
+
+
+                                //날짜를 하루 차감
+                                SpawnManager.Instance.SetDayInitInfo(player.GetDay() - 1);
+                            }
 						}
                     }
 				}

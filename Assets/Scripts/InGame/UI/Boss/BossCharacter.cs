@@ -46,7 +46,6 @@ public class BossCharacter : Character
 
 	public GameObject GuestPanel;
 
-
 	protected Animator animator;
 
 	protected virtual IEnumerator BossWait() 			{ yield return null;}		//보스 대기(연출)

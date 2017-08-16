@@ -101,21 +101,19 @@ public class Player
 		SetRepairPower ();
 	}
 
-	public float fRepairPower;
+	public float m_fRepairPower = 0;
 
 	public void SetRepairPower () {
 
-		float fWeaponEquipPower = 0.0f;
-		float fGearEquipPower = 0.0f;
-		float fAccessoryEquipPower = 0.0f;
-		float fCreatorEquippower = 0.0f;
+        float fResultRepairPower = 0.0f;
 
-		if (WeaponEquipment != null)fWeaponEquipPower = WeaponEquipment.fReapirPower;
-		if (GearEquipmnet != null) fGearEquipPower = GearEquipmnet.fReapirPower;
-		if (AccessoryEquipmnet != null) fAccessoryEquipPower = AccessoryEquipmnet.fReapirPower;
-		if (creatorWeapon != null) fCreatorEquippower = creatorWeapon.fRepair;
 
-		fRepairPower = changeStats.fRepairPower + (changeStats.fRepairPower * (fWeaponEquipPower + fGearEquipPower + fAccessoryEquipPower + fCreatorEquippower) * 0.01f);
+		if (WeaponEquipment != null) fResultRepairPower += WeaponEquipment.fReapirPower;
+		if (GearEquipmnet != null) fResultRepairPower += GearEquipmnet.fReapirPower;
+		if (AccessoryEquipmnet != null) fResultRepairPower += AccessoryEquipmnet.fReapirPower;
+		if (creatorWeapon != null) fResultRepairPower += creatorWeapon.fRepair;
+
+        m_fRepairPower = changeStats.fRepairPower + (changeStats.fRepairPower * fResultRepairPower * 0.01f);
 	}
 
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
