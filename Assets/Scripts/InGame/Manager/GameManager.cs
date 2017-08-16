@@ -107,7 +107,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 		PlayerPrefs.DeleteKey ("BossRegenTime");
 		PlayerPrefs.DeleteKey ("BossInvitementSaveTime");
 
-
         logoManager = GameObject.Find("LogoManager").GetComponent<LogoManager>();
 
 		Load_TableInfo_Sound ();
@@ -258,8 +257,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
         player.Init(cInvetoryInfo, playerData);
 
         //SoundManager.instance.LoadSource();
-
-		Debug.Log (player.fRepairPower);
 
         //SoundManager.instance.PlayBGM(eSound.bgm_main);
 

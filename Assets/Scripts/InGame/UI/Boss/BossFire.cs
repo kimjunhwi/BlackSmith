@@ -309,7 +309,7 @@ public class BossFire : BossCharacter
 	protected override IEnumerator BossResult ()
 	{
 		//ChangeSound
-		SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
+		//SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
 		ActiveTimer ();
 
 		while (true) 

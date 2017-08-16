@@ -646,7 +646,7 @@ public class RepairObject : MonoBehaviour
         if (weaponData == null)
 			return;
 
-		SoundManager.instance.PlaySound (eSoundArray.BGM_TouchWeapon01);
+		SoundManager.instance.PlayTouchNormalWeapon ();
 
         Debug.Log("Touch");
 		normalWeaponShake.Shake (12.0f, 0.12f);
@@ -775,6 +775,9 @@ public class RepairObject : MonoBehaviour
 		
 		if (bossCharacter == null)
 			return;
+		
+		SoundManager.instance.PlayTouchNormalWeapon ();
+
 
 		bossWeaponShake.Shake (12.0f, 0.12f);
 		//Ice
@@ -906,6 +909,7 @@ public class RepairObject : MonoBehaviour
 				else
 				{
 					Debug.Log ("Attack To Sasin Miss");
+					SoundManager.instance.PlaySound (eSoundArray.ES_TouchSound_Miss);
 
 					textObj = textObjectPool.GetObject ();
 					textObj.transform.SetParent (textRectTrasnform.transform, false);
@@ -977,6 +981,8 @@ public class RepairObject : MonoBehaviour
 				else 
 				{
 					Debug.Log ("Miss");
+					SoundManager.instance.PlaySound (eSoundArray.ES_TouchSound_Miss);
+
 					textObj = textObjectPool.GetObject ();
 					textObj.transform.SetParent (textRectTrasnform.transform, false);
 					textObj.transform.localScale = Vector3.one;
@@ -1267,6 +1273,9 @@ public class RepairObject : MonoBehaviour
 	{
 		if (weaponData == null)
 			return;
+
+		SoundManager.instance.PlaySound (eSoundArray.ES_WaterActiveSound);
+
 		if (isTouchWaterAvailable == true) 
 		{
 			isTouchWaterAvailable = false;
@@ -1314,9 +1323,11 @@ public class RepairObject : MonoBehaviour
 
 	public void TouchBossWater()
 	{
-
 		if (bossCharacter == null)
 			return;
+
+		SoundManager.instance.PlaySound (eSoundArray.ES_WaterActiveSound);
+
 
 		if (isTouchWaterAvailable == true ) 
 		{

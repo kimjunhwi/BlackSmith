@@ -37,8 +37,9 @@ public class BossConsumeItemInfo : MonoBehaviour
 	private int nInitTime_Min = 19;
 	private int nInitTime_sec = 59;
 
-	public int nInviteMentMaxCount = 5;								//초대장 최대 개수
+	public int nInviteMentMaxCount = 5;									//초대장 최대 개수
 	public int nInviteMentCurCount = 5;									//초대장 현재 개수
+	public int nPotionCount =0;											//포션 개수
 	public BossRegenTimer bossRegenTimer;
 	public BossCreator bossCreator;
 
@@ -84,7 +85,7 @@ public class BossConsumeItemInfo : MonoBehaviour
 		int nCheck = Mathf.Abs(nEndTime - nStartTime);
 
 		//하루가 지나거나 100분이 지나거나 현재 초대장이 가득 찼으면
-		if (timeCal.Days != 0 || nCheck >= 1200 || nInviteMentCurCount == nInviteMentMaxCount) 
+		if (timeCal.Days != 0 || nCheck >= 4500 || nInviteMentCurCount == nInviteMentMaxCount) 
 		{
 			//초대장 갯수 풀로 할것
 			nInviteMentCurCount = nInviteMentMaxCount;
@@ -102,8 +103,8 @@ public class BossConsumeItemInfo : MonoBehaviour
 			int nPassedTime_Min = (int)timeCal.TotalMinutes;
 			int nPassedTime_Sec = (int)timeCal.Seconds % 60;
 
-			//20분이 지나지 않았다면 저장된 분에서 지나간 분 만큼 뺀 시간을 시작한다
-			if (nPassedTime_Min < 20) 
+			//15분이 지나지 않았다면 저장된 분에서 지나간 분 만큼 뺀 시간을 시작한다
+			if (nPassedTime_Min < 15) 
 			{
 
 				int ResultTime_Min = GameManager.Instance.cBossPanelListInfo [0].nBossInviteMentCurMin - nPassedTime_Min;

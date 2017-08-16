@@ -319,7 +319,7 @@ public class BossIce : BossCharacter
 	{
 		Debug.Log ("BossResult Active!!");
 		//ChangeSound
-		SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
+		//SoundManager.instance.ChangeBGM(eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
 
 		ActiveTimer ();
 

@@ -89,7 +89,9 @@ public class BossCreator : MonoBehaviour
 		if (bossPopUpWindow.bossMusic == null)
 			bossPopUpWindow.bossMusic = bossList[3].GetComponent<BossMusic>();
 
-
+		for (int i = 0; i < 4; i++) {
+			bossElementList[i].ReloadButton.onClick.AddListener(() => bossPopUpWindow.Active_YesNoWindow_BossReChargeCount("도전 횟수를 충전하시겠습니까?", i));
+		}
 
 		bossPopUpWindow.PopUpWindow_YesNo_NoButton.onClick.RemoveListener (bossPopUpWindow.PopUpWindowYesNo_Switch);
 		bossPopUpWindow.PopUpWindow_YesNo_YesButton.onClick.RemoveListener (bossPopUpWindow.PopUpWindowYesNo_Switch);
@@ -102,6 +104,7 @@ public class BossCreator : MonoBehaviour
 		if (GameManager.Instance.cBossPanelListInfo[0].isSaved == true) 
 		{
 			Debug.Log ("Load Saved Info");
+
 			bossElementList[0].BossLeftCount_Text.text = string.Format("{0} / {1}", GameManager.Instance.cBossPanelListInfo[0].nBossIceLeftCount, nBossMaxLeftCount);
 			bossElementList[0].bossLevel_Text.text = string.Format ("Lv {0}", GameManager.Instance.cBossPanelListInfo[0].nBossIceCurLevel);
 			bossElementList[1].BossLeftCount_Text.text = string.Format("{0} / {1}",  GameManager.Instance.cBossPanelListInfo[0].nBossSasinLeftCount, nBossMaxLeftCount);
@@ -111,6 +114,24 @@ public class BossCreator : MonoBehaviour
 			bossElementList[3].BossLeftCount_Text.text = string.Format("{0} / {1}",  GameManager.Instance.cBossPanelListInfo[0].nBossMusicLeftCount, nBossMaxLeftCount);
 			bossElementList[3].bossLevel_Text.text = string.Format ("Lv {0}", GameManager.Instance.cBossPanelListInfo[0].nBossMusicCurLevel);
 			bossConsumeItemInfo.nInviteMentCurCount = GameManager.Instance.cBossPanelListInfo [0].nBossInviteMentCount;
+
+			bossConsumeItemInfo.positionCount_Text.text = string.Format ("{0}", bossConsumeItemInfo.nPotionCount);
+
+			//보스 도전 횟수(개개인) 이 다 됬을시 충전 버튼 활성화
+			if (GameManager.Instance.cBossPanelListInfo [0].nBossIceLeftCount <= 0)
+				bossElementList [0].ReloadButton_Obj.SetActive (true);
+			if (GameManager.Instance.cBossPanelListInfo [0].nBossSasinLeftCount <= 0)
+				bossElementList [1].ReloadButton_Obj.SetActive (true);
+			if (GameManager.Instance.cBossPanelListInfo [0].nBossFireLeftCount <= 0)
+				bossElementList [2].ReloadButton_Obj.SetActive (true);
+			if (GameManager.Instance.cBossPanelListInfo [0].nBossMusicLeftCount <= 0)
+				bossElementList [3].ReloadButton_Obj.SetActive (true);
+			
+			nBossSasinLeftCount = GameManager.Instance.cBossPanelListInfo [0].nBossSasinLeftCount;
+			nBossIceLeftCount = GameManager.Instance.cBossPanelListInfo [0].nBossIceLeftCount;
+			nBossFireLeftCount = GameManager.Instance.cBossPanelListInfo [0].nBossFireLeftCount;
+			nBossMusicLeftCount = GameManager.Instance.cBossPanelListInfo [0].nBossMusicLeftCount;
+			
 		}
 		else
 		{
@@ -126,6 +147,8 @@ public class BossCreator : MonoBehaviour
 			bossElementList[3].bossLevel_Text.text = string.Format ("Lv {0}", minLevel);
 
 			bossConsumeItemInfo.nInviteMentCurCount = bossConsumeItemInfo.nInviteMentMaxCount;
+			bossConsumeItemInfo.nPotionCount = 0;
+			bossConsumeItemInfo.positionCount_Text.text = string.Format ("{0}", bossConsumeItemInfo.nPotionCount);
 		}
 
 	}
@@ -307,11 +330,7 @@ public class BossCreator : MonoBehaviour
 
 
 		}
-
 		BossPanelInfoSave ();
-
-		//bossPanel.SetActive (true);
-		//uiManager.AllDisable ();
 	}
 
 	public void BossPanelInfoSave()
@@ -325,6 +344,7 @@ public class BossCreator : MonoBehaviour
 		GameManager.Instance.cBossPanelListInfo [0].nBossIceLeftCount = nBossIceLeftCount;
 		GameManager.Instance.cBossPanelListInfo [0].nBossInviteMentCount = 	bossConsumeItemInfo.nInviteMentCurCount;
 
+		GameManager.Instance.cBossPanelListInfo [0].nBossPotionCount = bossConsumeItemInfo.nPotionCount;
 
 		GameManager.Instance.cBossPanelListInfo [0].nBossIceCurLevel = bossElementList [0].curLevel;
 		GameManager.Instance.cBossPanelListInfo [0].nBossSasinCurLevel = bossElementList [1].curLevel;
@@ -344,4 +364,5 @@ public class BossCreator : MonoBehaviour
 		nBossFireLeftCount = nBossMaxLeftCount;
 		nBossSasinLeftCount = nBossMaxLeftCount;
 	}
+
 }

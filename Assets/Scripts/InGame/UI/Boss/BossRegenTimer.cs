@@ -18,7 +18,7 @@ public class BossRegenTimer : MonoBehaviour
 
 	private int curMin;													//현재 분
 	private float fCurSec;
-	private int nInitTime_Min = 19;
+	private int nInitTime_Min = 119;
 	private int nInitTime_sec = 59;
 
 	public BossCreator bossCreator;
@@ -50,7 +50,7 @@ public class BossRegenTimer : MonoBehaviour
 			EndData = System.DateTime.Now;
 			PlayerPrefs.SetString ("BossRegenTime", EndData.ToString ());
 			Debug.Log ("BossRegen init Time : " + EndData.ToString ());
-			StartCoroutine (Timer (19, 59)); 
+			StartCoroutine (Timer (119, 59)); 
 			return;
 		}
 
@@ -61,8 +61,8 @@ public class BossRegenTimer : MonoBehaviour
 		int nEndTime = EndData.Hour * 3600 + EndData.Minute * 60 + EndData.Second;
 		int nCheck = Mathf.Abs(nEndTime - nStartTime);
 
-		//하루가 지나거나 20분이 지나거나 현재 초대장이 가득 찼으면
-		if (timeCal.Days != 0 || nCheck >= 1200) 
+		//하루가 지나거나 2시간이 지나거나 현재 초대장이 가득 찼으면
+		if (timeCal.Days != 0 || nCheck >= 7200) 
 		{
 			Debug.Log ("BossChanllege ReFill");
 			//남은시간을 계산해서 계속 해서 흐른다
@@ -71,7 +71,7 @@ public class BossRegenTimer : MonoBehaviour
 			int nPassedTime_Min = (int)timeCal.TotalMinutes % 20;	//전체 분
 			int nPassedTime_Sec = (int)timeCal.Seconds % 60; 		//전채 초에서 나머지
 
-			bossCreator.BossChanllengeCountToMax ();
+			//bossCreator.BossChanllengeCountToMax ();
 
 			StartCoroutine (Timer (nPassedTime_Min, nPassedTime_Sec));
 
@@ -87,7 +87,7 @@ public class BossRegenTimer : MonoBehaviour
 			int nPassedTime_Sec = (int)timeCal.Seconds % 60; 	//전채 초에서 나머지
 
 			//20분이 지나지 않았다면 저장된 분에서 지나간 분 만큼 뺀 시간을 시작한다
-			if (nPassedTime_Min < 20) 
+			if (nPassedTime_Min < 119) 
 			{
 				int ResultTime_Min = GameManager.Instance.cBossPanelListInfo [0].nBossRegenCurMin - nPassedTime_Min;
 

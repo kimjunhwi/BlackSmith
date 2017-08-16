@@ -11,20 +11,45 @@ public class Cooltime
 
 public enum eSound : int
 {
-	bgm_main   = 101,
-	bgm_bossbattle    = 102,
-	snd_touchWeapon00 = 201,
-	snd_touchWeapon01 = 202,
-	snd_WeaponExplosion = 203,
+	BGM_Main   = 101,
+	BGM_BossBattle    = 102,
+	TouchSoundWeapon00 = 201,
+	TouchSoundWeapon01 = 202,
+	TouchSoundWeapon02 = 203,
+	TouchSound_Cri = 204,
+	TouchSound_Miss = 205,
+	TouchSound_Menu = 206,
+	FixedSound_Success = 207,
+	FixedSound_Fail = 208,
+	BossSound_Success = 209,
+	BossSound_Fail = 210,
+	CraftSound_Finish = 211,
+	CraftSound_GreatSuccess = 212,
+	WeaponExplosionSound = 213,
+	WaterActiveSound = 214,
+	TemperatureSound = 215,
 };
 
 public enum eSoundArray 
 {
 	BGM_Main = 0,
 	BGM_BossBattle,
-	BGM_TouchWeapon00,
-	BGM_TouchWeapon01,
-	BGM_WeaponExplosion = 4,
+	ES_TouchWeapon00,
+	ES_TouchWeapon01,
+	ES_TouchWeapon02,
+	ES_TouchSound_Cri,
+	ES_TouchSound_Miss,
+	ES_TouchSound_Menu,
+	ES_FixedSound_Success,
+	ES_FixedSound_Fail,
+	ES_BossSound_Success,
+	ES_BossSound_Fail,
+	ES_CraftSound_Finish,
+	ES_CraftSound_GreatSuccess,
+	ES_WeaponExplosionSound,
+	ES_WaterActiveSound,
+	ES_TemperatureSound = 16,
+
 }
 
 public class SoundManager : MonoBehaviour 
@@ -71,32 +96,29 @@ public class SoundManager : MonoBehaviour
 	//----------------------------------------------
 	public void LoadSource()
 	{
-		AddSource((int)eSound.bgm_main, "Sound_BGM_Main");
-		AddSource ((int)eSound.bgm_bossbattle, "Sound_BGM_BossBattle");
-		AddSource((int)eSound.snd_touchWeapon00, "Sound_ES_TouchWeapon00");
-		AddSource((int)eSound.snd_touchWeapon01, "Sound_ES_TouchWeapon01");
-		AddSource((int)eSound.snd_WeaponExplosion, "Sound_ES_WeaponExplosion");
-
-
-//		AddSource((int)eSound.ui_button   	, "snd_ui_click");
-//		AddSource((int)eSound.ui_alarm   	, "snd_ui_alarm");
-//		AddSource((int)eSound.ui_beep   	, "snd_ui_beep");
-//		AddSource((int)eSound.ui_popup   	, "snd_ui_popup");
-//		AddSource((int)eSound.battle_notice	, "snd_levelup");
-//		AddSource((int)eSound.battle_win   	, "battle_win");
-//		AddSource((int)eSound.battle_lose   , "battle_lose");
-//		AddSource((int)eSound.skill_arrow   , "skill_arrow");
-//		AddSource((int)eSound.skill_magic   , "skill_magic");
-//		AddSource((int)eSound.skill_punch   , "skill_punch");
-//		AddSource((int)eSound.skill_slap1   , "skill_slap1");
-//		AddSource((int)eSound.skill_slap2   , "skill_slap2");
-//		AddSource((int)eSound.skill_sword   , "skill_sword");
-//		AddSource((int)eSound.skill_sword2  , "skill_sword2");
+		AddSource((int)eSound.BGM_Main, "Sound_BGM_Main");
+		AddSource ((int)eSound.BGM_BossBattle, "Sound_BGM_BossBattle");
+		AddSource((int)eSound.TouchSoundWeapon00, "Sound_ES_TouchWeapon00");
+		AddSource((int)eSound.TouchSoundWeapon01, "Sound_ES_TouchWeapon01");
+		AddSource((int)eSound.TouchSoundWeapon00, "Sound_ES_TouchWeapon02");
+		AddSource((int)eSound.TouchSound_Cri, "Sound_ES_TouchCri");
+		AddSource((int)eSound.TouchSound_Miss, "Sound_ES_TouchMiss");
+		AddSource((int)eSound.TouchSound_Menu, "Sound_ES_TouchMenu");
+		AddSource((int)eSound.FixedSound_Success, "Sound_ES_FixedSuccess");
+		AddSource((int)eSound.FixedSound_Fail, "Sound_ES_FixedFail");
+		AddSource((int)eSound.BossSound_Success, "Sound_ES_BossSuccess");
+		AddSource((int)eSound.BossSound_Fail, "Sound_ES_BossFail");
+		AddSource((int)eSound.CraftSound_Finish, "Sound_ES_CraftFinish");
+		AddSource((int)eSound.CraftSound_GreatSuccess, "Sound_ES_CraftGreatSuccess");
+		AddSource((int)eSound.WeaponExplosionSound, "Sound_ES_WeaponExplosion");
+		AddSource((int)eSound.WaterActiveSound, "Sound_ES_WaterActive");
+		AddSource((int)eSound.TemperatureSound, "Sound_ES_TempratureExplosion");
 	}   
 
 	// Add Source ----------------------------------------------------------------
 	public void AddSource(int _sound_index, string _sound_name  ="")
 	{
+		
 		GameObject soundObj = simpleSoundObjPool.GetObject ();
 		soundObj.transform.SetParent(gameObject.transform,false);
 		soundObj.transform.position = new Vector3(0, 0, 0);
@@ -122,6 +144,9 @@ public class SoundManager : MonoBehaviour
 		soundInfo._index     = (int)_sound_index;
 
 		SoundArray.Add (soundObj);
+
+
+
 		/*
 		GameObject kGO = new GameObject();
 		//kGO.tag = "SoundObject";	
@@ -183,6 +208,13 @@ public class SoundManager : MonoBehaviour
 	{
 		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
 		aSource.Play ();
+	}
+
+	public void StopSound(eSoundArray _index)
+	{
+		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
+		aSource.Stop ();
+
 	}
 
 	public void ChangeBGM(eSoundArray _StopIndex, eSoundArray _StartIndex)
@@ -413,6 +445,13 @@ public class SoundManager : MonoBehaviour
 	public void SetSoundObjPool(SimpleObjectPool _SoundObjPool)
 	{
 		simpleSoundObjPool = _SoundObjPool;
+	}
+
+	public void PlayTouchNormalWeapon()
+	{
+		int randomIndex = Random.Range ((int)eSoundArray.ES_TouchWeapon00, (int)eSoundArray.ES_TouchWeapon02);
+		AudioSource aSource = SoundManager.instance.SoundArray [randomIndex].gameObject.GetComponent<AudioSource> ();
+		aSource.Play ();
 	}
 
 }
