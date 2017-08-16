@@ -57,6 +57,8 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 	public SimpleObjectPool simpleSoundObjPool;
 
+	int m_nDay = 1;
+
     private void Awake()
     {
         //게임매니저에서 아르바이트 수치를 받아옴
@@ -167,6 +169,36 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
         }
     }
 
+	//날짜가 바뀔시 그것에 대한 초기화를 진행
+	public void SetDayInitInfo(int _nDay)
+	{
+		m_fCreateTime = 0.0f;
+		m_fLevelTime = 0.0f;
+
+		//손님을 전부 되돌림
+		if (list_Character.Count != 0) {
+
+			int nIndex = 0;
+
+			while (true) {
+				list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (4.0f, true);
+
+				if (nIndex >= list_Character.Count)
+					break;
+				
+			}
+
+
+			m_nDay = _nDay;
+
+			ScoreManager.ScoreInstance.SetCurrentDays (m_nDay);
+
+			if (m_nDay > GameManager.Instance.player.GetMaxDay ()) {
+				ScoreManager.ScoreInstance.SetMaxDays (m_nDay);
+			}
+		}
+	}
+
     //WeaponData
     #region
 
@@ -252,11 +284,9 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		}
 	}
 
-    //보스 소환시 호출 캐릭터를 이동속도를 3으로 한후 전부 되돌림
+    //보스 소환시 호출 캐릭터를 이동속도를 4로 한후 전부 되돌림
 	public void AllCharacterComplate()
 	{
-		
-
 		if (list_Character.Count == 0)
 			return;
 
@@ -272,8 +302,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 				break;
 			}
 		}
-
-
 	}
 
     //이동

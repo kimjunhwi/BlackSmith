@@ -379,12 +379,32 @@ public class RepairObject : MonoBehaviour
 
                         SpawnManager.Instance.CheckComplateWeapon(AfootObject, fCurrentComplate, fCurrentTemperature);
                     }
+
                     else
                     {
 						if (bossCharacter == null)
 						{
 							//터지는 파티클
 							ShowBreakWeapon ();
+
+							player.SetFaieldGuestCount (player.GetFaieldGuestCount () + 1);
+
+                            ScoreManager.ScoreInstance.SetFaieldGuestCount(player.GetFaieldGuestCount());
+
+							//손님 실패가 5명 이상 이라면 
+							if (player.GetFaieldGuestCount () >= 5) 
+							{
+                                //초기화
+                                player.SetSuccessedGuestCount(0);
+                                player.SetFaieldGuestCount(0);
+
+                                ScoreManager.ScoreInstance.SetSuccessedGuestCount(0);
+                                ScoreManager.ScoreInstance.SetFaieldGuestCount(0);
+
+
+                                //날짜를 하루 차감
+                                SpawnManager.Instance.SetDayInitInfo(player.GetDay() - 1);
+                            }
 						}
                     }
 				}
@@ -676,7 +696,7 @@ public class RepairObject : MonoBehaviour
 
 
         //크리티컬 확률 
-		if (Random.Range(0, 100) <= Mathf.Round(player.GetCriticalChance() + (player.GetCriticalChance() * weaponData.fMinusCritical *0.01f)))
+		if (Random.Range(0, 100) <= Mathf.Round(player.GetCriticalChance() + (player.GetCriticalChance() * weaponData.fMinusCriticalChance *0.01f)))
         {
             Debug.Log("Cri!!!");
 
@@ -690,7 +710,7 @@ public class RepairObject : MonoBehaviour
 
             SpawnManager.Instance.PlayerCritical();
 
-			fCurrentComplate = fCurrentComplate +(player.GetRepairPower() + weaponData.fMinusRepair * 0.01f) * 1.5f;
+			fCurrentComplate = fCurrentComplate * 1.5f +(player.GetRepairPower() + weaponData.fMinusRepair * 0.01f);
 
             m_PlayerAnimationController.UserCriticalRepair();
         }
@@ -718,7 +738,7 @@ public class RepairObject : MonoBehaviour
 
         //fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
-		fCurrentTemperature += fMaxTemperature * 0.08f - weaponData.fMinusTemperature;
+		fCurrentTemperature += fMaxTemperature * 0.08f;
 
 
         //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달

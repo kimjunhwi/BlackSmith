@@ -34,6 +34,8 @@ public class ScoreManager : MonoBehaviour
 
     public Text goldText;
 	public Text honorText;
+    public Text SucccessedGuestCountText;
+    public Text FaieldGeustCountText;
 
     private float m_fGetGold = 0;
 	private float m_fGetHonor = 0;
@@ -54,10 +56,26 @@ public class ScoreManager : MonoBehaviour
 
 		goldText.text = m_fGetGold.ToString("F1");
 		honorText.text = m_fGetHonor.ToString("F1");
+
+		SetCurrentDays (GameManager.Instance.player.GetDay ());
+		SetMaxDays (GameManager.Instance.player.GetMaxDay ());
+
+        SetSuccessedGuestCount(GameManager.Instance.player.GetSuccessedGuestCount());
+        SetFaieldGuestCount(GameManager.Instance.player.GetFaieldGuestCount());
     }
 
     public float GetGold() { return m_fGetGold; }
 	public float GetHonor() { return m_fGetHonor; }
+
+    public void SetSuccessedGuestCount(int _nValue)
+    {
+        SucccessedGuestCountText.text = string.Format("Successed {0} / 30",_nValue);
+    }
+
+    public void SetFaieldGuestCount(int _nValue)
+    {
+        FaieldGeustCountText.text = string.Format("Failed {0} / 5", _nValue);
+    }
 
 
     private string GetCurrentcyIntoString(float _fValueToConvert)

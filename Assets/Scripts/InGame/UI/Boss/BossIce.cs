@@ -462,17 +462,17 @@ public class BossIce : BossCharacter
 
 	public void ActiveTimer()
 	{
-		
-
 		if (bossTimer_Obj.activeSelf == true)
 		{
+            GuestPanel.SetActive(true);
 			bossTimer_Obj.SetActive (false);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
 			bossTimer.StopTimer(0f,0f,(int)E_BOSSNAME.E_BOSSNAME_ICE);
 		}
 		else 
 		{
-			bossTimer_Obj.SetActive (true);
+            GuestPanel.SetActive(false);
+            bossTimer_Obj.SetActive (true);
 			bossTimer = bossTimer_Obj.GetComponent<BossTimer> ();
 			bossTimer.StartTimer (1f, 30f , (int)E_BOSSNAME.E_BOSSNAME_ICE);
 			bossTimer.bossIce = this;

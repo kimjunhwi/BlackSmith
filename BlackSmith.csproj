@@ -81,8 +81,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BossSoul.cs" />
-    <Compile Include="Assets\MakingUI.cs" />
     <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_AnimationScrollTexture.cs" />
     <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_AnimationSpriteSheet.cs" />
     <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_DeadTime.cs" />
@@ -90,9 +88,6 @@
     <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_StopCam.cs" />
     <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_VisibleBG.cs" />
     <Compile Include="Assets\Scripts\BackGround.cs" />
-    <Compile Include="Assets\Scripts\Brick.cs" />
-    <Compile Include="Assets\Scripts\Coin.cs" />
-    <Compile Include="Assets\Scripts\CoinMove.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitBatch.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
     <Compile Include="Assets\Scripts\InGame\Arbait\Bell.cs" />
@@ -136,12 +131,13 @@
     <Compile Include="Assets\Scripts\InGame\Player\NormalCharacter.cs" />
     <Compile Include="Assets\Scripts\InGame\Player\Player.cs" />
     <Compile Include="Assets\Scripts\InGame\Player\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\InGame\Player\PlayerDaysInfo.cs" />
     <Compile Include="Assets\Scripts\InGame\Player\PlayerSpecificInfo.cs" />
-    <Compile Include="Assets\Scripts\InGame\Player\Sasin.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QuestMile.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QuestPanel.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QuestTimer.cs" />
     <Compile Include="Assets\Scripts\InGame\Quest\QusetManager.cs" />
+    <Compile Include="Assets\Scripts\InGame\Sound\SoundInfo.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossAnimation.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossArbaitDeFreeze.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossBackGround.cs" />
@@ -164,25 +160,30 @@
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossSmallFireObject.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTalkPanel.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\BossTimer.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Boss\BossWeaponButton.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Boss\BossWeaponShake.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\Bossweapon.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\Note2Object.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\Note3Object.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\NoteObject.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Boss\SkullObject.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\DamageTextPool.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\AccuracyPanelUI.cs" />
-    <Compile Include="Assets\Scripts\InGame\UI\Enhance\ArbaitPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulFire.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulIce.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulRusiu.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\BossSoul\BossSoulSasin.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\CriticalPanelUI.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\EnhanceUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\MakingUI.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\MaxWaterPanelUI.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\OptionItem.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\OptionScroll.cs" />
-    <Compile Include="Assets\Scripts\InGame\UI\Enhance\RepairPanelUI.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\SmithPanelUI.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Enhance\WaterPlusPanelUI.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\WeaponButton.cs" />
+    <Compile Include="Assets\Scripts\InGame\UI\Enhance\WeaponShakeIt.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\Inventory.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryButton.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Inventory\InventoryScrollList.cs" />
@@ -197,8 +198,6 @@
     <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowOk.cs" />
     <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowYesNo.cs" />
     <Compile Include="Assets\Scripts\Logo\LogoManager.cs" />
-    <Compile Include="Assets\Scripts\Mario.cs" />
-    <Compile Include="Assets\Scripts\MonsterArrival.cs" />
     <Compile Include="Assets\Scripts\UITest.cs" />
     <Compile Include="Assets\Unity-Logs-Viewer\Reporter\MultiKeyDictionary.cs" />
     <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Reporter.cs" />
@@ -212,12 +211,14 @@
     <None Include="Assets\Resources\Data\AgradeArbait.txt" />
     <None Include="Assets\Resources\Data\Arbait.txt" />
     <None Include="Assets\Resources\Data\ArbaitEnhance.txt" />
+    <None Include="Assets\Resources\Data\ArbaitEnhance2.txt" />
     <None Include="Assets\Resources\Data\BgradeArbait.txt" />
     <None Include="Assets\Resources\Data\Boss.txt" />
     <None Include="Assets\Resources\Data\BossWeapon.txt" />
     <None Include="Assets\Resources\Data\CgradeArbait.txt" />
     <None Include="Assets\Resources\Data\Character.txt" />
     <None Include="Assets\Resources\Data\CriticalEnhance.txt" />
+    <None Include="Assets\Resources\Data\EquimpentEnhance2.txt" />
     <None Include="Assets\Resources\Data\FourGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\MaxWaterEnhance.txt" />
     <None Include="Assets\Resources\Data\OneGradeEnhance.txt" />
@@ -226,6 +227,7 @@
     <None Include="Assets\Resources\Data\SgradeArbait.txt" />
     <None Include="Assets\Resources\Data\Shop.txt" />
     <None Include="Assets\Resources\Data\SmithEnhance.txt" />
+    <None Include="Assets\Resources\Data\SmithEnhance2.txt" />
     <None Include="Assets\Resources\Data\ThreeGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\TwoGradeEnhance.txt" />
     <None Include="Assets\Resources\Data\WaterPlusEnhance.txt" />

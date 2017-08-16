@@ -64,19 +64,14 @@ public class ShopShowPanel : MonoBehaviour {
         //goldText.text = ItemData.nGold;
 
         if (ItemData.fReapirPower       != 0) CreateText("수리력 : ", ItemData.fReapirPower);
-        if (ItemData.fTemperaPlus       != 0) CreateText("온도증가량 : ", ItemData.fTemperaPlus);
-        if (ItemData.fTemperaDown       != 0) CreateText("온도감소량 : ", ItemData.fTemperaDown);
         if (ItemData.fArbaitRepair      != 0) CreateText("알바수리력증가 : ", ItemData.fArbaitRepair);
         if (ItemData.fHonorPlus         != 0) CreateText("명예증가량 : ", ItemData.fHonorPlus);
         if (ItemData.fGoldPlus          != 0) CreateText("골드증가량 : ", ItemData.fGoldPlus);
-        if (ItemData.fWaterMaxPlus      != 0) CreateText("물최대치증가 : ", ItemData.fWaterMaxPlus);
         if (ItemData.fWaterChargePlus   != 0) CreateText("물확률 : ", ItemData.fWaterChargePlus);
         if (ItemData.fCritical          != 0) CreateText("크리티컬확률 : ", ItemData.fCritical);
         if (ItemData.fCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.fCriticalDamage);
         if (ItemData.fBigCritical       != 0) CreateText("대성공 : ", ItemData.fBigCritical);
         if (ItemData.fAccuracyRate      != 0) CreateText("명중률 : ", ItemData.fAccuracyRate);
-
-
     }
     public void CreateText(string strName, float fValue)
     {

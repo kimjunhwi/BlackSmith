@@ -156,20 +156,6 @@ public class Shop : MonoBehaviour {
                     return true;
                 }
                 break;
-            case (int)E_Equiment.E_TEMPPLUS:
-                if (_equiment.fTemperaPlus == 0)
-                {
-                    _equiment.fTemperaPlus = 1;
-                    return true;
-                }
-                break;
-            case (int)E_Equiment.E_TEMPDOWN:
-                if (_equiment.fTemperaDown == 0)
-                {
-                    _equiment.fTemperaDown = 1;
-                    return true;
-                }
-                break;
             case (int)E_Equiment.E_ARBAIT:
                 if (_equiment.fArbaitRepair == 0)
                 {
@@ -188,13 +174,6 @@ public class Shop : MonoBehaviour {
                 if (_equiment.fGoldPlus == 0)
                 {
                     _equiment.fGoldPlus = 1;
-                    return true;
-                }
-                break;
-            case (int)E_Equiment.E_WATERMAX:
-                if (_equiment.fWaterMaxPlus == 0)
-                {
-                    _equiment.fWaterMaxPlus = 1;
                     return true;
                 }
                 break;

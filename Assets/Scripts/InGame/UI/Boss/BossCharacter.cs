@@ -44,6 +44,8 @@ public class BossCharacter : Character
 	protected bool isStandardPhaseFailed = false;					//만약 1페이즈도 못가고 죽을 때
 	protected bool isFirstActive = false;							//처음에 켜져있을때 한번만 동작하게 하는 변수  
 
+	public GameObject GuestPanel;
+
 	protected Animator animator;
 
 	protected virtual IEnumerator BossWait() 			{ yield return null;}		//보스 대기(연출)

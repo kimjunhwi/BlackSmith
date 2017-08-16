@@ -602,10 +602,10 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].strName = Cells[2];
 			kInfo [i - 1].fMaxComplate = float.Parse (Cells [3]);
 			kInfo [i - 1].fMinusRepair= float.Parse(Cells[4]);
-			kInfo [i - 1].fPlusTemperature= float.Parse(Cells[5]);
-			kInfo [i - 1].fMinusTemperature= float.Parse(Cells[6]);
+			kInfo [i - 1].fMinusChargingWater = float.Parse (Cells [5]);
+			kInfo [i - 1].fMinusCriticalDamage = float.Parse (Cells [6]);
 			kInfo [i - 1].fMinusUseWater= float.Parse(Cells[7]);
-			kInfo [i - 1].fMinusCritical= float.Parse(Cells[8]);
+			kInfo [i - 1].fMinusCriticalChance = float.Parse (Cells [8]);
 			kInfo [i - 1].fMinusAccuracy= float.Parse(Cells[9]);
             kInfo[i - 1].fGold = float.Parse(Cells[10]);
 			kInfo[i - 1].fHonor = float.Parse(Cells[11]);
@@ -726,19 +726,16 @@ public class GameManager : GenericMonoSingleton<GameManager> {
             kInfo[i - 1].nSlotIndex = int.Parse(Cells[4]);
             kInfo[i - 1].sGrade = Cells[5];
 			kInfo[i - 1].fReapirPower = float.Parse(Cells[6]);
-			kInfo[i - 1].fTemperaPlus = float.Parse(Cells[7]);
-			kInfo[i - 1].fTemperaDown = float.Parse(Cells[8]);
-			kInfo[i - 1].fArbaitRepair = float.Parse(Cells[9]);
-			kInfo[i - 1].fHonorPlus = float.Parse(Cells[10]);
-			kInfo[i - 1].fGoldPlus = float.Parse(Cells[11]);
-			kInfo[i - 1].fWaterMaxPlus = float.Parse(Cells[12]);
-			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[13]);
-			kInfo[i - 1].fWaterUse = float.Parse(Cells[14]);
-			kInfo[i - 1].fCritical = float.Parse(Cells[15]);
-			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[16]);
-			kInfo[i - 1].fBigCritical = float.Parse(Cells[17]);
-			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[18]);
-			kInfo [i - 1].nStrenthCount = int.Parse (Cells [19]);
+			kInfo[i - 1].fArbaitRepair = float.Parse(Cells[7]);
+			kInfo[i - 1].fHonorPlus = float.Parse(Cells[8]);
+			kInfo[i - 1].fGoldPlus = float.Parse(Cells[9]);
+			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[10]);
+			kInfo[i - 1].fWaterUse = float.Parse(Cells[11]);
+			kInfo[i - 1].fCritical = float.Parse(Cells[12]);
+			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[13]);
+			kInfo[i - 1].fBigCritical = float.Parse(Cells[14]);
+			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[15]);
+			kInfo [i - 1].nStrenthCount = int.Parse (Cells [16]);
         }
 
         cEquimentInfo = kInfo;
@@ -816,20 +813,17 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].nSlotIndex = int.Parse(Cells[4]);
 			kInfo[i - 1].sGrade = Cells[5];
 			kInfo[i - 1].fReapirPower = float.Parse(Cells[6]);
-			kInfo[i - 1].fTemperaPlus = float.Parse(Cells[7]);
-			kInfo[i - 1].fTemperaDown = float.Parse(Cells[8]);
-			kInfo[i - 1].fArbaitRepair = float.Parse(Cells[9]);
-			kInfo[i - 1].fHonorPlus = float.Parse(Cells[10]);
-			kInfo[i - 1].fGoldPlus = float.Parse(Cells[11]);
-			kInfo[i - 1].fWaterMaxPlus = float.Parse(Cells[12]);
-			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[13]);
-			kInfo[i - 1].fWaterUse = float.Parse(Cells[14]);
-			kInfo[i - 1].fCritical = float.Parse(Cells[15]);
-			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[16]);
-			kInfo[i - 1].fBigCritical = float.Parse(Cells[17]);
-			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[18]);
-			kInfo [i - 1].nStrenthCount = int.Parse (Cells [19]);
-			kInfo [i - 1].explain = Cells [20];
+			kInfo[i - 1].fArbaitRepair = float.Parse(Cells[7]);
+			kInfo[i - 1].fHonorPlus = float.Parse(Cells[8]);
+			kInfo[i - 1].fGoldPlus = float.Parse(Cells[9]);
+			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[10]);
+			kInfo[i - 1].fWaterUse = float.Parse(Cells[11]);
+			kInfo[i - 1].fCritical = float.Parse(Cells[12]);
+			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[13]);
+			kInfo[i - 1].fBigCritical = float.Parse(Cells[14]);
+			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[15]);
+			kInfo [i - 1].nStrenthCount = int.Parse (Cells [16]);
+			kInfo [i - 1].explain = Cells [17];
 		}
 
 		bossWeaponInfo = kInfo;
@@ -1690,12 +1684,9 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 enum E_Equiment
 {
 	E_REPAIR = 6,
-	E_TEMPPLUS =7,
-	E_TEMPDOWN =8,
 	E_ARBAIT,
 	E_HONOR,
 	E_GOLD,
-	E_WATERMAX,
 	E_WATERCHARGE,
 	E_WATERUSE,
 	E_CRITICAL,
@@ -1738,12 +1729,9 @@ public class CGameEquiment
     public int nSlotIndex = 0;
 	public string sGrade = "";
     public float fReapirPower = 0;
-	public float fTemperaPlus = 0;
-    public float fTemperaDown = 0;
 	public float fArbaitRepair = 0;
 	public float fHonorPlus = 0;
 	public float fGoldPlus = 0;
-	public float fWaterMaxPlus = 0;
 	public float fWaterChargePlus = 0;
 	public float fWaterUse = 0;
 	public float fCritical = 0;
@@ -1764,12 +1752,9 @@ public class CGameEquiment
 		nSlotIndex = _equimentData.nSlotIndex;
 		sGrade = _equimentData.sGrade;
 		fReapirPower = _equimentData.fReapirPower;
-		fTemperaPlus = _equimentData.fTemperaPlus;
-		fTemperaDown = _equimentData.fTemperaDown;;
 		fArbaitRepair = _equimentData.fArbaitRepair;
 		fHonorPlus = _equimentData.fHonorPlus;
 		fGoldPlus = _equimentData.fGoldPlus;
-		fWaterMaxPlus = _equimentData.fWaterMaxPlus;
 		fWaterChargePlus = _equimentData.fWaterChargePlus;
 		fWaterUse = _equimentData.fWaterUse;
 		fCriticalDamage = _equimentData.fCriticalDamage;
@@ -1919,12 +1904,11 @@ public class CGameWeaponInfo
 	public string strName = string.Empty;
 	public float fMaxComplate = 0;
 	public float fMinusRepair = 0;
-	public float fPlusTemperature = 0;
-	public float fMinusTemperature = 0;
+	public float fMinusChargingWater = 0f;
+	public float fMinusCriticalChance = 0f;
 	public float fMinusUseWater = 0f;
-	public float fMinusCritical = 0f;
+	public float fMinusCriticalDamage = 0f;
 	public float fMinusAccuracy = 0f;
-    
     public float fGold = 0.0f;
 	public float fHonor = 0.0f;
 	public float fLimitedTime = 0.0f;
@@ -1942,10 +1926,10 @@ public class CGameWeaponInfo
 		strPath = weaponData.strPath;
 		fMaxComplate = weaponData.fMaxComplate;
 		fMinusRepair = weaponData.fMinusRepair;
-		fPlusTemperature = weaponData.fPlusTemperature;
-		fMinusTemperature = weaponData.fMinusTemperature;
+		fMinusChargingWater = weaponData.fMinusChargingWater;
+		fMinusCriticalChance = weaponData.fMinusCriticalChance;
 		fMinusUseWater = weaponData.fMinusUseWater;
-		fMinusCritical = weaponData.fMinusCritical;
+		fMinusCriticalDamage = weaponData.fMinusCriticalDamage;
 		fMinusAccuracy = weaponData.fMinusAccuracy;
 		fGold = weaponData.fGold;
 		fHonor = weaponData.fHonor;
