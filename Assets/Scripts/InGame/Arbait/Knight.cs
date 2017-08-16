@@ -47,7 +47,7 @@ public class Knight : ArbaitBatch {
         {
             m_bIsApplyBuff = false;
 
-            playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+			playerData.SetBasicAccuracyRate(playerData.GetBasicAccuracyRate() - m_fChangeAccuracy);
         }
 
         base.OnDisable();
@@ -69,7 +69,7 @@ public class Knight : ArbaitBatch {
         base.RelivePauseSkill();
 
         if (m_bIsApplyBuff)
-            playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+			playerData.SetBasicAccuracyRate(playerData.GetBasicAccuracyRate() - m_fChangeAccuracy);
 
     }
 
@@ -78,7 +78,7 @@ public class Knight : ArbaitBatch {
         base.ApplyPauseSkill();
 
         if (m_bIsApplyBuff)
-            playerData.SetAccuracyRate(playerData.GetAccuracyRate() + m_fChangeAccuracy);
+			playerData.SetBasicAccuracyRate(playerData.GetBasicAccuracyRate() + m_fChangeAccuracy);
     }
 
     private IEnumerator ApplyDruidSkill()
@@ -87,11 +87,11 @@ public class Knight : ArbaitBatch {
 
 		m_bIsApplyBuff = true;
 
-		m_fChangeAccuracy = playerData.GetRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
+		m_fChangeAccuracy = playerData.GetBasicRepairPower() * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
 		m_fChangeAccuracy = Mathf.Round(m_fChangeAccuracy);
 
-		playerData.SetAccuracyRate(playerData.GetAccuracyRate() + m_fChangeAccuracy);
+		playerData.SetBasicAccuracyRate(playerData.GetBasicAccuracyRate() + m_fChangeAccuracy);
 
 		while (true)
 		{
@@ -109,7 +109,7 @@ public class Knight : ArbaitBatch {
 
 		m_bIsApplyBuff = false;
 
-		playerData.SetAccuracyRate(playerData.GetAccuracyRate() - m_fChangeAccuracy);
+		playerData.SetBasicAccuracyRate(playerData.GetBasicAccuracyRate() - m_fChangeAccuracy);
 	}
 
 	public override void CheckCharacterState(E_ArbaitState _E_STATE)

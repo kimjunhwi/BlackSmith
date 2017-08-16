@@ -59,6 +59,7 @@ public class MakingUI : MonoBehaviour {
 
 	public SimpleObjectPool optionPanelPool;
 
+	private string[] strBossExplains = {"명중률 증가" ,"수리력 증가", "크리확률 증가","알바 수리력 증가"};
 
 	void Awake()
 	{
@@ -74,7 +75,7 @@ public class MakingUI : MonoBehaviour {
 	{
 		for (int nIndex = 0; nIndex < BossSoulSlots.Length; nIndex++) 
 		{
-			BossSoulSlots [nIndex].SetUp (this, playerData);
+			BossSoulSlots [nIndex].SetUp (this, playerData, nIndex);
 		}
 
 		if (LIST_OPTION == null) 
@@ -93,7 +94,7 @@ public class MakingUI : MonoBehaviour {
 	{
 		while (contentPanel.childCount > 0)
 		{
-			GameObject toRemove = transform.GetChild(0).gameObject;
+			GameObject toRemove = contentPanel.GetChild(0).gameObject;
 			optionPanelPool.ReturnObject(toRemove);
 		}
 	}
@@ -185,6 +186,9 @@ public class MakingUI : MonoBehaviour {
 
 		int nDight = 0;
 		int nDightCost = int.Parse (CostDayText.text);
+
+		playerData.SetDay (playerData.GetDay () - nDightCost);
+
 		float fCostDay = (float)nDightCost;
 
 		while (fCostDay >= 10) 
@@ -202,11 +206,55 @@ public class MakingUI : MonoBehaviour {
 		//수리력 
 		createWeapon.fRepair = (int)Mathf.Round (Random.Range (nCalcMinRepair, nCalcMaxRepair + 1));
 
-		//추가 옵션
+		int nOptionLength = 3;
+
+		//추가 옵션 범위 
 		nCalcAddMinOption = (int)Mathf.Round(m_nBasicMinOption + (float)(m_nBasicMinOption *(m_nPlusOptionMinPercent * nDight * 0.01f)));
 		nCalcAddMaxOption = (int)Mathf.Round(m_nBasicMaxOption + (float)(m_nBasicMaxOption *(m_nPlusOptionMaxPercent * nDight * 0.01f)));
 
-		int nOptionLength = 3;
+		for (int nIndex = 0; nIndex < LIST_OPTION.Count; nIndex++) 
+		{
+			if (LIST_OPTION [nIndex].bIsLock == false)
+				LIST_OPTION.Remove (LIST_OPTION [nIndex--]);
+
+			else 
+			{
+				nOptionLength--;
+
+				nInsertValue = Random.Range (nCalcAddMinOption, nCalcAddMaxOption + 1);
+
+				switch (LIST_OPTION [nIndex].nIndex) 
+				{
+				case (int)E_CREATOR.E_ARBAIT:
+					createWeapon.fArbaitRepair = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_HONOR:
+					createWeapon.fPlusHonorPercent = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_GOLD:
+					createWeapon.fPlusGoldPercent = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_WATERCHARGE:
+					createWeapon.fWaterPlus = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_WATERUSE:
+					createWeapon.fActiveWater = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_CRITICAL:
+					createWeapon.fCriticalChance = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_CRITICALD:
+					createWeapon.fCriticalDamage = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_BIGCRITICAL:
+					createWeapon.fBigSuccessed = nInsertValue;
+					break;
+				case (int)E_CREATOR.E_ACCURACY:
+					createWeapon.fAccuracyRate = nInsertValue;
+					break;
+				}
+			}
+		}
 
 		int nInsertIndex = 0;
 
@@ -215,23 +263,54 @@ public class MakingUI : MonoBehaviour {
 			nInsertIndex = Random.Range((int)E_CREATOR.E_ARBAIT, (int)E_CREATOR.E_MAX);
 			nInsertValue = Random.Range (nCalcAddMinOption, nCalcAddMaxOption + 1);
 
-			if (CheckData(createWeapon, nInsertIndex,nInsertValue))
+			if (CheckData(createWeapon, nInsertIndex, nInsertValue))
 				nOptionLength--;
 		}
 
-		//보스 옵션 미정
+		//보스 옵션 셋팅 
+		for (int nIndex = 0; nIndex < BossSoulSlots.Length; nIndex++) 
+		{
+			//만약 체크가 됐다면 
+			if (BossSoulSlots [nIndex].bIsCheck) {
+				nInsertValue = Random.Range (nCalcAddMinOption, nCalcAddMaxOption + 1);
+
+				if (nIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE)
+					createWeapon.fIceBossValue = nInsertValue;
+				
+				else if (nIndex == (int)E_BOSSNAME.E_BOSSNAME_SASIN)
+					createWeapon.fSasinBossValue = nInsertValue;
+				
+				else if (nIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE)
+					createWeapon.fFireBossValue = nInsertValue;
+				
+				else if (nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC)
+					createWeapon.fRusiuBossValue = nInsertValue;
+				
+				CGameMainWeaponOption plusItem = new CGameMainWeaponOption ();
+
+				plusItem.nIndex = nIndex + (int)E_CREATOR.E_BOSS_ICE;
+				plusItem.strOptionName = strBossExplains [nIndex];
+				plusItem.nValue = nInsertValue;
+				plusItem.bIsLock = false;
+
+				BossSoulSlots [nIndex].ReSetting ();
+
+				LIST_OPTION.Add (plusItem);
+			}
+		}
 
 		//특수 옵션 미정 
-
 		playerData.SetCreatorWeapon (createWeapon);
 
+		SpawnManager.Instance.SetDayInitInfo (playerData.GetDay ());
 
 		RefreshDisplay ();
+
+		CostDayText.text = "0";
 	}
 
 	private bool CheckData(CreatorWeapon _equiment, int nIndex, int _nInsertValue)
 	{
-
 		switch(nIndex)
 		{
 
@@ -278,23 +357,6 @@ public class MakingUI : MonoBehaviour {
 
 				plusItem.nIndex = (int)E_CREATOR.E_ARBAIT;
 				plusItem.strOptionName = "골드 추가 증가량";
-				plusItem.nValue = _nInsertValue;
-				plusItem.bIsLock = false;
-
-				LIST_OPTION.Add (plusItem);
-
-				return true;
-			}
-			break;
-		case (int)E_CREATOR.E_WATERMAX:
-			if (_equiment.fMaxWaterPlus == 0)
-			{
-				CGameMainWeaponOption plusItem = new CGameMainWeaponOption ();
-
-				_equiment.fMaxWaterPlus = _nInsertValue;
-
-				plusItem.nIndex = (int)E_CREATOR.E_ARBAIT;
-				plusItem.strOptionName = "물 최대치 증";
 				plusItem.nValue = _nInsertValue;
 				plusItem.bIsLock = false;
 

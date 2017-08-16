@@ -62,13 +62,13 @@ public class BlueHair : ArbaitBatch {
         if (fChangeRepair != 0)
             ReliveSkill();
 
-        fGetRepairPower = playerData.GetRepairPower();
+        fGetRepairPower = playerData.GetBasicRepairPower();
 
         fChangeRepair = fGetRepairPower * (m_CharacterChangeData.fSkillPercent * 0.01f);
 
         fChangeRepair = Mathf.Round(fChangeRepair);
 
-        playerData.SetRepairPower(fGetRepairPower + fChangeRepair);
+		playerData.SetBasicRepairPower(fGetRepairPower + fChangeRepair);
     }
 
     protected override void ReliveSkill()
@@ -76,13 +76,13 @@ public class BlueHair : ArbaitBatch {
         if (fChangeRepair == 0)
             return;
 
-        fGetRepairPower = playerData.GetRepairPower();
+		fGetRepairPower = playerData.GetBasicRepairPower();
 
         fMinusRepair = fGetRepairPower - fChangeRepair;
 
         fMinusRepair = Mathf.Round(fMinusRepair);
 
-        playerData.SetRepairPower(fMinusRepair);
+		playerData.SetBasicRepairPower(fMinusRepair);
     }
 
     public override void RelivePauseSkill()

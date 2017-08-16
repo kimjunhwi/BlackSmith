@@ -30,7 +30,7 @@ public class WaterPlusPanelUI : EnhanceUI {
 
 				nLevel++;
 
-				cPlayer.SetWaterPlus(cPlayer.GetWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
+				cPlayer.SetBasicWaterPlus(cPlayer.GetBasicWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
 
 				cPlayer.SetWaterPlusLevel(nLevel);
 
@@ -47,7 +47,7 @@ public class WaterPlusPanelUI : EnhanceUI {
 
 			nLevel++;
 
-			cPlayer.SetWaterPlus(cPlayer.GetWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
+			cPlayer.SetBasicWaterPlus(cPlayer.GetBasicWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
 
 			cPlayer.SetWaterPlusLevel(nLevel);
 

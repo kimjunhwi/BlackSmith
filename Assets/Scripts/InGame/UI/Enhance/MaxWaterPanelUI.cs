@@ -30,7 +30,7 @@ public class MaxWaterPanelUI : EnhanceUI {
 
 				nLevel++;
 
-				cPlayer.SetMaxWaterPlus(cPlayer.GetMaxWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
+				cPlayer.SetBasicMaxWaterPlus(cPlayer.GetBasicMaxWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
 
 				cPlayer.SetMaxWaterLevel(nLevel);
 
@@ -47,7 +47,7 @@ public class MaxWaterPanelUI : EnhanceUI {
 
 			nLevel++;
 
-			cPlayer.SetMaxWaterPlus(cPlayer.GetMaxWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
+			cPlayer.SetBasicMaxWaterPlus(cPlayer.GetBasicMaxWaterPlus() + nLevel * m_EnhanceData.fPlusPercent);
 
 			cPlayer.SetMaxWaterLevel(nLevel);
 

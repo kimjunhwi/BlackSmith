@@ -41,34 +41,55 @@ public class Player
 	public int GetArbaitEnhanceLevel() {return changeStats.nEnhanceArbaitLevel; }
 	public void SetArbaitEnhancLevel(int _nValue){changeStats.nEnhanceArbaitLevel = _nValue;}
 
-	public float GetWaterPlus() { return changeStats.fWaterPlus; }
-	public void SetWaterPlus(float _fValue) { changeStats.fWaterPlus = _fValue; }
+	public float GetBasicWaterPlus() { return changeStats.fWaterPlus; }
+	public void SetBasicWaterPlus(float _fValue) { changeStats.fWaterPlus = _fValue; }
 
-	public float GetRepairPower(){ return changeStats.fRepairPower; }
-	public void SetRepairPower(float _fValue) { 
-
+	public float GetBasicRepairPower(){ return changeStats.fRepairPower; }
+	public void SetBasicRepairPower(float _fValue) { 
 		changeStats.fRepairPower = _fValue;  
 
 		SetRepairPower ();
 	}
 
-	public float GetArbaitRepairPower() {return changeStats.fArbaitsPower;}
-	public void SetArbaitRepairPower(float _fValue){ changeStats.fArbaitsPower = _fValue;}
+	public float GetBasicArbaitRepairPower() {return changeStats.fArbaitsPower;}
+	public void SetBasicArbaitRepairPower(float _fValue){ 
+		changeStats.fArbaitsPower = _fValue;
+	
+		SetArbaitRepairPower ();
+	}
 
-	public float GetMaxWaterPlus() { return changeStats.fMaxWaterPlus; }
-	public void SetMaxWaterPlus(float _fValue) { changeStats.fMaxWaterPlus = _fValue; }
+	public float GetBasicMaxWaterPlus() { return changeStats.fMaxWaterPlus; }
+	public void SetBasicMaxWaterPlus(float _fValue) { changeStats.fMaxWaterPlus = _fValue; }
 
-	public float GetAccuracyRate() { return changeStats.fAccuracyRate; }
-	public void SetAccuracyRate(float _fValue) { changeStats.fAccuracyRate = _fValue; }
+	public float GetBasicAccuracyRate() { return changeStats.fAccuracyRate; }
+	public void SetBasicAccuracyRate(float _fValue) { 
+		changeStats.fAccuracyRate = _fValue; 
+	
+		SetAccuracyRate ();
+	}
 
-    public float GetBigSuccessedPercent() { return changeStats.fBigSuccessed; }
-    public void SetBigSuccessedPercent(float _fValue) { changeStats.fBigSuccessed = _fValue; }
+    public float GetBasicBigSuccessedPercent() { return changeStats.fBigSuccessed; }
+	public void SetBasicBigSuccessedPercent(float _fValue) { 
+		changeStats.fBigSuccessed = _fValue; 
+	
+		SetBigSuccessed ();
+	}
 
-    public float GetCriticalChance() { return changeStats.fCriticalChance; }
-	public void SetCriticalChance(float _fValue) { changeStats.fCriticalChance = _fValue; }
+    public float GetBasicCriticalChance() { return changeStats.fCriticalChance; }
+	public void SetBasicCriticalChance(float _fValue) { 
 
-	public float GetTemperatureMinus() { return changeStats.fTemperatureMinus; }
-    public void SetTemperatureMinus(float _fValue) { changeStats.fTemperatureMinus = _fValue; }
+		changeStats.fCriticalChance = _fValue; 
+	
+		SetCriticalChance ();
+	}
+
+	public float GetBasicBigSuccessed() { return changeStats.fBigSuccessed; }
+	public void SetBasicBigSuccessed(float _fValue) { 
+
+		changeStats.fBigSuccessed = _fValue; 
+
+		SetBigSuccessed ();
+	}
 
     public int GetSasinMaterial() { return changeStats.nSasinMaterial; }
     public void SetSasinMaterial(int _nValue) { changeStats.nSasinMaterial = _nValue; }
@@ -98,23 +119,176 @@ public class Player
 	public void SetCreatorWeapon(CreatorWeapon _weapon){
 		creatorWeapon = _weapon; 
 
-		SetRepairPower ();
+		PlayerStatsSetting ();
 	}
 
-	public float m_fRepairPower = 0;
+	public CreatorWeapon GetCreatorWeapon()
+	{
+		return creatorWeapon;
+	}
+
+	private float m_fRepairPower;
+	private float m_fArbaitRepairPower;
+	private float m_fGoldPlusPercent;
+	private float m_fHonorPlusPercent;
+	private float m_fWaterPlus;
+	private float m_fCriticalChance;
+	private float m_fCriticalDamage;
+	private float m_fBigSuccessed;
+	private float m_fAccuracyRate;
+
+	public float GetRepairPower(){ return m_fRepairPower; }
+
+	public float GetAccuracyRate(){ return m_fAccuracyRate;}
+
+	public float GetArbaitRepairPower(){ return m_fArbaitRepairPower;}
+
+	public float GetGoldPlusPercent(){	return m_fGoldPlusPercent;}
+
+	public float GetHonorPlusPercent(){ return m_fHonorPlusPercent;}
+
+	public float GetWaterPlus(){ return m_fWaterPlus;}
+
+	public float GetCriticalChance(){ return m_fCriticalChance;}
+
+	public float GetCriticalDamage(){ return m_fCriticalDamage;}
+
+	public float GetBigSuccessed(){ return m_fBigSuccessed;}
+
+	//아이템 이나 캐릭터의 스텟이 바뀌었을때 호출해서 다시 세팅해준다.
+	public void PlayerStatsSetting()
+	{
+		SetRepairPower ();
+		SetAccuracyRate ();
+		SetArbaitRepairPower ();
+		SetGoldPlusPercent ();
+		SetHonorPlusPercent ();
+		SetWaterPlus ();
+		SetCriticalChance ();
+		SetCriticalDamage ();
+		SetBigSuccessed ();
+	}
 
 	public void SetRepairPower () {
 
-        float fResultRepairPower = 0.0f;
+		float fResultRepairPowerPercent = 0.0f;
 
+		if (WeaponEquipment != null)	fResultRepairPowerPercent += WeaponEquipment.fReapirPower;
+		if (GearEquipmnet != null) 		fResultRepairPowerPercent += GearEquipmnet.fReapirPower;
+		if (AccessoryEquipmnet != null) fResultRepairPowerPercent += AccessoryEquipmnet.fReapirPower;
+		if (creatorWeapon != null) {
+			fResultRepairPowerPercent += creatorWeapon.fRepair;
+			fResultRepairPowerPercent += creatorWeapon.fSasinBossValue;
+		}
 
-		if (WeaponEquipment != null) fResultRepairPower += WeaponEquipment.fReapirPower;
-		if (GearEquipmnet != null) fResultRepairPower += GearEquipmnet.fReapirPower;
-		if (AccessoryEquipmnet != null) fResultRepairPower += AccessoryEquipmnet.fReapirPower;
-		if (creatorWeapon != null) fResultRepairPower += creatorWeapon.fRepair;
-
-        m_fRepairPower = changeStats.fRepairPower + (changeStats.fRepairPower * fResultRepairPower * 0.01f);
+		m_fRepairPower = changeStats.fRepairPower + (changeStats.fRepairPower * fResultRepairPowerPercent * 0.01f);
 	}
+
+	public void SetAccuracyRate()
+	{
+		float fResultAccuracyRatePercent = 0.0f;
+
+		if (WeaponEquipment != null)	fResultAccuracyRatePercent += WeaponEquipment.fAccuracyRate;
+		if (GearEquipmnet != null) 		fResultAccuracyRatePercent += GearEquipmnet.fAccuracyRate;
+		if (AccessoryEquipmnet != null) fResultAccuracyRatePercent += AccessoryEquipmnet.fAccuracyRate;
+		if (creatorWeapon != null) {
+			fResultAccuracyRatePercent += creatorWeapon.fAccuracyRate;
+			fResultAccuracyRatePercent += creatorWeapon.fIceBossValue;
+		}
+
+		m_fAccuracyRate = changeStats.fAccuracyRate + (changeStats.fAccuracyRate * fResultAccuracyRatePercent * 0.01f);
+	}
+
+	public void SetArbaitRepairPower()
+	{
+		float fResultArbaitRepairPower = 0.0f;
+
+		if (WeaponEquipment != null)	fResultArbaitRepairPower += WeaponEquipment.fArbaitRepair;
+		if (GearEquipmnet != null) 		fResultArbaitRepairPower += GearEquipmnet.fArbaitRepair;
+		if (AccessoryEquipmnet != null) fResultArbaitRepairPower += AccessoryEquipmnet.fArbaitRepair;
+		if (creatorWeapon != null) {
+			fResultArbaitRepairPower += creatorWeapon.fArbaitRepair;
+			fResultArbaitRepairPower += creatorWeapon.fRusiuBossValue;
+		}
+
+		m_fArbaitRepairPower = changeStats.fArbaitsPower + (changeStats.fArbaitsPower * fResultArbaitRepairPower * 0.01f);
+	}
+
+	public void SetGoldPlusPercent()
+	{
+		float fResultGoldPlusPercent = 0.0f;
+
+		if (WeaponEquipment != null)	fResultGoldPlusPercent += WeaponEquipment.fGoldPlus;
+		if (GearEquipmnet != null) 		fResultGoldPlusPercent += GearEquipmnet.fGoldPlus;
+		if (AccessoryEquipmnet != null) fResultGoldPlusPercent += AccessoryEquipmnet.fGoldPlus;
+		if (creatorWeapon != null) 		fResultGoldPlusPercent += creatorWeapon.fPlusGoldPercent;
+
+		m_fGoldPlusPercent = changeStats.fGoldPlusPercent + (changeStats.fGoldPlusPercent * fResultGoldPlusPercent * 0.01f);
+	}
+
+	public void SetHonorPlusPercent()
+	{
+		float fResultHonorPlusPercent = 0.0f;
+
+		if (WeaponEquipment != null)	fResultHonorPlusPercent += WeaponEquipment.fHonorPlus;
+		if (GearEquipmnet != null) 		fResultHonorPlusPercent += GearEquipmnet.fHonorPlus;
+		if (AccessoryEquipmnet != null) fResultHonorPlusPercent += AccessoryEquipmnet.fHonorPlus;
+		if (creatorWeapon != null) 		fResultHonorPlusPercent += creatorWeapon.fPlusHonorPercent;
+
+		m_fHonorPlusPercent = changeStats.fHornorPlusPercent + (changeStats.fHornorPlusPercent * fResultHonorPlusPercent * 0.01f);
+	}
+
+	public void SetWaterPlus()
+	{
+		float fResultWaterPlusPercent = 0.0f;
+
+		if (WeaponEquipment != null)	fResultWaterPlusPercent += WeaponEquipment.fWaterChargePlus;
+		if (GearEquipmnet != null) 		fResultWaterPlusPercent += GearEquipmnet.fWaterChargePlus;
+		if (AccessoryEquipmnet != null) fResultWaterPlusPercent += AccessoryEquipmnet.fWaterChargePlus;
+		if (creatorWeapon != null) 		fResultWaterPlusPercent += creatorWeapon.fWaterPlus;
+
+		m_fWaterPlus = changeStats.fWaterPlus + (changeStats.fWaterPlus * fResultWaterPlusPercent * 0.01f);
+	}
+
+	public void SetCriticalChance()
+	{
+		float fResultCriticalChancePercent = 0.0f;
+
+		if (WeaponEquipment != null)	fResultCriticalChancePercent += WeaponEquipment.fCritical;
+		if (GearEquipmnet != null) 		fResultCriticalChancePercent += GearEquipmnet.fCritical;
+		if (AccessoryEquipmnet != null) fResultCriticalChancePercent += AccessoryEquipmnet.fCritical;
+		if (creatorWeapon != null) {
+			fResultCriticalChancePercent += creatorWeapon.fCriticalChance;
+			fResultCriticalChancePercent += creatorWeapon.fFireBossValue;
+		}
+
+		m_fCriticalChance = changeStats.fCriticalChance + (changeStats.fCriticalChance * fResultCriticalChancePercent * 0.01f);
+	}
+
+	public void SetCriticalDamage()
+	{
+		float fResultCriticalDamagePercent = 1.5f;
+
+		if (WeaponEquipment != null)	fResultCriticalDamagePercent += WeaponEquipment.fCriticalDamage;
+		if (GearEquipmnet != null) 		fResultCriticalDamagePercent += GearEquipmnet.fCriticalDamage;
+		if (AccessoryEquipmnet != null) fResultCriticalDamagePercent += AccessoryEquipmnet.fCriticalDamage;
+		if (creatorWeapon != null) 		fResultCriticalDamagePercent += creatorWeapon.fCriticalDamage;
+
+		m_fCriticalDamage = changeStats.fCriticalDamage + (changeStats.fCriticalDamage * fResultCriticalDamagePercent * 0.01f);
+	}
+
+	public void SetBigSuccessed()
+	{
+		float fResultBigSuccessedPercent = 0.0f;
+
+		if (WeaponEquipment != null)	fResultBigSuccessedPercent += WeaponEquipment.fBigCritical;
+		if (GearEquipmnet != null) 		fResultBigSuccessedPercent += GearEquipmnet.fBigCritical;
+		if (AccessoryEquipmnet != null) fResultBigSuccessedPercent += AccessoryEquipmnet.fBigCritical;
+		if (creatorWeapon != null) 		fResultBigSuccessedPercent += creatorWeapon.fBigSuccessed;
+
+		m_fBigSuccessed = changeStats.fBigSuccessed + (changeStats.fBigSuccessed * fResultBigSuccessedPercent * 0.01f);
+	}
+
 
     public void Init(List<CGameEquiment> _itemList, CGamePlayerData _defaultStats)
     {
@@ -162,14 +336,13 @@ public class Player
                 //그 후 다시 아이템 효과를 플레이어에게 적용한다.
 			if (WeaponEquipment != null)
 				WeaponEquipment.bIsEquip = false;
-			
 			else if (WeaponEquipment == _item) {
 
 				WeaponEquipment.bIsEquip = false;
 
 				WeaponEquipment = null;
 
-				SetRepairPower ();
+				PlayerStatsSetting ();
 
 				return;
 			}
@@ -189,7 +362,7 @@ public class Player
 
 				GearEquipmnet = null;
 
-				SetRepairPower ();
+				PlayerStatsSetting ();
 
 				return;
 			}
@@ -197,7 +370,6 @@ public class Player
 			GearEquipmnet = _item;
 
 			GearEquipmnet.bIsEquip = true;
-
 			break;
 		case (int)E_EQUIMNET_INDEX.E_ACCESSORY:
 
@@ -211,7 +383,7 @@ public class Player
 
 				AccessoryEquipmnet = null;
 
-				SetRepairPower ();
+				PlayerStatsSetting ();
 
 				return;
 			}
@@ -219,10 +391,10 @@ public class Player
 			AccessoryEquipmnet = _item;
 
 			AccessoryEquipmnet.bIsEquip = true;
+
 			break;
 		}
-
-		SetRepairPower ();
+		PlayerStatsSetting ();
 
 		//아이템을 장착했기에 다시 정렬
 		inventory.inventorySlots [_item.nSlotIndex].RefreshDisplay ();

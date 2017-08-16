@@ -219,7 +219,7 @@ public class BossFire : BossCharacter
 			}
 
 			if (isActivePassiveSkill02 == false)
-				GameManager.Instance.player.SetWaterPlus (GameManager.Instance.player.GetWaterPlus() * 0.5f);
+				GameManager.Instance.player.SetBasicWaterPlus (GameManager.Instance.player.GetBasicWaterPlus() * 0.5f);
 			
 				
 		

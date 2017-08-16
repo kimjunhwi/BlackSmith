@@ -259,8 +259,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
         //SoundManager.instance.LoadSource();
 
-		Debug.Log (player.fRepairPower);
-
         //SoundManager.instance.PlayBGM(eSound.bgm_main);
 
         logoManager.bIsSuccessed = true;
@@ -1701,7 +1699,6 @@ enum E_CREATOR
 	E_ARBAIT = 0,
 	E_HONOR,
 	E_GOLD,
-	E_WATERMAX,
 	E_WATERCHARGE,
 	E_WATERUSE,
 	E_CRITICAL,
@@ -1709,6 +1706,10 @@ enum E_CREATOR
 	E_BIGCRITICAL,
 	E_ACCURACY,
 	E_MAX,
+	E_BOSS_ICE,
+	E_BOSS_SASIN,
+	E_BOSS_FIRE,
+	E_BOSS_RUSIU,
 }
 
 #region Classese
@@ -1781,7 +1782,6 @@ public class CreatorWeapon
 	public float fArbaitRepair = 0.0f;	//아르바이트 수리력
 	public float fPlusHonorPercent = 0.0f ;//명예 추가 증가량
 	public float fPlusGoldPercent = 0.0f;	//골드 추가 증가량
-	public float fMaxWaterPlus = 0.0f;	//물 최대치 증가
 	public float fWaterPlus = 0.0f;		//물 추가 수치
 	public float fActiveWater = 0.0f;		//물 사용시 추가 증가
 	public float fCriticalChance = 0.0f;	//크리티컬 찬스
@@ -1991,7 +1991,6 @@ public class CGamePlayerData
 {
     public string strName;			//닉네임			
     public float fRepairPower;		//수리력 
-    public float fTemperatureMinus;	//온도 감소 수치량 
     public float fArbaitsPower;		//알바수리력 
     public float fHornorPlusPercent;		//명예추가 증가량
     public float fGold;
@@ -2023,7 +2022,6 @@ public class CGamePlayerData
 	{
 		strName = playerData.strName;
 		fRepairPower = playerData.fRepairPower;
-		fTemperatureMinus = playerData.fTemperatureMinus;
 		fArbaitsPower = playerData.fArbaitsPower;		 
 		fHornorPlusPercent = playerData.fHornorPlusPercent;		
 		fGold = playerData.fGold;

@@ -53,9 +53,6 @@
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_StopCam.cs" />
      <Compile Include="Assets\Resources\sc_fx\Script\FTCT02_VisibleBG.cs" />
      <Compile Include="Assets\Scripts\BackGround.cs" />
-     <Compile Include="Assets\Scripts\Brick.cs" />
-     <Compile Include="Assets\Scripts\Coin.cs" />
-     <Compile Include="Assets\Scripts\CoinMove.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitBatch.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\ArbaitCharacter.cs" />
      <Compile Include="Assets\Scripts\InGame\Arbait\Bell.cs" />
@@ -166,8 +163,6 @@
      <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowOk.cs" />
      <Compile Include="Assets\Scripts\InGame\UI\Window\CWindowYesNo.cs" />
      <Compile Include="Assets\Scripts\Logo\LogoManager.cs" />
-     <Compile Include="Assets\Scripts\Mario.cs" />
-     <Compile Include="Assets\Scripts\MonsterArrival.cs" />
      <Compile Include="Assets\Scripts\UITest.cs" />
      <Compile Include="Assets\Unity-Logs-Viewer\Reporter\MultiKeyDictionary.cs" />
      <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Reporter.cs" />

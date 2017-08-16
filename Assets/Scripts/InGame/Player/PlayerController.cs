@@ -6,7 +6,8 @@ public class PlayerController : MonoBehaviour {
 
     public Animator m_Animator;
 
-    public Transform particlePosition;
+    public Transform normalPosition;
+	public Transform criticalPosition;
 
 	public GameObject BigSuccesdObject;
 	public BasicParticle BigSuccessed;
@@ -35,7 +36,6 @@ public class PlayerController : MonoBehaviour {
 	public void UserBigSuccessedRepair()
 	{
 		m_Animator.SetTrigger ("bIsSuccessedRepair");
-
 	}
 
     public void CreateNormalEffect()
@@ -44,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 
         GameObject obj = NormalRepairPool.Instance.GetObject();
 
-        obj.transform.position = particlePosition.position;
+		obj.transform.position = normalPosition.position;
 
         obj.GetComponent<NormalRepairParticle>().Play();
 
@@ -57,13 +57,30 @@ public class PlayerController : MonoBehaviour {
 
         GameObject obj = CriticalRepairPool.Instance.GetObject();
 
-        obj.transform.position = particlePosition.position;
+		obj.transform.position = criticalPosition.position;
 
         obj.GetComponent<CriticalRepairParticle>().Play();
-
-        m_Animator.SetTrigger("bIsCriticalRepair");
     }
 
+	public void NormalTouchSound()
+	{
+		SoundManager.instance.PlaySound (eSoundArray.BGM_TouchWeapon01);
+	}
+
+	public void CriticalTouchSound()
+	{
+
+	}
+
+	public void BigSuccessedTouchSound()
+	{
+
+	}
+
+	public void MissTouchSound()
+	{
+
+	}
 
 	public void CreateBigSuccessedEffect()
     {
