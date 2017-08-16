@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
 
 	public void ActiveMenu(int nIndex)
 	{
-		
+		SoundManager.instance.PlaySound (eSoundArray.ES_TouchSound_Menu);
 		if (uiPanels [nIndex].activeSelf) 
 		{
 			//보스 패널 닫을시 시간 저장 

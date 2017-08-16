@@ -30,6 +30,10 @@ public class BossPopUpWindow : MonoBehaviour
 	public Button PopUpWindow_YesNo_NoButton;
 	public Button PopUpWindow_Reward_YesButton;
 
+	//도전 팝업창이 뜰시 보여주는 초대장 개수
+	public GameObject ShowInviteMentCount_Obj;
+	public Text inviteMentCount_Text;
+
 	public BossCreator bossCreator;
 	public int nBossIndex;
 
@@ -50,12 +54,14 @@ public class BossPopUpWindow : MonoBehaviour
 	public bool isRewardPanelOn_Fail = false;
 	public bool isRewardPanelOn_Success = false;
 	public bool isRewardPanelOn_Finish = false;
+	public bool isBossChallengeCountReCharge = false;
 
 	public SimpleObjectPool rewardObjPool;
 
 	Vector3 ViewportPosition;
 
 	public BossEffect bossEffect;
+
 
 	Camera cam;
 
@@ -78,32 +84,88 @@ public class BossPopUpWindow : MonoBehaviour
 
 		PopUpWindow_Reward_YesButton = PopUpWindow_Reward.transform.GetChild (1).GetComponent<Button> ();
 
-
-
-	
-
 		cam = Camera.main;
 		PopUpWindow_Yes.SetActive (false);
 		PopUpWindow_YesNo.SetActive (false);
 		PopUpWindow_Reward.SetActive (false);
 
+		PopUpWindow_Yes_Button.onClick.AddListener(() => PopUpWindowYes_Switch("", false));
+
+
 	}
 
 
-	public void PopUpWindowYes_Switch()
+	public void PopUpWindowYes_Switch(string _string, bool _bool)
 	{
-		if (PopUpWindow_Yes.activeSelf != true)
-			PopUpWindow_Yes.SetActive (true);
-		else
-			PopUpWindow_Yes.SetActive (false);	
+		PopUpWindow_Yes_Text.text = _string;
+		PopUpWindow_Yes.SetActive (_bool);
+	}
+
+	public void PopUpWindowYesNo_Switch_ReCharge()
+	{
+		Debug.Log ("PopUpWindowYesNo_Switch Call!");
+		if (PopUpWindow_YesNo.activeSelf != true && isBossChallengeCountReCharge == true) 
+		{
+			isBossChallengeCountReCharge = false;
+			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_SASIN) 
+			{
+				bossCreator.nBossSasinLeftCount = 3;
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_SASIN].BossLeftCount_Text.text =
+					string.Format ("{0} / {0}", bossCreator.nBossSasinLeftCount, bossCreator.nBossMaxLeftCount);
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_SASIN].ReloadButton_Obj.SetActive (false);
+
+			} else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE) {
+				bossCreator.nBossIceLeftCount = 3;
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_ICE].BossLeftCount_Text.text =
+					string.Format ("{0} / {0}", bossCreator.nBossIceLeftCount, bossCreator.nBossMaxLeftCount);
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_ICE].ReloadButton_Obj.SetActive (false);
+			} 
+			else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE)
+			{
+				bossCreator.nBossFireLeftCount = 3;
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_FIRE].BossLeftCount_Text.text =
+					string.Format ("{0} / {0}", bossCreator.nBossFireLeftCount, bossCreator.nBossMaxLeftCount);
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_FIRE].ReloadButton_Obj.SetActive (false);
+			} 
+			else if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC)
+			{
+				bossCreator.nBossMusicLeftCount = 3;
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_MUSIC].BossLeftCount_Text.text =
+					string.Format ("{0} / {0}", bossCreator.nBossMusicLeftCount, bossCreator.nBossMaxLeftCount);
+				bossCreator.bossElementList [(int)E_BOSSNAME.E_BOSSNAME_MUSIC].ReloadButton_Obj.SetActive (false);
+
+			} else
+				Debug.Log ("ReChargeCount Fail");
+			
+
+			PopUpWindow_YesNo_YesButton.onClick.RemoveListener (PopUpWindowYesNo_Switch_ReCharge);
+			PopUpWindow_YesNo_NoButton.onClick.RemoveListener (PopUpWindowYesNo_Switch_ReCharge);
+			PopUpWindow_YesNo.SetActive (false);
+
+		} 
+		else 
+		{
+			PopUpWindow_YesNo_YesButton.onClick.RemoveListener (PopUpWindowYesNo_Switch_ReCharge);
+			PopUpWindow_YesNo_NoButton.onClick.RemoveListener (PopUpWindowYesNo_Switch_ReCharge);
+			Debug.Log ("Boss PopUpWindow.SetActive(false)");
+			PopUpWindow_YesNo.SetActive (false);
+		}
 	}
 
 	public void PopUpWindowYesNo_Switch()
 	{
+		if (bossCreator.bossConsumeItemInfo.nInviteMentCurCount <= 0) 
+		{
+			PopUpWindowYes_Switch ("초대장이 부족합니다", true);
+			return;
+		}
+
 		Debug.Log ("PopUpWindowYesNo_Switch Call!");
 		if (PopUpWindow_YesNo.activeSelf != true) 
 		{
+			PopUpWindow_YesNo_YesButton.onClick.RemoveListener (bossCreator.BossCreateInit);
 			PopUpWindow_YesNo_YesButton.onClick.AddListener ( bossCreator.BossCreateInit);
+			SetBossChallengeLeftInvitementCount (true, bossCreator.bossConsumeItemInfo.nInviteMentCurCount);
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_SASIN) {
 				PopUpWindow_YesNo_Text.text = "보스(사신)을 소환 하시겠습니까?";
@@ -136,6 +198,10 @@ public class BossPopUpWindow : MonoBehaviour
 		if (PopUpWindow_Reward.activeSelf != true && isRewardPanelOn_Fail == false) 
 		{
 			Debug.Log ("Active IsFail");
+			SoundManager.instance.StopSound(eSoundArray.BGM_BossBattle);
+
+			SoundManager.instance.PlaySound (eSoundArray.ES_BossSound_Fail);
+
 			//bossInfo.ItemInfo.....
 			PopUpWindow_Reward.SetActive (true);
 			isRewardPanelOn_Fail = true;
@@ -143,6 +209,10 @@ public class BossPopUpWindow : MonoBehaviour
 		else
 		{
 			Debug.Log ("DeActive IsFail");
+
+			//SoundManager.instance.ChangeBGM (eSoundArray.BGM_BossBattle, eSoundArray.BGM_Main);
+			SoundManager.instance.PlaySound(eSoundArray.BGM_Main);
+
 			if (bossIce.eCureentBossState == Character.EBOSS_STATE.RESULT)
 				bossIce.eCureentBossState = Character.EBOSS_STATE.FINISH;
 			if (bossFire.eCureentBossState == Character.EBOSS_STATE.RESULT)
@@ -165,6 +235,11 @@ public class BossPopUpWindow : MonoBehaviour
 		if (PopUpWindow_Reward.activeSelf != true) 
 		{
 			Debug.Log ("Active IsSuccess");
+
+			SoundManager.instance.StopSound(eSoundArray.BGM_BossBattle);
+
+
+			SoundManager.instance.PlaySound (eSoundArray.ES_BossSound_Success);
 			//bossInfo.ItemInfo.....
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_ICE)
@@ -205,6 +280,9 @@ public class BossPopUpWindow : MonoBehaviour
 		else
 		{
 			Debug.Log ("DeActive IsSuccess");
+
+			SoundManager.instance.PlaySound(eSoundArray.BGM_Main);
+
 			int rewardCount = PopUpWindow_RewardPanel.transform.childCount;
 
 			while (rewardCount != 0) {
@@ -311,5 +389,31 @@ public class BossPopUpWindow : MonoBehaviour
 		DiaRewardImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache (strRubyImagePath);
 		//ScoreManager.ScoreInstance.HonorPlus (bossCharacter.bossInfo.nDia);
 
+	}
+
+	public void Active_YesNoWindow_BossReChargeCount(string _explainText , int _bossIndex)
+	{
+		if (bossCreator.bossConsumeItemInfo.nPotionCount <= 0)
+			return;
+
+		SetBossChallengeLeftInvitementCount (false,0);
+		isBossChallengeCountReCharge = true;
+		PopUpWindow_YesNo_Text.text = _explainText;
+		PopUpWindow_YesNo.SetActive (true);
+
+		nBossIndex = _bossIndex - 1;
+
+		PopUpWindow_YesNo_YesButton.onClick.RemoveListener (PopUpWindowYesNo_Switch_ReCharge);
+		PopUpWindow_YesNo_YesButton.onClick.AddListener (PopUpWindowYesNo_Switch_ReCharge);
+
+		PopUpWindow_YesNo_NoButton.onClick.RemoveListener (PopUpWindowYesNo_Switch_ReCharge);
+		PopUpWindow_YesNo_NoButton.onClick.AddListener (PopUpWindowYesNo_Switch_ReCharge);
+	}
+
+	public void SetBossChallengeLeftInvitementCount(bool _bool, int _leftCount)
+	{
+		//도전 팝업창이 뜰시 보여주는 초대장 개수
+		ShowInviteMentCount_Obj.SetActive (_bool);
+		inviteMentCount_Text.text = string.Format ("{0} / {1}", _leftCount, bossCreator.bossConsumeItemInfo.nInviteMentMaxCount);
 	}
 }

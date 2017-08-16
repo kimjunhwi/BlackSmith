@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour {
 
 	public void NormalTouchSound()
 	{
-		SoundManager.instance.PlaySound (eSoundArray.BGM_TouchWeapon01);
+		SoundManager.instance.PlayTouchNormalWeapon ();
 	}
 
 	public void CriticalTouchSound()

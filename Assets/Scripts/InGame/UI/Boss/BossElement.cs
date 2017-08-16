@@ -12,6 +12,9 @@ public class BossElement : MonoBehaviour
 	public Button bossLevelRight_Button;
 	public Button bossLevelLeft_Button;
 
+	public GameObject ReloadButton_Obj;			//충전 버튼
+	public Button ReloadButton;
+
 	public int curLevel = 1;	//현재래벨
 	private int maxLevel = 100;	//최대래벨
 	private int minLevel = 1;	//최소래벨
