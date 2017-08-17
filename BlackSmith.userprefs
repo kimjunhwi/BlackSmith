@@ -1,17 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/Manager/GameManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs">
     <Files>
-      <File FileName="Assets/Scripts/InGame/Player/PlayerController.cs" Line="67" Column="50" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="394" Column="2" />
+      <File FileName="Assets/Scripts/InGame/Player/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossPopUpWindow.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" Line="1" Column="1" />
       <File FileName="Assets/Scripts/InGame/Particle/NormalRepairPool.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossElement.cs" Line="6" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="324" Column="38" />
-      <File FileName="Assets/Scripts/InGame/Manager/ScoreManager.cs" Line="57" Column="1" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="387" Column="23" />
-      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="47" Column="2" />
-      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="108" Column="5" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossElement.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCreator.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/ScoreManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossFire.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/UI/Boss/BossCharacter.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/InGame/Manager/SpawnManager.cs" Line="89" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
