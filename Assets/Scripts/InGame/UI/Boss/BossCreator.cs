@@ -35,7 +35,7 @@ public class BossCreator : MonoBehaviour
 	public BossTalkPanel bossTalkPanel;				//보스 말풍선
 	public GameObject bossWeapon_Obj;				//보스 무기 Obj
 	public UIDisable uiDisable;
-	public GameObject GuestPanel; 
+	public GameObject GuestPanel; 					//손님정보 
 
 	private BossTimer bossTimer;
 

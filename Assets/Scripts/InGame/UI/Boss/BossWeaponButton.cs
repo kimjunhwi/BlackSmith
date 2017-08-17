@@ -51,30 +51,33 @@ public class BossWeaponButton : MonoBehaviour {
 
 		if(nbTouches > 0)
 		{
-		for (int nIndex = 0; nIndex < nbTouches; nIndex++) {
+			Debug.Log("TouchBossWeapon");
+			for (int nIndex = 0; nIndex < nbTouches; nIndex++) 
+			{
 
-		results.Clear();
+				results.Clear();
 
-		Touch touch = Input.GetTouch(nIndex);
+				Touch touch = Input.GetTouch(nIndex);
 
-		if (touch.phase == TouchPhase.Began) {
+			if (touch.phase == TouchPhase.Began) 
+			{
 
-		pointData.position = touch.position;
+					pointData.position = touch.position;
 
-		graphicRaycaster.Raycast(pointData, results); 
+					graphicRaycaster.Raycast(pointData, results); 
 
-		if (results.Count !=0) 
-		{ 
-		GameObject obj = results[0].gameObject; 
-
-		if (obj.CompareTag("BossWeaponButton")) // 히트 된 오브젝트의 태그와 맞으면 실행 
-		{ 
-		repairObject.TouchWeapon (pointData.position);
-		break;
-			} 
-		} 
-		}
-		}
+						if (results.Count !=0) 
+						{ 
+							GameObject obj = results[0].gameObject; 
+			
+						if (obj.CompareTag("BossWeaponButton")) // 히트 된 오브젝트의 태그와 맞으면 실행 
+						{ 
+							repairObject.TouchBossWeapon (pointData.position);
+							break;
+						} 
+					} 
+				}
+			}
 		}
 		#endif
 
