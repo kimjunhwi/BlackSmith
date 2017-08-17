@@ -115,15 +115,15 @@ public class NormalCharacter : Character {
 		{
 			nDay = cPlayerData.GetDay ();
 
-			weaponData.fMaxComplate = weaponData.fMaxComplate + (weaponData.fMaxComplate * nDay * 0.03f);
-			weaponData.fMinusRepair = weaponData.fMinusRepair + (weaponData.fMinusRepair * nDay * 0.01f);
-			weaponData.fMinusChargingWater = weaponData.fMinusChargingWater + (weaponData.fMinusChargingWater * nDay * 0.01f);
-			weaponData.fMinusCriticalDamage = weaponData.fMinusCriticalDamage + (weaponData.fMinusCriticalDamage * nDay * 0.01f);
-			weaponData.fMinusUseWater = weaponData.fMinusUseWater + (weaponData.fMinusUseWater * nDay * 0.01f);
-			weaponData.fMinusCriticalChance = weaponData.fMinusCriticalChance + (weaponData.fMinusCriticalChance * nDay * 0.01f);
-			weaponData.fMinusAccuracy = weaponData.fMinusAccuracy + (weaponData.fMinusAccuracy * nDay * 0.01f);
-			weaponData.fGold = weaponData.fGold + (weaponData.fGold * nDay * 0.01f);
-			weaponData.fHonor = weaponData.fHonor + (weaponData.fHonor * nDay * 0.01f);
+			weaponData.fMaxComplate = weaponData.fMaxComplate + (weaponData.fMaxComplate * nDay * 0.05f);
+			weaponData.fMinusRepair = weaponData.fMinusRepair + (weaponData.fMinusRepair * nDay * 0.03f);
+			weaponData.fMinusChargingWater = weaponData.fMinusChargingWater + (weaponData.fMinusChargingWater * nDay * 0.03f);
+			weaponData.fMinusCriticalDamage = weaponData.fMinusCriticalDamage + (weaponData.fMinusCriticalDamage * nDay * 0.03f);
+			weaponData.fMinusUseWater = weaponData.fMinusUseWater + (weaponData.fMinusUseWater * nDay * 0.03f);
+			weaponData.fMinusCriticalChance = weaponData.fMinusCriticalChance + (weaponData.fMinusCriticalChance * nDay * 0.03f);
+			weaponData.fMinusAccuracy = weaponData.fMinusAccuracy + (weaponData.fMinusAccuracy * nDay * 0.03f);
+			weaponData.fGold = weaponData.fGold + (weaponData.fGold * nDay * 0.03f);
+			weaponData.fHonor = weaponData.fHonor + (weaponData.fHonor * nDay * 0.03f);
 		}
 
 		//다음 시간 저장 

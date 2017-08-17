@@ -83,14 +83,6 @@ public class Player
 		SetCriticalChance ();
 	}
 
-	public float GetBasicBigSuccessed() { return changeStats.fBigSuccessed; }
-	public void SetBasicBigSuccessed(float _fValue) { 
-
-		changeStats.fBigSuccessed = _fValue; 
-
-		SetBigSuccessed ();
-	}
-
     public int GetSasinMaterial() { return changeStats.nSasinMaterial; }
     public void SetSasinMaterial(int _nValue) { changeStats.nSasinMaterial = _nValue; }
     public int GetRusiuMaterial() { return changeStats.nRusiuMaterial; }
@@ -171,7 +163,7 @@ public class Player
 
 	public void SetRepairPower () {
 
-		float fResultRepairPowerPercent = 0.0f;
+		float fResultRepairPowerPercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultRepairPowerPercent += WeaponEquipment.fReapirPower;
 		if (GearEquipmnet != null) 		fResultRepairPowerPercent += GearEquipmnet.fReapirPower;
@@ -186,7 +178,7 @@ public class Player
 
 	public void SetAccuracyRate()
 	{
-		float fResultAccuracyRatePercent = 0.0f;
+		float fResultAccuracyRatePercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultAccuracyRatePercent += WeaponEquipment.fAccuracyRate;
 		if (GearEquipmnet != null) 		fResultAccuracyRatePercent += GearEquipmnet.fAccuracyRate;
@@ -201,7 +193,7 @@ public class Player
 
 	public void SetArbaitRepairPower()
 	{
-		float fResultArbaitRepairPower = 0.0f;
+		float fResultArbaitRepairPower = 1.0f;
 
 		if (WeaponEquipment != null)	fResultArbaitRepairPower += WeaponEquipment.fArbaitRepair;
 		if (GearEquipmnet != null) 		fResultArbaitRepairPower += GearEquipmnet.fArbaitRepair;
@@ -216,7 +208,7 @@ public class Player
 
 	public void SetGoldPlusPercent()
 	{
-		float fResultGoldPlusPercent = 0.0f;
+		float fResultGoldPlusPercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultGoldPlusPercent += WeaponEquipment.fGoldPlus;
 		if (GearEquipmnet != null) 		fResultGoldPlusPercent += GearEquipmnet.fGoldPlus;
@@ -228,7 +220,7 @@ public class Player
 
 	public void SetHonorPlusPercent()
 	{
-		float fResultHonorPlusPercent = 0.0f;
+		float fResultHonorPlusPercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultHonorPlusPercent += WeaponEquipment.fHonorPlus;
 		if (GearEquipmnet != null) 		fResultHonorPlusPercent += GearEquipmnet.fHonorPlus;
@@ -240,7 +232,7 @@ public class Player
 
 	public void SetWaterPlus()
 	{
-		float fResultWaterPlusPercent = 0.0f;
+		float fResultWaterPlusPercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultWaterPlusPercent += WeaponEquipment.fWaterChargePlus;
 		if (GearEquipmnet != null) 		fResultWaterPlusPercent += GearEquipmnet.fWaterChargePlus;
@@ -252,7 +244,7 @@ public class Player
 
 	public void SetCriticalChance()
 	{
-		float fResultCriticalChancePercent = 0.0f;
+		float fResultCriticalChancePercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultCriticalChancePercent += WeaponEquipment.fCritical;
 		if (GearEquipmnet != null) 		fResultCriticalChancePercent += GearEquipmnet.fCritical;
@@ -279,7 +271,7 @@ public class Player
 
 	public void SetBigSuccessed()
 	{
-		float fResultBigSuccessedPercent = 0.0f;
+		float fResultBigSuccessedPercent = 1.0f;
 
 		if (WeaponEquipment != null)	fResultBigSuccessedPercent += WeaponEquipment.fBigCritical;
 		if (GearEquipmnet != null) 		fResultBigSuccessedPercent += GearEquipmnet.fBigCritical;
