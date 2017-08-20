@@ -61,13 +61,12 @@ public class ShopShowPanel : MonoBehaviour {
         RemoveText();
 
         //골드 얼마 사용할지
-        //goldText.text = ItemData.nGold;
 
         if (ItemData.fReapirPower       != 0) CreateText("수리력 : ", ItemData.fReapirPower);
         if (ItemData.fArbaitRepair      != 0) CreateText("알바수리력증가 : ", ItemData.fArbaitRepair);
         if (ItemData.fHonorPlus         != 0) CreateText("명예증가량 : ", ItemData.fHonorPlus);
         if (ItemData.fGoldPlus          != 0) CreateText("골드증가량 : ", ItemData.fGoldPlus);
-        if (ItemData.fWaterChargePlus   != 0) CreateText("물확률 : ", ItemData.fWaterChargePlus);
+        if (ItemData.fWaterChargePlus   != 0) CreateText("물 충전 증가량 : ", ItemData.fWaterChargePlus);
         if (ItemData.fCritical          != 0) CreateText("크리티컬확률 : ", ItemData.fCritical);
         if (ItemData.fCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.fCriticalDamage);
         if (ItemData.fBigCritical       != 0) CreateText("대성공 : ", ItemData.fBigCritical);

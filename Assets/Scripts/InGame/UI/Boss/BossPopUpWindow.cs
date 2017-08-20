@@ -254,7 +254,7 @@ public class BossPopUpWindow : MonoBehaviour
 
 			if (nBossIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE)
 			{
-				RewardShowAndAdd (4, 5);
+				RewardShowAndAdd (4, 1);
 			}
 
 
@@ -328,7 +328,7 @@ public class BossPopUpWindow : MonoBehaviour
 			bossCharacter = bossIce;
 		if (_bossWeaponIndex01 == 2 && _bossWeaponIndex02 == 3)
 			bossCharacter = bossSasin;
-		if (_bossWeaponIndex01 == 4 && _bossWeaponIndex02 == 5)
+		if (_bossWeaponIndex01 == 4 && _bossWeaponIndex02 == 1)
 			bossCharacter = bossFire;
 		if (_bossWeaponIndex01 == 6 && _bossWeaponIndex02 == 7)
 			bossCharacter = bossMusic;

@@ -7,8 +7,8 @@ public class CriticalTouchParticle : MonoBehaviour {
     private Animator anim;
 	private RectTransform rectTransform;
 
-	private const float m_fWidth = 200;
-	private const float m_fHeight = 200;
+	private const float m_fWidth = 450;
+	private const float m_fHeight = 450;
 
     private void Awake()
     {

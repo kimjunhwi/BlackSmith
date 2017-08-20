@@ -59,7 +59,7 @@ public class BlueHair : ArbaitBatch {
 
     public override void ApplySkill()
     {
-        if (fChangeRepair != 0)
+        if (fChangeRepair >= 1)
             ReliveSkill();
 
         fGetRepairPower = playerData.GetBasicRepairPower();
@@ -73,7 +73,7 @@ public class BlueHair : ArbaitBatch {
 
     protected override void ReliveSkill()
     {
-        if (fChangeRepair == 0)
+        if (fChangeRepair <= 1)
             return;
 
 		fGetRepairPower = playerData.GetBasicRepairPower();

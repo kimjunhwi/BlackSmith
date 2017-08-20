@@ -66,12 +66,12 @@ public class ScoreManager : MonoBehaviour
 
 	public void SetSuccessedGuestCount(int _nValue)
 	{
-		SuccessedGuestCount.text = string.Format ("Successed {0} / 30", _nValue);
+		SuccessedGuestCount.text = string.Format ("Successed {0} / 10", _nValue);
 	}
 
 	public void SetFaieldGuestCount(int _nValue)
 	{
-		FaieldGuestCount.text = string.Format ("Faield {0} / 5", _nValue);
+		FaieldGuestCount.text = string.Format ("Faield {0} / 1", _nValue);
 	}
 
 

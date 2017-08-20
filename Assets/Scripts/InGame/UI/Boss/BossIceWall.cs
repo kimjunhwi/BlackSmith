@@ -49,7 +49,7 @@ public class BossIceWall : MonoBehaviour , IPointerDownHandler
 				animator_IceWallRepair.SetBool ("isBreak01", true);
 			}
 
-			if (nCountBreakWall == 5) {
+			if (nCountBreakWall == 1) {
 				animator_IceWallRepair.SetBool ("isBreak02", true);
 			}
 

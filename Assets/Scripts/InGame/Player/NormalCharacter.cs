@@ -33,6 +33,7 @@ public class NormalCharacter : Character {
 
 	//돌아가는지
 	public bool m_bIsBack = false;
+	public bool m_bIsAllBack = false;
 
 	//뒤로 가는 부분에 처음 부분만 실행하기 위함
 	private bool m_bIsFirstBack = false;
@@ -89,6 +90,8 @@ public class NormalCharacter : Character {
         mySprite.flipX = true;
 
         m_bIsRepair = false;
+
+		m_bIsAllBack = false;
 
 		m_bIsFirstBack = false;
 
@@ -204,11 +207,11 @@ public class NormalCharacter : Character {
         yield return new WaitForSeconds(0.3f);
 
         //시간이 지났거나 m_bIsBack이 트루일경우 돌려보냄
-		if (m_fCharacterTime >= m_fCharacterWaitTime || m_bIsBack == true)
+		if (m_bIsBack == true)
 			E_STATE = ENORMAL_STATE.BACK;
 		
             //시간이 지나지 않았거나 도착하지 않았다면 Walk
-		else if(m_fCharacterTime < m_fCharacterWaitTime && m_bIsArrival == false)
+		else if(m_bIsArrival == false)
 			E_STATE = ENORMAL_STATE.WALK;
 		
             //그 외에는 대기
@@ -297,11 +300,11 @@ public class NormalCharacter : Character {
                 //현재 오브젝트를 보내서 있는지 확인
 				RepairShowObject.CheckMyObject (gameObject);
 
-				if(RepairShowObject.AfootObject == null)
-					SpawnManager.Instance.AutoInputWeaponData ();
-
-                //현재 캐릭터를 지움
+				//현재 캐릭터를 지움
 				SpawnManager.Instance.DeleteObject(gameObject);
+
+				if(RepairShowObject.AfootObject == null && m_bIsAllBack == false)
+					SpawnManager.Instance.AutoInputWeaponData ();
 
                 //결과값 호출
 				Complate (m_fComplate);
@@ -334,11 +337,13 @@ public class NormalCharacter : Character {
     }
 
     //손님의 이동속도와 뒤로 가는지에 대한 선택을 위함
-	public void RetreatCharacter(float _fSpeed,bool _bIsBack)
+	public void RetreatCharacter(float _fSpeed,bool _bIsBack, bool _bIsAllBack = false)
 	{
 		fSpeed = _fSpeed;
 
         m_bIsBack = _bIsBack;
+
+		m_bIsAllBack = _bIsAllBack;
 	}
 
     //지정한 인덱스로 손님을 이동시키기 위함
@@ -396,7 +401,7 @@ public class NormalCharacter : Character {
 		if(Input.GetMouseButtonDown(0) && (E_STATE == ENORMAL_STATE.WAIT || WeaponBackground.activeSelf))
 		{
 			//onPointerDown 보다 먼저 호출
-			if (!EventSystem.current.IsPointerOverGameObject ()) {
+			//if (!EventSystem.current.IsPointerOverGameObject ()) {
 
 				m_bIsRepair = true;
 
@@ -409,7 +414,7 @@ public class NormalCharacter : Character {
 				RepairShowObject.GetWeapon (gameObject, weaponData, m_fComplate, m_fTemperator);
 
 				backGround.sprite = PlayerRepairSpeech;
-			}
+			//}
 		}
 	}
 
@@ -428,7 +433,7 @@ public class NormalCharacter : Character {
 		if (fCurCompletY >= 1.0f) {
 			m_bIsBack = true;
 
-			ComplateScale.localScale = new Vector3 (ComplateScale.localScale.x, fCurCompletY, ComplateScale.localScale.z);
+			ComplateScale.localScale = new Vector3 (ComplateScale.localScale.x, 1.0f, ComplateScale.localScale.z);
 
 			return true;
 		}
@@ -451,7 +456,7 @@ public class NormalCharacter : Character {
 
 
 			//셩공 손님이 30명 이상 이라면 
-			if (cPlayerData.GetSuccessedGuestCount () >= 30) 
+			if (cPlayerData.GetSuccessedGuestCount () >= 10) 
 			{
                 //날짜 초기화
                 cPlayerData.SetSuccessedGuestCount(0);

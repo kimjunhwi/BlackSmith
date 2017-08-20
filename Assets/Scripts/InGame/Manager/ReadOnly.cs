@@ -96,7 +96,8 @@ namespace ReadOnlys
 	//Smith Enhance
 	enum E_SMITH_INDEX
 	{
-		E_SMITH = 0,
+		E_REPAIR = 0,
+		E_SMITH ,
 		E_MAX_WATER,
 		E_WATER_CHARGING,
 		E_ACCURACY_RATE,

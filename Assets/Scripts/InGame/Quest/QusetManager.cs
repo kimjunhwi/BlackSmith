@@ -39,7 +39,7 @@ public class QusetManager : MonoBehaviour, IPointerClickHandler
 	public Image rewardCheckImage03;
 
 	private int nFirstReward = 3;
-	private int nSecondReward = 5;
+	private int nSecondReward = 1;
 	private int nThirdReward = 7;
 
 	public SimpleObjectPool questObjectPool;

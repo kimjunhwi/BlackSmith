@@ -28,12 +28,12 @@ public class SmithPanelUI : EnhanceUI {
 		{
 			if (ScoreManager.ScoreInstance.GetHonor() >= m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue))
 			{
+				if(nLevel % 100 == 0)
+					cPlayer.SetBasicBigSuccessedPercent(cPlayer.GetBasicBigSuccessedPercent() + 1 * m_EnhanceData.fPlusPercent);
 
 				ScoreManager.ScoreInstance.HonorPlus (-(m_EnhanceData.fBasicHonor + (nLevel * m_EnhanceData.fPlusHonorValue)));
 
 				nLevel++;
-
-				cPlayer.SetBasicBigSuccessedPercent(cPlayer.GetBasicBigSuccessedPercent() + nLevel * m_EnhanceData.fPlusPercent);
 
 				cPlayer.SetSmithLevel(nLevel);
 

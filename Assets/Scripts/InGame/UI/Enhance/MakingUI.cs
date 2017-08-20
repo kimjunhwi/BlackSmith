@@ -28,7 +28,7 @@ public class MakingUI : MonoBehaviour {
 	const int m_nBasicMinRepair = 6;
 	const int m_nBasicMaxRepair = 10;
 	const int m_nBasicMinOption = 3;
-	const int m_nBasicMaxOption = 5;
+	const int m_nBasicMaxOption = 1;
 
 	//일차 별로 증가하는 값, 단 추가옵션과 보스옵션 같은 경우 10 레벨 마다 증가 한다.
 	const int m_nPlusGoldPercent = 20;
@@ -186,7 +186,7 @@ public class MakingUI : MonoBehaviour {
 
 	void MakeWeapon()
 	{
-		if (CostDayText.text == "0")
+		if (int.Parse( CostDayText.text) <= 0)
 			return;
 
 		int nDight = 0;

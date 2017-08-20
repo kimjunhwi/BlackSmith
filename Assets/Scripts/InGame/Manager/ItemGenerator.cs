@@ -7,7 +7,7 @@ public class ItemGenerator : MonoBehaviour {
     public GameObject[] avaliableObjects;
     public List<GameObject> objects;
 
-    public float objectsMinDistance = 5.0f;
+    public float objectsMinDistance = 1.0f;
 
     private float objectsMinY = 1.2f;
     private float objectsMaxY = 3.4f;
@@ -57,7 +57,7 @@ public class ItemGenerator : MonoBehaviour {
             //4
             farthestObjectX = Mathf.Max(farthestObjectX, objX);
 
-            //5
+            //1
             if (objX < removeObjectsX)
                 objectsToRemove.Add(obj);
         }

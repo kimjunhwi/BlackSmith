@@ -121,36 +121,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		Load_TableInfo_BossWeapon ();
 
-		Load_TableInfo_SmithEnhance ();
-
-		Load_TableInfo_RepairEnhance ();
-
-		Load_TableInfo_MaxWaterEnhance ();
-
-		Load_TableInfo_WaterPlusEnhance ();
-
-		Load_TableInfo_AccuracyEnhance ();
-
-		Load_TableInfo_CriticalEnhance ();
-
-        Load_TableInfo_OneGradeEnhance();
-
-        Load_TableInfo_TwoGradeEnhance();
-
-        Load_TableInfo_ThreeGradeEnhance();
-
-        Load_TableInfo_FourGradeEnhance();
-
-		Load_TableInfo_CgradeEnhance ();
-
-		Load_TableInfo_BgradeEnhance();
-
-		Load_TableInfo_AgradeEnhance();
-
-		Load_TableInfo_SgradeEnhance();
-
-		Load_TableInfo_PlayerArbaitEnhance ();
-
 		////////////
 		/// 
 		/// 
@@ -286,7 +256,7 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 	IEnumerator LinkedInventoryAccess(string filePath)
 	{
-		Debug.Log("5");
+		Debug.Log("1");
 
 		WWW www = new WWW(filePath);
 
@@ -394,13 +364,13 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 
 
-    void OnApplicationQuit()
-    {
+    //void OnApplicationQuit()
+    //{
 
-        DataSave();
+    //    DataSave();
 
-        StopAllCoroutines();
-    }
+    //    StopAllCoroutines();
+    //}
 
     //데이터 저장시 호출된다.
     //저장이 되는 부분은 OnApplicationPuase가 TRUE 이고 플레이어가 존재할시 호출
@@ -727,12 +697,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].fHonorPlus = float.Parse(Cells[8]);
 			kInfo[i - 1].fGoldPlus = float.Parse(Cells[9]);
 			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[10]);
-			kInfo[i - 1].fWaterUse = float.Parse(Cells[11]);
-			kInfo[i - 1].fCritical = float.Parse(Cells[12]);
-			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[13]);
-			kInfo[i - 1].fBigCritical = float.Parse(Cells[14]);
-			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[15]);
-			kInfo [i - 1].nStrenthCount = int.Parse (Cells [16]);
+			kInfo[i - 1].fCritical = float.Parse(Cells[11]);
+			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[12]);
+			kInfo[i - 1].fBigCritical = float.Parse(Cells[13]);
+			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[14]);
+			kInfo [i - 1].nStrenthCount = int.Parse (Cells [15]);
         }
 
         cEquimentInfo = kInfo;
@@ -814,12 +783,11 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 			kInfo[i - 1].fHonorPlus = float.Parse(Cells[8]);
 			kInfo[i - 1].fGoldPlus = float.Parse(Cells[9]);
 			kInfo[i - 1].fWaterChargePlus = float.Parse(Cells[10]);
-			kInfo[i - 1].fWaterUse = float.Parse(Cells[11]);
-			kInfo[i - 1].fCritical = float.Parse(Cells[12]);
-			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[13]);
-			kInfo[i - 1].fBigCritical = float.Parse(Cells[14]);
-			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[15]);
-			kInfo [i - 1].nStrenthCount = int.Parse (Cells [16]);
+			kInfo[i - 1].fCritical = float.Parse(Cells[11]);
+			kInfo[i - 1].fCriticalDamage = float.Parse(Cells[12]);
+			kInfo[i - 1].fBigCritical = float.Parse(Cells[13]);
+			kInfo[i - 1].fAccuracyRate = float.Parse(Cells[14]);
+			kInfo [i - 1].nStrenthCount = int.Parse (Cells [15]);
 			kInfo [i - 1].explain = Cells [17];
 		}
 
@@ -858,496 +826,6 @@ public class GameManager : GenericMonoSingleton<GameManager> {
 
 		cSoundsData = kInfo;
 	}
-
-    void Load_TableInfo_SmithEnhance()
-    {
-		if (cSmithEnhaceInfo.Length != 0) return;
-
-        string txtFilePath = "SmithEnhance";
-
-        TextAsset ta = LoadTextAsset(txtFilePath);
-
-        List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-        for (int i = 0; i < line.Count; i++)
-        {
-            //Console.WriteLine("line : " + line[i]);
-            if (line[i] == null) continue;
-            if (i == 0) continue; 	// Title skip
-
-            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-            if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-        }
-
-        cSmithEnhaceInfo = kInfo;
-    }
-
-	void Load_TableInfo_RepairEnhance()
-	{
-		if (cRepairEnhanceInfo.Length != 0) return;
-
-		string txtFilePath = "RepairEnhance";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-		}
-
-		cRepairEnhanceInfo = kInfo;
-	}
-
-	void Load_TableInfo_MaxWaterEnhance()
-	{
-		if (cMaxWaterEnhanceInfo.Length != 0) return;
-
-		string txtFilePath = "MaxWaterEnhance";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-		}
-
-		cMaxWaterEnhanceInfo = kInfo;
-	}
-
-	void Load_TableInfo_WaterPlusEnhance()
-	{
-		if (cWaterPlusEnhanceInfo.Length != 0) return;
-
-		string txtFilePath = "WaterPlusEnhance";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-		}
-
-		cWaterPlusEnhanceInfo = kInfo;
-	}
-
-	void Load_TableInfo_AccuracyEnhance()
-	{
-		if (cAccuracyRateInfo.Length != 0) return;
-
-		string txtFilePath = "AccuracyEnhance";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-		}
-
-		cAccuracyRateInfo = kInfo;
-	}
-
-	void Load_TableInfo_CriticalEnhance()
-	{
-		if (cCriticalEnhance.Length != 0) return;
-
-		string txtFilePath = "CriticalEnhance";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-		}
-
-		cCriticalEnhance = kInfo;
-	}
-
-	void Load_TableInfo_PlayerArbaitEnhance()
-	{
-		if (cPlayerArbaitEnhace.Length != 0) return;
-
-		string txtFilePath = "ArbaitEnhance";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGamePlayerEnhance[] kInfo = new CGamePlayerEnhance[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1]            = new CGamePlayerEnhance();
-			kInfo[i - 1].nIndex     = int.Parse(Cells[0]);
-			kInfo[i - 1].strName  = Cells[1];
-			kInfo [i - 1].fPlusPercentValue = float.Parse (Cells [2]);
-			kInfo[i - 1].nGoldCost     = int.Parse(Cells[3]);
-			kInfo[i - 1].nHonorCost     = int.Parse(Cells[4]);
-		}
-
-		cPlayerArbaitEnhace = kInfo;
-	}
-
-    void Load_TableInfo_OneGradeEnhance()
-    {
-		if (cOneGradeEnhance.Length != 0) return;
-
-        string txtFilePath = "OneGradeEnhance";
-
-        TextAsset ta = LoadTextAsset(txtFilePath);
-
-        List<string> line = LineSplit(ta.text);
-
-        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
-
-        for (int i = 0; i < line.Count; i++)
-        {
-            //Console.WriteLine("line : " + line[i]);
-            if (line[i] == null) continue;
-            if (i == 0) continue; 	// Title skip
-
-            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-            if (Cells[0] == "") continue;
-
-            kInfo[i - 1] = new CGameEnhanceData();
-            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
-            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
-            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
-            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
-        }
-
-        cOneGradeEnhance = kInfo;
-    }
-
-    void Load_TableInfo_TwoGradeEnhance()
-    {
-		if (cTwoGradeEnhance.Length != 0) return;
-
-        string txtFilePath = "TwoGradeEnhance";
-
-        TextAsset ta = LoadTextAsset(txtFilePath);
-
-        List<string> line = LineSplit(ta.text);
-
-        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
-
-        for (int i = 0; i < line.Count; i++)
-        {
-            //Console.WriteLine("line : " + line[i]);
-            if (line[i] == null) continue;
-            if (i == 0) continue; 	// Title skip
-
-            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-            if (Cells[0] == "") continue;
-
-            kInfo[i - 1] = new CGameEnhanceData();
-            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
-            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
-            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
-            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
-        }
-
-        cTwoGradeEnhance = kInfo;
-    }
-
-    void Load_TableInfo_ThreeGradeEnhance()
-    {
-		if (cThreeGradeEnhance.Length != 0) return;
-
-        string txtFilePath = "ThreeGradeEnhance";
-
-        TextAsset ta = LoadTextAsset(txtFilePath);
-
-        List<string> line = LineSplit(ta.text);
-
-        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
-
-        for (int i = 0; i < line.Count; i++)
-        {
-            //Console.WriteLine("line : " + line[i]);
-            if (line[i] == null) continue;
-            if (i == 0) continue; 	// Title skip
-
-            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-            if (Cells[0] == "") continue;
-
-            kInfo[i - 1] = new CGameEnhanceData();
-            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
-            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
-            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
-            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
-        }
-
-        cThreeGradeEnhance = kInfo;
-    }
-
-    void Load_TableInfo_FourGradeEnhance()
-    {
-		if (cFourGradeEnhance.Length != 0) return;
-
-        string txtFilePath = "FourGradeEnhance";
-
-        TextAsset ta = LoadTextAsset(txtFilePath);
-
-        List<string> line = LineSplit(ta.text);
-
-        CGameEnhanceData[] kInfo = new CGameEnhanceData[line.Count - 1];
-
-        for (int i = 0; i < line.Count; i++)
-        {
-            //Console.WriteLine("line : " + line[i]);
-            if (line[i] == null) continue;
-            if (i == 0) continue; 	// Title skip
-
-            string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-            if (Cells[0] == "") continue;
-
-            kInfo[i - 1] = new CGameEnhanceData();
-            kInfo[i - 1].nLevel = int.Parse(Cells[0]);
-            kInfo[i - 1].nPercent = int.Parse(Cells[1]);
-            kInfo[i - 1].nGoldCost = int.Parse(Cells[2]);
-            kInfo[i - 1].nHonorCost = int.Parse(Cells[2]);
-        }
-
-        cFourGradeEnhance = kInfo;
-    }
-
-	void Load_TableInfo_CgradeEnhance()
-	{
-		if (cArbaitCgrade.Length != 0) return;
-
-		string txtFilePath = "CgradeArbait";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1] = new CGameArbaitGrade();
-
-			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
-			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
-			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
-			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
-			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
-			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
-			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
-		}
-
-		cArbaitCgrade = kInfo;
-	}
-
-	void Load_TableInfo_BgradeEnhance()
-	{
-		if (cArbaitBgrade.Length != 0) return;
-
-		string txtFilePath = "BgradeArbait";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1] = new CGameArbaitGrade();
-
-			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
-			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
-			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
-			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
-			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
-			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
-			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
-		}
-
-		cArbaitBgrade = kInfo;
-	}
-
-	void Load_TableInfo_AgradeEnhance()
-	{
-		if (cArbaitAgrade.Length != 0) return;
-
-		string txtFilePath = "AgradeArbait";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1] = new CGameArbaitGrade();
-
-			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
-			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
-			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
-			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
-			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
-			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
-			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
-		}
-
-		cArbaitAgrade = kInfo;
-	}
-
-	void Load_TableInfo_SgradeEnhance()
-	{
-		if (cArbaitSgrade.Length != 0) return;
-
-		string txtFilePath = "SgradeArbait";
-
-		TextAsset ta = LoadTextAsset(txtFilePath);
-
-		List<string> line = LineSplit(ta.text);
-
-		CGameArbaitGrade[] kInfo = new CGameArbaitGrade[line.Count - 1];
-
-		for (int i = 0; i < line.Count; i++)
-		{
-			//Console.WriteLine("line : " + line[i]);
-			if (line[i] == null) continue;
-			if (i == 0) continue; 	// Title skip
-
-			string[] Cells = line[i].Split("\t"[0]);	// cell split, tab
-			if (Cells[0] == "") continue;
-
-			kInfo[i - 1] = new CGameArbaitGrade();
-
-			kInfo[i - 1].nNextLevel = int.Parse(Cells[0]);
-			kInfo[i - 1].nPercentPlusRepair = int.Parse(Cells[1]);
-			kInfo[i - 1].nPercentPlusAccuracy = int.Parse(Cells[2]);
-			kInfo[i - 1].nPercentPlusCritical = int.Parse(Cells[3]);
-			kInfo[i - 1].nPercentPlusSkill = int.Parse(Cells[4]);
-			kInfo[i - 1].nGoldCost = int.Parse(Cells[5]);
-			kInfo[i - 1].nHonorCost = int.Parse(Cells[6]);
-		}
-
-		cArbaitSgrade = kInfo;
-	}
-
-
 
 	void Load_TableInfo_ArbaitEnhance()
 	{
@@ -1519,34 +997,15 @@ public class GameManager : GenericMonoSingleton<GameManager> {
     }
 	#endregion
 
-	public CGameEnhanceData[] GetEnhanceArbaitData(string _nIndex)
+	public EquipmentEnhance GetEnhanceArbaitData(string _nIndex)
 	{
-		int nIndex = 0;
 		if (_nIndex == "C")
-			nIndex = 1;
+			return cEquipmentEnhance [0];
 		else if (_nIndex == "B")
-			nIndex = 2;
-		else if (_nIndex == "A")
-			nIndex = 3;
-		else 
-			nIndex = 4;
+			return cEquipmentEnhance [1];
+		else
+			return cEquipmentEnhance [2];
 
-
-		switch (nIndex) {
-		case 1:
-			return cOneGradeEnhance;
-
-		case 2:
-			return cTwoGradeEnhance;
-		case 3:
-			return cThreeGradeEnhance;
-		case 4:
-			return cFourGradeEnhance;
-		default:
-			Debug.Log ("Range Error");
-			return null;
-
-		}
 	}
 
 	public CGameArbaitGrade[] GetArbaitGradeEnhanceData(int _nGradeIndex)
@@ -1685,7 +1144,6 @@ enum E_Equiment
 	E_HONOR,
 	E_GOLD,
 	E_WATERCHARGE,
-	E_WATERUSE,
 	E_CRITICAL,
 	E_CRITICALD,
 	E_BIGCRITICAL,
@@ -1733,7 +1191,6 @@ public class CGameEquiment
 	public float fHonorPlus = 0;
 	public float fGoldPlus = 0;
 	public float fWaterChargePlus = 0;
-	public float fWaterUse = 0;
 	public float fCritical = 0;
 	public float fCriticalDamage = 0;
 	public float fBigCritical = 0;
@@ -1756,7 +1213,6 @@ public class CGameEquiment
 		fHonorPlus = _equimentData.fHonorPlus;
 		fGoldPlus = _equimentData.fGoldPlus;
 		fWaterChargePlus = _equimentData.fWaterChargePlus;
-		fWaterUse = _equimentData.fWaterUse;
 		fCriticalDamage = _equimentData.fCriticalDamage;
 		fBigCritical = _equimentData.fBigCritical;
 		fAccuracyRate = _equimentData.fAccuracyRate;

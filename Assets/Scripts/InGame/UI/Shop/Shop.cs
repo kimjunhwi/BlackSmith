@@ -152,71 +152,63 @@ public class Shop : MonoBehaviour {
             case (int)E_Equiment.E_REPAIR:
                 if (_equiment.fReapirPower == 0)
                 {
-                    _equiment.fReapirPower = 1;
+                    _equiment.fReapirPower = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_ARBAIT:
                 if (_equiment.fArbaitRepair == 0)
                 {
-                    _equiment.fArbaitRepair = 1;
+                    _equiment.fArbaitRepair = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_HONOR:
                 if (_equiment.fHonorPlus == 0)
                 {
-                    _equiment.fHonorPlus = 1;
+                    _equiment.fHonorPlus = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_GOLD:
                 if (_equiment.fGoldPlus == 0)
                 {
-                    _equiment.fGoldPlus = 1;
+                    _equiment.fGoldPlus = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_WATERCHARGE:
                 if (_equiment.fWaterChargePlus == 0)
                 {
-                    _equiment.fWaterChargePlus = 1;
-                    return true;
-                }
-                break;
-
-            case (int)E_Equiment.E_WATERUSE:
-                if (_equiment.fWaterUse == 0)
-                {
-                    _equiment.fWaterUse = 1;
+                    _equiment.fWaterChargePlus = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_CRITICAL:
                 if (_equiment.fCritical == 0)
                 {
-                    _equiment.fCritical = 1;
+                    _equiment.fCritical = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_CRITICALD:
                 if (_equiment.fCriticalDamage == 0)
                 {
-                    _equiment.fCriticalDamage = 1;
+                    _equiment.fCriticalDamage = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_BIGCRITICAL:
                 if (_equiment.fBigCritical == 0)
                 {
-                    _equiment.fBigCritical = 1;
+                    _equiment.fBigCritical = 5;
                     return true;
                 }
                 break;
             case (int)E_Equiment.E_ACCURACY:
                 if (_equiment.fAccuracyRate == 0)
                 {
-                    _equiment.fAccuracyRate = 1;
+                    _equiment.fAccuracyRate = 5;
                     return true;
                 }
                 break;
@@ -231,16 +223,12 @@ public class Shop : MonoBehaviour {
 		{
 		case "C":
 			return 1;
-			break;
 		case "B":
 			return 2;
-			break;
 		case "A":
 			return 3;
-			break;
 		case "S":
-			return 4;
-			break;
+			return 3;
 		}
 
 		return 0;

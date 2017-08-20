@@ -48,6 +48,8 @@ public class Player
 	public void SetBasicRepairPower(float _fValue) { 
 		changeStats.fRepairPower = _fValue;  
 
+		changeStats.fRepairPower = Mathf.Round (changeStats.fRepairPower * 100) * 0.01f;
+
 		SetRepairPower ();
 	}
 
@@ -55,6 +57,8 @@ public class Player
 	public void SetBasicArbaitRepairPower(float _fValue){ 
 		changeStats.fArbaitsPower = _fValue;
 	
+		changeStats.fArbaitsPower = Mathf.Round (changeStats.fArbaitsPower * 100) * 0.01f;
+
 		SetArbaitRepairPower ();
 	}
 
@@ -63,14 +67,20 @@ public class Player
 
 	public float GetBasicAccuracyRate() { return changeStats.fAccuracyRate; }
 	public void SetBasicAccuracyRate(float _fValue) { 
+
 		changeStats.fAccuracyRate = _fValue; 
+
+		changeStats.fAccuracyRate = Mathf.Round (changeStats.fAccuracyRate * 100) * 0.01f;
 	
 		SetAccuracyRate ();
 	}
 
     public float GetBasicBigSuccessedPercent() { return changeStats.fBigSuccessed; }
 	public void SetBasicBigSuccessedPercent(float _fValue) { 
-		changeStats.fBigSuccessed = _fValue; 
+
+		changeStats.fBigSuccessed = _fValue;
+
+		changeStats.fBigSuccessed = Mathf.Round (changeStats.fBigSuccessed * 100) * 0.01f;
 	
 		SetBigSuccessed ();
 	}
@@ -326,9 +336,7 @@ public class Player
 
                 //만약 무기가 있을 경우 그 무기가 현재 플레이어에 적용되는 값을 빼고 아이템을 넣어줌
                 //그 후 다시 아이템 효과를 플레이어에게 적용한다.
-			if (WeaponEquipment != null)
-				WeaponEquipment.bIsEquip = false;
-			else if (WeaponEquipment == _item) {
+			if (WeaponEquipment == _item) {
 
 				WeaponEquipment.bIsEquip = false;
 
@@ -338,6 +346,9 @@ public class Player
 
 				return;
 			}
+			else if (WeaponEquipment != null)
+				WeaponEquipment.bIsEquip = false;
+			
 
 			WeaponEquipment = _item;
 
@@ -345,10 +356,7 @@ public class Player
 			break;
 		case (int)E_EQUIMNET_INDEX.E_WEAR:
 
-			if (GearEquipmnet != null)
-				GearEquipmnet.bIsEquip = false;
-			
-			else if (GearEquipmnet == _item) {
+			if (GearEquipmnet == _item) {
 
 				GearEquipmnet.bIsEquip = false;
 
@@ -358,6 +366,9 @@ public class Player
 
 				return;
 			}
+			else if (GearEquipmnet != null)
+				GearEquipmnet.bIsEquip = false;
+
 
 			GearEquipmnet = _item;
 
@@ -366,10 +377,7 @@ public class Player
 		case (int)E_EQUIMNET_INDEX.E_ACCESSORY:
 
 
-			if (AccessoryEquipmnet != null)
-				AccessoryEquipmnet.bIsEquip = false;
-			
-			else if (AccessoryEquipmnet == _item) {
+			if (AccessoryEquipmnet == _item) {
 
 				AccessoryEquipmnet.bIsEquip = false;
 
@@ -379,6 +387,10 @@ public class Player
 
 				return;
 			}
+
+			else if (AccessoryEquipmnet != null)
+				AccessoryEquipmnet.bIsEquip = false;
+
 
 			AccessoryEquipmnet = _item;
 

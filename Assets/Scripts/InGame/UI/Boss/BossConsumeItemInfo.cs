@@ -37,8 +37,8 @@ public class BossConsumeItemInfo : MonoBehaviour
 	private int nInitTime_Min = 19;
 	private int nInitTime_sec = 59;
 
-	public int nInviteMentMaxCount = 5;									//초대장 최대 개수
-	public int nInviteMentCurCount = 5;									//초대장 현재 개수
+	public int nInviteMentMaxCount = 1;									//초대장 최대 개수
+	public int nInviteMentCurCount = 1;									//초대장 현재 개수
 	public int nPotionCount =0;											//포션 개수
 	public BossRegenTimer bossRegenTimer;
 	public BossCreator bossCreator;
