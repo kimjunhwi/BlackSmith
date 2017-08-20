@@ -127,12 +127,17 @@ public class SoundManager : MonoBehaviour
 		//	return;
 
 		CGameSoundData kTableInfo_sound = GameManager.Instance.Get_TableInfo_sound((int)_sound_index);
+
+			
 		string szPrefab = "";
 		szPrefab = kTableInfo_sound.strResource;
 
 		AudioClip obj = (AudioClip)Resources.Load("Sound/" + szPrefab, typeof(AudioClip));
 		soundObj.GetComponent<AudioSource>().clip = obj;			//Add AudioClip
 		soundObj.GetComponent<AudioSource>().playOnAwake = false;	//Off playOnAwake
+		if(kTableInfo_sound.nLoop == 1)
+			soundObj.GetComponent<AudioSource>().loop = true;	
+	
 
 		// CSndInfo
 		SoundInfo soundInfo = soundObj.GetComponent<SoundInfo> ();

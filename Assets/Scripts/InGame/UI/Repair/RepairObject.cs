@@ -430,7 +430,8 @@ public class RepairObject : MonoBehaviour
 				fWaterSlideTime += Time.deltaTime;
 				WaterSlider.value = Mathf.Lerp (WaterSlider.value, fCurrentWater, fWaterSlideTime);
 
-				if (fCurrentWater >= 1000f) {
+				if (fCurrentWater >= 1000f) 
+				{
 					isTouchWaterAvailable = true;
 					waterPaching.SetActive (true);
 				} 
@@ -457,6 +458,7 @@ public class RepairObject : MonoBehaviour
 	public void ShowBreakWeapon()
 	{
 		//터지는 파티클
+		SoundManager.instance.PlaySound (eSoundArray.ES_WeaponExplosionSound);
 		GameObject obj = BreakBoomPool.Instance.GetObject ();
 		obj.transform.SetParent (weaponBoomTransform.transform, false);
 
@@ -1271,8 +1273,11 @@ public class RepairObject : MonoBehaviour
 	{
 		if (weaponData == null)
 			return;
+
 		if (isTouchWaterAvailable == true) 
 		{
+			SoundManager.instance.PlaySound (eSoundArray.ES_WaterActiveSound);
+
 			isTouchWaterAvailable = false;
 			isTouchWater = true;
 
@@ -1321,11 +1326,13 @@ public class RepairObject : MonoBehaviour
 
 		if (bossCharacter == null)
 			return;
-
+	
 		if (isTouchWaterAvailable == true ) 
 		{
 			//waterPaching.SetActive (true);
 			//물 터치시 노트 한단계씩 떨어진다.
+			SoundManager.instance.PlaySound (eSoundArray.ES_WaterActiveSound);
+
 			if (bossCharacter.nIndex == (int)E_BOSSNAME.E_BOSSNAME_MUSIC) {
 				
 				int nChildCount = bossNoteRectTransform.childCount;

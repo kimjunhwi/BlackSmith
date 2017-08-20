@@ -390,11 +390,12 @@ public class BossIce : BossCharacter
 		iceWall_instance = iceWall.GetComponent<BossIceWall> ();
 		if (iceWall.activeSelf == true)
 		{
-			iceWall.SetActive (false);
+			
 			isIceWallOn = false;
 
 			nBossIceWallCount = 15;
-			iceWall_instance.StartDeFreezeRepair ();
+			//iceWall_instance.StartDeFreezeRepair ();
+			iceWall.SetActive (false);
 		}
 		else 
 		{
