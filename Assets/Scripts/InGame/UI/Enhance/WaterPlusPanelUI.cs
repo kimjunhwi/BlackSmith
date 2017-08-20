@@ -38,8 +38,9 @@ public class WaterPlusPanelUI : EnhanceUI {
 				EnhanceText.text = strEnhanceName + nLevel;
 
 				//물 최대 량증가
-				repairObject.fMaxWater =  GameManager.Instance.player.GetBasicMaxWaterPlus() + ( (cPlayer.GetMaxWaterLevel () -1 ) * 1000f);
-				repairObject.WaterSlider.maxValue = repairObject.fMaxWater;
+				//repairObject.fMaxWater =  GameManager.Instance.player.GetBasicMaxWaterPlus() + ( (cPlayer.GetMaxWaterLevel () -1 ) * 1000f);
+				//repairObject.WaterSlider.maxValue = repairObject.fMaxWater;/.
+				//if(cPlayer.GetWaterPlusLevel() >= 
 			}
 
 			return;
@@ -59,9 +60,9 @@ public class WaterPlusPanelUI : EnhanceUI {
 			EnhanceText.text = strEnhanceName + nLevel;
 
 			//물 최대 량증가
-			repairObject.fMaxWater =  GameManager.Instance.player.GetBasicMaxWaterPlus() +( (cPlayer.GetWaterPlusLevel () -1 ) * 1000f);
-			repairObject.WaterSlider.maxValue = repairObject.fMaxWater;
-			Debug.Log ("MaxWater : " + repairObject.fMaxWater);
+			//repairObject.fMaxWater =  GameManager.Instance.player.GetBasicMaxWaterPlus() +( (cPlayer.GetWaterPlusLevel () -1 ) * 1000f);
+			//repairObject.WaterSlider.maxValue = repairObject.fMaxWater;
+			//Debug.Log ("MaxWater : " + repairObject.fMaxWater);
 
 		}
 	}

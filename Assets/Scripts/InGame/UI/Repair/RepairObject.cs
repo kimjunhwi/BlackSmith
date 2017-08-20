@@ -111,10 +111,15 @@ public class RepairObject : MonoBehaviour
 	public Animator weaponWaterCat_animator;					//그냥무기일때의 고양이
 	public Animator CatWater_animator;							//물 이펙트
 
-    public PlayerController m_PlayerAnimationController; 
-
+    
 	public bool isTouchWaterAvailable;							//물이 사용가능한가??
 	public bool isTouchWater;									//물을 터치 했는가?
+
+	public RectTransform waterBottle;							//물 비커의 크기
+	public RectTransform waterAvailableArrow;					//물 사용가능 최저 화살표 표시
+
+	public PlayerController m_PlayerAnimationController; 
+
 
     // 07.20 피버
     private bool m_bIsFever = false;
@@ -270,6 +275,7 @@ public class RepairObject : MonoBehaviour
 			
 	}
 
+	/*
 	public void StartBossMusiceWeaponMove()
 	{
 		StartCoroutine (BossMusicWeaponMove ());
@@ -328,7 +334,7 @@ public class RepairObject : MonoBehaviour
 		}
 
 	}
-
+*/
 	IEnumerator ChangeSlider()
 	{
 		while(true)
@@ -475,7 +481,9 @@ public class RepairObject : MonoBehaviour
 
 	IEnumerator OneSecondPlay()
 	{
-		while (true) {
+		while (true) 
+		{
+
 			yield return new WaitForSeconds (1.0f);
 
 			fPlusWater = player.GetWaterPlus ();
@@ -494,6 +502,11 @@ public class RepairObject : MonoBehaviour
 				if (fCurrentTemperature < 0)
 					fCurrentTemperature = 0;
 			}
+
+			//WaterAvailable Arrow 
+			int waterLevel = player.GetWaterPlusLevel();
+			waterAvailableArrow.anchoredPosition = new Vector2(waterAvailableArrow.anchoredPosition.x, waterBottle.sizeDelta.y /( waterLevel + 1));
+
 		}
 	}
 

@@ -1,8 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs">
+    <Files>
+      <File FileName="Assets/Scripts/InGame/UI/Repair/RepairObject.cs" Line="194" Column="115" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" Line="42" Column="64" />
+      <File FileName="Assets/Scripts/InGame/UI/Enhance/EnhanceUI.cs" Line="16" Column="2" />
+      <File FileName="Assets/Scripts/InGame/Player/Player.cs" Line="29" Column="2" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/cheolgeungi/BlackSmith/Assets/Scripts/InGame/UI/Enhance/WaterPlusPanelUI.cs" line="25" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

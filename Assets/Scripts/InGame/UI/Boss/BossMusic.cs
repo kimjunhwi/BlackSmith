@@ -439,7 +439,6 @@ public class BossMusic : BossCharacter
 		yield return null;
 
 		//예외 코루틴 모두 종료
-		StopCoroutine (repairObj.BossMusicWeaponMove ());
 		StopCoroutine (BossSkillStandard ());
 		StopCoroutine (BossSkill_01 ());
 		StopCoroutine (BossSKill_02 ());
