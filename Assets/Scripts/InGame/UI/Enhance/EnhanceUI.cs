@@ -18,6 +18,8 @@ public class EnhanceUI : MonoBehaviour {
 
 	public SmithEnhance[] enhanceDatas;
 
+	public RepairObject repairObject;
+
 	protected virtual void Awake()
 	{
 		cPlayer = GameManager.Instance.player;

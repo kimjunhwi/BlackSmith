@@ -191,7 +191,7 @@ public class RepairObject : MonoBehaviour
 		fUseWater  = 10.0f;
 
 		fPlusWater = player.GetWaterPlus ();
-		fMaxWater = player.GetBasicMaxWaterPlus();
+		fMaxWater = GameManager.Instance.player.GetBasicMaxWaterPlus() +( (GameManager.Instance.player.GetWaterPlusLevel() -1 ) * 1000f);
 		fWeaponDownDamage = player.GetRepairPower ();
 
 		TemperatureSlider.maxValue = fMaxTemperature;
@@ -484,7 +484,7 @@ public class RepairObject : MonoBehaviour
 			fTemperatureSlideTime = 0.0f;
 
 			fCurrentWater += (fPlusWater  - (fPlusWater * fSmallFireMinusWater));
-			Debug.Log ("CurPlusWater : " + GameManager.Instance.player.GetWaterPlus());
+			//Debug.Log ("CurPlusWater / " +GameManager.Instance.player.GetWaterPlus() + "WaterMax " + fMaxWater );
 			if (fCurrentTemperature > 0) 
 			{
 				fDownTemperature = (fMaxTemperature - fCurrentTemperature) * 0.05f;
