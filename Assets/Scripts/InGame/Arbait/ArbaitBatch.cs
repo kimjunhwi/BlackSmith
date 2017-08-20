@@ -202,9 +202,12 @@ public class ArbaitBatch : MonoBehaviour {
 
     public virtual void RelivePauseSkill()
     {
+		if (nBatchIndex == -1)
+			return;
+		
         //물 사용시 공격속도 증가 버프
         if (m_bIsWaterAttackSpeed)
-            m_CharacterChangeData.fAttackSpeed += m_fWaterAttackSpeedValue;
+            m_CharacterChangeData.fAttackSpeed -= m_fWaterAttackSpeedValue;
 
 
         //물 사용시 수리력 증가 버프
@@ -224,11 +227,14 @@ public class ArbaitBatch : MonoBehaviour {
 
         //대장간 크리티컬시 공격속도 증가 버프
         if (m_bIsSmithCriticalAttackSpeed)
-            m_CharacterChangeData.fAttackSpeed += m_fSmithCriticalAttackSpeedValue;
+            m_CharacterChangeData.fAttackSpeed -= m_fSmithCriticalAttackSpeedValue;
     }
 
     public virtual void ApplyPauseSkill()
     {
+		if (nBatchIndex == -1)
+			return;
+
         //물 사용시 공격속도 증가 버프
         if (m_bIsWaterAttackSpeed)
             m_CharacterChangeData.fAttackSpeed -= m_fWaterAttackSpeedValue;
@@ -248,6 +254,9 @@ public class ArbaitBatch : MonoBehaviour {
         //대장간 크리티컬시 공격속도 증가 버프
         if (m_bIsSmithCriticalAttackSpeed)
             m_CharacterChangeData.fAttackSpeed -= m_fSmithCriticalAttackSpeedValue;
+
+		if(m_bIsCriticalArbaitAttackSpeed)
+			m_CharacterChangeData.fAttackSpeed -= m_fCriticalArbaitAttackSpeedValue;
 
     }
 
@@ -597,6 +606,29 @@ public class ArbaitBatch : MonoBehaviour {
 
 		m_fTemperator = 0.0f;
     }
+
+	public void ArbaitDataInit()
+	{
+		fTime = 0.0f;
+
+		bIsRepair = false;
+
+		bIsComplate = false;
+
+		weaponData = null;
+
+		m_fComplate = 0.0f;
+
+		m_fMaxComplate = 0.0f;
+
+		m_fTemperator = 0.0f;
+	}
+
+	public void InsertWeaponData()
+	{
+		//수리중인 무기가없을것이므로 무기를 찾아 넣어준다.
+		SpawnManager.Instance.InsertWeaponArbait(m_CharacterChangeData.index,nBatchIndex);
+	}
 
 	public void SetAttackSpeed(float _fValue)
 	{

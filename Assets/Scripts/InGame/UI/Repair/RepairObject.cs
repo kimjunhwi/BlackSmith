@@ -392,7 +392,7 @@ public class RepairObject : MonoBehaviour
                             ScoreManager.ScoreInstance.SetFaieldGuestCount(player.GetFaieldGuestCount());
 
 							//손님 실패가 5명 이상 이라면 
-							if (player.GetFaieldGuestCount () >= 5) 
+							if (player.GetFaieldGuestCount () >= 1) 
 							{
                                 //초기화
                                 player.SetSuccessedGuestCount(0);
@@ -502,7 +502,7 @@ public class RepairObject : MonoBehaviour
 
         m_bIsFever = false;
 
-        SpawnManager.Instance.SettingFever(m_fNormalCretaeTime, m_fNormalSpeed);
+        //SpawnManager.Instance.SettingFever(m_fNormalCretaeTime, m_fNormalSpeed);
     }
 
     public void GetWeapon(GameObject obj, CGameWeaponInfo data, float _fComplate, float _fTemperator)
@@ -742,7 +742,7 @@ public class RepairObject : MonoBehaviour
 
         //fCurrentTemperature += ((fWeaponDownDamage * fMaxTemperature) / weaponData.fMaxComplate) * (1 + (fCurrentTemperature / fMaxTemperature) * 1.5f);
 
-		fCurrentTemperature += fMaxTemperature * 0.08f;
+		fCurrentTemperature += fMaxTemperature * 0.06f;
 
 
         //완성이 됐는지 확인 밑 오브젝트에 진행사항 전달
@@ -760,7 +760,7 @@ public class RepairObject : MonoBehaviour
 
 				m_PlayerAnimationController.UserBigSuccessedRepair ();
 
-                SpawnManager.Instance.SettingFever(m_fFeverCreateTime, m_fFeverSpeed);
+                //SpawnManager.Instance.SettingFever(m_fFeverCreateTime, m_fFeverSpeed);
 
                 this.StartCoroutine(StartFever(m_fFeverTime));
             }
@@ -1283,7 +1283,7 @@ public class RepairObject : MonoBehaviour
 				(1f - (weaponData.fMinusUseWater * 0.05f));
 			
 
-			fCurrentTemperature -= fMaxTemperature * 0.3f;
+			fCurrentTemperature -= fMaxTemperature * 0.5f;
 
 			if (fCurrentTemperature < 0)
 				fCurrentTemperature = 0;
@@ -1367,7 +1367,7 @@ public class RepairObject : MonoBehaviour
 
 			fWeaponDownTemperature = fMaxTemperature * 0.3f;
 
-			//플레이어가 장비하고 있는 무기 물수치의 5%
+			//플레이어가 장비하고 있는 무기 물수치의 1%
 			// 수리력 = 수리력 * ( 현재온도 * 11 * 0.00556) * ( 1 - 물수치(플레이어의 무기 + 장비의 물수치))
 			// 플레이어 수리력 추가 해야됨
 			float completeValueResult;
@@ -1375,15 +1375,13 @@ public class RepairObject : MonoBehaviour
 			//불 보스 일 경우에만  물수치가 50%감소
 			if (bossCharacter.bossInfo.nIndex == (int)E_BOSSNAME.E_BOSSNAME_FIRE) 
 			{
-				completeValueResult = (GameManager.Instance.player.GetRepairPower () * (fCurrentTemperature * 11f * 0.00556f) *
-					(1f - (GameManager.Instance.bossWeaponInfo [0].fWaterUse * 0.05f) * 0.5f ));
+				completeValueResult = (GameManager.Instance.player.GetRepairPower () * (fCurrentTemperature * 11f * 0.00556f));
 				fCurrentComplate += completeValueResult;
 				Debug.Log ("FireBossWaterValue : " + completeValueResult);
 			}
 			else 
 			{
-				completeValueResult = (GameManager.Instance.player.GetRepairPower () * (fCurrentTemperature * 11f * 0.00556f) *
-					(1f - (GameManager.Instance.bossWeaponInfo [0].fWaterUse * 0.05f)));
+				completeValueResult = (GameManager.Instance.player.GetRepairPower () * (fCurrentTemperature * 11f * 0.00556f));
 				fCurrentComplate += completeValueResult;
 				Debug.Log ("OtherBossWaterValue : " + completeValueResult);
 			}

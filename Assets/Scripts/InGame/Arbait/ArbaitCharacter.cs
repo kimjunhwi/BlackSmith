@@ -192,23 +192,23 @@ public class ArbaitCharacter : MonoBehaviour {
     public void EnhanceEvent()
     {
         //현재 골드가 비용보다 높을 경우 
-        if (ScoreManager.ScoreInstance.GetGold() >= ArbaitEnhanceData[m_CharacterData.level - 1].nGoldCost)
-        {
-            ScoreManager.ScoreInstance.GoldPlus(-ArbaitEnhanceData[m_CharacterData.level - 1].nGoldCost);
-
-            m_CharacterData.fRepairPower += GameManager.Instance.GetArbaitData(nIndex).fRepairPower * (float)(0.01 * ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusRepair);
-            m_CharacterData.fCritical += GameManager.Instance.GetArbaitData(nIndex).fCritical * (float)(0.01 * ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusCritical);
-            m_CharacterData.fAccuracyRate += GameManager.Instance.GetArbaitData(nIndex).fAccuracyRate * (float)(0.01 * ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusAccuracy);
-
-            if (ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusSkill != 0)
-            {
-
-            }
-
-            m_CharacterData.level++;
-
-            ChangeArbaitText();
-        }
+//        if (ScoreManager.ScoreInstance.GetGold() >= ArbaitEnhanceData[m_CharacterData.level - 1].nGoldCost)
+//        {
+//            ScoreManager.ScoreInstance.GoldPlus(-ArbaitEnhanceData[m_CharacterData.level - 1].nGoldCost);
+//
+//            m_CharacterData.fRepairPower += GameManager.Instance.GetArbaitData(nIndex).fRepairPower * (float)(0.01 * ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusRepair);
+//            m_CharacterData.fCritical += GameManager.Instance.GetArbaitData(nIndex).fCritical * (float)(0.01 * ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusCritical);
+//            m_CharacterData.fAccuracyRate += GameManager.Instance.GetArbaitData(nIndex).fAccuracyRate * (float)(0.01 * ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusAccuracy);
+//
+//            if (ArbaitEnhanceData[m_CharacterData.level - 1].nPercentPlusSkill != 0)
+//            {
+//
+//            }
+//
+//            m_CharacterData.level++;
+//
+//            ChangeArbaitText();
+//        }
     }
 
     void ChangeArbaitText()
@@ -220,16 +220,6 @@ public class ArbaitCharacter : MonoBehaviour {
         AttackSpeedText.text = m_CharacterData.fAttackSpeed.ToString("F1");
         CriticalText.text = m_CharacterData.fCritical.ToString("F1");
         AccuracyText.text = m_CharacterData.fAccuracyRate.ToString("F1");
-
-        if (ArbaitEnhanceData[m_CharacterData.level - 1].nHonorCost == 0)
-        {
-            GoldText.text = ArbaitEnhanceData[m_CharacterData.level - 1].nGoldCost.ToString();
-            m_EnhanceButtonEvent.GetComponent<Image>().sprite = m_GoldSprite;
-        }
-        else
-        {
-            GoldText.text = ArbaitEnhanceData[m_CharacterData.level - 1].nHonorCost.ToString();
-            m_EnhanceButtonEvent.GetComponent<Image>().sprite = m_HonorSprite;
-        }
+	
     }
 }

@@ -111,11 +111,6 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //손님 생성 시간과, 손님 속도를 조절한다.
     public void SettingFever(float _fCreateTime, float _fSpeed)
     {
-        fSpeed = _fSpeed;
-        m_fCreateTime = _fCreateTime;
-        
-        for (int nIndex = 0; nIndex < m_CharicPool.Length; nIndex++)
-            m_CharicPool[nIndex].GetComponent<NormalCharacter>().fSpeed = _fSpeed;
        
     }
 
@@ -172,6 +167,9 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 	//날짜가 바뀔시 그것에 대한 초기화를 진행
 	public void SetDayInitInfo(int _nDay)
 	{
+		if (_nDay < 1)
+			_nDay = 1;
+
 		m_fCreatePlusTime = 0.0f;
 		m_fLevelTime = 0.0f;
 
@@ -179,7 +177,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 		if (list_Character.Count != 0) {
 
 			for(int nIndex = 0; nIndex < list_Character.Count; nIndex++)
-				list_Character[nIndex].GetComponent<NormalCharacter>().RetreatCharacter(4.0f,true);
+				list_Character[nIndex].GetComponent<NormalCharacter>().RetreatCharacter(4.0f,true,true);
 			
 			m_nDay = _nDay;
 
@@ -264,18 +262,27 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
     //수리중이지 않고, 대기상태인 손님의 무기를 가져온다.
 	public void AutoInputWeaponData()
 	{
-		if (list_Character.Count == 0)
+		if (list_Character.Count <= 0)
 			return;
 
-		for (int nIndex = 0; nIndex < list_Character.Count; nIndex++) 
+		for (int nIndex = 0; nIndex < array_ArbaitData.Length; nIndex++) 
 		{
-			if (list_Character [nIndex].GetComponent<NormalCharacter> ().m_bIsRepair == false &&
-				list_Character [nIndex].GetComponent<NormalCharacter> ().E_STATE == Character.ENORMAL_STATE.WAIT) 
+			if (array_ArbaitData [nIndex].AfootOjbect == list_Character [0] && 
+				list_Character[0].GetComponent<NormalCharacter>().E_STATE == Character.ENORMAL_STATE.WAIT) 
 			{
-				list_Character [nIndex].GetComponent<NormalCharacter> ().RepairObjectInputWeapon ();
-				break;
+				array_ArbaitData [nIndex].ArbaitDataInit ();
+				list_Character [0].GetComponent<NormalCharacter> ().RepairObjectInputWeapon ();
+				array_ArbaitData [nIndex].InsertWeaponData ();
+
+				OrderMove ();
+				return;
 			}
 		}
+
+		if(list_Character[0].GetComponent<NormalCharacter>().E_STATE == Character.ENORMAL_STATE.WAIT)
+			list_Character [0].GetComponent<NormalCharacter> ().RepairObjectInputWeapon ();
+
+		OrderMove ();
 	}
 
     //보스 소환시 호출 캐릭터를 이동속도를 4로 한후 전부 되돌림
@@ -288,7 +295,7 @@ public class SpawnManager : GenericMonoSingleton<SpawnManager>
 
 		while (true)
 		{
-			list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (4.0f, true);
+			list_Character [nIndex++].GetComponent<NormalCharacter> ().RetreatCharacter (4.0f, true,true);
 
 			if (nIndex >= list_Character.Count) 
 			{

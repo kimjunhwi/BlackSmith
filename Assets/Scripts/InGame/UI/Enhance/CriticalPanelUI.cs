@@ -30,7 +30,7 @@ public class CriticalPanelUI : EnhanceUI {
 
 				nLevel++;
 
-				cPlayer.SetBasicCriticalChance(cPlayer.GetBasicCriticalChance() + nLevel * m_EnhanceData.fPlusPercent);
+				cPlayer.SetBasicCriticalChance(cPlayer.GetBasicCriticalChance() + 1 * m_EnhanceData.fPlusPercent);
 
 				cPlayer.SetCriticalLevel(nLevel);
 
@@ -47,7 +47,7 @@ public class CriticalPanelUI : EnhanceUI {
 
 			nLevel++;
 
-			cPlayer.SetBasicCriticalChance( cPlayer.GetBasicCriticalChance() + nLevel * m_EnhanceData.fPlusPercent);
+			cPlayer.SetBasicCriticalChance( cPlayer.GetBasicCriticalChance() + 1 * m_EnhanceData.fPlusPercent);
 
 			cPlayer.SetCriticalLevel(nLevel);
 

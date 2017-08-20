@@ -24,7 +24,7 @@ public class Note2Object : MonoBehaviour  ,IPointerDownHandler
 	private float fRandomX;
 	private float fRandomY;
 	private float fMoveSpeed = 10.0f;
-	private float fBossSpeed = 5.0f;
+	private float fBossSpeed = 1.0f;
 	private float fDecreaseWeaponSpeedRate = 0.1f;
 
 	private Vector3 randomDir;

@@ -27,9 +27,8 @@ public class InventoryShowPanel : MonoBehaviour {
 
 	CGameEquiment ItemData;
 
-	CGameEnhanceData[] enhanceData;
 
-	EquipmentEnhance[] equipEnhanceData;
+	EquipmentEnhance equipEnhanceData;
 
     Player player;
 
@@ -42,53 +41,33 @@ public class InventoryShowPanel : MonoBehaviour {
 
         player = GameManager.Instance.player;
 
-		equipEnhanceData = GameManager.Instance.cEquipmentEnhance;
-
 		gameObject.SetActive (false);
 	}
 
 	private void EnhanceItem()
 	{
 		Debug.Log ("강화 시작!!");
-		bool bIsSuccessed = false;
 
-		if (enhanceData [ItemData.nStrenthCount].nGoldCost != 0) {
-			
-			if (enhanceData [ItemData.nStrenthCount].nGoldCost <= ScoreManager.ScoreInstance.GetGold()) 
-			{
-				ScoreManager.ScoreInstance.GoldPlus (-enhanceData [ItemData.nStrenthCount].nGoldCost);
 
-				bIsSuccessed = true;
-			}
-		} else {
-			if (enhanceData [ItemData.nStrenthCount].nHonorCost <= ScoreManager.ScoreInstance.GetHonor()) 
-			{
-				ScoreManager.ScoreInstance.GoldPlus (-enhanceData [ItemData.nStrenthCount].nHonorCost);
-
-				bIsSuccessed = true;
-			}
-		}
-
-		if (bIsSuccessed) {
+		if (equipEnhanceData.fBasicGold + ItemData.nStrenthCount * equipEnhanceData.fPlusGoldValue <= ScoreManager.ScoreInstance.GetGold ()) {
+				
+			ScoreManager.ScoreInstance.GoldPlus (-(equipEnhanceData.fBasicGold + ItemData.nStrenthCount * equipEnhanceData.fPlusGoldValue));
 
 			Debug.Log ("강화 성공!!");
 
-			if (ItemData.fReapirPower != 0) ItemData.fReapirPower += 5 * equipEnhanceData[0].fPlusPercent;
-			if (ItemData.fArbaitRepair      != 0) ItemData.fArbaitRepair += ItemData.fArbaitRepair * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fHonorPlus         != 0) ItemData.fHonorPlus += ItemData.fHonorPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fGoldPlus          != 0) ItemData.fGoldPlus += ItemData.fGoldPlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fWaterChargePlus   != 0) ItemData.fWaterChargePlus += ItemData.fWaterChargePlus * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fCritical          != 0) ItemData.fCritical += ItemData.fCritical * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fCriticalDamage    != 0) ItemData.fCriticalDamage += ItemData.fCriticalDamage * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fBigCritical       != 0) ItemData.fBigCritical += ItemData.fBigCritical * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
-			if (ItemData.fAccuracyRate      != 0) ItemData.fAccuracyRate += ItemData.fAccuracyRate * enhanceData [ItemData.nStrenthCount].nPercent * 0.01f;
+			if (ItemData.fReapirPower 		!= 0) ItemData.fReapirPower 	+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fArbaitRepair      != 0) ItemData.fArbaitRepair 	+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fHonorPlus         != 0) ItemData.fHonorPlus 		+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fGoldPlus          != 0) ItemData.fGoldPlus 		+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fWaterChargePlus   != 0) ItemData.fWaterChargePlus += equipEnhanceData.fPlusPercent;
+			if (ItemData.fCritical          != 0) ItemData.fCritical 		+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fCriticalDamage    != 0) ItemData.fCriticalDamage 	+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fBigCritical       != 0) ItemData.fBigCritical 	+= equipEnhanceData.fPlusPercent;
+			if (ItemData.fAccuracyRate      != 0) ItemData.fAccuracyRate 	+= equipEnhanceData.fPlusPercent;
 
 			ItemData.nStrenthCount++;
 
-			if (enhanceData [ItemData.nStrenthCount].nGoldCost != 0)
-				EnhanceCostText.text = enhanceData [ItemData.nStrenthCount].nGoldCost.ToString ();
-			else
-				EnhanceCostText.text = enhanceData [ItemData.nStrenthCount].nHonorCost.ToString ();
+			EnhanceCostText.text = (equipEnhanceData.fBasicGold + ItemData.nStrenthCount * equipEnhanceData.fPlusGoldValue).ToString();
 
 			ResetItemText ();
 
@@ -131,20 +110,15 @@ public class InventoryShowPanel : MonoBehaviour {
 
 		NameText.text = string.Format("{0} +{1}", ItemData.strName , ItemData.nStrenthCount);
 
-
 		GradeText.text = ItemData.sGrade;
 
-		enhanceData = GameManager.Instance.GetEnhanceArbaitData (ItemData.sGrade);
+		equipEnhanceData = GameManager.Instance.GetEnhanceArbaitData (ItemData.sGrade);
 
 		WeaponImage.sprite = ObjectCashing.Instance.LoadSpriteFromCache(ItemData.strResource);
 	
 		ResetItemText ();
 
-		if(enhanceData[ItemData.nStrenthCount].nGoldCost != 0)
-			EnhanceCostText.text = enhanceData [ItemData.nStrenthCount].nGoldCost.ToString();
-
-		else
-			EnhanceCostText.text = enhanceData [ItemData.nStrenthCount].nHonorCost.ToString();
+		EnhanceCostText.text = (equipEnhanceData.fBasicGold + ItemData.nStrenthCount * equipEnhanceData.fPlusGoldValue).ToString();
 
 		if (strExplain != null)
 			CreateText (strExplain, 0f);
@@ -177,7 +151,7 @@ public class InventoryShowPanel : MonoBehaviour {
 		if (ItemData.fArbaitRepair      != 0) CreateText("알바수리력증가 : ", ItemData.fArbaitRepair);
 		if (ItemData.fHonorPlus         != 0) CreateText("명예증가량 : ", ItemData.fHonorPlus);
 		if (ItemData.fGoldPlus          != 0) CreateText("골드증가량 : ", ItemData.fGoldPlus);
-		if (ItemData.fWaterChargePlus   != 0) CreateText("물확률 : ", ItemData.fWaterChargePlus);
+		if (ItemData.fWaterChargePlus   != 0) CreateText("물 충전 증가량 : ", ItemData.fWaterChargePlus);
 		if (ItemData.fCritical          != 0) CreateText("크리티컬확률 : ", ItemData.fCritical);
 		if (ItemData.fCriticalDamage    != 0) CreateText("크리티컬데미지 : ", ItemData.fCriticalDamage);
 		if (ItemData.fBigCritical       != 0) CreateText("대성공 : ", ItemData.fBigCritical);

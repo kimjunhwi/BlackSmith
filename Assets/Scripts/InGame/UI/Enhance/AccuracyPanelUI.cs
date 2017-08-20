@@ -30,7 +30,7 @@ public class AccuracyPanelUI : EnhanceUI {
 
 				nLevel++;
 
-				cPlayer.SetBasicAccuracyRate(cPlayer.GetBasicAccuracyRate() + nLevel * m_EnhanceData.fPlusPercent);
+				cPlayer.SetBasicAccuracyRate(cPlayer.GetBasicAccuracyRate() + 1 * m_EnhanceData.fPlusPercent);
 
 				cPlayer.SetAccuracyRateLevel(nLevel);
 
@@ -47,7 +47,7 @@ public class AccuracyPanelUI : EnhanceUI {
 
 			nLevel++;
 
-			cPlayer.SetBasicAccuracyRate(cPlayer.GetBasicAccuracyRate() + nLevel * m_EnhanceData.fPlusPercent);
+			cPlayer.SetBasicAccuracyRate(cPlayer.GetBasicAccuracyRate() + 1 * m_EnhanceData.fPlusPercent);
 
 			cPlayer.SetAccuracyRateLevel(nLevel);
 
