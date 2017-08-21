@@ -343,7 +343,6 @@ public class BossFire : BossCharacter
 	{
 		yield return null;
 
-		StopCoroutine (repairObj.BossMusicWeaponMove ());
 		StopCoroutine (BossSkillStandard ());
 		StopCoroutine (BossSkill_01 ());
 		StopCoroutine (BossSKill_02 ());

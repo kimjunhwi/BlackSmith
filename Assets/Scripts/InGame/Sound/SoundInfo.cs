@@ -7,6 +7,7 @@ public class SoundInfo : MonoBehaviour
 
 	public int iID = 0;
 	public int _index = 0;
+	public int nType = 0;
 	public bool bLoop = false;
 	public bool bRemove = false;
 	public float DeathTime = 0.0f;

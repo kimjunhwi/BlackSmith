@@ -146,6 +146,7 @@ public class SoundManager : MonoBehaviour
 
 		soundInfo.iID 			= soundObj.GetInstanceID();			
 		soundInfo.audiolength 	= soundObj.GetComponent<AudioSource>().clip.length;
+		soundInfo.nType = kTableInfo_sound.nType;
 		soundInfo._index     = (int)_sound_index;
 
 		SoundArray.Add (soundObj);
@@ -208,28 +209,99 @@ public class SoundManager : MonoBehaviour
 		return kGO;
 		*/
 	}
-
+	//사운드 재생
 	public void PlaySound(eSoundArray _index)
 	{
 		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
 		aSource.Play ();
 	}
-
+	//사운드 끔
 	public void StopSound(eSoundArray _index)
 	{
 		AudioSource aSource = SoundManager.instance.SoundArray [(int)_index].gameObject.GetComponent<AudioSource> ();
 		aSource.Stop ();
-
 	}
-
+	//BGM Change
 	public void ChangeBGM(eSoundArray _StopIndex, eSoundArray _StartIndex)
 	{
-		AudioSource aSource = SoundManager.instance.SoundArray [(int)_StopIndex].gameObject.GetComponent<AudioSource> ();
-		aSource.Stop ();
+		SoundInfo soundInfo_Stop = SoundArray [(int)_StopIndex].gameObject.GetComponent<SoundInfo> ();
+		SoundInfo soundInfo_Start = SoundArray [(int)_StartIndex].gameObject.GetComponent<SoundInfo> ();
 
-		AudioSource sSource = SoundManager.instance.SoundArray [(int)_StartIndex].gameObject.GetComponent<AudioSource> ();
-		sSource.Play ();
+		//1이면  BGM  _ 2이면 한번 소리 나는 사운드들
+		if (soundInfo_Stop.nType == 1) 
+		{
+			AudioSource aSource = SoundArray [(int)_StopIndex].gameObject.GetComponent<AudioSource> ();
+			aSource.Stop ();
+		}
+
+		if (soundInfo_Start.nType == 1) 
+		{
+			AudioSource sSource = SoundArray [(int)_StartIndex].gameObject.GetComponent<AudioSource> ();
+			sSource.Play ();
+		}
 	}
+
+	//Mute BGMSound
+	public void MuteBGM()
+	{
+		for (int i = 0; i < SoundArray.Count; i++) 
+		{
+			SoundInfo soundInfo_Stop = SoundArray [i].gameObject.GetComponent<SoundInfo> ();
+			if (soundInfo_Stop.nType == 1)
+			{
+				AudioSource aSource = SoundArray [i].gameObject.GetComponent<AudioSource> ();
+				aSource.mute = true;
+			}
+		}
+	}
+
+	//Mute ESound(Effect)
+	public void MuteES()
+	{
+		for (int i = 0; i < SoundArray.Count; i++) 
+		{
+			SoundInfo soundInfo_Stop = SoundArray [i].gameObject.GetComponent<SoundInfo> ();
+			if (soundInfo_Stop.nType == 2)
+			{
+				AudioSource aSource = SoundArray [i].gameObject.GetComponent<AudioSource> ();
+				aSource.mute = true;
+			}
+		}
+	}
+
+	//Mute BGMSound
+	public void UnMuteBGM()
+	{
+		for (int i = 0; i < SoundArray.Count; i++) 
+		{
+			SoundInfo soundInfo_Stop = SoundArray [i].gameObject.GetComponent<SoundInfo> ();
+			if (soundInfo_Stop.nType == 1)
+			{
+				AudioSource aSource = SoundArray [i].gameObject.GetComponent<AudioSource> ();
+				aSource.mute = false;
+			}
+		}
+	}
+
+	//Mute ESound(Effect)
+	public void UnMuteES()
+	{
+		for (int i = 0; i < SoundArray.Count; i++) 
+		{
+			SoundInfo soundInfo_Stop = SoundArray [i].gameObject.GetComponent<SoundInfo> ();
+			if (soundInfo_Stop.nType == 2)
+			{
+				AudioSource aSource = SoundArray [i].gameObject.GetComponent<AudioSource> ();
+				aSource.mute = false;
+			}
+		}
+	}
+
+
+
+
+
+
 	/*
 	GameObject GetSource(int _index)
 	{

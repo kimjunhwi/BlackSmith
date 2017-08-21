@@ -7,6 +7,7 @@ public class WaterPlusPanelUI : EnhanceUI {
 
 	SmithEnhance m_EnhanceData;
 
+
 	protected override void Awake ()
 	{
 		base.Awake ();
@@ -35,6 +36,11 @@ public class WaterPlusPanelUI : EnhanceUI {
 				cPlayer.SetWaterPlusLevel(nLevel);
 
 				EnhanceText.text = strEnhanceName + nLevel;
+
+				//물 최대 량증가
+				//repairObject.fMaxWater =  GameManager.Instance.player.GetBasicMaxWaterPlus() + ( (cPlayer.GetMaxWaterLevel () -1 ) * 1000f);
+				//repairObject.WaterSlider.maxValue = repairObject.fMaxWater;/.
+				//if(cPlayer.GetWaterPlusLevel() >= 
 			}
 
 			return;
@@ -52,6 +58,12 @@ public class WaterPlusPanelUI : EnhanceUI {
 			cPlayer.SetWaterPlusLevel(nLevel);
 
 			EnhanceText.text = strEnhanceName + nLevel;
+
+			//물 최대 량증가
+			//repairObject.fMaxWater =  GameManager.Instance.player.GetBasicMaxWaterPlus() +( (cPlayer.GetWaterPlusLevel () -1 ) * 1000f);
+			//repairObject.WaterSlider.maxValue = repairObject.fMaxWater;
+			//Debug.Log ("MaxWater : " + repairObject.fMaxWater);
+
 		}
 	}
 }
