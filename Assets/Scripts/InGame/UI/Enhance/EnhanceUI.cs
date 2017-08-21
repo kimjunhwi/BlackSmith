@@ -7,10 +7,12 @@ using ReadOnlys;
 public class EnhanceUI : MonoBehaviour {
 
 	public int nLevel = 0;
+	public float fCostGold = 0.0f;
 
 	public string strEnhanceName = null;
 
 	public Text EnhanceText;
+	public Text CostGoldText;
 	public Image EnhanceImage;
 	public Button EnhanceButton;
 

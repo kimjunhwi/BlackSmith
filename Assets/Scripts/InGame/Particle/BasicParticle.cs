@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicParticle : MonoBehaviour {
 
-	public void Play()
+	public void Play(float _fTime = 2.0f)
 	{
 		StartCoroutine(StartDisappearAfter(2f));
 	}

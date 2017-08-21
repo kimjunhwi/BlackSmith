@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 [System.Serializable]
 public class NormalCharacter : Character {
-    public Transform spawnTransform;
+    
 
 	private int m_nCheck = -1;
 
@@ -20,16 +20,20 @@ public class NormalCharacter : Character {
 	//활성화 됐을때 위치
 	private Vector3 m_VecStartPos;
    
+	//움직일 이동 거리
+	private Vector3 m_VecMoveDistance;
+
 	//무기가 보일 말풍선(?) // 미정
 	private GameObject WeaponBackground;
 	private GameObject TimerGameobject;
 
+	//완성도 게이지
 	private Transform ComplateScale;
 
-	private SpriteRenderer backGround;
+	//생성되는 위치
+	public Transform spawnTransform;
 
-	//움직일 이동 거리
-	private Vector3 m_VecMoveDistance;
+	private SpriteRenderer backGround;
 
 	//돌아가는지
 	public bool m_bIsBack = false;
@@ -53,6 +57,9 @@ public class NormalCharacter : Character {
 	private const int nMaxTimerCount = 10;
 
 	private int nDay = 1;
+
+	public GameObject SuccessedObject;
+	public BasicParticle SuccessedParticle;
 
 	public override void Awake()
     {
@@ -118,7 +125,7 @@ public class NormalCharacter : Character {
 		{
 			nDay = cPlayerData.GetDay ();
 
-			weaponData.fMaxComplate = weaponData.fMaxComplate + (weaponData.fMaxComplate * nDay * 0.05f);
+			weaponData.fMaxComplate = (nDay <= 185)  ? 3 * Mathf.Pow(1.25f,nDay) * 60  : 3 * Mathf.Pow(125,185) * Mathf.Pow(125,nDay- 185) *60; 
 			weaponData.fMinusRepair = weaponData.fMinusRepair + (weaponData.fMinusRepair * nDay * 0.03f);
 			weaponData.fMinusChargingWater = weaponData.fMinusChargingWater + (weaponData.fMinusChargingWater * nDay * 0.03f);
 			weaponData.fMinusCriticalDamage = weaponData.fMinusCriticalDamage + (weaponData.fMinusCriticalDamage * nDay * 0.03f);
@@ -447,7 +454,14 @@ public class NormalCharacter : Character {
 	{
 		//70%이상
 		if ((weaponData.fMaxComplate * 0.7) < _fComplate) {
-			fGold = weaponData.fGold + (weaponData.fGold * _fComplate / weaponData.fMaxComplate);
+
+			nDay = cPlayerData.GetDay ();
+
+			SuccessedObject.SetActive (true);
+
+			SuccessedParticle.Play (1);
+
+			fGold = 500 * Mathf.Pow (1.1f, nDay - 1);
 
 			ScoreManager.ScoreInstance.GoldPlus (fGold);
 
